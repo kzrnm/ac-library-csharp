@@ -6,9 +6,4 @@
     <OutputType>Library</OutputType>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Internal\" />
-    <Folder Include="Math\" />
-  </ItemGroup>
-
 </Project>
