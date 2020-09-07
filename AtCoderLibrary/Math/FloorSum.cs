@@ -13,6 +13,6 @@ namespace AtCoder
         /// <para>制約: 0≤<paramref name="n"/>, <paramref name="m"/>≤10^9, 0≤<paramref name="a"/>, <paramref name="b"/>&lt;<paramref name="m"/></para>
         /// </remarks>
         /// <returns></returns>
-        public static long FloorSum(long n, long m, long a, long b) { throw new Exception(); }
+        public static long FloorSum(long n, long m, long a, long b) { throw new NotImplementedException(); }
     }
 }

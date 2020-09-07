@@ -13,6 +13,6 @@ namespace AtCoder
         /// <para>制約: 0≤<paramref name="n"/>, 1≤<paramref name="m"/></para>
         /// <para>計算量: O(log<paramref name="n"/>)</para>
         /// </remarks>
-        public static long PowMod(long x, long n, int m) { throw new Exception(); }
+        public static long PowMod(long x, long n, int m) { throw new NotImplementedException(); }
     }
 }
