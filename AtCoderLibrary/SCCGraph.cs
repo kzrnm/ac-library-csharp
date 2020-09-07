@@ -22,7 +22,7 @@ namespace AtCoder
         /// 頂点 <paramref name="from"/> から頂点 <paramref name="to"/> へ有向辺を追加します。
         /// </summary>
         /// <remarks>
-        /// <para>制約: 0≤<paramref name="from"/>, <paramref name="to"/>≤n</para>
+        /// <para>制約: 0≤<paramref name="from"/>, <paramref name="to"/>&lt;n</para>
         /// <para>計算量: ならしO(1)</para>
         /// </remarks>
         public void AddEdge(int from, int to) { throw new NotImplementedException(); }
@@ -36,6 +36,6 @@ namespace AtCoder
         /// <para>- リストはトポロジカルソートされています。異なる強連結成分の頂点 u, v について、u から v に到達できる時、u の属するリストは v の属するリストよりも前です。</para>
         /// <para>計算量: 追加された辺の本数を m として O(n+m)</para>
         /// </remarks>
-        public List<List<int>> GetSCC() { throw new Exception(); }
+        public List<List<int>> SCC() { throw new Exception(); }
     }
 }
