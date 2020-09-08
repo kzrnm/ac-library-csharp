@@ -9,7 +9,7 @@ namespace AtCoder
     public static partial class Math
     {
         /// <summary>
-        /// x^n mod m を返します。
+        /// <paramref name="x"/>^<paramref name="n"/> mod <paramref name="m"/> を返します。
         /// </summary>
         /// <remarks>
         /// <para>制約: 0≤<paramref name="n"/>, 1≤<paramref name="m"/></para>
