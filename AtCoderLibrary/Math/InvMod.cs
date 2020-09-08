@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Diagnostics;
+using AtCoder.Internal;
 
 namespace AtCoder
 {
@@ -13,6 +12,12 @@ namespace AtCoder
         /// <para>制約: gcd(<paramref name="x"/>,<paramref name="m"/>)=1, 1≤<paramref name="m"/></para>
         /// <para>計算量: O(log<paramref name="m"/>)</para>
         /// </remarks>
-        public static long InvMod(long x, int m) { throw new NotImplementedException(); }
+        public static long InvMod(long x, int m)
+        {
+            Debug.Assert(1 <= m);
+            var (g, res) = InternalMath.InvGCD(x, m);
+            Debug.Assert(g == 1);
+            return res;
+        }
     }
 }
