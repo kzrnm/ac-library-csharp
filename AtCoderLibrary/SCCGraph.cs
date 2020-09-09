@@ -7,17 +7,11 @@ namespace AtCoder
     /// <summary>
     /// 有向グラフを強連結成分分解します。
     /// </summary>
-    [DebuggerDisplay("Vertices = {VerticesCount}, Edges = {edges.Count}")]
+    [DebuggerDisplay("Vertices = {_n}, Edges = {edges.Count}")]
     public class SCCGraph
     {
-        // ひとまず C++ 版 ACL に合わせ、自動プロパティは使用しない。
         private readonly int _n;
         private readonly List<Edge> edges;
-
-        /// <summary>
-        /// 有向グラフの頂点数を取得します。
-        /// </summary>
-        public int VerticesCount => _n;
 
         /// <summary>
         /// <see cref="SCCGraph"/> クラスの新しいインスタンスを、<paramref name="n"/> 頂点 0 辺の有向グラフとして初期化します。
