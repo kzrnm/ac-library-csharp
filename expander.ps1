@@ -80,12 +80,7 @@ function Get-AtCoder-Method-Symbols {
     } | ForEach-Object {
         $_.Symbol
     }
-    $symbols | Where-Object {
-        $name = $_.ContainingNamespace.ToDisplayString()
-        if ($name -eq "AtCoder") { $true }
-        elseif ($name.StartsWith("AtCoder.")) { $true }
-        else { $false }
-    }
+    $symbols
 }
 
 function Split-Code {
@@ -112,20 +107,6 @@ function Split-Code {
         }
     }
 
-    $headUsing, $bodies
-}
-
-function Remove-Unused-Using {
-    param(
-        [string[]]
-        [Parameter(Mandatory = $true, Position = 0)]
-        $lines
-    )
-
-    $headUsing, $bodies = (Split-Code $lines)
-    $headUsing = [System.Collections.Generic.List[string]]$headUsing
-    $headUsing.Sort([System.Comparison[string]] { param($a, $b); [System.StringComparer]::Ordinal.Compare($a.Trim(';'), $b.Trim(';')) })
-    $headUsing = $headUsing | Get-Unique
     $headUsing, $bodies
 }
 
