@@ -31,8 +31,6 @@ if (-not (Test-Path $atcoderlibPath) ) {
     }
 }
 
-Add-Type -Path $atcoderlibPath
-
 function Merge-Hashtable {
     [OutputType([hashtable])]
     param (
