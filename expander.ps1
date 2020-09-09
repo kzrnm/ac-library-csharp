@@ -122,6 +122,7 @@ function Expand-AtCoder-Code {
             Get-Content $_  | ConvertFrom-Json -AsHashtable
         })
     $lineBreak = $code.Contains("`r`n") ? "`r`n" : "`n";
+    $addedFiles = [System.Collections.Generic.HashSet[string]]::new()
     $code += $lineBreak + "#region AtCoderLibrary" + $lineBreak
     while ($true) {
         $updated = $false
@@ -134,9 +135,11 @@ function Expand-AtCoder-Code {
             if ($aclpath.ContainsKey($className)) {
                 $updated = $true
                 foreach ($file in $aclpath[$className]) {
-                    Write-Debug $file
-                    $headUsing, $bodies = (Split-Code @(Get-Content $file))
-                    $code = ($headUsing -join $lineBreak) + $lineBreak + $code + $lineBreak + ($bodies -join $lineBreak) 
+                    if ($addedFiles.Add($file)) {
+                        Write-Debug $file
+                        $headUsing, $bodies = (Split-Code @(Get-Content $file))
+                        $code = ($headUsing -join $lineBreak) + $lineBreak + $code + $lineBreak + ($bodies -join $lineBreak) 
+                    }
                 }
                 $aclpath.Remove($className)
             }
