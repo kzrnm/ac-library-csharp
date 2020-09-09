@@ -164,7 +164,7 @@ namespace AtCoder
             }
         }
 
-        [DebuggerDisplay("From:{From}, To:{To}")]
+        [DebuggerDisplay("From = {From}, To = {To}")]
         private readonly struct Edge
         {
             public int From { get; }
