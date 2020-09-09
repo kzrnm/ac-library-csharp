@@ -15,5 +15,5 @@ pwsh expander.ps1 AtCoderProgram/Program2.cs
 pwsh expander.ps1 AtCoderProgram/Program2.cs AtCoderProgram/Program3.cs
 
 # AtCoderProgram/Program.csを元にライブラリを展開したコードを標準出力に表示
-pwsh expander.ps1
+pwsh expander.ps1 -Console
 ```
