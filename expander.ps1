@@ -45,6 +45,16 @@ function Merge-Hashtable {
     }
     return $res
 }
+function Get-Absolute-Acl-Path {
+    param (
+        [string]
+        $path
+    )
+    if ( Split-Path $path -IsAbsolute) { $path }
+    else {
+        Join-Path -Path $PSScriptRoot  -ChildPath $path -Resolve -ErrorAction Ignore
+    }
+}
 function Get-SemanticModel {
     [OutputType([Microsoft.CodeAnalysis.SemanticModel])]
     param(
@@ -123,6 +133,7 @@ function Expand-AtCoder-Code {
         })
     $lineBreak = $code.Contains("`r`n") ? "`r`n" : "`n";
     $addedFiles = [System.Collections.Generic.HashSet[string]]::new()
+    $addedFiles.Add($null)
     $code += $lineBreak + "#region AtCoderLibrary" + $lineBreak
     while ($true) {
         $updated = $false
@@ -135,6 +146,7 @@ function Expand-AtCoder-Code {
             if ($aclpath.ContainsKey($className)) {
                 $updated = $true
                 foreach ($file in $aclpath[$className]) {
+                    $file = (Get-Absolute-Acl-Path $file)
                     if ($addedFiles.Add($file)) {
                         Write-Debug $file
                         $headUsing, $bodies = (Split-Code @(Get-Content $file))
