@@ -1,8 +1,10 @@
 [CmdletBinding(DefaultParameterSetName = "OutFile")]
 param(
+    [Parameter(Position = 0)]
     [string]
     $ProgramPath = "$PSScriptRoot/AtCoderProgram/Program.cs",
 
+    [Parameter(Position = 1)]
     [Parameter(ParameterSetName = "OutFile")]
     [string]$OutputPath = "$PSScriptRoot/AtCoderProgram/Combined.cs",
     
