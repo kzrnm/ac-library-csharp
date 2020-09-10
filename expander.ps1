@@ -4,15 +4,15 @@ param(
     [string]
     $ProgramPath = "$PSScriptRoot/AtCoderProgram/Program.cs",
 
-    [Parameter(Position = 1)]
-    [Parameter(ParameterSetName = "OutFile")]
+    [Parameter(Position = 1, ParameterSetName = "OutFile")]
     [string]$OutputPath = "$PSScriptRoot/AtCoderProgram/Combined.cs",
-    
+
     [Parameter(ParameterSetName = "OutConsole")]
     [switch]$Console,
     [switch]$UseRelease
 )
-$csprojPath = "$PSScriptRoot/AtCoderLibrary/AtCoderLibrary.csproj"
+$AclProjectPath = "$PSScriptRoot/AtCoderLibrary"
+$csprojPath = "$AclProjectPath/AtCoderLibrary.csproj"
 
 $buildType = "Debug"
 if ($UseRelease) { $buildType = "Release" }
@@ -24,6 +24,10 @@ if (-not (Test-Path $atcoderlibPath) ) {
     Get-Command dotnet -ErrorAction SilentlyContinue | Out-Null
     if ($?) {
         dotnet build "$csprojPath" -c "$buildType"
+        if (-not (Test-Path $atcoderlibPath) ) {
+            Write-Error "not found: $atcoderlibPath"
+            exit
+        }
     }
     else {
         Write-Error "You need dotnet command."
@@ -31,29 +35,25 @@ if (-not (Test-Path $atcoderlibPath) ) {
     }
 }
 
-function Merge-Hashtable {
-    [OutputType([hashtable])]
+function Format-Usings {
+    [OutputType([string[]])]
     param (
-        [hashtable[]]
-        $Hashtables
+        [string[]]
+        $usings
     )
-    $res = @{}
-    foreach ($ht in $Hashtables) {
-        foreach ($key in $ht.Keys) {
-            $res[$key] = $ht[$key]
-        }
-    }
-    return $res
+    $list = [System.Collections.Generic.List[string]]$usings
+    $list.Sort([System.Comparison[string]] { param($a, $b); [System.StringComparer]::Ordinal.Compare($a.Trim(';'), $b.Trim(';')) }) | Out-Null
+    ($list | Get-Unique)
 }
-function Get-Absolute-Acl-Path {
+
+function Split-Code {
     param (
         [string]
-        $path
+        $code
     )
-    if ( Split-Path $path -IsAbsolute) { $path }
-    else {
-        Join-Path -Path $PSScriptRoot  -ChildPath $path -Resolve -ErrorAction Ignore
-    }
+    $tree = [Microsoft.CodeAnalysis.CSharp.CSharpSyntaxTree]::ParseText($code)
+    $usings = $tree.GetRoot().Usings
+    @($usings | ForEach-Object { $_.ToFullString().Trim() }), $code.Substring($usings.FullSpan.End)
 }
 function Get-SemanticModel {
     [OutputType([Microsoft.CodeAnalysis.SemanticModel])]
@@ -72,7 +72,8 @@ function Get-SemanticModel {
         $null);
     return $compilation.GetSemanticModel([Microsoft.CodeAnalysis.SyntaxTree]$tree)
 }
-function Get-AtCoder-Method-Symbols {
+
+function Get-Method-Symbols {
     [OutputType([Microsoft.CodeAnalysis.IMethodSymbol[]])]
     param(
         [Microsoft.CodeAnalysis.CSharp.CSharpSyntaxTree]
@@ -81,7 +82,8 @@ function Get-AtCoder-Method-Symbols {
     )
     $semanticModel = Get-SemanticModel ([Microsoft.CodeAnalysis.SyntaxTree]$tree)
     $root = $tree.GetRoot()
-    $symbols = $root.DescendantNodes() | Where-Object { 
+    $nodes = $root.DescendantNodes()
+    $symbols = $nodes  | Where-Object { 
         $_ -is [Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax]
     } | ForEach-Object {
         $semanticModel.GetSymbolInfo($_)
@@ -92,32 +94,39 @@ function Get-AtCoder-Method-Symbols {
     }
     $symbols
 }
-
-function Split-Code {
-    param (
-        [string[]]
-        $lines
+function Get-ClassDeclaration-Symbols {
+    [OutputType([Microsoft.CodeAnalysis.INamedTypeSymbol[]])]
+    param(
+        [Microsoft.CodeAnalysis.CSharp.CSharpSyntaxTree]
+        [Parameter(Mandatory = $true, Position = 0)]
+        $tree
     )
-    $headUsing = @()
-    $bodies = @()
-    $inHead = $true
-
-    foreach ($line in $lines) {
-        if ($inHead) {
-            if ($line.Trim().StartsWith("using")) {
-                $headUsing += $line
-            }
-            elseif (-not [string]::IsNullOrWhiteSpace($line)) {
-                $bodies += $line
-                $inHead = $false
-            } 
-        }
-        else {
-            $bodies += $line
-        }
+    $semanticModel = Get-SemanticModel ([Microsoft.CodeAnalysis.SyntaxTree]$tree)
+    $root = $tree.GetRoot()
+    $nodes = $root.DescendantNodes()
+    $symbols = $nodes  | Where-Object { 
+        $_ -is [Microsoft.CodeAnalysis.CSharp.Syntax.ClassDeclarationSyntax]
+    } | ForEach-Object {
+        $semanticModel.GetDeclaredSymbol($_)
     }
+    $symbols
+}
 
-    $headUsing, $bodies
+function Get-Acl-Paths {
+    [OutputType([hashtable])]
+    $res = @{}
+    $aclFiles = (Get-ChildItem $AclProjectPath -Recurse "*.cs")
+    $aclPaths = ($aclFiles | ForEach-Object {
+            $c = Get-Content $_ -Raw
+            $symbols = Get-ClassDeclaration-Symbols ([Microsoft.CodeAnalysis.CSharp.CSharpSyntaxTree]::ParseText($c))
+            foreach ($s in $symbols) {
+                [pscustomobject]@{Path = $_; ClassName = $s.ToDisplayString() }
+            }
+        })
+    foreach ($p in $aclPaths) {
+        $res[$p.ClassName] += @($p.Path)
+    }
+    $res
 }
 
 function Expand-AtCoder-Code {
@@ -127,47 +136,54 @@ function Expand-AtCoder-Code {
         [Parameter(Mandatory = $true, Position = 0)]
         $code
     )
-    $aclpath = Merge-Hashtable (
-        Get-ChildItem "$PSScriptRoot/aclpath.*.json" | ForEach-Object { 
-            Get-Content $_  | ConvertFrom-Json -AsHashtable
-        })
-    $lineBreak = $code.Contains("`r`n") ? "`r`n" : "`n";
+    $aclPaths = (Get-Acl-Paths)
+    $usings, $origBody = (Split-Code $code)
+
     $addedFiles = [System.Collections.Generic.HashSet[string]]::new()
-    $addedFiles.Add($null)
-    $code += $lineBreak + "#region AtCoderLibrary" + $lineBreak
+    $addedFiles.Add($null) | Out-Null
+
+    $atlBody = ""
+
+    $i = 0
     while ($true) {
         $updated = $false
         $tree = [Microsoft.CodeAnalysis.CSharp.CSharpSyntaxTree]::ParseText($code)
-        $symbols = Get-AtCoder-Method-Symbols $tree
+        $symbols = (Get-Method-Symbols $tree)
         
         foreach ($symbol in $symbols) {
             $className = $symbol.ContainingType.ToDisplayString();
             
-            if ($aclpath.ContainsKey($className)) {
+            if ($aclPaths.ContainsKey($className)) {
                 $updated = $true
-                foreach ($file in $aclpath[$className]) {
-                    $file = (Get-Absolute-Acl-Path $file)
+                Write-Debug "class: $className"
+                foreach ($file in $aclPaths[$className]) {
                     if ($addedFiles.Add($file)) {
-                        Write-Debug $file
-                        $headUsing, $bodies = (Split-Code @(Get-Content $file))
-                        $code = ($headUsing -join $lineBreak) + $lineBreak + $code + $lineBreak + ($bodies -join $lineBreak) 
+                        Write-Debug "file: $file"
+                        $libUsings, $libBody = (Split-Code (Get-Content $file -Raw))
+                        $code = ($libUsings -join "`n") + "`n" + $code + "`n" + ($libBody -join "`n")
+                        
+                        $usings += @($libUsings)
+                        $atlBody += "`n" + $libBody.Trim()
                     }
                 }
-                $aclpath.Remove($className)
+                $aclPaths.Remove($className)
             }
         }
         if (-not $updated) { break }
+        if ($i++ -gt 1000) {
+            Write-Error "Failed to expand"
+            exit
+        }
     }
-    $code += $lineBreak + "#endregion AtCoderLibrary"
-    $lines = $code.Split($lineBreak)
-    $headUsing, $bodies = (Split-Code $lines)
-    $headUsing = [System.Collections.Generic.List[string]]$headUsing
-    $headUsing.Sort([System.Comparison[string]] { param($a, $b); [System.StringComparer]::Ordinal.Compare($a.Trim(';'), $b.Trim(';')) })
-    $headUsing = $headUsing | Get-Unique
-
-    ($headUsing -join $lineBreak) + $lineBreak + $lineBreak + ($bodies -join $lineBreak)
+    $usings = @(Format-Usings $usings)
+    $res = $usings
+    $res += @($origBody)
+    $res += @("#region AtCoderLibrary")
+    $res += @($atlBody)
+    $res += @("#endregion AtCoderLibrary`n")
+    $res = ($res -join "`n")
+    $res
 }
-
 
 $code = (Get-Content -Raw $ProgramPath)
 $newCode = (Expand-AtCoder-Code $code)
@@ -176,5 +192,5 @@ if ($Console) {
     Write-Output $newCode
 }
 else {
-    $newCode | Out-File -FilePath $OutputPath -Encoding ([System.Text.Encoding]::UTF8)
+    $newCode | Out-File -FilePath $OutputPath -Encoding ([System.Text.Encoding]::UTF8) -NoNewline
 }
