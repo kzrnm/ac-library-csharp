@@ -17,4 +17,8 @@
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" />
     <ProjectReference Include="..\AtCoderLibrary\AtCoderLibrary.csproj" />
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="pwsh $(SolutionDir)\expander.ps1" Condition="'$(ATCODER_LIB_SHARP_AUTO_COMBINE)' != ''" />
+  </Target>
 </Project>
