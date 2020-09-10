@@ -3,7 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtCoderLibrary", "AtCoderLibrary\AtCoderLibrary.csproj", "{7915FF27-0322-4460-A94E-FA7B86D5E25C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AtCoderLibrary", "AtCoderLibrary\AtCoderLibrary.csproj", "{7915FF27-0322-4460-A94E-FA7B86D5E25C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C9D4DB37-1705-454C-B223-B73CB823335D}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
