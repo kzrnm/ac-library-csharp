@@ -7,6 +7,10 @@ param(
     [Parameter(Position = 1, ParameterSetName = "OutFile")]
     [string]$OutputPath = "$PSScriptRoot/AtCoderProgram/Combined.cs",
 
+    [ValidateSet('CRLF', 'LF')]
+    [string]
+    $LineBreak = 'CRLF',
+
     [Parameter(ParameterSetName = "OutConsole")]
     [switch]$Console,
     [switch]$UseRelease
@@ -182,6 +186,10 @@ function Expand-AtCoder-Code {
     $res += @($atlBody)
     $res += @("#endregion AtCoderLibrary`n")
     $res = ($res -join "`n")
+    $res = ($res -replace "`r`n", "`n")
+    if ($LineBreak -eq 'CRLF') {
+        $res = ($res -replace "`n", "`r`n")
+    }
     $res
 }
 
