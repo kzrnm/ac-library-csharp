@@ -59,7 +59,7 @@ namespace AtCoder
         /// <param name="n">配列の長さ</param>
         public Segtree(int n)
         {
-            Debug.Assert(op.Operate(op.Identity, op.Identity).Equals(op.Identity), "op.Operate(op.Identity, op.Identity) != op.Identity");
+            AssertMonoid(op.Identity);
             Length = n;
             log = InternalMath.CeilPow2(n);
             size = 1 << log;
@@ -101,6 +101,7 @@ namespace AtCoder
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             set
             {
+                AssertMonoid(value);
                 Debug.Assert((uint)p < Length);
                 p += size;
                 d[p] = value;
@@ -110,6 +111,7 @@ namespace AtCoder
             get
             {
                 Debug.Assert((uint)p < Length);
+                AssertMonoid(d[p + size]);
                 return d[p + size];
             }
         }
@@ -137,6 +139,7 @@ namespace AtCoder
                 l >>= 1;
                 r >>= 1;
             }
+            AssertMonoid(op.Operate(sml, smr));
             return op.Operate(sml, smr);
         }
 
@@ -305,6 +308,19 @@ namespace AtCoder
                     return items.ToArray();
                 }
             }
+        }
+
+        /// <summary>
+        /// Debug ビルドにおいて、Monoid が正しいかチェックする。
+        /// </summary>
+        /// <param name="value"></param>
+        [Conditional("DEBUG")]
+        public static void AssertMonoid(TValue value)
+        {
+            Debug.Assert(op.Operate(value, op.Identity).Equals(value),
+                $"{nameof(op.Operate)}({value}, {op.Identity}) != {value}");
+            Debug.Assert(op.Operate(op.Identity, value).Equals(value),
+                $"{nameof(op.Operate)}({op.Identity}, {value}) != {value}");
         }
     }
 }
