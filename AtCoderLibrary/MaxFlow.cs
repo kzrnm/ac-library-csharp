@@ -337,11 +337,18 @@ namespace AtCoder
             return visited;
         }
 
+        /// <summary>
+        /// フロー流すグラフの各辺に対応した情報を持ちます。
+        /// </summary>
         public struct Edge
         {
+            /// <summary>フローが流出する頂点。</summary>
             public int From { get; set; }
+            /// <summary>フローが流入する頂点。</summary>
             public int To { get; set; }
+            /// <summary>辺の容量。</summary>
             public TValue Cap { get; set; }
+            /// <summary>辺の流量。</summary>
             public TValue Flow { get; set; }
             public Edge(int from, int to, TValue cap, TValue flow)
             {
