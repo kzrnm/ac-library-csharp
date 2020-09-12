@@ -11,6 +11,7 @@ namespace AtCoder
         T Subtract(T x, T y);
         T Multiply(T x, T y);
         T Divide(T x, T y);
+        T Modulo(T x, T y);
     }
     public readonly struct IntOperator : INumOperator<int>
     {
@@ -20,6 +21,7 @@ namespace AtCoder
         public int Subtract(int x, int y) => x - y;
         public int Multiply(int x, int y) => x * y;
         public int Divide(int x, int y) => x / y;
+        public int Modulo(int x, int y) => x % y;
         public int Compare(int x, int y) => x.CompareTo(y);
         public bool Equals(int x, int y) => x == y;
         public int GetHashCode(int obj) => obj.GetHashCode();
@@ -32,6 +34,7 @@ namespace AtCoder
         public long Subtract(long x, long y) => x - y;
         public long Multiply(long x, long y) => x * y;
         public long Divide(long x, long y) => x / y;
+        public long Modulo(long x, long y) => x % y;
         public int Compare(long x, long y) => x.CompareTo(y);
         public bool Equals(long x, long y) => x == y;
         public int GetHashCode(long obj) => obj.GetHashCode();
@@ -44,6 +47,7 @@ namespace AtCoder
         public uint Subtract(uint x, uint y) => x - y;
         public uint Multiply(uint x, uint y) => x * y;
         public uint Divide(uint x, uint y) => x / y;
+        public uint Modulo(uint x, uint y) => x % y;
         public int Compare(uint x, uint y) => x.CompareTo(y);
         public bool Equals(uint x, uint y) => x == y;
         public int GetHashCode(uint obj) => obj.GetHashCode();
@@ -56,6 +60,7 @@ namespace AtCoder
         public ulong Subtract(ulong x, ulong y) => x - y;
         public ulong Multiply(ulong x, ulong y) => x * y;
         public ulong Divide(ulong x, ulong y) => x / y;
+        public ulong Modulo(ulong x, ulong y) => x % y;
         public int Compare(ulong x, ulong y) => x.CompareTo(y);
         public bool Equals(ulong x, ulong y) => x == y;
         public int GetHashCode(ulong obj) => obj.GetHashCode();
@@ -68,6 +73,7 @@ namespace AtCoder
         public double Subtract(double x, double y) => x - y;
         public double Multiply(double x, double y) => x * y;
         public double Divide(double x, double y) => x / y;
+        public double Modulo(double x, double y) => x % y;
         public int Compare(double x, double y) => x.CompareTo(y);
         public bool Equals(double x, double y) => x == y;
         public int GetHashCode(double obj) => obj.GetHashCode();
