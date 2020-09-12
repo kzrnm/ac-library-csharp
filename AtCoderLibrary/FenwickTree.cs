@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using AtCoder.Internal;
@@ -91,6 +91,7 @@ namespace AtCoder
     /// </summary>
     /// <typeparam name="TValue">配列要素の型</typeparam>
     /// <typeparam name="TOp">配列要素の操作を表す型</typeparam>
+    [DebuggerTypeProxy(typeof(FenwickTree<,>.DebugView))]
     public class FenwickTree<TValue, TOp>
         where TValue : struct
         where TOp : struct, INumOperator<TValue>
@@ -153,6 +154,48 @@ namespace AtCoder
                 s = op.Add(s, data[r]);
             }
             return s;
+        }
+
+
+        [DebuggerDisplay("Value = {" + nameof(value) + "}, Sum = {" + nameof(sum) + "}")]
+        private struct DebugItem
+        {
+            public DebugItem(TValue value, TValue sum)
+            {
+                this.sum = sum;
+                this.value = value;
+            }
+            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            public readonly TValue value;
+            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            public readonly TValue sum;
+        }
+        private class DebugView
+        {
+            private readonly FenwickTree<TValue, TOp> fenwickTree;
+            public DebugView(FenwickTree<TValue, TOp> fenwickTree)
+            {
+                this.fenwickTree = fenwickTree;
+            }
+            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+            public DebugItem[] Items
+            {
+                get
+                {
+                    var data = fenwickTree.data;
+                    var items = new DebugItem[data.Length - 1];
+                    items[0] = new DebugItem(data[1], data[1]);
+                    for (int i = 2; i < data.Length; i++)
+                    {
+                        int length = InternalBit.ExtractLowestSetBit(i);
+                        var pr = i - length - 1;
+                        var sum = op.Add(data[i], 0 <= pr ? items[pr].sum : default);
+                        var val = op.Subtract(sum, items[i - 2].sum);
+                        items[i - 1] = new DebugItem(val, sum);
+                    }
+                    return items;
+                }
+            }
         }
     }
 }
