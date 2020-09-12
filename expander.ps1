@@ -98,7 +98,7 @@ function Get-Method-Symbols {
     }
     $symbols
 }
-function Get-ClassDeclaration-Symbols {
+function Get-TypeDeclaration-Symbols {
     [OutputType([Microsoft.CodeAnalysis.INamedTypeSymbol[]])]
     param(
         [Microsoft.CodeAnalysis.CSharp.CSharpSyntaxTree]
@@ -109,7 +109,7 @@ function Get-ClassDeclaration-Symbols {
     $root = $tree.GetRoot()
     $nodes = $root.DescendantNodes()
     $symbols = $nodes  | Where-Object { 
-        $_ -is [Microsoft.CodeAnalysis.CSharp.Syntax.ClassDeclarationSyntax]
+        $_ -is [Microsoft.CodeAnalysis.CSharp.Syntax.TypeDeclarationSyntax]
     } | ForEach-Object {
         $semanticModel.GetDeclaredSymbol($_)
     }
@@ -122,7 +122,7 @@ function Get-Acl-Paths {
     $aclFiles = (Get-ChildItem $AclProjectPath -Recurse "*.cs")
     $aclPaths = ($aclFiles | ForEach-Object {
             $c = Get-Content $_ -Raw
-            $symbols = Get-ClassDeclaration-Symbols ([Microsoft.CodeAnalysis.CSharp.CSharpSyntaxTree]::ParseText($c))
+            $symbols = Get-TypeDeclaration-Symbols ([Microsoft.CodeAnalysis.CSharp.CSharpSyntaxTree]::ParseText($c))
             foreach ($s in $symbols) {
                 [pscustomobject]@{Path = $_; ClassName = $s.ToDisplayString() }
             }
@@ -155,7 +155,7 @@ function Expand-AtCoder-Code {
         $symbols = (Get-Method-Symbols $tree)
         
         foreach ($symbol in $symbols) {
-            $className = $symbol.ContainingType.ToDisplayString();
+            $className = $symbol.ContainingType.ConstructedFrom.ToDisplayString();
             
             if ($aclPaths.ContainsKey($className)) {
                 $updated = $true
