@@ -34,6 +34,7 @@ namespace AtCoder
     /// </list>
     /// <para>を O(log N) で求めることが出来るデータ構造です。</para>
     /// </summary>
+    [DebuggerTypeProxy(typeof(Segtree<,>.DebugView))]
     public class Segtree<TValue, TOp> where TOp : struct, IMonoidOperator<TValue>
     {
         private static readonly TOp op = default;
@@ -258,6 +259,52 @@ namespace AtCoder
                 sm = op.Operate(d[r], sm);
             } while ((r & -r) != r);
             return 0;
+        }
+
+
+        [DebuggerDisplay("{" + nameof(value) + "}", Name = "{" + nameof(key) + ",nq}")]
+        private struct DebugItem
+        {
+            public DebugItem(int l, int r, TValue value)
+            {
+                if (r - l == 1)
+                    key = $"[{l}]";
+                else
+                    key = $"[{l}-{r})";
+                this.value = value;
+            }
+            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            private readonly string key;
+            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            private readonly TValue value;
+        }
+        private class DebugView
+        {
+            private readonly Segtree<TValue, TOp> segtree;
+            public DebugView(Segtree<TValue, TOp> segtree)
+            {
+                this.segtree = segtree;
+            }
+            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+            public DebugItem[] Items
+            {
+                get
+                {
+                    var items = new List<DebugItem>(segtree.Length);
+                    for (int len = segtree.size; len > 0; len >>= 1)
+                    {
+                        int unit = segtree.size / len;
+                        for (int i = 0; i < len; i++)
+                        {
+                            int l = i * unit;
+                            int r = System.Math.Min(l + unit, segtree.Length);
+                            if (l < segtree.Length)
+                                items.Add(new DebugItem(l, r, segtree.d[i + len]));
+                        }
+                    }
+                    return items.ToArray();
+                }
+            }
         }
     }
 }
