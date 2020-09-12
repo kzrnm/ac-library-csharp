@@ -71,7 +71,7 @@ namespace AtCoder
             int m = _pos.Count;
             Debug.Assert(0 <= from && from < _n);
             Debug.Assert(0 <= to && to < _n);
-            Debug.Assert(op.Compare(default, cap) <= 0);
+            Debug.Assert(op.LessThanOrEqual(default, cap));
             _pos.Add((from, _g[from].Count));
             _g[from].Add(new EdgeInternal(to, _g[to].Count, cap));
             _g[to].Add(new EdgeInternal(from, _g[from].Count - 1, default));
@@ -127,7 +127,7 @@ namespace AtCoder
         {
             int m = _pos.Count;
             Debug.Assert(0 <= i && i < m);
-            Debug.Assert(op.Compare(default, newFlow) <= 0 && op.Compare(newFlow, newCap) <= 0);
+            Debug.Assert(op.LessThanOrEqual(default, newFlow) && op.LessThanOrEqual(newFlow, newCap));
             var _e = _g[_pos[i].first][_pos[i].second];
             var _re = _g[_e.To][_e.Rev];
             _e.Cap = op.Subtract(newCap, newFlow);
@@ -265,7 +265,7 @@ namespace AtCoder
                     if (level_v <= level[e.To] || op.Equals(_g[e.To][e.Rev].Cap, default)) continue;
                     var up1 = op.Subtract(up, res);
                     var up2 = _g[e.To][e.Rev].Cap;
-                    var d = Dfs(e.To, op.Compare(up1, up2) < 0 ? up1 : up2);
+                    var d = Dfs(e.To, op.LessThan(up1, up2) ? up1 : up2);
                     if (op.Compare(d, default) <= 0) continue;
                     _g[v][iter[v]].Cap = op.Add(_g[v][iter[v]].Cap, d);
                     _g[e.To][e.Rev].Cap = op.Subtract(_g[e.To][e.Rev].Cap, d);
@@ -277,7 +277,7 @@ namespace AtCoder
             }
 
             TValue flow = default;
-            while (op.Compare(flow, flowLimit) < 0)
+            while (op.LessThan(flow, flowLimit))
             {
                 Bfs();
                 if (level[t] == -1) break;
@@ -285,7 +285,7 @@ namespace AtCoder
                 {
                     iter[i] = 0;
                 }
-                while (op.Compare(flow, flowLimit) < 0)
+                while (op.LessThan(flow, flowLimit))
                 {
                     var f = Dfs(t, op.Subtract(flowLimit, flow));
                     if (op.Equals(f, default)) break;
