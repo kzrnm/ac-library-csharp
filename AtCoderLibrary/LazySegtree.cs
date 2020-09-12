@@ -415,8 +415,8 @@ namespace AtCoder
                             if (l < segtree.Length)
                             {
                                 int dataIndex = i + len;
-                                if ((uint)(dataIndex * 2) < segtree.lz.Length)
-                                    items.Add(new DebugItem(l, r, segtree.d[dataIndex], segtree.lz[dataIndex * 2]));
+                                if ((uint)dataIndex < segtree.lz.Length)
+                                    items.Add(new DebugItem(l, r, segtree.d[dataIndex], segtree.lz[dataIndex]));
                                 else
                                     items.Add(new DebugItem(l, r, segtree.d[dataIndex], op.FIdentity));
                             }
