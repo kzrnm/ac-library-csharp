@@ -5,16 +5,58 @@ namespace AtCoder
 #pragma warning disable CA1815 // Override equals and operator equals on value types
     public interface INumOperator<T> : IEqualityComparer<T>, IComparer<T> where T : struct
     {
+        /// <summary>
+        /// MinValue
+        /// </summary>
         public T MinValue { get; }
+        /// <summary>
+        /// MaxValue
+        /// </summary>
         public T MaxValue { get; }
+        /// <summary>
+        /// Addition operator +
+        /// </summary>
+        /// <returns><paramref name="x"/> + <paramref name="y"/></returns>
         T Add(T x, T y);
+        /// <summary>
+        /// Subtraction operator -
+        /// </summary>
+        /// <returns><paramref name="x"/> - <paramref name="y"/></returns>
         T Subtract(T x, T y);
+        /// <summary>
+        /// Multiplication operator *
+        /// </summary>
+        /// <returns><paramref name="x"/> * <paramref name="y"/></returns>
         T Multiply(T x, T y);
+        /// <summary>
+        /// Division operator /
+        /// </summary>
+        /// <returns><paramref name="x"/> / <paramref name="y"/></returns>
         T Divide(T x, T y);
+        /// <summary>
+        /// Remainder operator %
+        /// </summary>
+        /// <returns><paramref name="x"/> % <paramref name="y"/></returns>
         T Modulo(T x, T y);
+        /// <summary>
+        /// Greater than operator &gt;
+        /// </summary>
+        /// <returns><paramref name="x"/> &gt; <paramref name="y"/></returns>
         bool GreaterThan(T x, T y);
+        /// <summary>
+        /// Greater than or equal operator &gt;=
+        /// </summary>
+        /// <returns><paramref name="x"/> &gt;= <paramref name="y"/></returns>
         bool GreaterThanOrEqual(T x, T y);
+        /// <summary>
+        /// Less than operator &lt;
+        /// </summary>
+        /// <returns><paramref name="x"/> &lt; <paramref name="y"/></returns>
         bool LessThan(T x, T y);
+        /// <summary>
+        /// Less than or equal operator &lt;=
+        /// </summary>
+        /// <returns><paramref name="x"/> &lt;= <paramref name="y"/></returns>
         bool LessThanOrEqual(T x, T y);
     }
     public readonly struct IntOperator : INumOperator<int>
