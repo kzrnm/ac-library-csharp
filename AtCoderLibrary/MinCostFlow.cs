@@ -8,12 +8,37 @@ using System.Text;
 
 namespace AtCoder
 {
+    /// <summary>
+    /// Minimum-cost flow problem を扱うライブラリ(int版)です。
+    /// </summary>
+    public class McfGraphInt : McfGraph<int, IntOperator> { public McfGraphInt(int n) : base(n) { } }
+
+    /// <summary>
+    /// Minimum-cost flow problem を扱うライブラリ(long版)です。
+    /// </summary>
+    public class McfGraphLong : McfGraph<long, LongOperator> { public McfGraphLong(int n) : base(n) { } }
+
+    /// <summary>
+    /// Minimum-cost flow problem を扱うライブラリです。
+    /// </summary>
+    /// <typeparam name="TValue">容量およびコストの型</typeparam>
+    /// <typeparam name="TOp"><typeparamref name="TValue"/>に対応する演算を提要する型</typeparam>
+    /// <remarks>
+    /// <para>制約: <typeparamref name="TValue"/> は int, long。</para>
+    /// </remarks>
     public class McfGraph<TValue, TOp>
         where TValue : struct
         where TOp : struct, INumOperator<TValue>
     {
         static readonly TOp op = default;
 
+        /// <summary>
+        /// <paramref name="n"/> 頂点 0 辺のグラフを作ります。
+        /// </summary>
+        /// <remarks>
+        /// <para>制約: 0 ≤ <paramref name="n"/> ≤ 10^8</para>
+        /// <para>計算量: O(<paramref name="n"/>)</para>
+        /// </remarks>
         public McfGraph(int n)
         {
             _n = n;
@@ -25,6 +50,23 @@ namespace AtCoder
             _pos = new List<(int first, int second)>();
         }
 
+        /// <summary>
+        /// <paramref name="from"/> から <paramref name="to"/> へ
+        /// 最大容量 <paramref name="cap"/>、コスト <paramref name="cost"/> の辺を追加し、
+        /// 何番目に追加された辺かを返します。
+        /// </summary>
+        /// <remarks>
+        /// 制約: 
+        /// <list type="bullet">
+        /// <item>
+        /// <description>0 ≤ <paramref name="from"/>, <paramref name="to"/> &lt; n</description>
+        /// </item>
+        /// <item>
+        /// <description>0 ≤ <paramref name="cap"/>, <paramref name="cost"/></description>
+        /// </item>
+        /// </list>
+        /// <para>計算量: ならしO(1)</para>
+        /// </remarks>
         public int AddEdge(int from, int to, TValue cap, TValue cost)
         {
             Debug.Assert(0 <= from && from < _n);
@@ -36,6 +78,14 @@ namespace AtCoder
             return m;
         }
 
+        /// <summary>
+        /// 今の内部の辺の状態を返します。
+        /// </summary>
+        /// <remarks>
+        /// <para>AddEdge で <paramref name="i"/> 番目 (0-indexed) に追加された辺を返す。</para>
+        /// <para>制約: m を追加された辺数として 0 ≤ i &lt; m</para>
+        /// <para>計算量: O(1)</para>
+        /// </remarks>
         public Edge GetEdge(int i)
         {
             int m = _pos.Count;
@@ -45,6 +95,13 @@ namespace AtCoder
             return new Edge(_pos[i].first, _e.To, op.Add(_e.Cap, _re.Cap), _re.Cap, _e.Cost);
         }
 
+        /// <summary>
+        /// 今の内部の辺の状態を返します。
+        /// </summary>
+        /// <remarks>
+        /// <para>辺の順番はadd_edgeで追加された順番と同一。</para>
+        /// <para>計算量: m を追加された辺数として O(m)</para>
+        /// </remarks>
         public List<Edge> Edges()
         {
             int m = _pos.Count;
@@ -56,20 +113,135 @@ namespace AtCoder
             return result;
         }
 
+        /// <summary>
+        /// 頂点 <paramref name="s"/> から <paramref name="t"/> へ流せる限り流し、
+        /// その流量とコストを返します。
+        /// </summary>
+        /// <remarks>
+        /// <para>制約: Slope関数と同じ</para>
+        /// <para>計算量: Slope関数と同じ</para>
+        /// </remarks>
         public (TValue cap, TValue cost) Flow(int s, int t)
         {
-            return flow(s, t, op.MaxValue);
+            return Flow(s, t, op.MaxValue);
         }
-        public (TValue cap, TValue cost) flow(int s, int t, TValue flow_limit)
+
+        /// <summary>
+        /// 頂点 <paramref name="s"/> から <paramref name="t"/> へ
+        /// 流量 <paramref name="flowLimit"/> に達するまで流せる限り流し、
+        /// その流量とコストを返します。
+        /// </summary>
+        /// <remarks>
+        /// <para>制約: Slope関数と同じ</para>
+        /// <para>計算量: Slope関数と同じ</para>
+        /// </remarks>
+        public (TValue cap, TValue cost) Flow(int s, int t, TValue flow_limit)
         {
             return Slope(s, t, flow_limit).Last();
         }
+
+        /// <summary>
+        /// 返り値に流量とコストの関係の折れ線が入ります。
+        /// 全ての x について、流量 x の時の最小コストを g(x) とすると、
+        /// (x, g(x)) は返り値を折れ線として見たものに含まれます。
+        /// </summary>
+        /// <remarks>
+        /// <list type="bullet">
+        /// <item>
+        /// <description>返り値の最初の要素は (0, 0)。</description>
+        /// </item>
+        /// <item>
+        /// <description>返り値の .first、.second は共に狭義単調増加。</description>
+        /// </item>
+        /// <item>
+        /// <description>3点が同一線上にあることは無い。</description>
+        /// </item>
+        /// <item>
+        /// <description>返り値の最後の要素は最大流量 x として (x, g(x))。</description>
+        /// </item>
+        /// </list>
+        /// 制約: 辺のコストの最大を x として
+        /// <list type="bullet">
+        /// <item>
+        /// <description><paramref name="s"/> ≠ <paramref name="t"/></description>
+        /// </item>
+        /// <item>
+        /// <description>Flow や Slope 関数を合わせて複数回呼んだときの挙動は未定義。</description>
+        /// </item>
+        /// <item>
+        /// <description>
+        /// <paramref name="s"/> から <paramref name="t"/> へ流したフローの
+        /// 流量が cap に収まる。
+        /// </description>
+        /// </item>
+        /// <item>
+        /// <description>流したコストの総和が cost に収まる。</description>
+        /// </item>
+        /// <item>
+        /// <description>(Cost: int) 0 ≤ nx ≤ 2 * 10^9 + 1000 </description>
+        /// </item>
+        /// <item>
+        /// <description>(Cost: long) 0 ≤ nx ≤ 8 * 10^18 + 1000 </description>
+        /// </item>
+        /// </list>
+        /// 計算量: F を流量、m を追加した辺の本数として 
+        /// O(F(n + m) log n)
+        /// </remarks>
         public List<(TValue cap, TValue cost)> Slope(int s, int t)
         {
             return Slope(s, t, op.MaxValue);
         }
 
-        public List<(TValue cap, TValue cost)> Slope(int s, int t, TValue flow_limit)
+        /// <summary>
+        /// 返り値に流量とコストの関係の折れ線が入ります。
+        /// 全ての x について、流量 x の時の最小コストを g(x) とすると、
+        /// (x, g(x)) は返り値を折れ線として見たものに含まれます。
+        /// </summary>
+        /// <remarks>
+        /// <list type="bullet">
+        /// <item>
+        /// <description>返り値の最初の要素は (0, 0)。</description>
+        /// </item>
+        /// <item>
+        /// <description>返り値の .first、.second は共に狭義単調増加。</description>
+        /// </item>
+        /// <item>
+        /// <description>3点が同一線上にあることは無い。</description>
+        /// </item>
+        /// <item>
+        /// <description>
+        /// 返り値の最後の要素は
+        /// y = min(x, <paramref name="flowLimit"/>) として (y, g(y))。</description>
+        /// </item>
+        /// </list>
+        /// 制約: 辺のコストの最大を x として
+        /// <list type="bullet">
+        /// <item>
+        /// <description><paramref name="s"/> ≠ <paramref name="t"/></description>
+        /// </item>
+        /// <item>
+        /// <description>Flow や Slope 関数を合わせて複数回呼んだときの挙動は未定義。</description>
+        /// </item>
+        /// <item>
+        /// <description>
+        /// <paramref name="s"/> から <paramref name="t"/> へ流したフローの
+        /// 流量が cap に収まる。
+        /// </description>
+        /// </item>
+        /// <item>
+        /// <description>流したコストの総和が cost に収まる。</description>
+        /// </item>
+        /// <item>
+        /// <description>(Cost: int) 0 ≤ nx ≤ 2 * 10^9 + 1000 </description>
+        /// </item>
+        /// <item>
+        /// <description>(Cost: long) 0 ≤ nx ≤ 8 * 10^18 + 1000 </description>
+        /// </item>
+        /// </list>
+        /// 計算量: F を流量、m を追加した辺の本数として 
+        /// O(F(n + m) log n)
+        /// </remarks>
+        public List<(TValue cap, TValue cost)> Slope(int s, int t, TValue flowLimit)
         {
             Debug.Assert(0 <= s && s < _n);
             Debug.Assert(0 <= t && t < _n);
@@ -141,10 +313,10 @@ namespace AtCoder
             TValue prev_cost = op.Decrement(default); //-1
             var result = new List<(TValue cap, TValue cost)>();
             result.Add((flow, cost));
-            while (op.LessThan(flow, flow_limit))
+            while (op.LessThan(flow, flowLimit))
             {
                 if (!DualRef()) break;
-                TValue c = op.Subtract(flow_limit, flow);
+                TValue c = op.Subtract(flowLimit, flow);
                 for (int v = t; v != s; v = pv[v])
                 {
                     if (op.LessThan(_g[pv[v]][pe[v]].Cap, c))
