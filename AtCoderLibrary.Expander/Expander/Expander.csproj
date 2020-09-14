@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>AtCoder</RootNamespace>
+    <AssemblyName>AtCoder.Expander</AssemblyName>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\AtCoderLibrary\AtCoderLibrary.csproj" />
+    <PackageReference Include="Microsoft.CodeAnalysis" Version="3.7.0" />
+  </ItemGroup>
+
+</Project>
