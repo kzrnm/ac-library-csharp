@@ -11,16 +11,18 @@ namespace AtCoder.Internal
         public string FileName { get; }
         public IList<string> TypeNames { get; }
         public IList<string> Usings { get; }
+        public IList<string> Dependencies { get; }
         public string CodeBody { get; }
-        public SyntaxTree SyntaxTree { get; }
-        public AclFileInfoDetail(string fileName, IEnumerable<string> typeNames, IEnumerable<string> usings, string code)
+        private SyntaxTree? _syntaxTree;
+        public SyntaxTree SyntaxTree => _syntaxTree ??= CSharpSyntaxTree.ParseText(string.Join("\n", Usings) + "\n" + CodeBody);
+        public AclFileInfoDetail(string fileName, IEnumerable<string> typeNames, IEnumerable<string> usings, IEnumerable<string> dependencies, string code)
         {
             FileName = fileName;
             TypeNames = typeNames.ToArray();
             Usings = usings.ToArray();
+            Dependencies = dependencies.ToArray();
             CodeBody = code;
-            SyntaxTree = CSharpSyntaxTree.ParseText(string.Join("\n", Usings) + "\n" + CodeBody);
         }
-        public AclFileInfoDetail(AclFileInfo orig) : this(orig.FileName, orig.TypeNames, orig.Usings, orig.CodeBody) { }
+        public AclFileInfoDetail(AclFileInfo orig) : this(orig.FileName, orig.TypeNames, orig.Usings, orig.Dependencies, orig.CodeBody) { }
     }
 }
