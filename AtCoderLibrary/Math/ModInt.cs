@@ -165,6 +165,13 @@ namespace AtCoder
             return new StaticModInt<T>((uint)((ulong)lhs._v * rhs._v % default(T).Mod));
         }
 
+        /// <summary>
+        /// 除算を行います。
+        /// </summary>
+        /// <remarks>
+        /// <para>- 制約: <paramref name="rhs"/> に乗法の逆元が存在する。（gcd(<paramref name="rhs"/>, mod) = 1）</para>
+        /// <para>- 計算量: O(log(mod))</para>
+        /// </remarks>
         public static StaticModInt<T> operator /(StaticModInt<T> lhs, StaticModInt<T> rhs) => lhs * rhs.Inv();
 
         public static StaticModInt<T> operator +(StaticModInt<T> value) => value;
@@ -355,6 +362,13 @@ namespace AtCoder
             return new DynamicModInt<T>(z);
         }
 
+        /// <summary>
+        /// 除算を行います。
+        /// </summary>
+        /// <remarks>
+        /// <para>- 制約: <paramref name="rhs"/> に乗法の逆元が存在する。（gcd(<paramref name="rhs"/>, mod) = 1）</para>
+        /// <para>- 計算量: O(log(mod))</para>
+        /// </remarks>
         public static DynamicModInt<T> operator /(DynamicModInt<T> lhs, DynamicModInt<T> rhs) => lhs * rhs.Inv();
 
         public static DynamicModInt<T> operator +(DynamicModInt<T> value) => value;
