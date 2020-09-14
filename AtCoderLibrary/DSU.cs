@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace AtCoder
 {
-    class DSU
+    public class DSU
     {
         private int Count;
         private int[] ParentOrSize;
