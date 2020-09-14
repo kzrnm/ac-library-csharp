@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.CodeDom.Compiler;
@@ -11,12 +10,14 @@ namespace AtCoder.Embedded
         public string FileName { get; }
         public ReadOnlyCollection<string> TypeNames { get; }
         public ReadOnlyCollection<string> Usings { get; }
+        public ReadOnlyCollection<string> Dependencies { get; }
         public string CodeBody { get; }
-        public AclFileInfo(string fileName, string[] typeNames, string[] usings, string code)
+        public AclFileInfo(string fileName, string[] typeNames, string[] usings, string[] dependencies, string code)
         {
             FileName = fileName;
             TypeNames = new ReadOnlyCollection<string>(typeNames);
             Usings = new ReadOnlyCollection<string>(usings);
+            Dependencies = new ReadOnlyCollection<string>(dependencies);
             CodeBody = code;
         }
     }
