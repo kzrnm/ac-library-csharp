@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Net.NetworkInformation;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace AtCoder
 {
@@ -268,20 +266,21 @@ namespace AtCoder
                 while (que.Count > 0)
                 {
                     int v = que.Dequeue().to;
-                    if(vis[v]) continue;
+                    if (vis[v]) continue;
                     vis[v] = true;
-                    if(v == t) break;
+                    if (v == t) break;
                     // dist[v] = shortest(s, v) + dual[s] - dual[v]
                     // dist[v] >= 0 (all reduced cost are positive)
                     // dist[v] <= (n-1)C
                     for (int i = 0; i < _g[v].Count; i++)
                     {
                         var e = _g[v][i];
-                        if(vis[e.To] || op.Equals(e.Cap, default)) continue;
+                        if (vis[e.To] || op.Equals(e.Cap, default)) continue;
                         // |-dual[e.to] + dual[v]| <= (n-1)C
                         // cost <= C - -(n-1)C + 0 = nC
                         TValue cost = op.Add(op.Subtract(e.Cost, dual[e.To]), dual[v]);
-                        if (op.GreaterThan(op.Subtract(dist[e.To], dist[v]), cost)) {
+                        if (op.GreaterThan(op.Subtract(dist[e.To], dist[v]), cost))
+                        {
                             dist[e.To] = op.Add(dist[v], cost);
                             pv[e.To] = v;
                             pe[e.To] = i;
