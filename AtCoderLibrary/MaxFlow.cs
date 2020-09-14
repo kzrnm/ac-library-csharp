@@ -83,6 +83,7 @@ namespace AtCoder
         /// </summary>
         /// <remarks>
         /// <para>AddEdge で <paramref name="i"/> 番目 (0-indexed) に追加された辺を返す。</para>
+        /// <para>制約: m を追加された辺数として 0 ≤ i &lt; m</para>
         /// <para>計算量: O(1)</para>
         /// </remarks>
         public Edge GetEdge(int i)
@@ -99,7 +100,7 @@ namespace AtCoder
         /// </summary>
         /// <remarks>
         /// <para>辺の順番はadd_edgeで追加された順番と同一。</para>
-        /// <para>計算量: O(n)</para>
+        /// <para>計算量: m を追加された辺数として O(m)</para>
         /// </remarks>
         public List<Edge> Edges()
         {
