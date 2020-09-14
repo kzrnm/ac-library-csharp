@@ -44,7 +44,7 @@ namespace AtCoder.Internal
             var queue = new Queue<AclFileInfoDetail>();
 
 
-            var classNames = FoundClassNames(OrigTree);
+            var classNames = FoundTypeNames(OrigTree);
             for (int i = AclFiles.Count - 1; i >= 0; i--)
             {
                 var target = AclFiles[i];
@@ -60,7 +60,7 @@ namespace AtCoder.Internal
             while (queue.Count > 0)
             {
                 var acl = queue.Dequeue();
-                classNames = FoundClassNames(acl.SyntaxTree);
+                classNames = FoundTypeNames(acl.SyntaxTree);
                 for (int i = AclFiles.Count - 1; i >= 0; i--)
                 {
                     var target = AclFiles[i];
@@ -82,7 +82,7 @@ namespace AtCoder.Internal
 #endregion AtCoderLibrary
 ";
         }
-        private string[] FoundClassNames(SyntaxTree tree)
+        private string[] FoundTypeNames(SyntaxTree tree)
         {
             var root = (CompilationUnitSyntax)tree.GetRoot();
             var semanticModel = GetSemanticModel(tree);

@@ -15,6 +15,7 @@ namespace AtCoder
                 "Expander",
                 new string[] { "AtCoder.Expander" },
                 new string[] { "using System.Diagnostics;" },
+                Array.Empty<string>(),
                 "namespace AtCoder { public static class Expander {[Conditional(\"DEBUG\")] public static void Expand(string a = \"\", string b = \"\", bool c = true) { } } }");
 
         internal static string ToCombinedFilePath(string origFilePath)
