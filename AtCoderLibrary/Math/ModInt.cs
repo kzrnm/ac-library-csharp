@@ -279,6 +279,7 @@ namespace AtCoder
         public static DynamicModInt<T> Raw(int v)
         {
             var u = unchecked((uint)v);
+            Debug.Assert(bt != null, $"使用前に {nameof(DynamicModInt<T>)}<{nameof(T)}>.{nameof(Mod)} プロパティに mod の値を設定してください。");
             Debug.Assert(u < Mod);
             return new DynamicModInt<T>(u);
         }
@@ -296,6 +297,7 @@ namespace AtCoder
 
         private static uint Round(long v)
         {
+            Debug.Assert(bt != null, $"使用前に {nameof(DynamicModInt<T>)}<{nameof(T)}>.{nameof(Mod)} プロパティに mod の値を設定してください。");
             var x = v % bt.Mod;
             if (x < 0)
             {
