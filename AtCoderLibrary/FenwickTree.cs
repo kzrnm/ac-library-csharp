@@ -158,7 +158,7 @@ namespace AtCoder
 
 
         [DebuggerDisplay("Value = {" + nameof(value) + "}, Sum = {" + nameof(sum) + "}")]
-        private struct DebugItem
+        internal struct DebugItem
         {
             public DebugItem(TValue value, TValue sum)
             {
@@ -170,7 +170,7 @@ namespace AtCoder
             [DebuggerBrowsable(DebuggerBrowsableState.Never)]
             public readonly TValue sum;
         }
-        private class DebugView
+        internal class DebugView
         {
             private readonly FenwickTree<TValue, TOp> fenwickTree;
             public DebugView(FenwickTree<TValue, TOp> fenwickTree)

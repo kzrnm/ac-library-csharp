@@ -2,8 +2,7 @@
 using System.IO;
 using System.Linq;
 using AtCoder.Test.Utils;
-using NUnit.Framework;
-using NUnit.Framework.Constraints;
+using Xunit;
 
 namespace AtCoder.Test
 {
@@ -44,7 +43,7 @@ namespace AtCoder.Test
                 }
             }
 
-            Assert.IsTrue(new TokenEqualityValidator().IsValid(input, answer, writer.ToString()));
+            Assert.True(new TokenEqualityValidator().IsValid(input, answer, writer.ToString()));
         }
     }
 
