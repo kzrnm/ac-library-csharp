@@ -4,6 +4,12 @@ namespace AtCoder.Internal
 {
     public static partial class InternalMath
     {
+        /// <summary>
+        /// (<paramref name="x"/>^<paramref name="n"/>) mod <paramref name="m"/> を返します。
+        /// </summary>
+        /// <remarks>
+        /// 制約: 0≤<paramref name="n"/>, 1≤<paramref name="m"/>
+        /// </remarks>
         public static long PowMod(long x, long n, int m)
         {
             Debug.Assert(n >= 0);
