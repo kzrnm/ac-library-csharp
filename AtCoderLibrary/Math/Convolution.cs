@@ -109,6 +109,22 @@ namespace AtCoder
         /// </remarks>
         public static ulong[] Convolution<TMod>(ulong[] a, ulong[] b) where TMod : struct, IStaticMod => throw new NotImplementedException();
 
+        /// <summary>
+        /// 畳み込みを mod <typeparamref name="TMod"/> で計算します。
+        /// </summary>
+        /// <remarks>
+        /// <para><paramref name="a"/>, <paramref name="b"/> の少なくとも一方が空の場合は空配列を返します。</para>
+        /// <para>制約:</para>
+        /// <para>- 2≤<typeparamref name="TMod"/>≤2×10^9</para>
+        /// <para>- <typeparamref name="TMod"/> は素数</para>
+        /// <para>- 2^c | (<typeparamref name="TMod"/> - 1) かつ |<paramref name="a"/>| + |<paramref name="b"/>| - 1 ≤ 2^c なる c が存在する</para>
+        /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|) + log<typeparamref name="TMod"/>)</para>
+        /// </remarks>
+        public static StaticModInt<TMod>[] Convolution<TMod>(StaticModInt<TMod>[] a, StaticModInt<TMod>[] b)
+            where TMod : struct, IStaticMod
+        {
+            throw new NotImplementedException();
+        }
 
         /// <summary>
         /// 畳み込みを mod <typeparamref name="TMod"/> で計算します。
