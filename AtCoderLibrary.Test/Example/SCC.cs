@@ -5,7 +5,7 @@ using System.Linq;
 using AtCoder.Test.Utils;
 using Xunit;
 
-namespace AtCoder.Test
+namespace AtCoder.Test.Example
 {
     public class SCCTest
     {
