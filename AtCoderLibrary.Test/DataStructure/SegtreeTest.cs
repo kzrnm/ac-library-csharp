@@ -1,195 +1,161 @@
-﻿using System;
+﻿#define DEBUG
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
-using NUnit.Framework;
+using AtCoder.Test.Utils;
+using Xunit;
 
 namespace AtCoder.Test.DataStructure
 {
-    public class FenwickTreeTest
+    public class SegtreeTest : TestWithDebugAssert
     {
-        [Test]
-        public void Empty()
+        [Fact]
+        public void Zero()
         {
-            var fw = new LongFenwickTree(0);
-            Assert.AreEqual(0, fw.Sum(0, 0));
+            var s = new Segtree<string, MonoidOperator>(0);
+            Assert.Equal("$", s.AllProd);
         }
-    }
-}
 
-/*
+        [Fact]
+        public void Invalid()
+        {
+            Assert.Throws<DebuAssertException>(() => new Segtree<string, MonoidOperator>(-1));
+            var s = new Segtree<string, MonoidOperator>(10);
+            Assert.Throws<DebuAssertException>(() => s[-1]);
+            Assert.Throws<DebuAssertException>(() => s[10]);
 
-TEST(FenwickTreeTest, Empty) {
-    fenwick_tree<ll> fw_ll;
-    ASSERT_EQ(0, fw_ll.sum(0, 0));
+            Assert.Throws<DebuAssertException>(() => s.Prod(-1, -1));
+            Assert.Throws<DebuAssertException>(() => s.Prod(3, 2));
+            Assert.Throws<DebuAssertException>(() => s.Prod(0, 11));
+            Assert.Throws<DebuAssertException>(() => s.Prod(-1, 11));
 
-    fenwick_tree<modint> fw_modint;
-    ASSERT_EQ(0, fw_modint.sum(0, 0).val());
-}
-
-TEST(FenwickTreeTest, Assign) {
-    fenwick_tree<ll> fw;
-    fw = fenwick_tree<ll>(10);
-}
-
-TEST(FenwickTreeTest, Zero) {
-    fenwick_tree<ll> fw_ll(0);
-    ASSERT_EQ(0, fw_ll.sum(0, 0));
-
-    fenwick_tree<modint> fw_modint(0);
-    ASSERT_EQ(0, fw_modint.sum(0, 0).val());
-}
-
-TEST(FenwickTreeTest, OverFlowULL) {
-    fenwick_tree<ull> fw(10);
-    for (int i = 0; i < 10; i++) {
-        fw.add(i, (1ULL << 63) + i);
-    }
-    for (int i = 0; i <= 10; i++) {
-        for (int j = i; j <= 10; j++) {
-            ull sum = 0;
-            for (int k = i; k < j; k++) {
-                sum += k;
-            }
-            ASSERT_EQ(((j - i) % 2) ? (1ULL << 63) + sum : sum, fw.sum(i, j));
+            Assert.Throws<DebuAssertException>(() => s.MaxRight(11, s => true));
+            Assert.Throws<DebuAssertException>(() => s.MaxRight(-1, s => true));
+            Assert.Throws<DebuAssertException>(() => s.MaxRight(0, s => false));
         }
-    }
-}
 
-TEST(FenwickTreeTest, NaiveTest) {
-    for (int n = 0; n <= 50; n++) {
-        fenwick_tree<ll> fw(n);
-        for (int i = 0; i < n; i++) {
-            fw.add(i, i * i);
+        [Fact]
+        public void One()
+        {
+            var s = new Segtree<string, MonoidOperator>(1);
+            Assert.Equal("$", s.AllProd);
+            Assert.Equal("$", s[0]);
+            Assert.Equal("$", s.Prod(0, 1));
+            s[0] = "dummy";
+            Assert.Equal("dummy", s[0]);
+            Assert.Equal("$", s.Prod(0, 0));
+            Assert.Equal("dummy", s.Prod(0, 1));
+            Assert.Equal("$", s.Prod(1, 1));
         }
-        for (int l = 0; l <= n; l++) {
-            for (int r = l; r <= n; r++) {
-                ll sum = 0;
-                for (int i = l; i < r; i++) {
-                    sum += i * i;
+
+        [Fact]
+        public void CompareNaive()
+        {
+            for (int n = 0; n < 30; n++)
+            {
+                var seg0 = new SegtreeNaive(n);
+                var seg1 = new Segtree<string, MonoidOperator>(n);
+
+                for (int i = 0; i < n; i++)
+                {
+                    var s = "";
+                    s += (char)('a' + i);
+                    seg0[i] = s;
+                    seg1[i] = s;
                 }
-                ASSERT_EQ(sum, fw.sum(l, r));
-            }
-        }
-    }
-}
 
-TEST(FenwickTreeTest, SMintTest) {
-    using mint = static_modint<11>;
-    for (int n = 0; n <= 50; n++) {
-        fenwick_tree<mint> fw(n);
-        for (int i = 0; i < n; i++) {
-            fw.add(i, i * i);
-        }
-        for (int l = 0; l <= n; l++) {
-            for (int r = l; r <= n; r++) {
-                mint sum = 0;
-                for (int i = l; i < r; i++) {
-                    sum += i * i;
+                for (int l = 0; l <= n; l++)
+                {
+                    for (int r = l; r <= n; r++)
+                    {
+                        Assert.Equal(seg0.Prod(l, r), seg1.Prod(l, r));
+                    }
                 }
-                ASSERT_EQ(sum, fw.sum(l, r));
-            }
-        }
-    }
-}
 
-TEST(FenwickTreeTest, MintTest) {
-    using mint = modint;
-    mint::set_mod(11);
-    for (int n = 0; n <= 50; n++) {
-        fenwick_tree<mint> fw(n);
-        for (int i = 0; i < n; i++) {
-            fw.add(i, i * i);
-        }
-        for (int l = 0; l <= n; l++) {
-            for (int r = l; r <= n; r++) {
-                mint sum = 0;
-                for (int i = l; i < r; i++) {
-                    sum += i * i;
+                for (int l = 0; l <= n; l++)
+                {
+                    for (int r = l; r <= n; r++)
+                    {
+                        var y = seg1.Prod(l, r);
+                        Assert.Equal(seg0.MaxRight(l, x => x.Length <= y.Length), seg1.MaxRight(l, x => x.Length <= y.Length));
+                    }
                 }
-                ASSERT_EQ(sum, fw.sum(l, r));
+
+
+                for (int r = 0; r <= n; r++)
+                {
+                    for (int l = 0; l <= r; l++)
+                    {
+                        var y = seg1.Prod(l, r);
+                        Assert.Equal(seg0.MinLeft(l, x => x.Length <= y.Length), seg1.MinLeft(l, x => x.Length <= y.Length));
+                    }
+                }
             }
         }
     }
-}
 
-TEST(FenwickTreeTest, Invalid) {
-    EXPECT_THROW(auto s = fenwick_tree<int>(-1), std::exception);
-    fenwick_tree<int> s(10);
-
-    EXPECT_DEATH(s.add(-1, 0), ".*");
-    EXPECT_DEATH(s.add(10, 0), ".*");
-
-    EXPECT_DEATH(s.sum(-1, 3), ".*");
-    EXPECT_DEATH(s.sum(3, 11), ".*");
-    EXPECT_DEATH(s.sum(5, 3), ".*");
-}
-
-TEST(FenwickTreeTest, Bound) {
-    fenwick_tree<int> fw(10);
-    fw.add(3, std::numeric_limits<int>::max());
-    fw.add(5, std::numeric_limits<int>::min());
-    ASSERT_EQ(-1, fw.sum(0, 10));
-    ASSERT_EQ(-1, fw.sum(3, 6));
-    ASSERT_EQ(std::numeric_limits<int>::max(), fw.sum(3, 4));
-    ASSERT_EQ(std::numeric_limits<int>::min(), fw.sum(4, 10));
-}
-
-TEST(FenwickTreeTest, Boundll) {
-    fenwick_tree<ll> fw(10);
-    fw.add(3, std::numeric_limits<ll>::max());
-    fw.add(5, std::numeric_limits<ll>::min());
-    ASSERT_EQ(-1, fw.sum(0, 10));
-    ASSERT_EQ(-1, fw.sum(3, 6));
-    ASSERT_EQ(std::numeric_limits<ll>::max(), fw.sum(3, 4));
-    ASSERT_EQ(std::numeric_limits<ll>::min(), fw.sum(4, 10));
-}
-
-TEST(FenwickTreeTest, OverFlow) {
-    fenwick_tree<int> fw(20);
-    std::vector<ll> a(20);
-    for (int i = 0; i < 10; i++) {
-        int x = std::numeric_limits<int>::max();
-        a[i] += x;
-        fw.add(i, x);
+    struct MonoidOperator : IMonoidOperator<string>
+    {
+        public string Identity => "$";
+        public string Operate(string a, string b)
+        {
+            if (!(a == "$" || b == "$" || StringComparer.Ordinal.Compare(a, b) <= 0)) throw new Exception();
+            if (a == "$") return b;
+            if (b == "$") return a;
+            return a + b;
+        }
     }
-    for (int i = 10; i < 20; i++) {
-        int x = std::numeric_limits<int>::min();
-        a[i] += x;
-        fw.add(i, x);
-    }
-    a[5] += 11111;
-    fw.add(5, 11111);
 
-    for (int l = 0; l <= 20; l++) {
-        for (int r = l; r <= 20; r++) {
-            ll sum = 0;
-            for (int i = l; i < r; i++) {
-                sum += a[i];
+    class SegtreeNaive
+    {
+        private static readonly MonoidOperator op = default;
+        int n;
+        string[] d;
+
+        public SegtreeNaive(int _n)
+        {
+            n = _n;
+            d = new string[n];
+            Array.Fill(d, op.Identity);
+        }
+        public string this[int p]
+        {
+            set => d[p] = value;
+            get => d[p];
+        }
+
+        public string Prod(int l, int r)
+        {
+            var sum = op.Identity;
+            for (int i = l; i < r; i++)
+            {
+                sum = op.Operate(sum, d[i]);
             }
-            ll dif = sum - fw.sum(l, r);
-            ASSERT_EQ(0, dif % (1LL << 32));
+            return sum;
+        }
+        public string AllProd => Prod(0, n);
+        public int MaxRight(int l, Predicate<string> f)
+        {
+            var sum = op.Identity;
+            Assert.True(f(sum));
+            for (int i = l; i < n; i++)
+            {
+                sum = op.Operate(sum, d[i]);
+                if (!f(sum)) return i;
+            }
+            return n;
+        }
+        public int MinLeft(int r, Predicate<string> f)
+        {
+            var sum = op.Identity;
+            Assert.True(f(sum));
+            for (int i = r - 1; i >= 0; i--)
+            {
+                sum = op.Operate(d[i], sum);
+                if (!f(sum)) return i + 1;
+            }
+            return 0;
         }
     }
 }
-
-#ifndef _MSC_VER
-
-TEST(FenwickTreeTest, Int128) {
-    fenwick_tree<__int128> fw(20);
-    for (int i = 0; i < 20; i++) {
-        fw.add(i, i);
-    }
-
-    for (int l = 0; l <= 20; l++) {
-        for (int r = l; r <= 20; r++) {
-            ll sum = 0;
-            for (int i = l; i < r; i++) {
-                sum += i;
-            }
-            ASSERT_EQ(sum, fw.sum(l, r));
-        }
-    }
-}
-
-#endif
-*/
