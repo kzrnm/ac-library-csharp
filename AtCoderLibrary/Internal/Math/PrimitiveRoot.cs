@@ -1,10 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace AtCoder.Internal
 {
     public static partial class InternalMath
     {
+        private static readonly Dictionary<int, int> primitiveRootsCache = new Dictionary<int, int>()
+        {
+            { 2, 1 },
+            { 167772161, 3 },
+            { 469762049, 3 },
+            { 754974721, 11 },
+            { 998244353, 3 }
+        };
+
         /// <summary>
         /// <paramref name="m"/> の最小の原始根を求めます。
         /// </summary>
@@ -15,15 +25,12 @@ namespace AtCoder.Internal
         {
             Debug.Assert(m >= 2);
 
-            return m switch
+            if (primitiveRootsCache.TryGetValue(m, out var p))
             {
-                2 => 1,
-                167772161 => 3,
-                469762049 => 3,
-                754974721 => 11,
-                998244353 => 3,
-                _ => Calculate(m)
-            };
+                return p;
+            }
+
+            return primitiveRootsCache[m] = Calculate(m);
 
             int Calculate(int m)
             {
