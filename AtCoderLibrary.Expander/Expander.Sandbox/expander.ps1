@@ -1,6 +1,27 @@
-mkdir "$PSScriptRoot/bin/watchcache/" -Force | Out-Null
+[CmdletBinding()]
+param (
+    [Parameter()]
+    [switch]
+    $Watch
+)
+
+New-Item -ItemType Directory "$PSScriptRoot/bin/watchcache/" -Force | Out-Null
 Copy-Item "$PSScriptRoot/bin/Debug/netcoreapp3.1/*.dll" "$PSScriptRoot/bin/watchcache/" -ErrorAction Ignore
 Add-Type -Path (Get-ChildItem "$PSScriptRoot/bin/watchcache/*.dll")
+
+function Timeout {
+    param (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [int]
+        $Seconds,
+        [Parameter(Mandatory = $true, Position = 1)]
+        [scriptblock]
+        $Body
+    )
+    $job = (Start-Job $Body)
+    Wait-Job -Job $job -Timeout $Seconds
+    Remove-Job $job -Force
+}
 
 function Watch-File {
     param (
@@ -19,11 +40,11 @@ function Watch-File {
     while ($ProgramPath.Exists) {
         if ($lastUpdate -ne $ProgramPath.LastWriteTime) {
             $lastUpdate = $ProgramPath.LastWriteTime
-            Write-Host "Update Start  [$lastUpdate]: $OutputPath"
-            [AtCoder.Expander]::Expand($ProgramPath, $OutputPath, $false , [AtCoder.ExpandMethod]::Strict)
-            Write-Host "Update Finish [$lastUpdate]: $OutputPath"
+            Write-Host "Update Start  [$([datetime]::Now)]: $ProgramPath"
+            Timeout -Seconds 5 { [AtCoder.Expander]::Expand($ProgramPath, $OutputPath, $false , [AtCoder.ExpandMethod]::Strict) }
+            Write-Host "Update Finish [$([datetime]::Now)]: $ProgramPath"
         }
-        Start-Sleep -Seconds 2
+        Start-Sleep -Seconds 5
         $ProgramPath = (Get-ChildItem $ProgramPath)
     }
 }
@@ -40,14 +61,16 @@ function Expand-File {
         $OutputPath = (Join-Path $ProgramPath.DirectoryName "Combined.csx")
     }
 
-    $lastUpdate = $null
     if ($ProgramPath.Exists) {
-        $lastUpdate = $ProgramPath.LastWriteTime
-        Write-Host "Update Start  [$lastUpdate]: $OutputPath"
+        Write-Host "Update Start  [$([datetime]::Now)]: $ProgramPath"
         [AtCoder.Expander]::Expand($ProgramPath, $OutputPath, $false , [AtCoder.ExpandMethod]::Strict)
-        Write-Host "Update Finish [$lastUpdate]: $OutputPath"
+        Write-Host "Update Finish [$([datetime]::Now)]: $ProgramPath"
     }
 }
 
-# Expand-File "$PSScriptRoot/Program.cs"
-Watch-File "$PSScriptRoot/Program.cs"
+if ($Watch) {
+    Watch-File "$PSScriptRoot/Program.cs"    
+}
+else {
+    Expand-File "$PSScriptRoot/Program.cs" 
+}
