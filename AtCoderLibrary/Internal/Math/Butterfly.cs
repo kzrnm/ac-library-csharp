@@ -44,14 +44,14 @@ namespace AtCoder.Internal
                         a[i + offset] = l + r;
                         a[i + offset + p] = l - r;
                     }
-                    now *= sumE[InternalMath.BSF(~(uint)s)];
+                    now *= sumE[InternalBit.BSF(~(uint)s)];
                 }
             }
 
             static StaticModInt<T>[] CalcurateSumE()
             {
                 int g = InternalMath.PrimitiveRoot((int)default(T).Mod);
-                int cnt2 = InternalMath.BSF(default(T).Mod - 1);
+                int cnt2 = InternalBit.BSF(default(T).Mod - 1);
                 var e = new StaticModInt<T>(g).Pow((default(T).Mod - 1) >> cnt2);
                 var ie = e.Inv();
 
@@ -112,14 +112,14 @@ namespace AtCoder.Internal
                         a[i + offset + p] = StaticModInt<T>.Raw(
                             unchecked((int)((ulong)(default(T).Mod + l.Value - r.Value) * (ulong)iNow.Value % default(T).Mod)));
                     }
-                    iNow *= sumIE[InternalMath.BSF(~(uint)s)];
+                    iNow *= sumIE[InternalBit.BSF(~(uint)s)];
                 }
             }
 
             static StaticModInt<T>[] CalcurateSumIE()
             {
                 int g = InternalMath.PrimitiveRoot((int)default(T).Mod);
-                int cnt2 = InternalMath.BSF(default(T).Mod - 1);
+                int cnt2 = InternalBit.BSF(default(T).Mod - 1);
                 var e = new StaticModInt<T>(g).Pow((default(T).Mod - 1) >> cnt2);
                 var ie = e.Inv();
 
