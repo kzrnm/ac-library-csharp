@@ -1,7 +1,11 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace AtCoder
 {
+
+#pragma warning disable CA1034 // Nested types should not be visible
+#pragma warning disable CA1815 // Override equals and operator equals on value types
     /// <summary>
     /// コンパイル時に決定する mod を表します。
     /// </summary>
@@ -117,7 +121,7 @@ namespace AtCoder
             return (uint)x;
         }
 
-        public static StaticModInt<T> operator++(StaticModInt<T> value)
+        public static StaticModInt<T> operator ++(StaticModInt<T> value)
         {
             var v = value._v + 1;
             if (v == default(T).Mod)
@@ -127,7 +131,7 @@ namespace AtCoder
             return new StaticModInt<T>(v);
         }
 
-        public static StaticModInt<T> operator--(StaticModInt<T> value)
+        public static StaticModInt<T> operator --(StaticModInt<T> value)
         {
             var v = value._v;
             if (v == 0)
@@ -231,6 +235,24 @@ namespace AtCoder
         public override string ToString() => _v.ToString();
         public override bool Equals(object obj) => obj is StaticModInt<T> && this == (StaticModInt<T>)obj;
         public override int GetHashCode() => _v.GetHashCode();
+
+        public readonly struct Operator : INumOperator<StaticModInt<T>>
+        {
+            public StaticModInt<T> MinValue => 0;
+            public StaticModInt<T> MaxValue => default(T).Mod - 1;
+            public StaticModInt<T> Add(StaticModInt<T> x, StaticModInt<T> y) => x + y;
+            public StaticModInt<T> Subtract(StaticModInt<T> x, StaticModInt<T> y) => x - y;
+            public StaticModInt<T> Multiply(StaticModInt<T> x, StaticModInt<T> y) => x * y;
+            public StaticModInt<T> Divide(StaticModInt<T> x, StaticModInt<T> y) => x / y;
+            public StaticModInt<T> Modulo(StaticModInt<T> x, StaticModInt<T> y) => throw new NotSupportedException();
+            public bool GreaterThan(StaticModInt<T> x, StaticModInt<T> y) => x._v > y._v;
+            public bool GreaterThanOrEqual(StaticModInt<T> x, StaticModInt<T> y) => x._v >= y._v;
+            public bool LessThan(StaticModInt<T> x, StaticModInt<T> y) => x._v < y._v;
+            public bool LessThanOrEqual(StaticModInt<T> x, StaticModInt<T> y) => x._v <= y._v;
+            public int Compare(StaticModInt<T> x, StaticModInt<T> y) => x._v.CompareTo(y._v);
+            public bool Equals(StaticModInt<T> x, StaticModInt<T> y) => x._v == y._v;
+            public int GetHashCode(StaticModInt<T> obj) => obj.GetHashCode();
+        }
     }
 
     /// <summary>
@@ -420,5 +442,25 @@ namespace AtCoder
         public override string ToString() => _v.ToString();
         public override bool Equals(object obj) => obj is DynamicModInt<T> && this == (DynamicModInt<T>)obj;
         public override int GetHashCode() => _v.GetHashCode();
+
+        public readonly struct Operator : INumOperator<DynamicModInt<T>>
+        {
+            public DynamicModInt<T> MinValue => 0;
+            public DynamicModInt<T> MaxValue => Mod - 1;
+            public DynamicModInt<T> Add(DynamicModInt<T> x, DynamicModInt<T> y) => x + y;
+            public DynamicModInt<T> Subtract(DynamicModInt<T> x, DynamicModInt<T> y) => x - y;
+            public DynamicModInt<T> Multiply(DynamicModInt<T> x, DynamicModInt<T> y) => x * y;
+            public DynamicModInt<T> Divide(DynamicModInt<T> x, DynamicModInt<T> y) => x / y;
+            public DynamicModInt<T> Modulo(DynamicModInt<T> x, DynamicModInt<T> y) => throw new NotSupportedException();
+            public bool GreaterThan(DynamicModInt<T> x, DynamicModInt<T> y) => x._v > y._v;
+            public bool GreaterThanOrEqual(DynamicModInt<T> x, DynamicModInt<T> y) => x._v >= y._v;
+            public bool LessThan(DynamicModInt<T> x, DynamicModInt<T> y) => x._v < y._v;
+            public bool LessThanOrEqual(DynamicModInt<T> x, DynamicModInt<T> y) => x._v <= y._v;
+            public int Compare(DynamicModInt<T> x, DynamicModInt<T> y) => x._v.CompareTo(y._v);
+            public bool Equals(DynamicModInt<T> x, DynamicModInt<T> y) => x._v == y._v;
+            public int GetHashCode(DynamicModInt<T> obj) => obj.GetHashCode();
+        }
     }
+#pragma warning restore CA1815 // Override equals and operator equals on value types
+#pragma warning restore CA1034 // Nested types should not be visible
 }
