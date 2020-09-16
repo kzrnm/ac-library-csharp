@@ -74,7 +74,8 @@ namespace AtCoder
     /// </list>
     /// <para>を O(log⁡N) で求めることが出来るデータ構造です。</para>
     /// </summary>
-    // TODO: public class ModIntFenwickTree : FenwickTree<ModInt, ModIntOperator> { public ModIntFenwickTree(int n) : base(n) { } }
+    /// <typeparam name="T">定数 mod を表す構造体</typeparam>
+    public class ModIntFenwickTree<T> : FenwickTree<StaticModInt<T>, StaticModInt<T>.Operator> where T : struct, IStaticMod { public ModIntFenwickTree(int n) : base(n) { } }
 
 
     /// <summary>
