@@ -2,9 +2,9 @@
 using System.IO;
 using System.Linq;
 using AtCoder.Test.Utils;
-using NUnit.Framework;
+using Xunit;
 
-namespace AtCoder.Test
+namespace AtCoder.Test.Example
 {
     public class FenwickTreeTest
     {
@@ -16,7 +16,7 @@ namespace AtCoder.Test
 
             Solver(reader, writer);
 
-            Assert.IsTrue(new TokenEqualityValidator().IsValid(input, answer, writer.ToString()));
+            Assert.True(new TokenEqualityValidator().IsValid(input, answer, writer.ToString()));
 
             static void Solver(TextReader reader, TextWriter writer)
             {
