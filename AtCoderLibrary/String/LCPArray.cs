@@ -32,7 +32,7 @@ namespace AtCoder
                 int j = sa[rnk[i] - 1];
                 for (; j + h < s.Length && i + h < s.Length; h++)
                 {
-                    if (EqualityComparer<T>.Default.Equals(s[j + h], s[i + h])) break;
+                    if (!EqualityComparer<T>.Default.Equals(s[j + h], s[i + h])) break;
                 }
                 lcp[rnk[i] - 1] = h;
             }
