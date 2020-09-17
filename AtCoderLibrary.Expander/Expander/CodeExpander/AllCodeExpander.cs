@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
+using AtCoder.Internal;
 
-namespace AtCoder.Internal.CodeExpander
+namespace AtCoder.Expand
 {
-    internal class AllCodeExpander : CodeExpander
+    internal class AllCodeExpander : CodeExpanderCore
     {
         public AllCodeExpander(string code, IEnumerable<AclFileInfoDetail> aclFileInfos) : base(code, aclFileInfos) { }
         public override IEnumerable<string> ExpandedLines()
