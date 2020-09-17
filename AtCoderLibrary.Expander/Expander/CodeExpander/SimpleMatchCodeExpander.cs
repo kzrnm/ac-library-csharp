@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AtCoder.Internal;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace AtCoder.Internal.CodeExpander
+namespace AtCoder.Expand
 {
     internal class SimpleMatchCodeExpander : RoslynCodeExpander
     {

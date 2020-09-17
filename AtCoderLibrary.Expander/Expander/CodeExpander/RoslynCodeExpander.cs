@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using AtCoder.Internal;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace AtCoder.Internal.CodeExpander
+namespace AtCoder.Expand
 {
-    internal abstract class RoslynCodeExpander : CodeExpander
+    internal abstract class RoslynCodeExpander : CodeExpanderCore
     {
         private List<string>? _expanded;
-        private SyntaxTree? _OrigTree;
-        protected SyntaxTree OrigTree => _OrigTree ??= CSharpSyntaxTree.ParseText(OrigCode);
+        private SyntaxTree? _origTree;
+        protected SyntaxTree OrigTree => _origTree ??= CSharpSyntaxTree.ParseText(OrigCode);
         public RoslynCodeExpander(string code, IEnumerable<AclFileInfoDetail> aclFileInfos) : base(code, aclFileInfos) { }
         public override IEnumerable<string> ExpandedLines()
         {

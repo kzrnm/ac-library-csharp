@@ -1,22 +1,23 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AtCoder.Internal;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace AtCoder.Internal.CodeExpander
+namespace AtCoder.Expand
 {
     internal class CompilationCodeExpander : RoslynCodeExpander
     {
         public CompilationCodeExpander(string code, IEnumerable<AclFileInfoDetail> aclFileInfos) : base(code, aclFileInfos) { }
 
-        private static readonly MetadataReference[] metadataReferences = new[] {
+        private static readonly MetadataReference[] s_metadataReferences = new[] {
                     MetadataReference.CreateFromFile(typeof(RoslynCodeExpander).Assembly.Location),
                     MetadataReference.CreateFromFile(typeof(INumOperator<>).Assembly.Location),
                 };
         private static SemanticModel GetSemanticModel(SyntaxTree tree) =>
             CSharpCompilation.Create("SemanticModel",
-                new[] { tree }, metadataReferences).GetSemanticModel(tree, true);
+                new[] { tree }, s_metadataReferences).GetSemanticModel(tree, true);
 
         protected override IEnumerable<AclFileInfoDetail> GetRequiredAcl()
         {

@@ -2,12 +2,24 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Text;
+using AtCoder.Internal;
 
-namespace AtCoder.Internal.CodeExpander
+namespace AtCoder.Expand
 {
-    internal abstract class CodeExpander : ICodeExpander
+    public static class CodeExpander
     {
-        public static CodeExpander Create(ExpandMethod expandMethod, string code, IEnumerable<AclFileInfoDetail> aclFileInfos)
+        public static string Expand(string code, ExpandMethod expandMethod)
+        {
+            var expander = Create(code, expandMethod);
+            var sb = new StringBuilder();
+            foreach (var line in expander.ExpandedLines())
+                sb.AppendLine(line);
+            return sb.ToString();
+        }
+        public static ICodeExpander Create(string code, ExpandMethod expandMethod)
+            => Create(code, expandMethod, Expander.s_aclFileInfoDetails);
+        internal static ICodeExpander Create(string code, ExpandMethod expandMethod, IEnumerable<AclFileInfoDetail> aclFileInfos)
             => expandMethod switch
             {
                 ExpandMethod.All => new AllCodeExpander(code, aclFileInfos),
@@ -15,11 +27,13 @@ namespace AtCoder.Internal.CodeExpander
                 ExpandMethod.Strict => new CompilationCodeExpander(code, aclFileInfos),
                 _ => throw new InvalidEnumArgumentException(nameof(expandMethod), (int)expandMethod, expandMethod.GetType()),
             };
+    }
 
-
+    internal abstract class CodeExpanderCore : ICodeExpander
+    {
         protected Dictionary<string, AclFileInfoDetail> AclFiles { set; get; }
         protected string OrigCode { get; }
-        public CodeExpander(string code, IEnumerable<AclFileInfoDetail> aclFileInfos)
+        public CodeExpanderCore(string code, IEnumerable<AclFileInfoDetail> aclFileInfos)
         {
             AclFiles = aclFileInfos.ToDictionary(acl => acl.FileName);
             OrigCode = code;
@@ -33,7 +47,7 @@ namespace AtCoder.Internal.CodeExpander
             return arr;
         }
     }
-    internal interface ICodeExpander
+    public interface ICodeExpander
     {
         IEnumerable<string> ExpandedLines();
     }
