@@ -34,21 +34,7 @@ namespace AtCoder.Internal
         public static int BSF(uint n)
         {
             Debug.Assert(n >= 1);
-            if (Bmi1.IsSupported)
-            {
-                // O(1)
-                return (int)Bmi1.TrailingZeroCount(n);
-            }
-            else if (Popcnt.IsSupported)
-            {
-                // O(1)
-                return (int)Popcnt.PopCount(~n & (n - 1));
-            }
-            else
-            {
-                // O(logn)
-                return BitOperations.TrailingZeroCount(n);
-            }
+            return BitOperations.TrailingZeroCount(n);
         }
     }
 }
