@@ -6,29 +6,65 @@ using System.Runtime.CompilerServices;
 
 namespace AtCoder
 {
+    public interface ICastOperator<TFrom, TTo>
+        where TFrom : struct
+        where TTo : struct
+    {
+        TTo Cast(TFrom y);
+    }
+
+    public struct SameTypeCastOperator<T> : ICastOperator<T, T>
+        where T : struct
+    {
+        public T Cast(T y) => y;
+    }
+
+    public struct IntToLongCastOperator : ICastOperator<int, long>
+    {
+        public long Cast(int y) => y;
+    }
+
     /// <summary>
     /// Minimum-cost flow problem を扱うライブラリ(int版)です。
     /// </summary>
-    public class McfGraphInt : McfGraph<int, IntOperator> { public McfGraphInt(int n) : base(n) { } }
+    public class McfGraphInt
+        : McfGraph<int, IntOperator, int, IntOperator, SameTypeCastOperator<int>>
+    {
+        public McfGraphInt(int n) : base(n) { }
+    }
 
     /// <summary>
     /// Minimum-cost flow problem を扱うライブラリ(long版)です。
     /// </summary>
-    public class McfGraphLong : McfGraph<long, LongOperator> { public McfGraphLong(int n) : base(n) { } }
+    public class McfGraphLong
+       : McfGraph<long, LongOperator, long, LongOperator, SameTypeCastOperator<long>>
+    {
+        public McfGraphLong(int n) : base(n) { }
+    }
 
     /// <summary>
     /// Minimum-cost flow problem を扱うライブラリです。
     /// </summary>
-    /// <typeparam name="TValue">容量およびコストの型</typeparam>
-    /// <typeparam name="TOp"><typeparamref name="TValue"/>に対応する演算を提要する型</typeparam>
+    /// <typeparam name="TCap">容量の型</typeparam>
+    /// <typeparam name="TCapOp"><typeparamref name="TCap"/> に対応する演算を提供する型</typeparam>
+    /// <typeparam name="TCost">コストの型</typeparam>
+    /// <typeparam name="TCostOp"><typeparamref name="TCost"/> に対応する演算を提供する型</typeparam>
+    /// <typeparam name="TCast">
+    /// <typeparamref name="TCap"/> から <typeparamref name="TCost"/> への型変換を提供する型
+    /// </typeparam>
     /// <remarks>
     /// <para>制約: <typeparamref name="TValue"/> は int, long。</para>
     /// </remarks>
-    public class McfGraph<TValue, TOp>
-        where TValue : struct
-        where TOp : struct, INumOperator<TValue>
+    public class McfGraph<TCap, TCapOp, TCost, TCostOp, TCast>
+        where TCap : struct
+        where TCapOp : struct, INumOperator<TCap>
+        where TCost : struct
+        where TCostOp : struct, INumOperator<TCost>
+        where TCast : ICastOperator<TCap, TCost>
     {
-        static readonly TOp op = default;
+        static readonly TCapOp capOp = default;
+        static readonly TCostOp costOp = default;
+        static readonly TCast cast = default;
 
         /// <summary>
         /// <paramref name="n"/> 頂点 0 辺のグラフを作ります。
@@ -65,14 +101,14 @@ namespace AtCoder
         /// </list>
         /// <para>計算量: ならしO(1)</para>
         /// </remarks>
-        public int AddEdge(int from, int to, TValue cap, TValue cost)
+        public int AddEdge(int from, int to, TCap cap, TCost cost)
         {
             Debug.Assert(0 <= from && from < _n);
             Debug.Assert(0 <= to && to < _n);
             int m = _pos.Count;
             _pos.Add((from, _g[from].Count));
             _g[from].Add(new EdgeInternal(to, _g[to].Count, cap, cost));
-            _g[to].Add(new EdgeInternal(from, _g[from].Count - 1, default, op.Minus(cost)));
+            _g[to].Add(new EdgeInternal(from, _g[from].Count - 1, default, costOp.Minus(cost)));
             return m;
         }
 
@@ -90,7 +126,7 @@ namespace AtCoder
             Debug.Assert(0 <= i && i < m);
             var _e = _g[_pos[i].first][_pos[i].second];
             var _re = _g[_e.To][_e.Rev];
-            return new Edge(_pos[i].first, _e.To, op.Add(_e.Cap, _re.Cap), _re.Cap, _e.Cost);
+            return new Edge(_pos[i].first, _e.To, capOp.Add(_e.Cap, _re.Cap), _re.Cap, _e.Cost);
         }
 
         /// <summary>
@@ -119,9 +155,9 @@ namespace AtCoder
         /// <para>制約: Slope関数と同じ</para>
         /// <para>計算量: Slope関数と同じ</para>
         /// </remarks>
-        public (TValue cap, TValue cost) Flow(int s, int t)
+        public (TCap cap, TCost cost) Flow(int s, int t)
         {
-            return Flow(s, t, op.MaxValue);
+            return Flow(s, t, capOp.MaxValue);
         }
 
         /// <summary>
@@ -133,9 +169,9 @@ namespace AtCoder
         /// <para>制約: Slope関数と同じ</para>
         /// <para>計算量: Slope関数と同じ</para>
         /// </remarks>
-        public (TValue cap, TValue cost) Flow(int s, int t, TValue flow_limit)
+        public (TCap cap, TCost cost) Flow(int s, int t, TCap flowLimit)
         {
-            return Slope(s, t, flow_limit).Last();
+            return Slope(s, t, flowLimit).Last();
         }
 
         /// <summary>
@@ -185,9 +221,9 @@ namespace AtCoder
         /// 計算量: F を流量、m を追加した辺の本数として 
         /// O(F(n + m) log n)
         /// </remarks>
-        public List<(TValue cap, TValue cost)> Slope(int s, int t)
+        public List<(TCap cap, TCost cost)> Slope(int s, int t)
         {
-            return Slope(s, t, op.MaxValue);
+            return Slope(s, t, capOp.MaxValue);
         }
 
         /// <summary>
@@ -239,7 +275,7 @@ namespace AtCoder
         /// 計算量: F を流量、m を追加した辺の本数として 
         /// O(F(n + m) log n)
         /// </remarks>
-        public List<(TValue cap, TValue cost)> Slope(int s, int t, TValue flowLimit)
+        public List<(TCap cap, TCost cost)> Slope(int s, int t, TCap flowLimit)
         {
             Debug.Assert(0 <= s && s < _n);
             Debug.Assert(0 <= t && t < _n);
@@ -247,15 +283,15 @@ namespace AtCoder
             // variants (C = maxcost):
             // -(n-1)C <= dual[s] <= dual[i] <= dual[t] = 0
             // reduced cost (= e.cost + dual[e.from] - dual[e.to]) >= 0 for all edge
-            var dual = new TValue[_n];
-            var dist = new TValue[_n];
+            var dual = new TCost[_n];
+            var dist = new TCost[_n];
             var pv = new int[_n];
             var pe = new int[_n];
             var vis = new bool[_n];
 
             bool DualRef()
             {
-                dist.AsSpan().Fill(op.MaxValue);
+                dist.AsSpan().Fill(costOp.MaxValue);
                 pv.AsSpan().Fill(-1);
                 pe.AsSpan().Fill(-1);
                 vis.AsSpan().Fill(false);
@@ -275,13 +311,13 @@ namespace AtCoder
                     for (int i = 0; i < _g[v].Count; i++)
                     {
                         var e = _g[v][i];
-                        if (vis[e.To] || op.Equals(e.Cap, default)) continue;
+                        if (vis[e.To] || capOp.Equals(e.Cap, default)) continue;
                         // |-dual[e.to] + dual[v]| <= (n-1)C
                         // cost <= C - -(n-1)C + 0 = nC
-                        TValue cost = op.Add(op.Subtract(e.Cost, dual[e.To]), dual[v]);
-                        if (op.GreaterThan(op.Subtract(dist[e.To], dist[v]), cost))
+                        TCost cost = costOp.Add(costOp.Subtract(e.Cost, dual[e.To]), dual[v]);
+                        if (costOp.GreaterThan(costOp.Subtract(dist[e.To], dist[v]), cost))
                         {
-                            dist[e.To] = op.Add(dist[v], cost);
+                            dist[e.To] = costOp.Add(dist[v], cost);
                             pv[e.To] = v;
                             pe[e.To] = i;
                             que.Enqueue(dist[e.To], e.To);
@@ -301,37 +337,37 @@ namespace AtCoder
                     //         = dual[v] - (shortest(s, t) + dual[s] - dual[t]) + (shortest(s, v) + dual[s] - dual[v])
                     //         = - shortest(s, t) + dual[t] + shortest(s, v)
                     //         = shortest(s, v) - shortest(s, t) >= 0 - (n-1)C
-                    dual[v] = op.Subtract(dual[v], op.Subtract(dist[t], dist[v]));
+                    dual[v] = costOp.Subtract(dual[v], costOp.Subtract(dist[t], dist[v]));
                 }
 
                 return true;
             }
 
-            TValue flow = default;
-            TValue cost = default;
-            TValue prev_cost = op.Decrement(default); //-1
-            var result = new List<(TValue cap, TValue cost)>();
+            TCap flow = default;
+            TCost cost = default;
+            TCost prev_cost = costOp.Decrement(default); //-1
+            var result = new List<(TCap cap, TCost cost)>();
             result.Add((flow, cost));
-            while (op.LessThan(flow, flowLimit))
+            while (capOp.LessThan(flow, flowLimit))
             {
                 if (!DualRef()) break;
-                TValue c = op.Subtract(flowLimit, flow);
+                TCap c = capOp.Subtract(flowLimit, flow);
                 for (int v = t; v != s; v = pv[v])
                 {
-                    if (op.LessThan(_g[pv[v]][pe[v]].Cap, c))
+                    if (capOp.LessThan(_g[pv[v]][pe[v]].Cap, c))
                     {
                         c = _g[pv[v]][pe[v]].Cap;
                     }
                 }
                 for (int v = t; v != s; v = pv[v])
                 {
-                    _g[pv[v]][pe[v]].Cap = op.Subtract(_g[pv[v]][pe[v]].Cap, c);
-                    _g[v][_g[pv[v]][pe[v]].Rev].Cap = op.Add(_g[v][_g[pv[v]][pe[v]].Rev].Cap, c);
+                    _g[pv[v]][pe[v]].Cap = capOp.Subtract(_g[pv[v]][pe[v]].Cap, c);
+                    _g[v][_g[pv[v]][pe[v]].Rev].Cap = capOp.Add(_g[v][_g[pv[v]][pe[v]].Rev].Cap, c);
                 }
-                TValue d = op.Minus(dual[s]);
-                flow = op.Add(flow, c);
-                cost = op.Add(cost, op.Multiply(c, d));
-                if (op.Equals(prev_cost, d))
+                TCost d = costOp.Minus(dual[s]);
+                flow = capOp.Add(flow, c);
+                cost = costOp.Add(cost, costOp.Multiply(cast.Cast(c), d));
+                if (costOp.Equals(prev_cost, d))
                 {
                     result.RemoveAt(result.Count - 1);
                 }
@@ -351,12 +387,12 @@ namespace AtCoder
             /// <summary>フローが流入する頂点。</summary>
             public int To { get; set; }
             /// <summary>辺の容量。</summary>
-            public TValue Cap { get; set; }
+            public TCap Cap { get; set; }
             /// <summary>辺の流量。</summary>
-            public TValue Flow { get; set; }
+            public TCap Flow { get; set; }
             /// <summary>辺の費用</summary>
-            public TValue Cost { get; set; }
-            public Edge(int from, int to, TValue cap, TValue flow, TValue cost)
+            public TCost Cost { get; set; }
+            public Edge(int from, int to, TCap cap, TCap flow, TCost cost)
             {
                 From = from;
                 To = to;
@@ -370,9 +406,9 @@ namespace AtCoder
         {
             public int To { get; set; }
             public int Rev { get; set; }
-            public TValue Cap { get; set; }
-            public TValue Cost { get; set; }
-            public EdgeInternal(int to, int rev, TValue cap, TValue cost)
+            public TCap Cap { get; set; }
+            public TCost Cost { get; set; }
+            public EdgeInternal(int to, int rev, TCap cap, TCost cost)
             {
                 To = to;
                 Rev = rev;
@@ -387,20 +423,20 @@ namespace AtCoder
 
         private class PriorityQueueForMcf
         {
-            private (TValue cost, int to)[] _heap;
+            private (TCost cost, int to)[] _heap;
 
             public int Count { get; private set; } = 0;
             public PriorityQueueForMcf()
             {
-                _heap = new (TValue cost, int to)[1024];
+                _heap = new (TCost cost, int to)[1024];
             }
 
-            public void Enqueue(TValue cost, int to)
+            public void Enqueue(TCost cost, int to)
             {
                 var pair = (cost, to);
                 if (_heap.Length == Count)
                 {
-                    var newHeap = new (TValue cost, int to)[_heap.Length * 2];
+                    var newHeap = new (TCost cost, int to)[_heap.Length * 2];
                     _heap.CopyTo(newHeap, 0);
                     _heap = newHeap;
                 }
@@ -426,9 +462,9 @@ namespace AtCoder
                 _heap[c] = pair;
             }
 
-            public (TValue cost, int to) Dequeue()
+            public (TCost cost, int to) Dequeue()
             {
-                (TValue cost, int to) ret = _heap[0];
+                (TCost cost, int to) ret = _heap[0];
                 int n = Count - 1;
 
                 var item = _heap[n];
@@ -460,7 +496,7 @@ namespace AtCoder
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            private int Compare(TValue x, TValue y) => op.Compare(y, x);
+            private int Compare(TCost x, TCost y) => costOp.Compare(y, x);
         }
     }
 }
