@@ -35,7 +35,7 @@ namespace AtCoder
             Debug.Assert(0 <= b && b < Count);
             int x = Leader(a), y = Leader(b);
             if (x == y) return x;
-            if (-ParentOrSize[x] < ParentOrSize[y]) (x, y) = (y, x);
+            if (-ParentOrSize[x] < -ParentOrSize[y]) (x, y) = (y, x);
             ParentOrSize[x] += ParentOrSize[y];
             ParentOrSize[y] = x;
             return x;
