@@ -3,3 +3,5 @@ AtCoderによって公開されている[AtCoder Library](https://atcoder.jp/pos
 ## License
 
 The files in `AtCoderLibrary` folder are licensed under a [CC0](https://creativecommons.org/publicdomain/zero/1.0/legalcode) license.
+
+The files in `AtCoderLibrary.Expander` folder are licensed under a MIT Lisence.
