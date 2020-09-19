@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SourceCodeExpander": {
+      "commandName": "Project",
+      "commandLineArgs": "$(projectDir)../../AtCoderLibrary"
+    }
+  }
+}
