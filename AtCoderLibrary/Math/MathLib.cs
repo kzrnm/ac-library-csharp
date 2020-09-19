@@ -5,7 +5,7 @@ using AtCoder.Internal;
 
 namespace AtCoder
 {
-    public static  class MathLib
+    public static class MathLib
     {
         /// <summary>
         /// <paramref name="x"/>^<paramref name="n"/> mod <paramref name="m"/> を返します。
