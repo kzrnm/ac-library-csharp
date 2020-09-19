@@ -78,7 +78,7 @@ namespace AtCoder
             AssertFIdentity(op.Identity);
             AssertF(op.FIdentity, op.Identity, op.Identity);
             Length = n;
-            log = InternalMath.CeilPow2(n);
+            log = InternalBit.CeilPow2(n);
             size = 1 << log;
             d = new TValue[2 * size];
             lz = new F[size];

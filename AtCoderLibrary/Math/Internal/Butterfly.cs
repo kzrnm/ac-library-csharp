@@ -17,7 +17,7 @@ namespace AtCoder.Internal
         public static void Calculate(Span<StaticModInt<T>> a)
         {
             var n = a.Length;
-            var h = InternalMath.CeilPow2(n);
+            var h = InternalBit.CeilPow2(n);
 
             for (int ph = 1; ph <= h; ph++)
             {
@@ -49,7 +49,7 @@ namespace AtCoder.Internal
         public static void CalculateInv(Span<StaticModInt<T>> a)
         {
             var n = a.Length;
-            var h = InternalMath.CeilPow2(n);
+            var h = InternalBit.CeilPow2(n);
 
             for (int ph = h; ph >= 1; ph--)
             {
