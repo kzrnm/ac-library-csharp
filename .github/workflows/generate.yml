@@ -27,6 +27,8 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v1.6.0
         with:
@@ -43,8 +45,6 @@ jobs:
         uses: xt0rted/dotnet-tool-restore@v1
       - name: Run dotnet format
         uses: xt0rted/dotnet-format@v1
-        with:
-          action: "fix"
       - name: Expand Source Code
         run: dotnet run -v normal --project AtCoderLibrary.Expander/SourceCodeEmbeder/SourceCodeEmbeder.csproj AtCoderLibrary/
         timeout-minutes: 2
