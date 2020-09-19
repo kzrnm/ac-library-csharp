@@ -18,7 +18,7 @@ namespace AtCoder
         /// <para>制約: 0≤<paramref name="n"/>≤10^8</para>
         /// <para>計算量: O(<paramref name="n"/>)</para>
         /// </remarks>
-        public SCCGraph(int n) 
+        public SCCGraph(int n)
         {
             Debug.Assert(unchecked((uint)n <= 100_000_000));
             _internal = new Internal.SCCGraph(n);

@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AtCoder.Internal
 {
@@ -204,7 +204,7 @@ namespace AtCoder.Internal
                 var recS = new int[m];
                 var recUpper = 0;
                 recS[lmsMap[sortedLms[0]]] = 0;
-                
+
                 // 同じLMS同士をまとめていく
                 for (int i = 1; i < sortedLms.Count; i++)
                 {
