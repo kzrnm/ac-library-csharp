@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using AtCoder.Internal;
 
@@ -74,7 +73,7 @@ namespace AtCoder
     /// </list>
     /// <para>を O(log⁡N) で求めることが出来るデータ構造です。</para>
     /// </summary>
-    // TODO: public class ModIntFenwickTree : FenwickTree<ModInt, ModIntOperator> { public ModIntFenwickTree(int n) : base(n) { } }
+    public class ModIntFenwickTree<T> : FenwickTree<StaticModInt<T>, StaticModIntOperator<T>> where T : struct, IStaticMod { public ModIntFenwickTree(int n) : base(n) { } }
 
 
     /// <summary>
@@ -93,8 +92,7 @@ namespace AtCoder
     /// <typeparam name="TOp">配列要素の操作を表す型</typeparam>
     [DebuggerTypeProxy(typeof(FenwickTree<,>.DebugView))]
     public class FenwickTree<TValue, TOp>
-        where TValue : struct
-        where TOp : struct, INumOperator<TValue>
+        where TOp : IAddOperator<TValue>, ISubtractOperator<TValue>
     {
         private static readonly TOp op = default;
         private readonly TValue[] data;

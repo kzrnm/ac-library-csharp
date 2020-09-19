@@ -27,8 +27,7 @@ namespace AtCoder
     /// </para>
     /// </remarks>
     public class MFGraph<TValue, TOp>
-         where TValue : struct
-         where TOp : struct, INumOperator<TValue>
+         where TOp : ISignedNumOperator<TValue>
     {
         static readonly TOp op = default;
 
