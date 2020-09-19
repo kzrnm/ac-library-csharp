@@ -15,6 +15,9 @@
 # copies or substantial portions of the Software.
 
 
+[*.{cs,vb}]
+dotnet_diagnostic.IDE0005.severity = warning
+
 # editorconfig.org
 
 # top-most EditorConfig file

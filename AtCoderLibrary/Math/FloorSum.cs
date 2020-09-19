@@ -14,7 +14,7 @@ namespace AtCoder
         /// <para>計算量: O(log(n+m+a+b))</para>
         /// </remarks>
         /// <returns></returns>
-        public static long FloorSum(long n, long m, long a, long b) 
+        public static long FloorSum(long n, long m, long a, long b)
         {
             long ans = 0;
             while (true)

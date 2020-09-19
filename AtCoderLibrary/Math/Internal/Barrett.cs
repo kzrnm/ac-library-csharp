@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Runtime.Intrinsics.X86;
-using System.Runtime.Intrinsics;
 using System.Numerics;
+using System.Runtime.Intrinsics;
+using System.Runtime.Intrinsics.X86;
+using System.Text;
 
 namespace AtCoder.Internal
 {

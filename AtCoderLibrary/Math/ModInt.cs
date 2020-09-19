@@ -117,7 +117,7 @@ namespace AtCoder
             return (uint)x;
         }
 
-        public static StaticModInt<T> operator++(StaticModInt<T> value)
+        public static StaticModInt<T> operator ++(StaticModInt<T> value)
         {
             var v = value._v + 1;
             if (v == default(T).Mod)
@@ -127,7 +127,7 @@ namespace AtCoder
             return new StaticModInt<T>(v);
         }
 
-        public static StaticModInt<T> operator--(StaticModInt<T> value)
+        public static StaticModInt<T> operator --(StaticModInt<T> value)
         {
             var v = value._v;
             if (v == 0)

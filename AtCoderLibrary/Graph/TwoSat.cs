@@ -21,7 +21,7 @@ namespace AtCoder
         /// <remarks>
         /// <para>制約 : 0≤<paramref name="n"/>≤10^8</para>
         /// </remarks>
-        public TwoSat(int n) 
+        public TwoSat(int n)
         {
             Debug.Assert(unchecked((uint)n <= 100_000_000));
             _n = n;
@@ -36,7 +36,7 @@ namespace AtCoder
         /// <para>制約: 0≤<paramref name="i"/>&lt;n, 0≤<paramref name="j"/>&lt;n</para>
         /// <para>計算量: ならし O(1)</para>
         /// </remarks>
-        public void AddClause(int i, bool f, int j, bool g) 
+        public void AddClause(int i, bool f, int j, bool g)
         {
             Debug.Assert(unchecked((uint)i < _n));
             Debug.Assert(unchecked((uint)j < _n));
@@ -52,7 +52,7 @@ namespace AtCoder
         /// <para>計算量: 足した制約の個数を m として O(n+m)</para>
         /// </remarks>
         /// <returns>割当が存在するならば <c>true</c>、そうでないなら <c>false</c>。</returns>
-        public bool Satisfiable() 
+        public bool Satisfiable()
         {
             var sccs = scc.SCC();
             var id = new int[2 * _n];
