@@ -412,7 +412,7 @@ namespace AtCoder
                         for (int i = 0; i < len; i++)
                         {
                             int l = i * unit;
-                            int r = System.Math.Min(l + unit, segtree.Length);
+                            int r = Math.Min(l + unit, segtree.Length);
                             if (l < segtree.Length)
                             {
                                 int dataIndex = i + len;

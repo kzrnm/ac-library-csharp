@@ -190,7 +190,7 @@ namespace AtCoder
                 return Array.Empty<int>();
             }
 
-            if (System.Math.Min(n, m) <= 60)
+            if (Math.Min(n, m) <= 60)
             {
                 var c = ConvolutionNaive<TMod>(a.Select(ai => new StaticModInt<TMod>(ai)).ToArray(),
                                                b.Select(bi => new StaticModInt<TMod>(bi)).ToArray());
@@ -243,7 +243,7 @@ namespace AtCoder
                 return Array.Empty<uint>();
             }
 
-            if (System.Math.Min(n, m) <= 60)
+            if (Math.Min(n, m) <= 60)
             {
                 var c = ConvolutionNaive<TMod>(a.Select(ai => new StaticModInt<TMod>(ai)).ToArray(),
                                                b.Select(bi => new StaticModInt<TMod>(bi)).ToArray());
@@ -295,7 +295,7 @@ namespace AtCoder
                 return Array.Empty<long>();
             }
 
-            if (System.Math.Min(n, m) <= 60)
+            if (Math.Min(n, m) <= 60)
             {
                 var c = ConvolutionNaive<TMod>(a.Select(ai => new StaticModInt<TMod>(ai)).ToArray(),
                                                b.Select(bi => new StaticModInt<TMod>(bi)).ToArray());
@@ -347,7 +347,7 @@ namespace AtCoder
                 return Array.Empty<ulong>();
             }
 
-            if (System.Math.Min(n, m) <= 60)
+            if (Math.Min(n, m) <= 60)
             {
                 var c = ConvolutionNaive<TMod>(a.Select(TakeMod).ToArray(),
                                                b.Select(TakeMod).ToArray());
@@ -420,7 +420,7 @@ namespace AtCoder
                 return Array.Empty<StaticModInt<TMod>>();
             }
 
-            if (System.Math.Min(n, m) <= 60)
+            if (Math.Min(n, m) <= 60)
             {
                 return ConvolutionNaive(a, b);
             }
