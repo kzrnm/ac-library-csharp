@@ -4,8 +4,51 @@ using System.Diagnostics;
 
 namespace AtCoder.Internal
 {
-    public static partial class InternalMath
+    public static class InternalMath
     {
+        public static long SafeMod(long x, long m)
+        {
+            x %= m;
+            if (x < 0) x += m;
+            return x;
+        }
+
+        /// <summary>
+        /// g=gcd(a,b),xa=g(mod b) となるような 0≤x&lt;b/g の(g, x)
+        /// </summary>
+        /// <remarks>
+        /// <para>制約: 1≤<paramref name="b"/></para>
+        /// </remarks>
+        public static (long, long) InvGCD(long a, long b)
+        {
+            a = SafeMod(a, b);
+            if (a == 0) return (b, 0);
+
+            long s = b, t = a;
+            long m0 = 0, m1 = 1;
+
+            long u;
+            while (true)
+            {
+                if (t == 0)
+                {
+                    if (m0 < 0) m0 += b / s;
+                    return (s, m0);
+                }
+                u = s / t;
+                s -= t * u;
+                m0 -= m1 * u;
+
+                if (s == 0)
+                {
+                    if (m1 < 0) m1 += b / t;
+                    return (t, m1);
+                }
+                u = t / s;
+                t -= s * u;
+                m1 -= m0 * u;
+            }
+        }
         private static readonly Dictionary<int, int> primitiveRootsCache = new Dictionary<int, int>()
         {
             { 2, 1 },
@@ -66,7 +109,7 @@ namespace AtCoder.Internal
                     bool ok = true;
                     for (int i = 0; i < cnt; i++)
                     {
-                        if (Math.PowMod(g, (m - 1) / divs[i], m) == 1)
+                        if (MathLib.PowMod(g, (m - 1) / divs[i], m) == 1)
                         {
                             ok = false;
                             break;
@@ -80,5 +123,6 @@ namespace AtCoder.Internal
                 }
             }
         }
+
     }
 }

@@ -62,7 +62,7 @@ namespace AtCoder
             Debug.Assert(0 <= n);
             AssertMonoid(op.Identity);
             Length = n;
-            log = InternalMath.CeilPow2(n);
+            log = InternalBit.CeilPow2(n);
             size = 1 << log;
             d = new TValue[2 * size];
             Array.Fill(d, op.Identity);
@@ -301,7 +301,7 @@ namespace AtCoder
                         for (int i = 0; i < len; i++)
                         {
                             int l = i * unit;
-                            int r = System.Math.Min(l + unit, segtree.Length);
+                            int r = Math.Min(l + unit, segtree.Length);
                             if (l < segtree.Length)
                                 items.Add(new DebugItem(l, r, segtree.d[i + len]));
                         }

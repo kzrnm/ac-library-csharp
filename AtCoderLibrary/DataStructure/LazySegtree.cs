@@ -78,7 +78,7 @@ namespace AtCoder
             AssertFIdentity(op.Identity);
             AssertF(op.FIdentity, op.Identity, op.Identity);
             Length = n;
-            log = InternalMath.CeilPow2(n);
+            log = InternalBit.CeilPow2(n);
             size = 1 << log;
             d = new TValue[2 * size];
             lz = new F[size];
@@ -412,7 +412,7 @@ namespace AtCoder
                         for (int i = 0; i < len; i++)
                         {
                             int l = i * unit;
-                            int r = System.Math.Min(l + unit, segtree.Length);
+                            int r = Math.Min(l + unit, segtree.Length);
                             if (l < segtree.Length)
                             {
                                 int dataIndex = i + len;
