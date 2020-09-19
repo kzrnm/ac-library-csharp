@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AtCoder
 {
@@ -39,6 +40,21 @@ namespace AtCoder
         /// <returns><paramref name="x"/> % <paramref name="y"/></returns>
         T Modulo(T x, T y);
         /// <summary>
+        /// Unary minus operator -
+        /// </summary>
+        /// <returns>-<paramref name="x"/></returns>
+        T Minus(T x);
+        /// <summary>
+        /// Increment operator ++
+        /// </summary>
+        /// <returns>++<paramref name="x"/></returns>
+        T Increment(T x);
+        /// <summary>
+        /// Decrement operator --
+        /// </summary>
+        /// <returns>--<paramref name="x"/></returns>
+        T Decrement(T x);
+        /// <summary>
         /// Greater than operator &gt;
         /// </summary>
         /// <returns><paramref name="x"/> &gt; <paramref name="y"/></returns>
@@ -68,6 +84,9 @@ namespace AtCoder
         public int Multiply(int x, int y) => x * y;
         public int Divide(int x, int y) => x / y;
         public int Modulo(int x, int y) => x % y;
+        public int Minus(int x) => -x;
+        public int Increment(int x) => ++x;
+        public int Decrement(int x) => --x;
         public bool GreaterThan(int x, int y) => x > y;
         public bool GreaterThanOrEqual(int x, int y) => x >= y;
         public bool LessThan(int x, int y) => x < y;
@@ -85,6 +104,9 @@ namespace AtCoder
         public long Multiply(long x, long y) => x * y;
         public long Divide(long x, long y) => x / y;
         public long Modulo(long x, long y) => x % y;
+        public long Minus(long x) => -x;
+        public long Increment(long x) => ++x;
+        public long Decrement(long x) => --x;
         public bool GreaterThan(long x, long y) => x > y;
         public bool GreaterThanOrEqual(long x, long y) => x >= y;
         public bool LessThan(long x, long y) => x < y;
@@ -102,6 +124,9 @@ namespace AtCoder
         public uint Multiply(uint x, uint y) => x * y;
         public uint Divide(uint x, uint y) => x / y;
         public uint Modulo(uint x, uint y) => x % y;
+        public uint Minus(uint x) => throw new InvalidOperationException("Uint type cannot be negative.");
+        public uint Increment(uint x) => ++x;
+        public uint Decrement(uint x) => --x;
         public bool GreaterThan(uint x, uint y) => x > y;
         public bool GreaterThanOrEqual(uint x, uint y) => x >= y;
         public bool LessThan(uint x, uint y) => x < y;
@@ -119,6 +144,9 @@ namespace AtCoder
         public ulong Multiply(ulong x, ulong y) => x * y;
         public ulong Divide(ulong x, ulong y) => x / y;
         public ulong Modulo(ulong x, ulong y) => x % y;
+        public ulong Minus(ulong x) => throw new InvalidOperationException("Ulong type cannot be negative.");
+        public ulong Increment(ulong x) => ++x;
+        public ulong Decrement(ulong x) => --x;
         public bool GreaterThan(ulong x, ulong y) => x > y;
         public bool GreaterThanOrEqual(ulong x, ulong y) => x >= y;
         public bool LessThan(ulong x, ulong y) => x < y;
@@ -136,6 +164,9 @@ namespace AtCoder
         public double Multiply(double x, double y) => x * y;
         public double Divide(double x, double y) => x / y;
         public double Modulo(double x, double y) => x % y;
+        public double Minus(double x) => -x;
+        public double Increment(double x) => ++x;
+        public double Decrement(double x) => --x;
         public bool GreaterThan(double x, double y) => x > y;
         public bool GreaterThanOrEqual(double x, double y) => x >= y;
         public bool LessThan(double x, double y) => x < y;
