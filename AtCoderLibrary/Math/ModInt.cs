@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace AtCoder
 {
@@ -27,6 +28,7 @@ namespace AtCoder
         bool IsPrime { get; }
     }
 
+#pragma warning disable CA1815
     public readonly struct Mod1000000007 : IStaticMod
     {
         public uint Mod => 1000000007;
@@ -53,6 +55,28 @@ namespace AtCoder
     public readonly struct ModID1 : IDynamicModID { }
     public readonly struct ModID2 : IDynamicModID { }
 
+    public readonly struct StaticModIntOperator<T> :
+        IAddOperator<StaticModInt<T>>,
+        ISubtractOperator<StaticModInt<T>>,
+        IMultiplyOperator<StaticModInt<T>>,
+        IDivideOperator<StaticModInt<T>>,
+        IIncrementOperator<StaticModInt<T>>,
+        IDecrementOperator<StaticModInt<T>>,
+        INegateOperator<StaticModInt<T>>,
+        IEqualityComparer<StaticModInt<T>>
+        where T : struct, IStaticMod
+    {
+        public StaticModInt<T> Add(StaticModInt<T> x, StaticModInt<T> y) => x + y;
+        public StaticModInt<T> Subtract(StaticModInt<T> x, StaticModInt<T> y) => x - y;
+        public StaticModInt<T> Multiply(StaticModInt<T> x, StaticModInt<T> y) => x * y;
+        public StaticModInt<T> Divide(StaticModInt<T> x, StaticModInt<T> y) => x / y;
+        public StaticModInt<T> Negate(StaticModInt<T> x) => -x;
+        public StaticModInt<T> Increment(StaticModInt<T> x) => ++x;
+        public StaticModInt<T> Decrement(StaticModInt<T> x) => --x;
+        public bool Equals(StaticModInt<T> x, StaticModInt<T> y) => x == y;
+        public int GetHashCode(StaticModInt<T> obj) => obj.GetHashCode();
+    }
+#pragma warning restore CA1815
     /// <summary>
     /// 四則演算時に自動で mod を取る整数型。mod の値はコンパイル時に決定している必要があります。
     /// </summary>

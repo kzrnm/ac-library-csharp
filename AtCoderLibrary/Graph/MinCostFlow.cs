@@ -13,6 +13,7 @@ namespace AtCoder
         TTo Cast(TFrom y);
     }
 
+#pragma warning disable CA1815 // Override equals and operator equals on value types
     public struct SameTypeCastOperator<T> : ICastOperator<T, T>
         where T : struct
     {
@@ -23,6 +24,7 @@ namespace AtCoder
     {
         public long Cast(int y) => y;
     }
+#pragma warning restore CA1815 // Override equals and operator equals on value types
 
     /// <summary>
     /// Minimum-cost flow problem を扱うライブラリ(int版)です。
@@ -57,9 +59,9 @@ namespace AtCoder
     /// </remarks>
     public class McfGraph<TCap, TCapOp, TCost, TCostOp, TCast>
         where TCap : struct
-        where TCapOp : struct, INumOperator<TCap>
+        where TCapOp : struct, ISignedNumOperator<TCap>
         where TCost : struct
-        where TCostOp : struct, INumOperator<TCost>
+        where TCostOp : struct, ISignedNumOperator<TCost>
         where TCast : ICastOperator<TCap, TCost>
     {
         static readonly TCapOp capOp = default;
@@ -108,7 +110,7 @@ namespace AtCoder
             int m = _pos.Count;
             _pos.Add((from, _g[from].Count));
             _g[from].Add(new EdgeInternal(to, _g[to].Count, cap, cost));
-            _g[to].Add(new EdgeInternal(from, _g[from].Count - 1, default, costOp.Minus(cost)));
+            _g[to].Add(new EdgeInternal(from, _g[from].Count - 1, default, costOp.Negate(cost)));
             return m;
         }
 
@@ -364,7 +366,7 @@ namespace AtCoder
                     _g[pv[v]][pe[v]].Cap = capOp.Subtract(_g[pv[v]][pe[v]].Cap, c);
                     _g[v][_g[pv[v]][pe[v]].Rev].Cap = capOp.Add(_g[v][_g[pv[v]][pe[v]].Rev].Cap, c);
                 }
-                TCost d = costOp.Minus(dual[s]);
+                TCost d = costOp.Negate(dual[s]);
                 flow = capOp.Add(flow, c);
                 cost = costOp.Add(cost, costOp.Multiply(cast.Cast(c), d));
                 if (costOp.Equals(prev_cost, d))
