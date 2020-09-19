@@ -13,3 +13,5 @@ C++ の Standard Template Library に存在する機能の移植。
 - lower_bound
 - upper_bound
 - next_permutation
+
+TODO: Write Doc

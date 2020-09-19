@@ -20,7 +20,7 @@ namespace AtCoder.Stl
         public Deque(int capacity)
         {
             if (capacity <= 8) capacity = 8;
-            else capacity = 1 << (InternalMath.CeilPow2(capacity));
+            else capacity = 1 << (InternalBit.CeilPow2(capacity));
             data = new T[capacity];
             mask = capacity - 1;
         }
