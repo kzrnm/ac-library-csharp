@@ -45,6 +45,13 @@ jobs:
         uses: xt0rted/dotnet-tool-restore@v1
       - name: Run dotnet format
         uses: xt0rted/dotnet-format@v1
+        with:
+          action: "fix"
+          only-changed-files: true
+      - name: Git Auto Commit
+        uses: stefanzweifel/git-auto-commit-action@v4.5.1
+        with:
+          commit_message: Fix format
       - name: Expand Source Code
         run: dotnet run -v normal --project AtCoderLibrary.Expander/SourceCodeEmbeder/SourceCodeEmbeder.csproj AtCoderLibrary/
         timeout-minutes: 2
