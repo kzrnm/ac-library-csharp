@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace AtCoder
@@ -70,7 +71,7 @@ namespace AtCoder
     /// }
     /// </code>
     /// </example>
-    public readonly struct StaticModInt<T> where T : struct, IStaticMod
+    public readonly struct StaticModInt<T> : IEquatable<StaticModInt<T>> where T : struct, IStaticMod
     {
         private readonly uint _v;
 
@@ -238,7 +239,8 @@ namespace AtCoder
         }
 
         public override string ToString() => _v.ToString();
-        public override bool Equals(object obj) => obj is StaticModInt<T> && this == (StaticModInt<T>)obj;
+        public override bool Equals(object obj) => obj is StaticModInt<T> && Equals((StaticModInt<T>)obj);
+        public bool Equals(StaticModInt<T> other) => Value == other.Value;
         public override int GetHashCode() => _v.GetHashCode();
     }
 
@@ -262,7 +264,7 @@ namespace AtCoder
     /// }
     /// </code>
     /// </example>
-    public readonly struct DynamicModInt<T> where T : struct, IDynamicModID
+    public readonly struct DynamicModInt<T> : IEquatable<DynamicModInt<T>> where T : struct, IDynamicModID
     {
         private readonly uint _v;
         private static Internal.Barrett bt;
@@ -435,7 +437,8 @@ namespace AtCoder
         }
 
         public override string ToString() => _v.ToString();
-        public override bool Equals(object obj) => obj is DynamicModInt<T> && this == (DynamicModInt<T>)obj;
+        public override bool Equals(object obj) => obj is DynamicModInt<T> && Equals((DynamicModInt<T>)obj);
+        public bool Equals(DynamicModInt<T> other) => Value == other.Value;
         public override int GetHashCode() => _v.GetHashCode();
     }
 }
