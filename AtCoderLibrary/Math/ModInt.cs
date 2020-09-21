@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace AtCoder
 {
@@ -90,6 +91,7 @@ namespace AtCoder
         /// <para>定数倍高速化のための関数です。 <paramref name="v"/> に 0 未満または mod 以上の値を入れた場合の挙動は未定義です。</para>
         /// <para>制約: 0≤|<paramref name="v"/>|&lt;mod</para>
         /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static StaticModInt<T> Raw(int v)
         {
             var u = unchecked((uint)v);
@@ -107,6 +109,7 @@ namespace AtCoder
 
         private StaticModInt(uint v) => _v = v;
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static uint Round(long v)
         {
             var x = v % default(T).Mod;
@@ -117,6 +120,7 @@ namespace AtCoder
             return (uint)x;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static StaticModInt<T> operator++(StaticModInt<T> value)
         {
             var v = value._v + 1;
@@ -127,6 +131,7 @@ namespace AtCoder
             return new StaticModInt<T>(v);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static StaticModInt<T> operator--(StaticModInt<T> value)
         {
             var v = value._v;
@@ -137,6 +142,7 @@ namespace AtCoder
             return new StaticModInt<T>(v - 1);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static StaticModInt<T> operator +(StaticModInt<T> lhs, StaticModInt<T> rhs)
         {
             var v = lhs._v + rhs._v;
@@ -147,6 +153,7 @@ namespace AtCoder
             return new StaticModInt<T>(v);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static StaticModInt<T> operator -(StaticModInt<T> lhs, StaticModInt<T> rhs)
         {
             unchecked
@@ -160,6 +167,7 @@ namespace AtCoder
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static StaticModInt<T> operator *(StaticModInt<T> lhs, StaticModInt<T> rhs)
         {
             return new StaticModInt<T>((uint)((ulong)lhs._v * rhs._v % default(T).Mod));
@@ -192,7 +200,7 @@ namespace AtCoder
         {
             Debug.Assert(0 <= n);
             var x = this;
-            var r = new StaticModInt<T>(1u);
+            var r = Raw(1);
 
             while (n > 0)
             {
@@ -213,6 +221,7 @@ namespace AtCoder
         /// <remarks>
         /// <para>制約: gcd(x, mod) = 1</para>
         /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public StaticModInt<T> Inv()
         {
             if (default(T).IsPrime)
@@ -283,6 +292,7 @@ namespace AtCoder
         /// <para>定数倍高速化のための関数です。 <paramref name="v"/> に 0 未満または mod 以上の値を入れた場合の挙動は未定義です。</para>
         /// <para>制約: 0≤|<paramref name="v"/>|&lt;mod</para>
         /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DynamicModInt<T> Raw(int v)
         {
             var u = unchecked((uint)v);
@@ -302,6 +312,7 @@ namespace AtCoder
 
         private DynamicModInt(uint v) => _v = v;
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static uint Round(long v)
         {
             Debug.Assert(bt != null, $"使用前に {nameof(DynamicModInt<T>)}<{nameof(T)}>.{nameof(Mod)} プロパティに mod の値を設定してください。");
@@ -313,6 +324,7 @@ namespace AtCoder
             return (uint)x;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DynamicModInt<T> operator ++(DynamicModInt<T> value)
         {
             var v = value._v + 1;
@@ -323,6 +335,7 @@ namespace AtCoder
             return new DynamicModInt<T>(v);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DynamicModInt<T> operator --(DynamicModInt<T> value)
         {
             var v = value._v;
@@ -333,6 +346,7 @@ namespace AtCoder
             return new DynamicModInt<T>(v - 1);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DynamicModInt<T> operator +(DynamicModInt<T> lhs, DynamicModInt<T> rhs)
         {
             var v = lhs._v + rhs._v;
@@ -343,6 +357,7 @@ namespace AtCoder
             return new DynamicModInt<T>(v);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DynamicModInt<T> operator -(DynamicModInt<T> lhs, DynamicModInt<T> rhs)
         {
             unchecked
@@ -356,6 +371,7 @@ namespace AtCoder
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DynamicModInt<T> operator *(DynamicModInt<T> lhs, DynamicModInt<T> rhs)
         {
             uint z = bt.Mul(lhs._v, rhs._v);
@@ -389,7 +405,7 @@ namespace AtCoder
         {
             Debug.Assert(0 <= n);
             var x = this;
-            var r = new DynamicModInt<T>(1u);
+            var r = Raw(1);
 
             while (n > 0)
             {
@@ -410,6 +426,7 @@ namespace AtCoder
         /// <remarks>
         /// <para>制約: gcd(x, mod) = 1</para>
         /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public DynamicModInt<T> Inv()
         {
             var (g, x) = Internal.InternalMath.InvGCD(_v, bt.Mod);
