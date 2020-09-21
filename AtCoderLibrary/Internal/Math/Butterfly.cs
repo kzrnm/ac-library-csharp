@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace AtCoder.Internal
 {
@@ -14,6 +15,7 @@ namespace AtCoder.Internal
         /// </summary>
         private static StaticModInt<T>[] sumIE = CalcurateSumIE();
 
+        [MethodImpl(MethodImplOptions.AggressiveOptimization)]
         public static void Calculate(Span<StaticModInt<T>> a)
         {
             var n = a.Length;
@@ -34,18 +36,22 @@ namespace AtCoder.Internal
                 {
                     int offset = s << (h - ph + 1);
 
+                    var ls = a.Slice(offset, p);
+                    var rs = a.Slice(offset + p, p);
+
                     for (int i = 0; i < p; i++)
                     {
-                        var l = a[i + offset];
-                        var r = a[i + offset + p] * now;
-                        a[i + offset] = l + r;
-                        a[i + offset + p] = l - r;
+                        var l = ls[i];
+                        var r = rs[i] * now;
+                        ls[i] = l + r;
+                        rs[i] = l - r;
                     }
                     now *= sumE[InternalBit.BSF(~(uint)s)];
                 }
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveOptimization)]
         public static void CalculateInv(Span<StaticModInt<T>> a)
         {
             var n = a.Length;
@@ -66,13 +72,16 @@ namespace AtCoder.Internal
                 {
                     int offset = s << (h - ph + 1);
 
+                    var ls = a.Slice(offset, p);
+                    var rs = a.Slice(offset + p, p);
+
                     for (int i = 0; i < p; i++)
                     {
-                        var l = a[i + offset];
-                        var r = a[i + offset + p];
-                        a[i + offset] = l + r;
-                        a[i + offset + p] = StaticModInt<T>.Raw(
-                            unchecked((int)((ulong)(default(T).Mod + l.Value - r.Value) * (ulong)iNow.Value % default(T).Mod)));
+                        var l = ls[i];
+                        var r = rs[i];
+                        ls[i] = l + r;
+                        rs[i] = StaticModInt<T>.Raw(
+                            (int)((ulong)(default(T).Mod + l.Value - r.Value) * (ulong)iNow.Value % default(T).Mod));
                     }
                     iNow *= sumIE[InternalBit.BSF(~(uint)s)];
                 }
