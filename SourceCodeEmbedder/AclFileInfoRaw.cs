@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace SourceCodeEmbeder
+namespace SourceCodeEmbedder
 {
     [DebuggerDisplay("AclFileInfoRaw: {" + nameof(FilePath) + "}")]
     public class AclFileInfoRaw
