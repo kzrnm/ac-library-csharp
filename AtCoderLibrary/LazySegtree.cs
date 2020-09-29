@@ -449,7 +449,7 @@ namespace AtCoder
         public static void AssertFIdentity(TValue value)
         {
             Debug.Assert(op.Mapping(op.FIdentity, value).Equals(value),
-                $"{nameof(op.Mapping)}({op.Identity}, {value}) != {value}");
+                $"{nameof(op.Mapping)}({op.FIdentity}, {value}) != {value}");
         }
 
         /// <summary>
