@@ -1,0 +1,36 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="netstandard" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="$(ProjectDir)/Dll/SourceExpander.Embedder.dll" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="SourceExpander" #>
+<#@ output extension=".cs" #>
+<#
+
+string Quote(string str) => $"@\"{str.Replace("\"","\"\"")}\"";
+string QuoteArray(IEnumerable<string> strs) => "new string[]{" + string.Join(", ", strs.Select(Quote)) + " }" ;
+
+var files = Directory.EnumerateFiles(Path.GetDirectoryName(EmbedderUtil.CurrentFilePath()), "*.cs", SearchOption.AllDirectories).Where(p => !p.EndsWith("Embedded.cs"));
+var resolver = new SourceFileResolver("AtCoderLibrary", files);
+#>
+using SourceExpander;
+internal static class ModuleInitializer
+{
+    public static void Initialize()
+    {
+<# foreach(var info in resolver.Resolve() )
+if(info.TypeNames.Any())
+{ #>
+GlobalSourceFileContainer.Instance.Add(new SourceFileInfo
+    {
+        FileName = <#= Quote(info.FileName) #>,
+        TypeNames = <#= QuoteArray(info.TypeNames) #>,
+        Usings = <#= QuoteArray(info.Usings) #>,
+        Dependencies = <#= QuoteArray(info.Dependencies) #>,
+        CodeBody = <#= Quote(info.CodeBody) #>
+    });
+<# } #>
+    }
+}
