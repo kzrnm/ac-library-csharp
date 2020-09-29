@@ -6,9 +6,26 @@
     <OutputType>Library</OutputType>
     <LangVersion>8</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+
+    <PackageId>ac-library-csharp</PackageId>
+    <Version>0.1.0</Version>
+    <Description>ac-library ported to C#.</Description>
+    <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
+
+    <Authors>naminodarie</Authors>
+    <PackageTags>ac-library-csharp</PackageTags>
+    <PackageLicenseExpression></PackageLicenseExpression>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/naminodarie/ac-library-csharp</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/naminodarie/ac-library-csharp</RepositoryUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
     <None Include="Embedded.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
