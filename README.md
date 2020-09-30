@@ -6,6 +6,15 @@ AtCoderによって公開されている[AtCoder Library](https://atcoder.jp/pos
 
 see [AtCoderLibrary.Sample](/AtCoderLibrary.Sample/).
 
+### Install
+
+```xml
+<PackageReference Include="SourceExpander" Version="1.0.5" />
+<PackageReference Include="Sac-library-csharpourceExpander" Version="0.1.0" />
+```
+
+### run
+
 ```C#
 using System;
 using SourceExpander;
