@@ -7,6 +7,7 @@
     <LangVersion>8</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
+    <EnableSourceLink>true</EnableSourceLink>
     <PackageId>ac-library-csharp</PackageId>
     <Version>0.1.0</Version>
     <Description>ac-library ported to C#.</Description>
@@ -26,40 +27,17 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-    <None Include="Embedded.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Embedded.tt</DependentUpon>
-    </None>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Fody" Version="6.2.6">
+    <PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="3.8.0-4.20480.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="ModuleInit.Fody" Version="2.1.1" />
+    <PackageReference Include="SourceExpander.Embedder" Version="1.0.6-beta2" PrivateAssets="all" />
+
     <PackageReference Include="SourceExpander.Core" Version="1.0.5" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Embedded.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Embedded.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Embedded.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Embedded.tt</DependentUpon>
-    </Compile>
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.1" />
   </ItemGroup>
 
 </Project>
