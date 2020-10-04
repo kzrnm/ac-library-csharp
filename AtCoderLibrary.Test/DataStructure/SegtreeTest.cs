@@ -93,6 +93,62 @@ namespace AtCoder.Test.DataStructure
                 }
             }
         }
+
+
+        [Fact]
+        // https://atcoder.jp/contests/practice2/tasks/practice2_j
+        public void Practice2_J()
+        {
+            int target;
+            // int n = 5;
+            int q = 5;
+            var a = new int[5] { 1, 2, 3, 2, 1 };
+            var queries = new[]
+            {
+                new[]{2,1,5},
+                new[]{3,2,3},
+                new[]{1,3,1},
+                new[]{2,2,4},
+                new[]{3,1,3},
+            };
+
+            var seg = new Segtree<int, OpJ>(a);
+
+            var list = new List<int>();
+
+            for (int i = 0; i < q; i++)
+            {
+                int t = queries[i][0];
+                if (t == 1)
+                {
+                    int x = queries[i][1];
+                    int v = queries[i][2];
+                    x--;
+                    seg[x] = v;
+                }
+                else if (t == 2)
+                {
+                    int l = queries[i][1];
+                    int r = queries[i][2];
+                    l--;
+                    list.Add(seg.Prod(l, r));
+                }
+                else if (t == 3)
+                {
+                    int p = queries[i][1];
+                    target = queries[i][2];
+                    p--;
+                    list.Add(seg.MaxRight(p, v => v < target) + 1);
+                }
+            }
+            Assert.Equal(list, new[] { 3, 3, 2, 6 });
+        }
+    }
+
+    struct OpJ : IMonoidOperator<int>
+    {
+        public int Identity => -1;
+        public int Operate(int a, int b) => Math.Max(a, b);
     }
 
     struct MonoidOperator : IMonoidOperator<string>
