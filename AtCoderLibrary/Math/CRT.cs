@@ -6,7 +6,7 @@ using System.Text;
 
 namespace AtCoder
 {
-    public static partial class Math
+    public static partial class MathLib
     {
         /// <summary>
         /// 同じ長さ n の配列 <paramref name="r"/>, <paramref name="m"/> について、x≡<paramref name="r"/>[i] (mod <paramref name="m"/>[i]),∀i∈{0,1,⋯,n−1} を解きます。

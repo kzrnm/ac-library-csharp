@@ -6,7 +6,7 @@ using System.Text;
 
 namespace AtCoder
 {
-    public static partial class Math
+    public static partial class MathLib
     {
         /// <summary>
         /// <paramref name="x"/>^<paramref name="n"/> mod <paramref name="m"/> を返します。

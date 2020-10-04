@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AtCoder
 {
-    public static partial class Math
+    public static partial class MathLib
     {
         /// <summary>
         /// sum_{i=0}^{<paramref name="n"/>-1} floor(<paramref name="a"/>*i+<paramref name="b"/>/<paramref name="m"/>) を返します。

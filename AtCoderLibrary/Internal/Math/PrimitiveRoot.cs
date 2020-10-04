@@ -66,7 +66,7 @@ namespace AtCoder.Internal
                     bool ok = true;
                     for (int i = 0; i < cnt; i++)
                     {
-                        if (Math.PowMod(g, (m - 1) / divs[i], m) == 1)
+                        if (MathLib.PowMod(g, (m - 1) / divs[i], m) == 1)
                         {
                             ok = false;
                             break;

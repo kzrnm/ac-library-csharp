@@ -3,7 +3,7 @@ using AtCoder.Internal;
 
 namespace AtCoder
 {
-    public static partial class Math
+    public static partial class MathLib
     {
         /// <summary>
         /// <paramref name="x"/>y≡1(mod <paramref name="m"/>) なる y のうち、0≤y&lt;<paramref name="m"/> を満たすものを返します。

@@ -4,7 +4,7 @@ using AtCoder;
 
 namespace AtCoder
 {
-    public static partial class Math
+    public static partial class MathLib
     {
         /// <summary>
         /// 畳み込みを mod <paramref name="m"/> = 998244353 で計算します。
@@ -433,7 +433,7 @@ namespace AtCoder
                     bTemp[i] = new StaticModInt<TMod>(b[i]);
                 }
 
-                var c = AtCoder.Math.Convolution<TMod>(aTemp, bTemp, a.Length, b.Length, z);
+                var c = AtCoder.MathLib.Convolution<TMod>(aTemp, bTemp, a.Length, b.Length, z);
                 var result = new ulong[c.Length];
                 for (int i = 0; i < result.Length; i++)
                 {
