@@ -9,7 +9,7 @@
 
     <EnableSourceLink>true</EnableSourceLink>
     <PackageId>ac-library-csharp</PackageId>
-    <Version>0.2.0</Version>
+    <Version>0.2.1</Version>
     <Description>ac-library ported to C#.</Description>
     <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
 
@@ -22,24 +22,25 @@
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <RestoreAdditionalProjectSources>https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json ;$(RestoreAdditionalProjectSources)</RestoreAdditionalProjectSources>
-  </PropertyGroup>
-
   <ItemGroup>
+    <None Include="FodyWeavers.xml" Visible="false"/>
     <None Include="..\LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
+      <Visible>false</Visible>
     </None>
   </ItemGroup>
 
+  <PropertyGroup>
+    <RestoreAdditionalProjectSources>https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json ;$(RestoreAdditionalProjectSources)</RestoreAdditionalProjectSources>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="3.8.0-4.20480.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="SourceExpander.Embedder" Version="1.1.0-beta.2" PrivateAssets="all" />
-    <PackageReference Include="SourceExpander.Core" Version="1.1.0-beta.2" />
+    <PackageReference Include="SourceExpander.Embedder" Version="1.1.0-beta.6" PrivateAssets="all" />
+    <PackageReference Include="SourceExpander.Core" Version="1.1.0-beta.6" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" />
     <PackageReference Include="ModuleInit.Fody" Version="2.1.1" PrivateAssets="all" />
   </ItemGroup>
