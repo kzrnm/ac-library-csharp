@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Numerics;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace AtCoder.Internal
 {
@@ -14,10 +18,17 @@ namespace AtCoder.Internal
         /// </summary>
         private static StaticModInt<T>[] sumIE = CalcurateSumIE();
 
+        [MethodImpl(MethodImplOptions.AggressiveOptimization)]
         public static void Calculate(Span<StaticModInt<T>> a)
         {
+            CheckPow2(a.Length);
             var n = a.Length;
             var h = InternalMath.CeilPow2(n);
+
+            var regLength = Vector<uint>.Count;
+
+            // 全要素がmodのVector<uint>を作成（比較および加減算用）
+            var modV = new Vector<uint>(default(T).Mod);
 
             for (int ph = 1; ph <= h; ph++)
             {
@@ -29,27 +40,71 @@ namespace AtCoder.Internal
 
                 var now = StaticModInt<T>.Raw(1);
 
+
                 // 各ブロックの s 段目
                 for (int s = 0; s < w; s++)
                 {
                     int offset = s << (h - ph + 1);
+                    var ls = a.Slice(offset, p);
+                    var rs = a.Slice(offset + p, p);
 
-                    for (int i = 0; i < p; i++)
+                    if (p < regLength)
                     {
-                        var l = a[i + offset];
-                        var r = a[i + offset + p] * now;
-                        a[i + offset] = l + r;
-                        a[i + offset + p] = l - r;
+                        for (int i = 0; i < p; i++)
+                        {
+                            var l = ls[i];
+                            var r = rs[i] * now;
+                            ls[i] = l + r;
+                            rs[i] = l - r;
+                        }
                     }
+                    else
+                    {
+                        foreach (ref var r in rs)
+                        {
+                            r *= now;
+                        }
+
+                        // uintとして再解釈
+                        var lu = MemoryMarshal.Cast<StaticModInt<T>, uint>(ls);
+                        var ru = MemoryMarshal.Cast<StaticModInt<T>, uint>(rs);
+
+                        for (int i = 0; i < lu.Length; i += regLength)
+                        {
+                            var luSliced = lu.Slice(i);
+                            var ruSliced = ru.Slice(i);
+                            var u = new Vector<uint>(luSliced);
+                            var v = new Vector<uint>(ruSliced);
+                            var add = u + v;
+                            var sub = u - v;
+
+                            var ge = Vector.GreaterThanOrEqual(add, modV);
+                            add = Vector.ConditionalSelect(ge, add - modV, add);
+
+                            ge = Vector.GreaterThanOrEqual(sub, modV);
+                            sub = Vector.ConditionalSelect(ge, sub + modV, sub);
+
+                            add.CopyTo(luSliced);
+                            sub.CopyTo(ruSliced);
+                        }
+                    }
+
                     now *= sumE[InternalBit.BSF(~(uint)s)];
                 }
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveOptimization)]
         public static void CalculateInv(Span<StaticModInt<T>> a)
         {
+            CheckPow2(a.Length);
             var n = a.Length;
             var h = InternalMath.CeilPow2(n);
+
+            var regLength = Vector<uint>.Count;
+
+            // 全要素がmodのVector<uint>を作成（比較および加減算用）
+            var modV = new Vector<uint>(default(T).Mod);
 
             for (int ph = h; ph >= 1; ph--)
             {
@@ -66,13 +121,49 @@ namespace AtCoder.Internal
                 {
                     int offset = s << (h - ph + 1);
 
-                    for (int i = 0; i < p; i++)
+                    var ls = a.Slice(offset, p);
+                    var rs = a.Slice(offset + p, p);
+
+                    if (p < regLength)
                     {
-                        var l = a[i + offset];
-                        var r = a[i + offset + p];
-                        a[i + offset] = l + r;
-                        a[i + offset + p] = StaticModInt<T>.Raw(
-                            unchecked((int)((ulong)(default(T).Mod + l.Value - r.Value) * (ulong)iNow.Value % default(T).Mod)));
+                        for (int i = 0; i < p; i++)
+                        {
+                            var l = ls[i];
+                            var r = rs[i];
+                            ls[i] = l + r;
+                            rs[i] = StaticModInt<T>.Raw(
+                                (int)((ulong)(default(T).Mod + l.Value - r.Value) * (ulong)iNow.Value % default(T).Mod));
+                        }
+                    }
+                    else
+                    {
+                        // uintとして再解釈
+                        var lu = MemoryMarshal.Cast<StaticModInt<T>, uint>(ls);
+                        var ru = MemoryMarshal.Cast<StaticModInt<T>, uint>(rs);
+
+                        for (int i = 0; i < lu.Length; i += regLength)
+                        {
+                            var luSliced = lu.Slice(i);
+                            var ruSliced = ru.Slice(i);
+                            var u = new Vector<uint>(luSliced);
+                            var v = new Vector<uint>(ruSliced);
+                            var add = u + v;
+                            var sub = u - v;
+
+                            var ge = Vector.GreaterThanOrEqual(add, modV);
+                            add = Vector.ConditionalSelect(ge, add - modV, add);
+
+                            // こちらは後で余りを取るのでマスク不要
+                            sub += modV;
+
+                            add.CopyTo(luSliced);
+                            sub.CopyTo(ruSliced);
+                        }
+
+                        foreach (ref var r in rs)
+                        {
+                            r *= iNow;
+                        }
                     }
                     iNow *= sumIE[InternalBit.BSF(~(uint)s)];
                 }
@@ -141,6 +232,15 @@ namespace AtCoder.Internal
             }
 
             return sumIE;
+        }
+
+        [Conditional("DEBUG")]
+        private static void CheckPow2(int n)
+        {
+            if (BitOperations.PopCount((uint)n) != 1)
+            {
+                throw new ArgumentException("配列長は2のべき乗でなければなりません。");
+            }
         }
     }
 }
