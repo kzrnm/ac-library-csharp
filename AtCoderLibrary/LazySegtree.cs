@@ -152,6 +152,9 @@ namespace AtCoder
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public TValue Slice(int l, int len) => Prod(l, l + len);
+
         /// <summary>
         /// <see cref="TOp.Operate"/>(a[<paramref name="l"/>], ..., a[<paramref name="r"/> - 1]) を返します。<paramref name="l"/> = <paramref name="r"/> のときは　<see cref="TOp.Identity"/> を返します。
         /// </summary>
