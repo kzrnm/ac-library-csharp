@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
+using FluentAssertions;
 using AtCoder.Test.Utils;
 using Xunit;
 
@@ -13,7 +12,7 @@ namespace AtCoder.Test.DataStructure
         public void Zero()
         {
             var s = new Segtree<string, MonoidOperator>(0);
-            Assert.Equal("$", s.AllProd);
+            s.AllProd.Should().Be("$");
         }
 
         [SkippableFact]
@@ -22,31 +21,31 @@ namespace AtCoder.Test.DataStructure
             DebugUtil.SkipIfNotDebug();
             Assert.Throws<DebugAssertException>(() => new Segtree<string, MonoidOperator>(-1));
             var s = new Segtree<string, MonoidOperator>(10);
-            Assert.Throws<DebugAssertException>(() => s[-1]);
-            Assert.Throws<DebugAssertException>(() => s[10]);
+            s.Invoking(s => s[-1]).Should().Throw<DebugAssertException>();
+            s.Invoking(s => s[10]).Should().Throw<DebugAssertException>();
 
-            Assert.Throws<DebugAssertException>(() => s.Prod(-1, -1));
-            Assert.Throws<DebugAssertException>(() => s.Prod(3, 2));
-            Assert.Throws<DebugAssertException>(() => s.Prod(0, 11));
-            Assert.Throws<DebugAssertException>(() => s.Prod(-1, 11));
+            s.Invoking(s => s.Prod(-1, -1)).Should().Throw<DebugAssertException>();
+            s.Invoking(s => s.Prod(3, 2)).Should().Throw<DebugAssertException>();
+            s.Invoking(s => s.Prod(0, 11)).Should().Throw<DebugAssertException>();
+            s.Invoking(s => s.Prod(-1, 11)).Should().Throw<DebugAssertException>();
 
-            Assert.Throws<DebugAssertException>(() => s.MaxRight(11, s => true));
-            Assert.Throws<DebugAssertException>(() => s.MaxRight(-1, s => true));
-            Assert.Throws<DebugAssertException>(() => s.MaxRight(0, s => false));
+            s.Invoking(s => s.MaxRight(11, s => true)).Should().Throw<DebugAssertException>();
+            s.Invoking(s => s.MaxRight(-1, s => true)).Should().Throw<DebugAssertException>();
+            s.Invoking(s => s.MaxRight(0, s => false)).Should().Throw<DebugAssertException>();
         }
 
         [Fact]
         public void One()
         {
             var s = new Segtree<string, MonoidOperator>(1);
-            Assert.Equal("$", s.AllProd);
-            Assert.Equal("$", s[0]);
-            Assert.Equal("$", s.Prod(0, 1));
+            s.AllProd.Should().Be("$");
+            s[0].Should().Be("$");
+            s.Prod(0, 1).Should().Be("$");
             s[0] = "dummy";
-            Assert.Equal("dummy", s[0]);
-            Assert.Equal("$", s.Prod(0, 0));
-            Assert.Equal("dummy", s.Prod(0, 1));
-            Assert.Equal("$", s.Prod(1, 1));
+            s[0].Should().Be("dummy");
+            s.Prod(0, 0).Should().Be("$");
+            s.Prod(0, 1).Should().Be("dummy");
+            s.Prod(1, 1).Should().Be("$");
         }
 
         [Fact]
@@ -69,7 +68,7 @@ namespace AtCoder.Test.DataStructure
                 {
                     for (int r = l; r <= n; r++)
                     {
-                        Assert.Equal(seg0.Prod(l, r), seg1.Prod(l, r));
+                        seg1.Prod(l, r).Should().Be(seg0.Prod(l, r));
                     }
                 }
 
@@ -78,7 +77,7 @@ namespace AtCoder.Test.DataStructure
                     for (int r = l; r <= n; r++)
                     {
                         var y = seg1.Prod(l, r);
-                        Assert.Equal(seg0.MaxRight(l, x => x.Length <= y.Length), seg1.MaxRight(l, x => x.Length <= y.Length));
+                        seg1.MaxRight(l, x => x.Length <= y.Length).Should().Be(seg0.MaxRight(l, x => x.Length <= y.Length));
                     }
                 }
 
@@ -88,7 +87,7 @@ namespace AtCoder.Test.DataStructure
                     for (int l = 0; l <= r; l++)
                     {
                         var y = seg1.Prod(l, r);
-                        Assert.Equal(seg0.MinLeft(l, x => x.Length <= y.Length), seg1.MinLeft(l, x => x.Length <= y.Length));
+                        seg1.MinLeft(l, x => x.Length <= y.Length).Should().Be(seg0.MinLeft(l, x => x.Length <= y.Length));
                     }
                 }
             }
@@ -141,7 +140,7 @@ namespace AtCoder.Test.DataStructure
                     list.Add(seg.MaxRight(p, v => v < target) + 1);
                 }
             }
-            Assert.Equal(list, new[] { 3, 3, 2, 6 });
+            list.Should().Equal(new[] { 3, 3, 2, 6 });
         }
     }
 
@@ -194,7 +193,7 @@ namespace AtCoder.Test.DataStructure
         public int MaxRight(int l, Predicate<string> f)
         {
             var sum = op.Identity;
-            Assert.True(f(sum));
+            f(sum).Should().BeTrue();
             for (int i = l; i < n; i++)
             {
                 sum = op.Operate(sum, d[i]);
@@ -205,7 +204,7 @@ namespace AtCoder.Test.DataStructure
         public int MinLeft(int r, Predicate<string> f)
         {
             var sum = op.Identity;
-            Assert.True(f(sum));
+            f(sum).Should().BeTrue();
             for (int i = r - 1; i >= 0; i--)
             {
                 sum = op.Operate(d[i], sum);
