@@ -99,6 +99,8 @@ namespace AtCoder
         private static readonly TOp op = default;
         private readonly TValue[] data;
 
+        public int Length { get; }
+
         /// <summary>
         /// 長さ <paramref name="n"/> の配列aを持つ <see cref="FenwickTree{TValue, TOp}"/> クラスの新しいインスタンスを作ります。
         /// </summary>
@@ -110,6 +112,7 @@ namespace AtCoder
         public FenwickTree(int n)
         {
             Debug.Assert(unchecked((uint)n <= 100_000_000));
+            Length = n;
             data = new TValue[n + 1];
         }
 
@@ -156,6 +159,8 @@ namespace AtCoder
             return s;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public TValue Slice(int l, int len) => Sum(l, l + len);
 
         [DebuggerDisplay("Value = {" + nameof(value) + "}, Sum = {" + nameof(sum) + "}")]
         private struct DebugItem
