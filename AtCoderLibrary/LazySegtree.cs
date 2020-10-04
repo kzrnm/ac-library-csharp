@@ -73,6 +73,7 @@ namespace AtCoder
         /// <param name="n">配列の長さ</param>
         public LazySegtree(int n)
         {
+            Debug.Assert(0 <= n);
             AssertMonoid(op.Identity);
             AssertFIdentity(op.Identity);
             AssertF(op.FIdentity, op.Identity, op.Identity);

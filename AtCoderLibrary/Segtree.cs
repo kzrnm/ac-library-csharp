@@ -59,6 +59,7 @@ namespace AtCoder
         /// <param name="n">配列の長さ</param>
         public Segtree(int n)
         {
+            Debug.Assert(0 <= n);
             AssertMonoid(op.Identity);
             Length = n;
             log = InternalMath.CeilPow2(n);
