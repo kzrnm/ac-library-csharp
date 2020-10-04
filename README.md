@@ -5,26 +5,3 @@ AtCoderによって公開されている[AtCoder Library](https://atcoder.jp/pos
 ## Usage
 
 see [AtCoderLibrary.Sample](/AtCoderLibrary.Sample/).
-
-### Install
-
-```xml
-<PackageReference Include="SourceExpander" Version="1.1.0-beta.3" />
-<PackageReference Include="ac-library-csharp" Version="0.1.1" />
-```
-
-### run
-
-```C#
-using System;
-using SourceExpander;
-
-class Program
-{
-    static void Main()
-    {
-        Expander.Expand(expandMethod: ExpandMethod.Strict);
-        Console.WriteLine(AtCoder.Math.PowMod(2, 524242, 177));
-    }
-}
-```
