@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AtCoder
 {
-    public static partial class String
+    public static partial class StringLib
     {
         /// <summary>
         /// 列 <paramref name="s"/> の LCP Array として、長さ |<paramref name="s"/>| の配列を返す。

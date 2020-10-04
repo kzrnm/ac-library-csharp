@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AtCoder
 {
-    public static partial class String
+    public static partial class StringLib
     {
         /// <summary>
         /// 列 <paramref name="m"/> の Suffix Array として、長さ |<paramref name="m"/>| の配列を返す。
