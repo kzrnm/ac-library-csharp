@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -9,7 +9,7 @@
 
     <EnableSourceLink>true</EnableSourceLink>
     <PackageId>ac-library-csharp</PackageId>
-    <Version>0.1.1</Version>
+    <Version>0.2.0</Version>
     <Description>ac-library ported to C#.</Description>
     <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
 

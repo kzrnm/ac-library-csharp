@@ -1,6 +1,4 @@
-AtCoderによって公開されている[AtCoder Library](https://atcoder.jp/posts/517)のC#移植版です。
-
-[ac-library-cs](https://github.com/key-moon/ac-library-cs) にソースコード埋め込みなどを行った拡張をしています。
+`ac-library-csharp` の使用方法です。
 
 ## Generator(recommend)
 
@@ -39,14 +37,10 @@ class Program
 
 ライブラリに埋め込んだソースコードを実行時に展開します。
 
-`Main` メソッド内で `SourceExpander.Expander.Expand` を呼び出すことで、`Combined.csx` を出力します。
-
-
 ```xml:csproj
   <ItemGroup>
-    <PackageReference Include="ac-library-csharp" Version="0.1.1" />
+    <PackageReference Include="ac-library-csharp" Version="0.2.0" />
     <PackageReference Include="SourceExpander" Version="1.1.0-beta.6" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" />
   </ItemGroup>
 ```
 

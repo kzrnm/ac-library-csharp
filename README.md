@@ -4,4 +4,4 @@ AtCoderによって公開されている[AtCoder Library](https://atcoder.jp/pos
 
 ## Usage
 
-see [AtCoderLibrary.Sample](/AtCoderLibrary.Sample/).
+see [AtCoderLibrary.Sample](/Sample.Usage/).
