@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
-using AtCoder;
+using AtCoder.Internal;
 
 namespace AtCoder
 {
-    public static partial class MathLib
+    public static class MathLib
     {
+        #region Convolution
         /// <summary>
         /// 畳み込みを mod <paramref name="m"/> = 998244353 で計算します。
         /// </summary>
@@ -484,5 +486,124 @@ namespace AtCoder
             public uint Mod => 469762049;
             public bool IsPrime => true;
         }
+        #endregion Convolution
+
+        #region PowMod
+        /// <summary>
+        /// <paramref name="x"/>^<paramref name="n"/> mod <paramref name="m"/> を返します。
+        /// </summary>
+        /// <remarks>
+        /// <para>制約: 0≤<paramref name="n"/>, 1≤<paramref name="m"/></para>
+        /// <para>計算量: O(log<paramref name="n"/>)</para>
+        /// </remarks>
+        public static long PowMod(long x, long n, int m)
+        {
+            Debug.Assert(0 <= n && 1 <= m);
+            if (m == 1) return 0;
+            Barrett barrett = new Barrett((uint)m);
+            uint r = 1, y = (uint)InternalMath.SafeMod(x, m);
+            while (0 < n)
+            {
+                if ((n & 1) != 0) r = barrett.Mul(r, y);
+                y = barrett.Mul(y, y);
+                n >>= 1;
+            }
+            return r;
+        }
+        #endregion PowMod
+
+        #region InvMod
+        /// <summary>
+        /// <paramref name="x"/>y≡1(mod <paramref name="m"/>) なる y のうち、0≤y&lt;<paramref name="m"/> を満たすものを返します。
+        /// </summary>
+        /// <remarks>
+        /// <para>制約: gcd(<paramref name="x"/>,<paramref name="m"/>)=1, 1≤<paramref name="m"/></para>
+        /// <para>計算量: O(log<paramref name="m"/>)</para>
+        /// </remarks>
+        public static long InvMod(long x, int m)
+        {
+            Debug.Assert(1 <= m);
+            var (g, res) = InternalMath.InvGCD(x, m);
+            Debug.Assert(g == 1);
+            return res;
+        }
+        #endregion InvMod
+
+        #region CRT
+        /// <summary>
+        /// 同じ長さ n の配列 <paramref name="r"/>, <paramref name="m"/> について、x≡<paramref name="r"/>[i] (mod <paramref name="m"/>[i]),∀i∈{0,1,⋯,n−1} を解きます。
+        /// </summary>
+        /// <remarks>
+        /// <para>制約: |<paramref name="r"/>|=|<paramref name="m"/>|, 1≤<paramref name="m"/>[i], lcm(m[i]) が ll に収まる</para>
+        /// <para>計算量: O(nloglcm(<paramref name="m"/>))</para>
+        /// </remarks>
+        /// <returns>答えは(存在するならば) y,z(0≤y&lt;z=lcm(<paramref name="m"/>[i])) を用いて x≡y(mod z) の形で書ける。答えがない場合は(0,0)、n=0 の時は(0,1)、それ以外の場合は(y,z)。</returns>
+        public static (long, long) CRT(long[] r, long[] m)
+        {
+            Debug.Assert(r.Length == m.Length);
+
+            long r0 = 0, m0 = 1;
+            for (int i = 0; i < m.Length; i++)
+            {
+                Debug.Assert(1 <= m[i]);
+                long r1 = InternalMath.SafeMod(r[i], m[i]);
+                long m1 = m[i];
+                if (m0 < m1)
+                {
+                    (r0, r1) = (r1, r0);
+                    (m0, m1) = (m1, m0);
+                }
+                if (m0 % m1 == 0)
+                {
+                    if (r0 % m1 != r1) return (0, 0);
+                    continue;
+                }
+                var (g, im) = InternalMath.InvGCD(m0, m1);
+
+                long u1 = (m1 / g);
+                if ((r1 - r0) % g != 0) return (0, 0);
+
+                long x = (r1 - r0) / g % u1 * im % u1;
+                r0 += x * m0;
+                m0 *= u1;
+                if (r0 < 0) r0 += m0;
+            }
+            return (r0, m0);
+        }
+        #endregion CRT
+
+        #region FloorSum
+        /// <summary>
+        /// sum_{i=0}^{<paramref name="n"/>-1} floor(<paramref name="a"/>*i+<paramref name="b"/>/<paramref name="m"/>) を返します。
+        /// </summary>
+        /// <remarks>
+        /// <para>制約: 0≤<paramref name="n"/>, <paramref name="m"/>≤10^9, 0≤<paramref name="a"/>, <paramref name="b"/>&lt;<paramref name="m"/></para>
+        /// <para>計算量: O(log(n+m+a+b))</para>
+        /// </remarks>
+        /// <returns></returns>
+        public static long FloorSum(long n, long m, long a, long b)
+        {
+            long ans = 0;
+            while (true)
+            {
+                if (a >= m)
+                {
+                    ans += (n - 1) * n * (a / m) / 2;
+                    a %= m;
+                }
+                if (b >= m)
+                {
+                    ans += n * (b / m);
+                    b %= m;
+                }
+
+                long yMax = (a * n + b) / m;
+                long xMax = yMax * m - b;
+                if (yMax == 0) return ans;
+                ans += (n - (xMax + a - 1) / a) * yMax;
+                (n, m, a, b) = (yMax, a, m, (a - xMax % a) % a);
+            }
+        }
+        #endregion FloorSum
     }
 }
