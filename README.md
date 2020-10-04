@@ -9,8 +9,8 @@ see [AtCoderLibrary.Sample](/AtCoderLibrary.Sample/).
 ### Install
 
 ```xml
-<PackageReference Include="SourceExpander" Version="1.0.5" />
-<PackageReference Include="Sac-library-csharpourceExpander" Version="0.1.0" />
+<PackageReference Include="SourceExpander" Version="1.1.0-beta.3" />
+<PackageReference Include="ac-library-csharp" Version="0.1.1" />
 ```
 
 ### run
