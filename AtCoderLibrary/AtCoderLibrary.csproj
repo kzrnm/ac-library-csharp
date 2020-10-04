@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -9,7 +9,7 @@
 
     <EnableSourceLink>true</EnableSourceLink>
     <PackageId>ac-library-csharp</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <Description>ac-library ported to C#.</Description>
     <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
 
@@ -20,6 +20,10 @@
     <PackageProjectUrl>https://github.com/naminodarie/ac-library-csharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/naminodarie/ac-library-csharp</RepositoryUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <RestoreAdditionalProjectSources>https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json ;$(RestoreAdditionalProjectSources)</RestoreAdditionalProjectSources>
   </PropertyGroup>
 
   <ItemGroup>
@@ -34,10 +38,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="SourceExpander.Embedder" Version="1.0.6-beta2" PrivateAssets="all" />
-
-    <PackageReference Include="SourceExpander.Core" Version="1.0.5" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.1" />
+    <PackageReference Include="SourceExpander.Embedder" Version="1.1.0-beta.2" PrivateAssets="all" />
+    <PackageReference Include="SourceExpander.Core" Version="1.1.0-beta.2" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" />
+    <PackageReference Include="ModuleInit.Fody" Version="2.1.1" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>
