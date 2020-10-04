@@ -1,5 +1,4 @@
-﻿#define DEBUG
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -17,22 +16,23 @@ namespace AtCoder.Test.DataStructure
             Assert.Equal("$", s.AllProd);
         }
 
-        [Fact]
+        [SkippableFact]
         public void Invalid()
         {
-            Assert.Throws<DebuAssertException>(() => new Segtree<string, MonoidOperator>(-1));
+            DebugUtil.SkipIfNotDebug();
+            Assert.Throws<DebugAssertException>(() => new Segtree<string, MonoidOperator>(-1));
             var s = new Segtree<string, MonoidOperator>(10);
-            Assert.Throws<DebuAssertException>(() => s[-1]);
-            Assert.Throws<DebuAssertException>(() => s[10]);
+            Assert.Throws<DebugAssertException>(() => s[-1]);
+            Assert.Throws<DebugAssertException>(() => s[10]);
 
-            Assert.Throws<DebuAssertException>(() => s.Prod(-1, -1));
-            Assert.Throws<DebuAssertException>(() => s.Prod(3, 2));
-            Assert.Throws<DebuAssertException>(() => s.Prod(0, 11));
-            Assert.Throws<DebuAssertException>(() => s.Prod(-1, 11));
+            Assert.Throws<DebugAssertException>(() => s.Prod(-1, -1));
+            Assert.Throws<DebugAssertException>(() => s.Prod(3, 2));
+            Assert.Throws<DebugAssertException>(() => s.Prod(0, 11));
+            Assert.Throws<DebugAssertException>(() => s.Prod(-1, 11));
 
-            Assert.Throws<DebuAssertException>(() => s.MaxRight(11, s => true));
-            Assert.Throws<DebuAssertException>(() => s.MaxRight(-1, s => true));
-            Assert.Throws<DebuAssertException>(() => s.MaxRight(0, s => false));
+            Assert.Throws<DebugAssertException>(() => s.MaxRight(11, s => true));
+            Assert.Throws<DebugAssertException>(() => s.MaxRight(-1, s => true));
+            Assert.Throws<DebugAssertException>(() => s.MaxRight(0, s => false));
         }
 
         [Fact]

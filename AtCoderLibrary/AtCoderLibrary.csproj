@@ -23,7 +23,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="FodyWeavers.xml" Visible="false"/>
+    <None Include="FodyWeavers.xml" Visible="false" />
     <None Include="..\LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>

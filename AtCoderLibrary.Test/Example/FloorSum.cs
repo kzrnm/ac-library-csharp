@@ -25,7 +25,7 @@ namespace AtCoder.Test.Example
                 {
                     long[] query = reader.ReadLine().Split().Select(long.Parse).ToArray();
                     (long n, long m, long a, long b) = (query[0], query[1], query[2], query[3]);
-                    writer.WriteLine(Math.FloorSum(n, m, a, b));
+                    writer.WriteLine(MathLib.FloorSum(n, m, a, b));
                 }
             }
         }

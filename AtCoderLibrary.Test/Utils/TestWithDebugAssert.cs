@@ -23,13 +23,13 @@ namespace AtCoder.Test.Utils
         public override void WriteLine(string message)
         {
             if (message.StartsWith("Fail:"))
-                throw new DebuAssertException(message);
+                throw new DebugAssertException(message);
         }
     }
-    public class DebuAssertException : Exception
+    public class DebugAssertException : Exception
     {
         public bool IsWriteLine { get; }
-        internal DebuAssertException() { }
-        internal DebuAssertException(string message) : base(message) { }
+        internal DebugAssertException() { }
+        internal DebugAssertException(string message) : base(message) { }
     }
 }
