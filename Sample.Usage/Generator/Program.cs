@@ -10,7 +10,7 @@ class Program
         Console.WriteLine(default(Op).Operate(0, 3));
     }
 }
-struct Op : IMonoidOperator<int>
+struct Op : ISegtreeOperator<int>
 {
     public int Identity => 0;
     public int Operate(int x, int y) => x + y;

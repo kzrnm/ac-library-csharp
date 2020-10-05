@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ac-library-csharp" Version="0.1.1" />
+    <PackageReference Include="ac-library-csharp" Version="0.3.0" />
     <PackageReference Include="SourceExpander" Version="1.1.0-beta.6" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" />
   </ItemGroup>
