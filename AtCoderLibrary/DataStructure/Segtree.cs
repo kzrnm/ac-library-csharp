@@ -10,7 +10,7 @@ namespace AtCoder
     /// モノイドを定義するインターフェイスです。
     /// </summary>
     /// <typeparam name="T">操作を行う型。</typeparam>
-    public interface IMonoidOperator<T>
+    public interface ISegtreeOperator<T>
     {
         /// <summary>
         /// Operate(x, <paramref name="Identity"/>) = xを満たす単位元。
@@ -35,7 +35,7 @@ namespace AtCoder
     /// <para>を O(log N) で求めることが出来るデータ構造です。</para>
     /// </summary>
     [DebuggerTypeProxy(typeof(Segtree<,>.DebugView))]
-    public class Segtree<TValue, TOp> where TOp : struct, IMonoidOperator<TValue>
+    public class Segtree<TValue, TOp> where TOp : struct, ISegtreeOperator<TValue>
     {
         private static readonly TOp op = default;
 
