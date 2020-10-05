@@ -4,16 +4,8 @@ using System.Collections.Generic;
 namespace AtCoder
 {
 #pragma warning disable CA1815 // Override equals and operator equals on value types
-    public interface INumOperator<T> : IEqualityComparer<T>, IComparer<T> where T : struct
+    public interface IArithmeticOperator<T> where T : struct
     {
-        /// <summary>
-        /// MinValue
-        /// </summary>
-        public T MinValue { get; }
-        /// <summary>
-        /// MaxValue
-        /// </summary>
-        public T MaxValue { get; }
         /// <summary>
         /// Addition operator +
         /// </summary>
@@ -58,6 +50,9 @@ namespace AtCoder
         /// Greater than operator &gt;
         /// </summary>
         /// <returns><paramref name="x"/> &gt; <paramref name="y"/></returns>
+    }
+    public interface ICompareOperator<T> : IEqualityComparer<T>, IComparer<T> where T : struct
+    {
         bool GreaterThan(T x, T y);
         /// <summary>
         /// Greater than or equal operator &gt;=
@@ -74,6 +69,17 @@ namespace AtCoder
         /// </summary>
         /// <returns><paramref name="x"/> &lt;= <paramref name="y"/></returns>
         bool LessThanOrEqual(T x, T y);
+    }
+    public interface INumOperator<T> : IArithmeticOperator<T>, ICompareOperator<T> where T : struct
+    {
+        /// <summary>
+        /// MinValue
+        /// </summary>
+        public T MinValue { get; }
+        /// <summary>
+        /// MaxValue
+        /// </summary>
+        public T MaxValue { get; }
     }
     public readonly struct IntOperator : INumOperator<int>
     {
