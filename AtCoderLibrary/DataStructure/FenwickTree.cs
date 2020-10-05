@@ -94,7 +94,7 @@ namespace AtCoder
     [DebuggerTypeProxy(typeof(FenwickTree<,>.DebugView))]
     public class FenwickTree<TValue, TOp>
         where TValue : struct
-        where TOp : struct, INumOperator<TValue>
+        where TOp : struct, IArithmeticOperator<TValue>
     {
         private static readonly TOp op = default;
         private readonly TValue[] data;
