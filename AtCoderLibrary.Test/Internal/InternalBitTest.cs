@@ -8,6 +8,25 @@ namespace AtCoder.Test.Internal
 {
     public class InternalBitTest
     {
+        [Theory]
+        [InlineData(0, 0)]
+        [InlineData(1, 1)]
+        [InlineData(2, 2)]
+        [InlineData(3, 1)]
+        [InlineData(4, 4)]
+        [InlineData(5, 1)]
+        [InlineData(6, 2)]
+        [InlineData(7, 1)]
+        [InlineData(8, 8)]
+        [InlineData(9, 1)]
+        [InlineData(1 << 30, 1 << 30)]
+        [InlineData((1 << 30) + 1, 1)]
+        [InlineData(int.MaxValue, 1)]
+        public void ExtractLowestSetBitTest(int input, int expected)
+        {
+            InternalBit.ExtractLowestSetBit(input).Should().Be(expected);
+            (input & -input).Should().Be(expected);
+        }
 
         [Theory]
         [InlineData(0, 0)]
