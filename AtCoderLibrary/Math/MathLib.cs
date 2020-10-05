@@ -88,7 +88,7 @@ namespace AtCoder
             }
             else
             {
-                int z = 1 << Internal.InternalMath.CeilPow2(n + m - 1);
+                int z = 1 << InternalMath.CeilPow2(n + m - 1);
 
                 var aTemp = new StaticModInt<TMod>[z];
                 for (int i = 0; i < a.Length; i++)
