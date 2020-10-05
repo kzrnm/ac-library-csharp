@@ -88,7 +88,7 @@ namespace AtCoder
             }
             else
             {
-                int z = 1 << InternalMath.CeilPow2(n + m - 1);
+                int z = 1 << InternalBit.CeilPow2(n + m - 1);
 
                 var aTemp = new StaticModInt<TMod>[z];
                 for (int i = 0; i < a.Length; i++)
@@ -141,7 +141,7 @@ namespace AtCoder
             }
             else
             {
-                int z = 1 << Internal.InternalMath.CeilPow2(n + m - 1);
+                int z = 1 << Internal.InternalBit.CeilPow2(n + m - 1);
 
                 var aTemp = new StaticModInt<TMod>[z];
                 for (int i = 0; i < a.Length; i++)
@@ -193,7 +193,7 @@ namespace AtCoder
             }
             else
             {
-                int z = 1 << Internal.InternalMath.CeilPow2(n + m - 1);
+                int z = 1 << Internal.InternalBit.CeilPow2(n + m - 1);
 
                 var aTemp = new StaticModInt<TMod>[z];
                 for (int i = 0; i < a.Length; i++)
@@ -245,7 +245,7 @@ namespace AtCoder
             }
             else
             {
-                int z = 1 << Internal.InternalMath.CeilPow2(n + m - 1);
+                int z = 1 << Internal.InternalBit.CeilPow2(n + m - 1);
 
                 var aTemp = new StaticModInt<TMod>[z];
                 for (int i = 0; i < a.Length; i++)
@@ -315,7 +315,7 @@ namespace AtCoder
                 return ConvolutionNaive(a, b);
             }
 
-            int z = 1 << Internal.InternalMath.CeilPow2(n + m - 1);
+            int z = 1 << Internal.InternalBit.CeilPow2(n + m - 1);
 
             var aTemp = new StaticModInt<TMod>[z];
             a.CopyTo(aTemp);
@@ -421,7 +421,7 @@ namespace AtCoder
 
             ulong[] Convolution<TMod>(ReadOnlySpan<long> a, ReadOnlySpan<long> b) where TMod : struct, IStaticMod
             {
-                int z = 1 << Internal.InternalMath.CeilPow2(a.Length + b.Length - 1);
+                int z = 1 << Internal.InternalBit.CeilPow2(a.Length + b.Length - 1);
 
                 var aTemp = new StaticModInt<TMod>[z];
                 for (int i = 0; i < a.Length; i++)

@@ -23,7 +23,7 @@ namespace AtCoder.Internal
         {
             CheckPow2(a.Length);
             var n = a.Length;
-            var h = InternalMath.CeilPow2(n);
+            var h = InternalBit.CeilPow2(n);
 
             var regLength = Vector<uint>.Count;
 
@@ -99,7 +99,7 @@ namespace AtCoder.Internal
         {
             CheckPow2(a.Length);
             var n = a.Length;
-            var h = InternalMath.CeilPow2(n);
+            var h = InternalBit.CeilPow2(n);
 
             var regLength = Vector<uint>.Count;
 

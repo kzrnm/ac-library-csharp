@@ -25,7 +25,7 @@ namespace AtCoder.Test.Internal
         [InlineData(int.MaxValue, 31)]
         public void CeilPow2Test(int input, int expected)
         {
-            InternalMath.CeilPow2(input).Should().Be(expected);
+            InternalBit.CeilPow2(input).Should().Be(expected);
         }
 
         [Theory]
