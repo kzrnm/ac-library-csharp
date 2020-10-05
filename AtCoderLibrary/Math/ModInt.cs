@@ -122,7 +122,7 @@ namespace AtCoder
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static StaticModInt<T> operator++(StaticModInt<T> value)
+        public static StaticModInt<T> operator ++(StaticModInt<T> value)
         {
             var v = value._v + 1;
             if (v == default(T).Mod)
@@ -133,7 +133,7 @@ namespace AtCoder
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static StaticModInt<T> operator--(StaticModInt<T> value)
+        public static StaticModInt<T> operator --(StaticModInt<T> value)
         {
             var v = value._v;
             if (v == 0)

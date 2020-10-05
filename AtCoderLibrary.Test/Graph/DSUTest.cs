@@ -12,7 +12,7 @@ namespace AtCoder.Test.DataStructure
 
 
         [Theory]
-        [Trait("Category","Practice")]
+        [Trait("Category", "Practice")]
         [InlineData(
 // Based on Library Checker https://github.com/yosupo06/library-checker-problems
 // unionfind
