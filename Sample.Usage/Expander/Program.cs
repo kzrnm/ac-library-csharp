@@ -1,6 +1,6 @@
 ﻿using System;
-using AtCoder;
 using System.Reflection;
+using AtCoder;
 class Program
 {
     static void Main()
