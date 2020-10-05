@@ -165,7 +165,7 @@ namespace AtCoder
         public static DynamicModInt<T> operator /(DynamicModInt<T> lhs, DynamicModInt<T> rhs) => lhs * rhs.Inv();
 
         public static DynamicModInt<T> operator +(DynamicModInt<T> value) => value;
-        public static DynamicModInt<T> operator -(DynamicModInt<T> value) => new DynamicModInt<T>() - value;
+        public static DynamicModInt<T> operator -(DynamicModInt<T> value) => new DynamicModInt<T>(Mod - value.Value);
         public static bool operator ==(DynamicModInt<T> lhs, DynamicModInt<T> rhs) => lhs._v == rhs._v;
         public static bool operator !=(DynamicModInt<T> lhs, DynamicModInt<T> rhs) => lhs._v != rhs._v;
         public static implicit operator DynamicModInt<T>(int value) => new DynamicModInt<T>(value);

@@ -73,6 +73,7 @@ namespace AtCoder
     public readonly struct StaticModInt<T> : IEquatable<StaticModInt<T>> where T : struct, IStaticMod
     {
         private readonly uint _v;
+        private static readonly T op = default;
 
         /// <summary>
         /// 格納されている値を返します。
@@ -82,7 +83,7 @@ namespace AtCoder
         /// <summary>
         /// mod を返します。
         /// </summary>
-        public static int Mod => (int)default(T).Mod;
+        public static int Mod => (int)op.Mod;
 
         /// <summary>
         /// <paramref name="v"/> に対して mod を取らずに StaticModInt&lt;<typeparamref name="T"/>&gt; 型のインスタンスを生成します。
@@ -112,10 +113,10 @@ namespace AtCoder
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static uint Round(long v)
         {
-            var x = v % default(T).Mod;
+            var x = v % op.Mod;
             if (x < 0)
             {
-                x += default(T).Mod;
+                x += op.Mod;
             }
             return (uint)x;
         }
@@ -124,7 +125,7 @@ namespace AtCoder
         public static StaticModInt<T> operator ++(StaticModInt<T> value)
         {
             var v = value._v + 1;
-            if (v == default(T).Mod)
+            if (v == op.Mod)
             {
                 v = 0;
             }
@@ -137,7 +138,7 @@ namespace AtCoder
             var v = value._v;
             if (v == 0)
             {
-                v = default(T).Mod;
+                v = op.Mod;
             }
             return new StaticModInt<T>(v - 1);
         }
@@ -146,9 +147,9 @@ namespace AtCoder
         public static StaticModInt<T> operator +(StaticModInt<T> lhs, StaticModInt<T> rhs)
         {
             var v = lhs._v + rhs._v;
-            if (v >= default(T).Mod)
+            if (v >= op.Mod)
             {
-                v -= default(T).Mod;
+                v -= op.Mod;
             }
             return new StaticModInt<T>(v);
         }
@@ -159,9 +160,9 @@ namespace AtCoder
             unchecked
             {
                 var v = lhs._v - rhs._v;
-                if (v >= default(T).Mod)
+                if (v >= op.Mod)
                 {
-                    v += default(T).Mod;
+                    v += op.Mod;
                 }
                 return new StaticModInt<T>(v);
             }
@@ -170,7 +171,7 @@ namespace AtCoder
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static StaticModInt<T> operator *(StaticModInt<T> lhs, StaticModInt<T> rhs)
         {
-            return new StaticModInt<T>((uint)((ulong)lhs._v * rhs._v % default(T).Mod));
+            return new StaticModInt<T>((uint)((ulong)lhs._v * rhs._v % op.Mod));
         }
 
         /// <summary>
@@ -183,7 +184,7 @@ namespace AtCoder
         public static StaticModInt<T> operator /(StaticModInt<T> lhs, StaticModInt<T> rhs) => lhs * rhs.Inv();
 
         public static StaticModInt<T> operator +(StaticModInt<T> value) => value;
-        public static StaticModInt<T> operator -(StaticModInt<T> value) => new StaticModInt<T>() - value;
+        public static StaticModInt<T> operator -(StaticModInt<T> value) => new StaticModInt<T>(op.Mod - value._v);
         public static bool operator ==(StaticModInt<T> lhs, StaticModInt<T> rhs) => lhs._v == rhs._v;
         public static bool operator !=(StaticModInt<T> lhs, StaticModInt<T> rhs) => lhs._v != rhs._v;
         public static implicit operator StaticModInt<T>(int value) => new StaticModInt<T>(value);
@@ -200,7 +201,7 @@ namespace AtCoder
         {
             Debug.Assert(0 <= n);
             var x = this;
-            var r = Raw(1);
+            var r = new StaticModInt<T>(1U);
 
             while (n > 0)
             {
@@ -224,14 +225,14 @@ namespace AtCoder
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public StaticModInt<T> Inv()
         {
-            if (default(T).IsPrime)
+            if (op.IsPrime)
             {
                 Debug.Assert(_v > 0);
-                return Pow(default(T).Mod - 2);
+                return Pow(op.Mod - 2);
             }
             else
             {
-                var (g, x) = Internal.InternalMath.InvGCD(_v, default(T).Mod);
+                var (g, x) = Internal.InternalMath.InvGCD(_v, op.Mod);
                 Debug.Assert(g == 1);
                 return new StaticModInt<T>(x);
             }
@@ -239,7 +240,7 @@ namespace AtCoder
 
         public override string ToString() => _v.ToString();
         public override bool Equals(object obj) => obj is StaticModInt<T> && Equals((StaticModInt<T>)obj);
-        public bool Equals(StaticModInt<T> other) => Value == other.Value;
+        public bool Equals(StaticModInt<T> other) => _v == other._v;
         public override int GetHashCode() => _v.GetHashCode();
     }
 }
