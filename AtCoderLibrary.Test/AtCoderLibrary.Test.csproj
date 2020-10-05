@@ -2,14 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-
     <IsPackable>false</IsPackable>
-
     <RootNamespace>AtCoder.Test</RootNamespace>
+    <Configurations>Debug</Configurations>
   </PropertyGroup>
 
   <PropertyGroup>
-    <NoWarn>$(NoWarn);CA1032;IDE0044</NoWarn>
+    <NoWarn>$(NoWarn);CA1822;CA1032;IDE0044</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

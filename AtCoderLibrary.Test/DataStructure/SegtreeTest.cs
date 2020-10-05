@@ -1,7 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using FluentAssertions;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
 using AtCoder.Test.Utils;
+using FluentAssertions;
 using Xunit;
 
 namespace AtCoder.Test.DataStructure
@@ -93,124 +95,132 @@ namespace AtCoder.Test.DataStructure
             }
         }
 
-
-        [Fact]
-        // https://atcoder.jp/contests/practice2/tasks/practice2_j
-        public void Practice2_J()
+        struct MonoidOperator : IMonoidOperator<string>
         {
-            int target;
-            // int n = 5;
-            int q = 5;
-            var a = new int[5] { 1, 2, 3, 2, 1 };
-            var queries = new[]
+            public string Identity => "$";
+            public string Operate(string a, string b)
             {
-                new[]{2,1,5},
-                new[]{3,2,3},
-                new[]{1,3,1},
-                new[]{2,2,4},
-                new[]{3,1,3},
-            };
+                if (!(a == "$" || b == "$" || StringComparer.Ordinal.Compare(a, b) <= 0)) throw new Exception();
+                if (a == "$") return b;
+                if (b == "$") return a;
+                return a + b;
+            }
+        }
+        class SegtreeNaive
+        {
+            private static readonly MonoidOperator op = default;
+            int n;
+            string[] d;
 
-            var seg = new Segtree<int, OpJ>(a);
+            public SegtreeNaive(int _n)
+            {
+                n = _n;
+                d = new string[n];
+                Array.Fill(d, op.Identity);
+            }
+            public string this[int p]
+            {
+                set => d[p] = value;
+                get => d[p];
+            }
 
-            var list = new List<int>();
+            public string Prod(int l, int r)
+            {
+                var sum = op.Identity;
+                for (int i = l; i < r; i++)
+                {
+                    sum = op.Operate(sum, d[i]);
+                }
+                return sum;
+            }
+            public string AllProd => Prod(0, n);
+            public int MaxRight(int l, Predicate<string> f)
+            {
+                var sum = op.Identity;
+                f(sum).Should().BeTrue();
+                for (int i = l; i < n; i++)
+                {
+                    sum = op.Operate(sum, d[i]);
+                    if (!f(sum)) return i;
+                }
+                return n;
+            }
+            public int MinLeft(int r, Predicate<string> f)
+            {
+                var sum = op.Identity;
+                f(sum).Should().BeTrue();
+                for (int i = r - 1; i >= 0; i--)
+                {
+                    sum = op.Operate(d[i], sum);
+                    if (!f(sum)) return i + 1;
+                }
+                return 0;
+            }
+        }
+
+
+
+        [Theory]
+        [Trait("Category", "Practice")]
+        [InlineData(
+// Based on https://atcoder.jp/contests/practice2/tasks/practice2_j
+@"5 5
+1 2 3 2 1
+2 1 5
+3 2 3
+1 3 1
+2 2 4
+3 1 3",
+
+@"3
+3
+2
+6
+"
+)]
+        public void Practice(string input, string expected)
+            => new SolverRunner(Solver).Solve(input).Should().EqualLines(expected);
+        static void Solver(TextReader reader, TextWriter writer)
+        {
+            int[] nq = reader.ReadLine().Split().Select(int.Parse).ToArray();
+            (int n, int q) = (nq[0], nq[1]);
+            int[] a = reader.ReadLine().Split().Select(int.Parse).ToArray();
+
+            var seg = new Segtree<int, OpPractice>(a);
+            int target;
 
             for (int i = 0; i < q; i++)
             {
-                int t = queries[i][0];
+                int[] tuv = reader.ReadLine().Split().Select(int.Parse).ToArray();
+
+                int t = tuv[0];
                 if (t == 1)
                 {
-                    int x = queries[i][1];
-                    int v = queries[i][2];
+                    int x = tuv[1];
+                    int v = tuv[2];
                     x--;
                     seg[x] = v;
                 }
                 else if (t == 2)
                 {
-                    int l = queries[i][1];
-                    int r = queries[i][2];
+                    int l = tuv[1];
+                    int r = tuv[2];
                     l--;
-                    list.Add(seg.Prod(l, r));
+                    writer.WriteLine(seg.Prod(l, r));
                 }
                 else if (t == 3)
                 {
-                    int p = queries[i][1];
-                    target = queries[i][2];
+                    int p = tuv[1];
+                    target = tuv[2];
                     p--;
-                    list.Add(seg.MaxRight(p, v => v < target) + 1);
+                    writer.WriteLine(seg.MaxRight(p, v => v < target) + 1);
                 }
             }
-            list.Should().Equal(new[] { 3, 3, 2, 6 });
         }
-    }
-
-    struct OpJ : IMonoidOperator<int>
-    {
-        public int Identity => -1;
-        public int Operate(int a, int b) => Math.Max(a, b);
-    }
-
-    struct MonoidOperator : IMonoidOperator<string>
-    {
-        public string Identity => "$";
-        public string Operate(string a, string b)
+        struct OpPractice : IMonoidOperator<int>
         {
-            if (!(a == "$" || b == "$" || StringComparer.Ordinal.Compare(a, b) <= 0)) throw new Exception();
-            if (a == "$") return b;
-            if (b == "$") return a;
-            return a + b;
-        }
-    }
-
-    class SegtreeNaive
-    {
-        private static readonly MonoidOperator op = default;
-        int n;
-        string[] d;
-
-        public SegtreeNaive(int _n)
-        {
-            n = _n;
-            d = new string[n];
-            Array.Fill(d, op.Identity);
-        }
-        public string this[int p]
-        {
-            set => d[p] = value;
-            get => d[p];
-        }
-
-        public string Prod(int l, int r)
-        {
-            var sum = op.Identity;
-            for (int i = l; i < r; i++)
-            {
-                sum = op.Operate(sum, d[i]);
-            }
-            return sum;
-        }
-        public string AllProd => Prod(0, n);
-        public int MaxRight(int l, Predicate<string> f)
-        {
-            var sum = op.Identity;
-            f(sum).Should().BeTrue();
-            for (int i = l; i < n; i++)
-            {
-                sum = op.Operate(sum, d[i]);
-                if (!f(sum)) return i;
-            }
-            return n;
-        }
-        public int MinLeft(int r, Predicate<string> f)
-        {
-            var sum = op.Identity;
-            f(sum).Should().BeTrue();
-            for (int i = r - 1; i >= 0; i--)
-            {
-                sum = op.Operate(d[i], sum);
-                if (!f(sum)) return i + 1;
-            }
-            return 0;
+            public int Identity => -1;
+            public int Operate(int a, int b) => Math.Max(a, b);
         }
     }
 }

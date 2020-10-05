@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtCoderLibrary.Test", "AtCoderLibrary.Test\AtCoderLibrary.Test.csproj", "{36C7CD8E-CCC6-4D87-BDD1-FB887CBC7E1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AtCoderLibrary.Test", "AtCoderLibrary.Test\AtCoderLibrary.Test.csproj", "{36C7CD8E-CCC6-4D87-BDD1-FB887CBC7E1C}"
 	ProjectSection(ProjectDependencies) = postProject
 		{7915FF27-0322-4460-A94E-FA7B86D5E25C} = {7915FF27-0322-4460-A94E-FA7B86D5E25C}
 	EndProjectSection
@@ -27,8 +27,7 @@ Global
 		{7915FF27-0322-4460-A94E-FA7B86D5E25C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{36C7CD8E-CCC6-4D87-BDD1-FB887CBC7E1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{36C7CD8E-CCC6-4D87-BDD1-FB887CBC7E1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{36C7CD8E-CCC6-4D87-BDD1-FB887CBC7E1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{36C7CD8E-CCC6-4D87-BDD1-FB887CBC7E1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36C7CD8E-CCC6-4D87-BDD1-FB887CBC7E1C}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
