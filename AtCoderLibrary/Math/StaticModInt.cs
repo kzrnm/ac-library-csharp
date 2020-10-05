@@ -40,6 +40,18 @@ namespace AtCoder
         public uint Mod => 998244353;
         public bool IsPrime => true;
     }
+
+    public readonly struct StaticModIntOperator<T> : IArithmeticOperator<StaticModInt<T>> where T : struct, IStaticMod
+    {
+        public StaticModInt<T> Add(StaticModInt<T> x, StaticModInt<T> y) => x + y;
+        public StaticModInt<T> Subtract(StaticModInt<T> x, StaticModInt<T> y) => x - y;
+        public StaticModInt<T> Multiply(StaticModInt<T> x, StaticModInt<T> y) => x * y;
+        public StaticModInt<T> Divide(StaticModInt<T> x, StaticModInt<T> y) => x / y;
+        public StaticModInt<T> Modulo(StaticModInt<T> x, StaticModInt<T> y) => throw new NotSupportedException();
+        public StaticModInt<T> Minus(StaticModInt<T> x) => -x;
+        public StaticModInt<T> Increment(StaticModInt<T> x) => ++x;
+        public StaticModInt<T> Decrement(StaticModInt<T> x) => --x;
+    }
 #pragma warning restore CA1815 // Override equals and operator equals on value types
 
     /// <summary>
