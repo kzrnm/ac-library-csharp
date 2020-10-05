@@ -73,7 +73,7 @@ namespace AtCoder.Test.DataStructure
             public StaticModInt<Mod998244353> A, B;
         }
 
-        struct Operatork : IMonoidFuncOperator<Sk, Fk>
+        struct Operatork : ILazySegtreeOperator<Sk, Fk>
         {
             public Sk Identity => default;
             public Fk FIdentity => new Fk() { A = 1 };
@@ -142,7 +142,7 @@ namespace AtCoder.Test.DataStructure
             public long Inversion;
         }
 
-        struct Operatorl : IMonoidFuncOperator<Sl, bool>
+        struct Operatorl : ILazySegtreeOperator<Sl, bool>
         {
             public Sl Identity => default;
             public bool FIdentity => false;

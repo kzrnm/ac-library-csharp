@@ -95,7 +95,7 @@ namespace AtCoder.Test.DataStructure
             }
         }
 
-        struct MonoidOperator : IMonoidOperator<string>
+        struct MonoidOperator : ISegtreeOperator<string>
         {
             public string Identity => "$";
             public string Operate(string a, string b)
@@ -217,7 +217,7 @@ namespace AtCoder.Test.DataStructure
                 }
             }
         }
-        struct OpPractice : IMonoidOperator<int>
+        struct OpPractice : ISegtreeOperator<int>
         {
             public int Identity => -1;
             public int Operate(int a, int b) => Math.Max(a, b);

@@ -11,7 +11,7 @@ namespace AtCoder
     /// </summary>
     /// <typeparam name="T">操作を行う型。</typeparam>
     /// <typeparam name="F">写像の型。</typeparam>
-    public interface IMonoidFuncOperator<T, F>
+    public interface ILazySegtreeOperator<T, F>
     {
         /// <summary>
         /// Operate(x, <paramref name="Identity"/>) = x を満たす単位元。
@@ -48,7 +48,7 @@ namespace AtCoder
     /// <para>を O(log N) で求めることが出来るデータ構造です。</para>
     /// </summary>
     [DebuggerTypeProxy(typeof(LazySegtree<,,>.DebugView))]
-    public class LazySegtree<TValue, F, TOp> where TOp : struct, IMonoidFuncOperator<TValue, F>
+    public class LazySegtree<TValue, F, TOp> where TOp : struct, ILazySegtreeOperator<TValue, F>
     {
         private static readonly TOp op = default;
 
