@@ -177,7 +177,7 @@ namespace AtCoder.Internal
             var e = new StaticModInt<T>(g).Pow((default(T).Mod - 1) >> cnt2);
             var ie = e.Inv();
 
-            var sumE = new StaticModInt<T>[cnt2 - 2];
+            var sumE = new StaticModInt<T>[30];
 
             // es[i]^(2^(2+i)) == 1
             Span<StaticModInt<T>> es = stackalloc StaticModInt<T>[cnt2 - 1];
@@ -193,7 +193,7 @@ namespace AtCoder.Internal
             }
 
             var now = StaticModInt<T>.Raw(1);
-            for (int i = 0; i < sumE.Length; i++)
+            for (int i = 0; i <= cnt2 - 2; i++)
             {
                 sumE[i] = es[i] * now;
                 now *= ies[i];
@@ -209,7 +209,7 @@ namespace AtCoder.Internal
             var e = new StaticModInt<T>(g).Pow((default(T).Mod - 1) >> cnt2);
             var ie = e.Inv();
 
-            var sumIE = new StaticModInt<T>[cnt2 - 2];
+            var sumIE = new StaticModInt<T>[30];
 
             // es[i]^(2^(2+i)) == 1
             Span<StaticModInt<T>> es = stackalloc StaticModInt<T>[cnt2 - 1];
@@ -225,7 +225,7 @@ namespace AtCoder.Internal
             }
 
             var now = StaticModInt<T>.Raw(1);
-            for (int i = 0; i < sumIE.Length; i++)
+            for (int i = 0; i <= cnt2 - 2; i++)
             {
                 sumIE[i] = ies[i] * now;
                 now *= es[i];
