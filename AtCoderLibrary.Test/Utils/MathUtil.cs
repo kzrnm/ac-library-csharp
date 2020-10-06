@@ -1,12 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using AtCoder.Internal;
 using FluentAssertions;
 using Xunit;
 
-namespace AtCoder.Test.Utils
+namespace AtCoder
 {
     static class MathUtil
     {
+        public static uint NextUInt(this Random rnd) => unchecked((uint)rnd.Next());
+
         public static List<int> Factors(int m)
         {
             var result = new List<int>();
@@ -42,7 +45,6 @@ namespace AtCoder.Test.Utils
         private bool IsPrimitiveRootNative(int m, int g)
         {
             (1 <= g && g < m).Should().BeTrue();
-            var prs = MathUtil.Factors(m - 1);
             int x = 1;
             for (int i = 1; i <= m - 2; i++)
             {

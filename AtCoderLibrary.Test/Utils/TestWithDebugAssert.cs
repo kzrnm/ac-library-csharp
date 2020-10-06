@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace AtCoder.Test.Utils
+namespace AtCoder
 {
     public class TestWithDebugAssert
     {

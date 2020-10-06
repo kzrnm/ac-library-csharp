@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using AtCoder.Test.Utils;
 using FluentAssertions;
 using Xunit;
 
-namespace AtCoder.Test.DataStructure
+namespace AtCoder
 {
     public class MaxFlowTest : TestWithDebugAssert
     {

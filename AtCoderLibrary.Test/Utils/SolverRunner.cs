@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace AtCoder.Test.Utils
+namespace AtCoder
 {
     class SolverRunner
     {

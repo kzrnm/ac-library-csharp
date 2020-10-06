@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Text;
 using Xunit;
 
-namespace AtCoder.Test.Utils
+namespace AtCoder
 {
     static class DebugUtil
     {

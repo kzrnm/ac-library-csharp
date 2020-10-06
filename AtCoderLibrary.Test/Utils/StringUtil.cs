@@ -3,7 +3,7 @@ using System.IO;
 using FluentAssertions;
 using FluentAssertions.Primitives;
 
-namespace AtCoder.Test.Utils
+namespace AtCoder
 {
     static class StringUtil
     {
