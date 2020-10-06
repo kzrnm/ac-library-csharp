@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using FluentAssertions;
 using Xunit;
@@ -7,7 +8,50 @@ namespace AtCoder
 {
     public class DSUTest : TestWithDebugAssert
     {
+        [Fact]
+        public void Zero()
+        {
+            var uf = new DSU(0);
+            uf.Groups().Should().Equal(Array.Empty<int[]>());
+        }
 
+        [Fact]
+        public void Simple()
+        {
+            var uf = new DSU(2);
+            uf.Same(0, 1).Should().BeFalse();
+            int x = uf.Merge(0, 1);
+            uf.Leader(0).Should().Be(x);
+            uf.Leader(1).Should().Be(x);
+            uf.Same(0, 1).Should().BeTrue();
+            uf.Size(0).Should().Be(2);
+        }
+
+        [Fact]
+        public void Line()
+        {
+            int n = 500000;
+            var uf = new DSU(n);
+            for (int i = 0; i < n - 1; i++)
+            {
+                uf.Merge(i, i + 1);
+            }
+            uf.Size(0).Should().Be(n);
+            uf.Groups().Should().HaveCount(1);
+        }
+
+        [Fact]
+        public void LineReverse()
+        {
+            int n = 500000;
+            var uf = new DSU(n);
+            for (int i = n - 2; i >= 0; i--)
+            {
+                uf.Merge(i, i + 1);
+            }
+            uf.Size(0).Should().Be(n);
+            uf.Groups().Should().HaveCount(1);
+        }
 
         [Theory]
         [Trait("Category", "Practice")]

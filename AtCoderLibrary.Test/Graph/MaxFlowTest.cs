@@ -8,6 +8,14 @@ namespace AtCoder
 {
     public class MaxFlowTest : TestWithDebugAssert
     {
+        [Fact]
+        public void Empty()
+        {
+
+        }
+#if false
+
+#endif
 
 
         [Theory]

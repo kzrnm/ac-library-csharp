@@ -8,7 +8,14 @@ namespace AtCoder
 {
     public class SCCTest : TestWithDebugAssert
     {
+        [Fact]
+        public void Empty()
+        {
 
+        }
+#if false
+
+#endif
 
         [Theory]
         [Trait("Category", "Practice")]

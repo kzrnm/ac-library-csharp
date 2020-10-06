@@ -7,7 +7,14 @@ namespace AtCoder
 {
     public class LazySegtreeTest : TestWithDebugAssert
     {
+        [Fact]
+        public void Empty()
+        {
 
+        }
+#if false
+
+#endif
 
         [Theory]
         [Trait("Category", "Practice")]

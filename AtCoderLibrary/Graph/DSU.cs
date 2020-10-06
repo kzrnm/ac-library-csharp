@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace AtCoder
 {
     public class DSU
     {
-        private int Count;
-        private int[] ParentOrSize;
+        private readonly int _n;
+        private readonly int[] _parentOrSize;
 
         /// <summary>
         /// <see cref="DSU"/> クラスの新しいインスタンスを、<paramref name="n"/> 頂点 0 辺のグラフとして初期化します。
@@ -17,9 +18,9 @@ namespace AtCoder
         /// </remarks>
         public DSU(int n)
         {
-            Count = n;
-            ParentOrSize = new int[n];
-            for (int i = 0; i < ParentOrSize.Length; i++) ParentOrSize[i] = -1;
+            _n = n;
+            _parentOrSize = new int[n];
+            for (int i = 0; i < _parentOrSize.Length; i++) _parentOrSize[i] = -1;
         }
 
         /// <summary>
@@ -31,13 +32,13 @@ namespace AtCoder
         /// </remarks>
         public int Merge(int a, int b)
         {
-            Debug.Assert(0 <= a && a < Count);
-            Debug.Assert(0 <= b && b < Count);
+            Debug.Assert(0 <= a && a < _n);
+            Debug.Assert(0 <= b && b < _n);
             int x = Leader(a), y = Leader(b);
             if (x == y) return x;
-            if (-ParentOrSize[x] < -ParentOrSize[y]) (x, y) = (y, x);
-            ParentOrSize[x] += ParentOrSize[y];
-            ParentOrSize[y] = x;
+            if (-_parentOrSize[x] < -_parentOrSize[y]) (x, y) = (y, x);
+            _parentOrSize[x] += _parentOrSize[y];
+            _parentOrSize[y] = x;
             return x;
         }
 
@@ -50,8 +51,8 @@ namespace AtCoder
         /// </remarks>
         public bool Same(int a, int b)
         {
-            Debug.Assert(0 <= a && a < Count);
-            Debug.Assert(0 <= b && b < Count);
+            Debug.Assert(0 <= a && a < _n);
+            Debug.Assert(0 <= b && b < _n);
             return Leader(a) == Leader(b);
         }
 
@@ -64,12 +65,12 @@ namespace AtCoder
         /// </remarks>
         public int Leader(int a)
         {
-            if (ParentOrSize[a] < 0) return a;
-            while (0 <= ParentOrSize[ParentOrSize[a]])
+            if (_parentOrSize[a] < 0) return a;
+            while (0 <= _parentOrSize[_parentOrSize[a]])
             {
-                (a, ParentOrSize[a]) = (ParentOrSize[a], ParentOrSize[ParentOrSize[a]]);
+                (a, _parentOrSize[a]) = (_parentOrSize[a], _parentOrSize[_parentOrSize[a]]);
             }
-            return ParentOrSize[a];
+            return _parentOrSize[a];
         }
 
 
@@ -82,8 +83,8 @@ namespace AtCoder
         /// </remarks>
         public int Size(int a)
         {
-            Debug.Assert(0 <= a && a < Count);
-            return -ParentOrSize[Leader(a)];
+            Debug.Assert(0 <= a && a < _n);
+            return -_parentOrSize[Leader(a)];
         }
 
         /// <summary>
@@ -91,24 +92,21 @@ namespace AtCoder
         /// </summary>
         /// <para>計算量: O(n)</para>
         /// <returns>「一つの連結成分の頂点番号のリスト」のリスト。</returns>
-        public Span<int[]> Groups()
+        public List<int[]> Groups()
         {
-            int[] leaderBuf = new int[Count];
-            int[] id = new int[Count];
-            Span<int[]> result = new int[Count][];
-            int groupCount = 0;
+            int[] leaderBuf = new int[_n];
+            int[] id = new int[_n];
+            var result = new List<int[]>(_n);
             for (int i = 0; i < leaderBuf.Length; i++)
             {
                 leaderBuf[i] = Leader(i);
                 if (i == leaderBuf[i])
                 {
-                    id[i] = groupCount;
-                    result[id[i]] = new int[-ParentOrSize[i]];
-                    groupCount++;
+                    id[i] = result.Count;
+                    result.Add(new int[-_parentOrSize[i]]);
                 }
             }
-            int[] ind = new int[groupCount];
-            result = result.Slice(0, groupCount);
+            int[] ind = new int[result.Count];
             for (int i = 0; i < leaderBuf.Length; i++)
             {
                 var leaderID = id[leaderBuf[i]];

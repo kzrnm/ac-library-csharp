@@ -7,7 +7,14 @@ namespace AtCoder
 {
     public class FloorSumTest : TestWithDebugAssert
     {
+        [Fact]
+        public void Empty()
+        {
 
+        }
+#if false
+
+#endif
 
         [Theory]
         [Trait("Category", "Practice")]
