@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace AtCoder
@@ -73,8 +74,13 @@ namespace AtCoder
             Debug.Assert(0 <= to && to < _n);
             Debug.Assert(op.LessThanOrEqual(default, cap));
             _pos.Add((from, _g[from].Count));
-            _g[from].Add(new EdgeInternal(to, _g[to].Count, cap));
-            _g[to].Add(new EdgeInternal(from, _g[from].Count - 1, default));
+            int fromId = _g[from].Count;
+            int toId = _g[to].Count;
+
+            if (from == to) toId++;
+
+            _g[from].Add(new EdgeInternal(to, toId, cap));
+            _g[to].Add(new EdgeInternal(from, fromId, default));
             return m;
         }
 
@@ -341,7 +347,7 @@ namespace AtCoder
         /// <summary>
         /// フロー流すグラフの各辺に対応した情報を持ちます。
         /// </summary>
-        public struct Edge
+        public struct Edge : IEquatable<Edge>
         {
             /// <summary>フローが流出する頂点。</summary>
             public int From { get; set; }
@@ -358,6 +364,19 @@ namespace AtCoder
                 Cap = cap;
                 Flow = flow;
             }
+
+            public override bool Equals(object obj)
+                => obj is Edge edge && Equals(edge);
+
+            public bool Equals(Edge other)
+                => From == other.From &&
+                       To == other.To &&
+                       EqualityComparer<TValue>.Default.Equals(Cap, other.Cap) &&
+                       EqualityComparer<TValue>.Default.Equals(Flow, other.Flow);
+            public override int GetHashCode()
+                => HashCode.Combine(From, To, Cap, Flow);
+            public static bool operator ==(Edge left, Edge right) => left.Equals(right);
+            public static bool operator !=(Edge left, Edge right) => !left.Equals(right);
         };
 
         private class EdgeInternal

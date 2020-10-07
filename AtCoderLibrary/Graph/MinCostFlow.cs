@@ -107,8 +107,14 @@ namespace AtCoder
             Debug.Assert(0 <= to && to < _n);
             int m = _pos.Count;
             _pos.Add((from, _g[from].Count));
-            _g[from].Add(new EdgeInternal(to, _g[to].Count, cap, cost));
-            _g[to].Add(new EdgeInternal(from, _g[from].Count - 1, default, costOp.Minus(cost)));
+
+            int fromId = _g[from].Count;
+            int toId = _g[to].Count;
+
+            if (from == to) toId++;
+
+            _g[from].Add(new EdgeInternal(to, toId, cap, cost));
+            _g[to].Add(new EdgeInternal(from, fromId, default, costOp.Minus(cost)));
             return m;
         }
 
