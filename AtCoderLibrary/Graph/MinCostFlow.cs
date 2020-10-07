@@ -105,6 +105,8 @@ namespace AtCoder
         {
             Debug.Assert(0 <= from && from < _n);
             Debug.Assert(0 <= to && to < _n);
+            Debug.Assert(capOp.LessThanOrEqual(default, cap));
+            Debug.Assert(costOp.LessThanOrEqual(default, cost));
             int m = _pos.Count;
             _pos.Add((from, _g[from].Count));
 
@@ -386,7 +388,7 @@ namespace AtCoder
         /// <summary>
         /// フローを流すグラフの各辺に対応した情報を持ちます。
         /// </summary>
-        public struct Edge
+        public struct Edge : IEquatable<Edge>
         {
             /// <summary>フローが流出する頂点。</summary>
             public int From { get; set; }
@@ -406,6 +408,17 @@ namespace AtCoder
                 Flow = flow;
                 Cost = cost;
             }
+
+            public override bool Equals(object obj) => obj is Edge edge && Equals(edge);
+            public bool Equals(Edge other) => From == other.From &&
+                       To == other.To &&
+                       EqualityComparer<TCap>.Default.Equals(Cap, other.Cap) &&
+                       EqualityComparer<TCap>.Default.Equals(Flow, other.Flow) &&
+                       EqualityComparer<TCost>.Default.Equals(Cost, other.Cost);
+            public override int GetHashCode() => HashCode.Combine(From, To, Cap, Flow, Cost);
+            public static bool operator ==(Edge left, Edge right) => left.Equals(right);
+            public static bool operator !=(Edge left, Edge right) => !left.Equals(right);
+
         };
 
         private class EdgeInternal
