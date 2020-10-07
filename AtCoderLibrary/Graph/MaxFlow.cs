@@ -233,6 +233,7 @@ namespace AtCoder
         {
             Debug.Assert(0 <= s && s < _n);
             Debug.Assert(0 <= t && t < _n);
+            Debug.Assert(s != t);
 
             var level = new int[_n];
             var iter = new int[_n];
