@@ -105,10 +105,18 @@ namespace AtCoder
         {
             Debug.Assert(0 <= from && from < _n);
             Debug.Assert(0 <= to && to < _n);
+            Debug.Assert(capOp.LessThanOrEqual(default, cap));
+            Debug.Assert(costOp.LessThanOrEqual(default, cost));
             int m = _pos.Count;
             _pos.Add((from, _g[from].Count));
-            _g[from].Add(new EdgeInternal(to, _g[to].Count, cap, cost));
-            _g[to].Add(new EdgeInternal(from, _g[from].Count - 1, default, costOp.Minus(cost)));
+
+            int fromId = _g[from].Count;
+            int toId = _g[to].Count;
+
+            if (from == to) toId++;
+
+            _g[from].Add(new EdgeInternal(to, toId, cap, cost));
+            _g[to].Add(new EdgeInternal(from, fromId, default, costOp.Minus(cost)));
             return m;
         }
 
@@ -345,7 +353,7 @@ namespace AtCoder
 
             TCap flow = default;
             TCost cost = default;
-            TCost prev_cost = costOp.Decrement(default); //-1
+            TCost prevCostPerFlow = costOp.Decrement(default); //-1
             var result = new List<(TCap cap, TCost cost)>();
             result.Add((flow, cost));
             while (capOp.LessThan(flow, flowLimit))
@@ -367,12 +375,12 @@ namespace AtCoder
                 TCost d = costOp.Minus(dual[s]);
                 flow = capOp.Add(flow, c);
                 cost = costOp.Add(cost, costOp.Multiply(cast.Cast(c), d));
-                if (costOp.Equals(prev_cost, d))
+                if (costOp.Equals(prevCostPerFlow, d))
                 {
                     result.RemoveAt(result.Count - 1);
                 }
                 result.Add((flow, cost));
-                prev_cost = cost;
+                prevCostPerFlow = d;
             }
             return result;
         }
@@ -380,7 +388,7 @@ namespace AtCoder
         /// <summary>
         /// フローを流すグラフの各辺に対応した情報を持ちます。
         /// </summary>
-        public struct Edge
+        public struct Edge : IEquatable<Edge>
         {
             /// <summary>フローが流出する頂点。</summary>
             public int From { get; set; }
@@ -400,6 +408,17 @@ namespace AtCoder
                 Flow = flow;
                 Cost = cost;
             }
+
+            public override bool Equals(object obj) => obj is Edge edge && Equals(edge);
+            public bool Equals(Edge other) => From == other.From &&
+                       To == other.To &&
+                       EqualityComparer<TCap>.Default.Equals(Cap, other.Cap) &&
+                       EqualityComparer<TCap>.Default.Equals(Flow, other.Flow) &&
+                       EqualityComparer<TCost>.Default.Equals(Cost, other.Cost);
+            public override int GetHashCode() => HashCode.Combine(From, To, Cap, Flow, Cost);
+            public static bool operator ==(Edge left, Edge right) => left.Equals(right);
+            public static bool operator !=(Edge left, Edge right) => !left.Equals(right);
+
         };
 
         private class EdgeInternal

@@ -13,10 +13,26 @@ namespace AtCoder
     /// </code>
     /// </example>
     public interface IDynamicModID { }
+    public static class DynamicModIDExtension
+    {
+        public static void SetMod<T>(this T _, int mod) where T : struct, IDynamicModID => DynamicModInt<T>.Mod = mod;
+    }
 #pragma warning disable CA1815 // Override equals and operator equals on value types
     public readonly struct ModID0 : IDynamicModID { }
     public readonly struct ModID1 : IDynamicModID { }
     public readonly struct ModID2 : IDynamicModID { }
+
+    public readonly struct DynamicModIntOperator<T> : IArithmeticOperator<DynamicModInt<T>> where T : struct, IDynamicModID
+    {
+        public DynamicModInt<T> Add(DynamicModInt<T> x, DynamicModInt<T> y) => x + y;
+        public DynamicModInt<T> Subtract(DynamicModInt<T> x, DynamicModInt<T> y) => x - y;
+        public DynamicModInt<T> Multiply(DynamicModInt<T> x, DynamicModInt<T> y) => x * y;
+        public DynamicModInt<T> Divide(DynamicModInt<T> x, DynamicModInt<T> y) => x / y;
+        public DynamicModInt<T> Modulo(DynamicModInt<T> x, DynamicModInt<T> y) => throw new NotSupportedException();
+        public DynamicModInt<T> Minus(DynamicModInt<T> x) => -x;
+        public DynamicModInt<T> Increment(DynamicModInt<T> x) => ++x;
+        public DynamicModInt<T> Decrement(DynamicModInt<T> x) => --x;
+    }
 #pragma warning restore CA1815 // Override equals and operator equals on value types
 
     /// <summary>

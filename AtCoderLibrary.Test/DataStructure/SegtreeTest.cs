@@ -1,14 +1,12 @@
 ﻿using System;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using AtCoder.Test.Utils;
 using FluentAssertions;
 using Xunit;
 
-namespace AtCoder.Test.DataStructure
+namespace AtCoder
 {
-    public class SegtreeTest : TestWithDebugAssert
+    public class SegtreeTest
     {
         [Fact]
         public void Zero()
@@ -20,20 +18,22 @@ namespace AtCoder.Test.DataStructure
         [SkippableFact]
         public void Invalid()
         {
-            DebugUtil.SkipIfNotDebug();
-            Assert.Throws<DebugAssertException>(() => new Segtree<string, MonoidOperator>(-1));
-            var s = new Segtree<string, MonoidOperator>(10);
-            s.Invoking(s => s[-1]).Should().Throw<DebugAssertException>();
-            s.Invoking(s => s[10]).Should().Throw<DebugAssertException>();
+            using (var sem = new DebugAssertSemaphore())
+            {
+                Assert.Throws<DebugAssertException>(() => new Segtree<string, MonoidOperator>(-1));
+                var s = new Segtree<string, MonoidOperator>(10);
+                s.Invoking(s => s[-1]).Should().Throw<DebugAssertException>();
+                s.Invoking(s => s[10]).Should().Throw<DebugAssertException>();
 
-            s.Invoking(s => s.Prod(-1, -1)).Should().Throw<DebugAssertException>();
-            s.Invoking(s => s.Prod(3, 2)).Should().Throw<DebugAssertException>();
-            s.Invoking(s => s.Prod(0, 11)).Should().Throw<DebugAssertException>();
-            s.Invoking(s => s.Prod(-1, 11)).Should().Throw<DebugAssertException>();
+                s.Invoking(s => s.Prod(-1, -1)).Should().Throw<DebugAssertException>();
+                s.Invoking(s => s.Prod(3, 2)).Should().Throw<DebugAssertException>();
+                s.Invoking(s => s.Prod(0, 11)).Should().Throw<DebugAssertException>();
+                s.Invoking(s => s.Prod(-1, 11)).Should().Throw<DebugAssertException>();
 
-            s.Invoking(s => s.MaxRight(11, s => true)).Should().Throw<DebugAssertException>();
-            s.Invoking(s => s.MaxRight(-1, s => true)).Should().Throw<DebugAssertException>();
-            s.Invoking(s => s.MaxRight(0, s => false)).Should().Throw<DebugAssertException>();
+                s.Invoking(s => s.MaxRight(11, s => true)).Should().Throw<DebugAssertException>();
+                s.Invoking(s => s.MaxRight(-1, s => true)).Should().Throw<DebugAssertException>();
+                s.Invoking(s => s.MaxRight(0, s => false)).Should().Throw<DebugAssertException>();
+            }
         }
 
         [Fact]
@@ -42,12 +42,12 @@ namespace AtCoder.Test.DataStructure
             var s = new Segtree<string, MonoidOperator>(1);
             s.AllProd.Should().Be("$");
             s[0].Should().Be("$");
-            s.Prod(0, 1).Should().Be("$");
+            s.Prod(0, 1).Should().Be(s[0..1]).And.Be("$");
             s[0] = "dummy";
             s[0].Should().Be("dummy");
-            s.Prod(0, 0).Should().Be("$");
-            s.Prod(0, 1).Should().Be("dummy");
-            s.Prod(1, 1).Should().Be("$");
+            s.Prod(0, 0).Should().Be(s[0..0]).And.Be("$");
+            s.Prod(0, 1).Should().Be(s[0..1]).And.Be("dummy");
+            s.Prod(1, 1).Should().Be(s[1..1]).And.Be("$");
         }
 
         [Fact]
@@ -70,7 +70,7 @@ namespace AtCoder.Test.DataStructure
                 {
                     for (int r = l; r <= n; r++)
                     {
-                        seg1.Prod(l, r).Should().Be(seg0.Prod(l, r));
+                        seg1.Prod(l, r).Should().Be(seg1[l..r]).And.Be(seg0.Prod(l, r));
                     }
                 }
 

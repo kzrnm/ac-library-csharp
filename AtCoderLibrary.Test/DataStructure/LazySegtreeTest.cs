@@ -1,16 +1,91 @@
 ﻿using System;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using AtCoder.Test.Utils;
 using FluentAssertions;
 using Xunit;
 
-namespace AtCoder.Test.DataStructure
+namespace AtCoder
 {
-    public class LazySegtreeTest : TestWithDebugAssert
+    public class LazySegtreeTest
     {
+        private readonly struct Starry : ILazySegtreeOperator<int, int>
+        {
+            public int Identity => -1_000_000_000;
+            public int FIdentity => 0;
 
+            public int Composition(int f, int g) => f + g;
+
+            public int Mapping(int f, int x) => f + x;
+
+            public int Operate(int x, int y) => Math.Max(x, y);
+        }
+
+        [Fact]
+        public void Zero()
+        {
+            new LazySegtree<int, int, Starry>(0).AllProd.Should().Be(-1_000_000_000);
+            new LazySegtree<int, int, Starry>(10).AllProd.Should().Be(-1_000_000_000);
+        }
+
+        [SkippableFact]
+        public void Invalid()
+        {
+            using (var sem = new DebugAssertSemaphore())
+            {
+                Assert.Throws<DebugAssertException>(() => new LazySegtree<int, int, Starry>(-1));
+                var s = new LazySegtree<int, int, Starry>(10);
+                s.Invoking(s => s[-1]).Should().Throw<DebugAssertException>();
+                s.Invoking(s => s[10]).Should().Throw<DebugAssertException>();
+
+                s.Invoking(s => s.Prod(-1, -1)).Should().Throw<DebugAssertException>();
+                s.Invoking(s => s.Prod(3, 2)).Should().Throw<DebugAssertException>();
+                s.Invoking(s => s.Prod(0, 11)).Should().Throw<DebugAssertException>();
+                s.Invoking(s => s.Prod(-1, 11)).Should().Throw<DebugAssertException>();
+
+                s.Invoking(s => s.MaxRight(11, s => true)).Should().Throw<DebugAssertException>();
+                s.Invoking(s => s.MaxRight(-1, s => true)).Should().Throw<DebugAssertException>();
+                s.Invoking(s => s.MaxRight(0, s => false)).Should().Throw<DebugAssertException>();
+            }
+        }
+
+        [Fact]
+        public void NaiveProd()
+        {
+            for (int n = 0; n <= 50; n++)
+            {
+                var seg = new LazySegtree<int, int, Starry>(n);
+                var p = new int[n];
+                for (int i = 0; i < n; i++)
+                {
+                    p[i] = (i * i + 100) % 31;
+                    seg[i] = p[i];
+                }
+                for (int l = 0; l <= n; l++)
+                {
+                    for (int r = l; r <= n; r++)
+                    {
+                        int e = -1_000_000_000;
+                        for (int i = l; i < r; i++)
+                        {
+                            e = Math.Max(e, p[i]);
+                        }
+                        seg.Prod(l, r).Should().Be(seg[l..r]).And.Be(e);
+                    }
+                }
+            }
+        }
+
+        [Fact]
+        public void Usage()
+        {
+            var seg = new LazySegtree<int, int, Starry>(new int[10]);
+            seg.AllProd.Should().Be(0);
+            seg.Apply(0, 3, 5);
+            seg.AllProd.Should().Be(5);
+            seg.Apply(2, -10);
+            seg.Prod(2, 3).Should().Be(seg[2..3]).And.Be(-5);
+            seg.Prod(2, 4).Should().Be(seg[2..4]).And.Be(0);
+        }
 
         [Theory]
         [Trait("Category", "Practice")]

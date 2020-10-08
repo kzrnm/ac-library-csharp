@@ -1,16 +1,227 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using AtCoder.Test.Utils;
 using FluentAssertions;
+using MersenneTwister;
 using Xunit;
 
-namespace AtCoder.Test.DataStructure
+namespace AtCoder
 {
-    public class MaxFlowTest : TestWithDebugAssert
+    public class MaxFlowTest
     {
+        [Fact]
+        public void Simple()
+        {
+            var g = new MFGraphInt(4);
+            g.AddEdge(0, 1, 1).Should().Be(0);
+            g.AddEdge(0, 2, 1).Should().Be(1);
+            g.AddEdge(1, 3, 1).Should().Be(2);
+            g.AddEdge(2, 3, 1).Should().Be(3);
+            g.AddEdge(1, 2, 1).Should().Be(4);
+            g.Flow(0, 3).Should().Be(2);
 
+            MFGraphInt.Edge e;
+            e = new MFGraphInt.Edge(0, 1, 1, 1);
+            g.GetEdge(0).Should().Be(e);
+            e = new MFGraphInt.Edge(0, 2, 1, 1);
+            g.GetEdge(1).Should().Be(e);
+            e = new MFGraphInt.Edge(1, 3, 1, 1);
+            g.GetEdge(2).Should().Be(e);
+            e = new MFGraphInt.Edge(2, 3, 1, 1);
+            g.GetEdge(3).Should().Be(e);
+            e = new MFGraphInt.Edge(1, 2, 1, 0);
+            g.GetEdge(4).Should().Be(e);
+
+            g.MinCut(0).Should().Equal(new[] { true, false, false, false });
+        }
+
+        [Fact]
+        public void NotSimple()
+        {
+            var g = new MFGraphInt(2);
+            g.AddEdge(0, 1, 1).Should().Be(0);
+            g.AddEdge(0, 1, 2).Should().Be(1);
+            g.AddEdge(0, 1, 3).Should().Be(2);
+            g.AddEdge(0, 1, 4).Should().Be(3);
+            g.AddEdge(0, 1, 5).Should().Be(4);
+            g.AddEdge(0, 0, 6).Should().Be(5);
+            g.AddEdge(1, 1, 7).Should().Be(6);
+            g.Flow(0, 1).Should().Be(15);
+
+            MFGraphInt.Edge e;
+            e = new MFGraphInt.Edge(0, 1, 1, 1);
+            g.GetEdge(0).Should().Be(e);
+            e = new MFGraphInt.Edge(0, 1, 2, 2);
+            g.GetEdge(1).Should().Be(e);
+            e = new MFGraphInt.Edge(0, 1, 3, 3);
+            g.GetEdge(2).Should().Be(e);
+            e = new MFGraphInt.Edge(0, 1, 4, 4);
+            g.GetEdge(3).Should().Be(e);
+            e = new MFGraphInt.Edge(0, 1, 5, 5);
+            g.GetEdge(4).Should().Be(e);
+
+            g.MinCut(0).Should().Equal(new[] { true, false });
+        }
+
+        [Fact]
+        public void Cut()
+        {
+            var g = new MFGraphInt(3);
+            g.AddEdge(0, 1, 2).Should().Be(0);
+            g.AddEdge(1, 2, 1).Should().Be(1);
+            g.Flow(0, 2).Should().Be(1);
+
+            MFGraphInt.Edge e;
+            e = new MFGraphInt.Edge(0, 1, 2, 1);
+            g.GetEdge(0).Should().Be(e);
+            e = new MFGraphInt.Edge(1, 2, 1, 1);
+            g.GetEdge(1).Should().Be(e);
+
+
+            g.MinCut(0).Should().Equal(new[] { true, true, false });
+        }
+
+        [Fact]
+        public void Twice()
+        {
+            var g = new MFGraphInt(3);
+            g.AddEdge(0, 1, 1).Should().Be(0);
+            g.AddEdge(0, 2, 1).Should().Be(1);
+            g.AddEdge(1, 2, 1).Should().Be(2);
+            g.Flow(0, 2).Should().Be(2);
+
+            MFGraphInt.Edge e;
+
+
+            e = new MFGraphInt.Edge(0, 1, 1, 1);
+            g.GetEdge(0).Should().Be(e);
+            e = new MFGraphInt.Edge(0, 2, 1, 1);
+            g.GetEdge(1).Should().Be(e);
+            e = new MFGraphInt.Edge(1, 2, 1, 1);
+            g.GetEdge(2).Should().Be(e);
+
+            g.ChangeEdge(0, 100, 10);
+            e = new MFGraphInt.Edge(0, 1, 100, 10);
+            g.GetEdge(0).Should().Be(e);
+
+            g.Flow(0, 2).Should().Be(0);
+            g.Flow(0, 1).Should().Be(90);
+
+            e = new MFGraphInt.Edge(0, 1, 100, 100);
+            g.GetEdge(0).Should().Be(e);
+            e = new MFGraphInt.Edge(0, 2, 1, 1);
+            g.GetEdge(1).Should().Be(e);
+            e = new MFGraphInt.Edge(1, 2, 1, 1);
+            g.GetEdge(2).Should().Be(e);
+
+            g.Flow(2, 0).Should().Be(2);
+
+            e = new MFGraphInt.Edge(0, 1, 100, 99);
+            g.GetEdge(0).Should().Be(e);
+            e = new MFGraphInt.Edge(0, 2, 1, 0);
+            g.GetEdge(1).Should().Be(e);
+            e = new MFGraphInt.Edge(1, 2, 1, 0);
+            g.GetEdge(2).Should().Be(e);
+        }
+        [Fact]
+        public void Bound()
+        {
+            MFGraphInt.Edge e;
+
+            const int INF = int.MaxValue;
+            var g = new MFGraphInt(3);
+            g.AddEdge(0, 1, INF).Should().Be(0);
+            g.AddEdge(1, 0, INF).Should().Be(1);
+            g.AddEdge(0, 2, INF).Should().Be(2);
+
+            g.Flow(0, 2).Should().Be(INF);
+
+            e = new MFGraphInt.Edge(0, 1, INF, 0);
+            g.GetEdge(0).Should().Be(e);
+            e = new MFGraphInt.Edge(1, 0, INF, 0);
+            g.GetEdge(1).Should().Be(e);
+            e = new MFGraphInt.Edge(0, 2, INF, INF);
+            g.GetEdge(2).Should().Be(e);
+        }
+        [Fact]
+        public void BoundUint()
+        {
+            MFGraph<uint, UIntOperator>.Edge e;
+
+            const uint INF = uint.MaxValue;
+            var g = new MFGraph<uint, UIntOperator>(3);
+            g.AddEdge(0, 1, INF).Should().Be(0);
+            g.AddEdge(1, 0, INF).Should().Be(1);
+            g.AddEdge(0, 2, INF).Should().Be(2);
+
+            g.Flow(0, 2).Should().Be(INF);
+
+            e = new MFGraph<uint, UIntOperator>.Edge(0, 1, INF, 0);
+            g.GetEdge(0).Should().Be(e);
+            e = new MFGraph<uint, UIntOperator>.Edge(1, 0, INF, 0);
+            g.GetEdge(1).Should().Be(e);
+            e = new MFGraph<uint, UIntOperator>.Edge(0, 2, INF, INF);
+            g.GetEdge(2).Should().Be(e);
+        }
+        [Fact]
+        public void SelfLoop()
+        {
+            var g = new MFGraphInt(3);
+            g.AddEdge(0, 0, 100).Should().Be(0);
+
+            MFGraphInt.Edge e = new MFGraphInt.Edge(0, 0, 100, 0);
+            g.GetEdge(0).Should().Be(e);
+        }
+        [Fact]
+        public void Invalid()
+        {
+            using (var sem = new DebugAssertSemaphore())
+            {
+                var g = new MFGraphInt(2);
+                g.Invoking(g => g.Flow(0, 0)).Should().Throw<DebugAssertException>();
+                g.Invoking(g => g.Flow(0, 0, 0)).Should().Throw<DebugAssertException>();
+            }
+        }
+
+        [Fact]
+        public void Stress()
+        {
+            var mt = MTRandom.Create();
+            for (int phase = 0; phase < 10000; phase++)
+            {
+                int n = mt.Next(2, 21);
+                int m = mt.Next(1, 101);
+                var (s, t) = mt.NextPair(0, n);
+                if (mt.NextBool()) (s, t) = (t, s);
+
+                var g = new MFGraphInt(n);
+                for (int i = 0; i < m; i++)
+                {
+                    int u = mt.Next(0, n);
+                    int v = mt.Next(0, n);
+                    int c = mt.Next(0, 10001);
+                    g.AddEdge(u, v, c);
+                }
+                int flow = g.Flow(s, t);
+                int dual = 0;
+                var cut = g.MinCut(s);
+                var vFlow = new int[n];
+                foreach (var e in g.Edges())
+                {
+                    vFlow[e.From] -= e.Flow;
+                    vFlow[e.To] += e.Flow;
+                    if (cut[e.From] && !cut[e.To]) dual += e.Cap;
+                }
+                dual.Should().Be(flow);
+                vFlow[s].Should().Be(-flow);
+                vFlow[t].Should().Be(flow);
+                for (int i = 0; i < n; i++)
+                {
+                    if (i == s || i == t) continue;
+                    vFlow[i].Should().Be(0);
+                }
+            }
+        }
 
         [Theory]
         [Trait("Category", "Practice")]
