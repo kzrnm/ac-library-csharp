@@ -1,0 +1,40 @@
+name: Unit test
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "**.cs"
+      - "!**.md"
+  pull_request:
+    paths:
+      - "**.cs"
+      - "!**.md"
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_NOLOGO: true
+  NUGET_XMLDOC_MODE: skip
+  NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v1.6.0
+        with:
+          dotnet-version: 3.1
+      - uses: actions/cache@v2
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+      - name: Install dependencies
+        run: dotnet restore AtCoderLibrary.sln
+      - name: Test
+        run: dotnet test AtCoderLibrary.sln --no-restore --verbosity normal
