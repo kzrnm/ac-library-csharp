@@ -5,7 +5,7 @@ using Xunit;
 
 namespace AtCoder
 {
-    public class FenwickTreeTest : TestWithDebugAssert
+    public class FenwickTreeTest 
     {
         private readonly struct ModID0 : IDynamicModID { }
         private readonly struct ModID1 : IDynamicModID { }
@@ -138,19 +138,21 @@ namespace AtCoder
         [SkippableFact]
         public void Invalid()
         {
-            DebugUtil.SkipIfNotDebug();
-            Assert.Throws<DebugAssertException>(() => new IntFenwickTree(-1));
-            var s = new IntFenwickTree(10);
-            s.Invoking(s => s.Add(-1, 0)).Should().Throw<DebugAssertException>();
-            s.Invoking(s => s.Add(10, 0)).Should().Throw<DebugAssertException>();
+            using (var sem = new DebugAssertSemaphore())
+            {
+                Assert.Throws<DebugAssertException>(() => new IntFenwickTree(-1));
+                var s = new IntFenwickTree(10);
+                s.Invoking(s => s.Add(-1, 0)).Should().Throw<DebugAssertException>();
+                s.Invoking(s => s.Add(10, 0)).Should().Throw<DebugAssertException>();
 
-            s.Invoking(s => s.Sum(-1, 3)).Should().Throw<DebugAssertException>();
-            s.Invoking(s => s.Sum(3, 11)).Should().Throw<DebugAssertException>();
-            s.Invoking(s => s.Sum(5, 3)).Should().Throw<DebugAssertException>();
+                s.Invoking(s => s.Sum(-1, 3)).Should().Throw<DebugAssertException>();
+                s.Invoking(s => s.Sum(3, 11)).Should().Throw<DebugAssertException>();
+                s.Invoking(s => s.Sum(5, 3)).Should().Throw<DebugAssertException>();
 
-            s.Invoking(s => s[-1..3]).Should().Throw<DebugAssertException>();
-            s.Invoking(s => s[3..11]).Should().Throw<DebugAssertException>();
-            s.Invoking(s => s[5..3]).Should().Throw<DebugAssertException>();
+                s.Invoking(s => s[-1..3]).Should().Throw<DebugAssertException>();
+                s.Invoking(s => s[3..11]).Should().Throw<DebugAssertException>();
+                s.Invoking(s => s[5..3]).Should().Throw<DebugAssertException>();
+            }
         }
 
         [Fact]

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace AtCoder.Internal
 {
-    public static class String
+    public static class InternalString
     {
         /// <summary>
         /// 数列 <paramref name="sm"/> の Suffix Array をナイーブな文字列比較により求め、長さ |<paramref name="sm"/>| の配列として返す。
@@ -14,7 +14,7 @@ namespace AtCoder.Internal
         /// <para>制約: 0≤|<paramref name="sm"/>|&lt;10^8</para>
         /// <para>計算量: 時間O(|<paramref name="sm"/>|^2 log|<paramref name="sm"/>|), 空間O(|<paramref name="sm"/>|)</para>
         /// </remarks>
-        private static int[] SANaive(ReadOnlyMemory<int> sm)
+        internal static int[] SANaive(ReadOnlyMemory<int> sm)
         {
             var n = sm.Length;
             var sa = Enumerable.Range(0, n).ToArray();
@@ -47,7 +47,7 @@ namespace AtCoder.Internal
         /// <para>制約: 0≤|<paramref name="sm"/>|&lt;10^8</para>
         /// <para>計算量: 時間O(|<paramref name="sm"/>|(log|<paramref name="sm"/>|)^2), 空間O(|<paramref name="sm"/>|)</para>
         /// </remarks>
-        private static int[] SADoubling(ReadOnlyMemory<int> sm)
+        internal static int[] SADoubling(ReadOnlyMemory<int> sm)
         {
             var s = sm.Span;
             var n = s.Length;

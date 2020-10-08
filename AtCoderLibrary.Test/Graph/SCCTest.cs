@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using FluentAssertions;
@@ -6,16 +7,42 @@ using Xunit;
 
 namespace AtCoder
 {
-    public class SCCTest : TestWithDebugAssert
+    public class SCCTest
     {
         [Fact]
         public void Empty()
         {
-
+            new SCCGraph(0).SCC().Should().Equal(Array.Empty<int>());
         }
-#if false
+        [Fact]
+        public void Simple()
+        {
+            var graph = new SCCGraph(2);
+            graph.AddEdge(0, 1);
+            graph.AddEdge(1, 0);
+            graph.SCC().Should().HaveCount(1);
+        }
+        [Fact]
+        public void SelfLoop()
+        {
+            var graph = new SCCGraph(2);
+            graph.AddEdge(0, 0);
+            graph.AddEdge(0, 0);
+            graph.AddEdge(1, 1);
+            graph.SCC().Should().HaveCount(2);
+        }
 
-#endif
+
+        [SkippableFact]
+        public void Invalid()
+        {
+            using (var sem = new DebugAssertSemaphore())
+            {
+                var graph = new SCCGraph(2);
+                graph.AddEdge(0, 0);
+                graph.Invoking(graph => graph.AddEdge(0, 10)).Should().Throw<DebugAssertException>();
+            }
+        }
 
         [Theory]
         [Trait("Category", "Practice")]

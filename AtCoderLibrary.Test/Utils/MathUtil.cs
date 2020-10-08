@@ -8,7 +8,45 @@ namespace AtCoder
 {
     static class MathUtil
     {
-        public static uint NextUInt(this Random rnd) => unchecked((uint)rnd.Next());
+        public static long Gcd(long a, long b)
+        {
+            (0 <= a && 0 <= b).Should().BeTrue();
+            if (b == 0) return a;
+            return Gcd(b, a % b);
+        }
+
+        public static bool IsPrimeNaive(long n)
+        {
+            (0 <= n && n <= int.MaxValue).Should().BeTrue();
+            if (n == 0 || n == 1) return false;
+            for (long i = 2; i * i <= n; i++)
+            {
+                if (n % i == 0) return false;
+            }
+            return true;
+        }
+        public static long PowModNaive(long x, ulong n, uint mod)
+        {
+
+            ulong y = (ulong)(x % mod + mod) % mod;
+            ulong z = 1;
+            for (ulong i = 0; i < n; i++)
+            {
+                z = (z * y) % mod;
+            }
+            return (long)(z % mod);
+        }
+
+        public static long FloorSumNative(long n, long m, long a, long b)
+        {
+            long sum = 0;
+            for (long i = 0; i < n; i++)
+            {
+                sum += (a * i + b) / m;
+            }
+            return sum;
+        }
+
 
         public static List<int> Factors(int m)
         {

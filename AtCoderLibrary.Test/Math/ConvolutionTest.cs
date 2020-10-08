@@ -6,7 +6,7 @@ using MersenneTwister;
 
 namespace AtCoder
 {
-    public class ConvolutionTest : TestWithDebugAssert
+    public class ConvolutionTest 
     {
         private struct Mod924844033 : IStaticMod
         {

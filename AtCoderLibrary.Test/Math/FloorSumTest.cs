@@ -2,20 +2,29 @@
 using System.Linq;
 using FluentAssertions;
 using Xunit;
+using static AtCoder.MathUtil;
 
 namespace AtCoder
 {
-    public class FloorSumTest : TestWithDebugAssert
+    public class FloorSumTest
     {
         [Fact]
-        public void Empty()
+        public void FloorSum()
         {
-
+            for (int n = 0; n < 20; n++)
+            {
+                for (int m = 1; m < 20; m++)
+                {
+                    for (int a = 0; a < 20; a++)
+                    {
+                        for (int b = 0; b < 20; b++)
+                        {
+                            MathLib.FloorSum(n, m, a, b).Should().Be(FloorSumNative(n, m, a, b));
+                        }
+                    }
+                }
+            }
         }
-#if false
-
-#endif
-
         [Theory]
         [Trait("Category", "Practice")]
         [InlineData(

@@ -433,10 +433,10 @@ namespace AtCoder
 
 
         /// <summary>
-        /// Debug ビルドにおいて、Monoid が正しいかチェックする。
+        /// DEBUG_MONOID が定義されいているとき、Monoid が正しいかチェックする。
         /// </summary>
         /// <param name="value"></param>
-        [Conditional("DEBUG")]
+        [Conditional("DEBUG_MONOID")]
         public static void AssertMonoid(TValue value)
         {
             Debug.Assert(op.Operate(value, op.Identity).Equals(value),
@@ -446,10 +446,10 @@ namespace AtCoder
         }
 
         /// <summary>
-        /// Debug ビルドにおいて、FIdentity が恒等写像かチェックする。
+        /// DEBUG_MONOID が定義されいているとき、FIdentity が恒等写像かチェックする。
         /// </summary>
         /// <param name="value"></param>
-        [Conditional("DEBUG")]
+        [Conditional("DEBUG_MONOID")]
         public static void AssertFIdentity(TValue value)
         {
             Debug.Assert(op.Mapping(op.FIdentity, value).Equals(value),
@@ -457,10 +457,10 @@ namespace AtCoder
         }
 
         /// <summary>
-        /// Debug ビルドにおいて、F が分配法則を満たすかチェックする。
+        /// DEBUG_MONOID が定義されいているとき、F が分配法則を満たすかチェックする。
         /// </summary>
         /// <param name="value"></param>
-        [Conditional("DEBUG")]
+        [Conditional("DEBUG_MONOID")]
         public static void AssertF(F f, TValue v1, TValue v2)
         {
             Debug.Assert(op.Mapping(op.FIdentity, op.Operate(v1, v2)).Equals(op.Operate(op.Mapping(op.FIdentity, v1), op.Mapping(op.FIdentity, v2))),

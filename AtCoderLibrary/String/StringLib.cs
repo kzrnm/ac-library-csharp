@@ -89,7 +89,7 @@ namespace AtCoder
                 s2[idx[i]] = now;
             }
 
-            return Internal.String.SAIS(s2, now);
+            return Internal.InternalString.SAIS(s2, now);
 
             int Compare(int l, int r)
             {
@@ -110,7 +110,7 @@ namespace AtCoder
         {
             var n = s.Length;
             int[] s2 = s.Select(c => (int)c).ToArray();
-            return Internal.String.SAIS(s2, char.MaxValue);
+            return Internal.InternalString.SAIS(s2, char.MaxValue);
         }
 
 
@@ -139,7 +139,7 @@ namespace AtCoder
             {
                 Debug.Assert(unchecked((uint)si) <= upper);
             }
-            return Internal.String.SAIS(s, upper);
+            return Internal.InternalString.SAIS(s, upper);
         }
         #endregion SuffixArray
 
