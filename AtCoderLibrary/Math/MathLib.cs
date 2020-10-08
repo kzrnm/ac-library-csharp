@@ -80,7 +80,7 @@ namespace AtCoder
                 return Array.Empty<int>();
             }
 
-            if (System.Math.Min(n, m) <= 60)
+            if (Math.Min(n, m) <= 60)
             {
                 var c = ConvolutionNaive<TMod>(a.Select(ai => new StaticModInt<TMod>(ai)).ToArray(),
                                                b.Select(bi => new StaticModInt<TMod>(bi)).ToArray());
@@ -133,7 +133,7 @@ namespace AtCoder
                 return Array.Empty<uint>();
             }
 
-            if (System.Math.Min(n, m) <= 60)
+            if (Math.Min(n, m) <= 60)
             {
                 var c = ConvolutionNaive<TMod>(a.Select(ai => new StaticModInt<TMod>(ai)).ToArray(),
                                                b.Select(bi => new StaticModInt<TMod>(bi)).ToArray());
@@ -141,7 +141,7 @@ namespace AtCoder
             }
             else
             {
-                int z = 1 << Internal.InternalBit.CeilPow2(n + m - 1);
+                int z = 1 << InternalBit.CeilPow2(n + m - 1);
 
                 var aTemp = new StaticModInt<TMod>[z];
                 for (int i = 0; i < a.Length; i++)
@@ -185,7 +185,7 @@ namespace AtCoder
                 return Array.Empty<long>();
             }
 
-            if (System.Math.Min(n, m) <= 60)
+            if (Math.Min(n, m) <= 60)
             {
                 var c = ConvolutionNaive<TMod>(a.Select(ai => new StaticModInt<TMod>(ai)).ToArray(),
                                                b.Select(bi => new StaticModInt<TMod>(bi)).ToArray());
@@ -193,7 +193,7 @@ namespace AtCoder
             }
             else
             {
-                int z = 1 << Internal.InternalBit.CeilPow2(n + m - 1);
+                int z = 1 << InternalBit.CeilPow2(n + m - 1);
 
                 var aTemp = new StaticModInt<TMod>[z];
                 for (int i = 0; i < a.Length; i++)
@@ -237,7 +237,7 @@ namespace AtCoder
                 return Array.Empty<ulong>();
             }
 
-            if (System.Math.Min(n, m) <= 60)
+            if (Math.Min(n, m) <= 60)
             {
                 var c = ConvolutionNaive<TMod>(a.Select(TakeMod).ToArray(),
                                                b.Select(TakeMod).ToArray());
@@ -245,7 +245,7 @@ namespace AtCoder
             }
             else
             {
-                int z = 1 << Internal.InternalBit.CeilPow2(n + m - 1);
+                int z = 1 << InternalBit.CeilPow2(n + m - 1);
 
                 var aTemp = new StaticModInt<TMod>[z];
                 for (int i = 0; i < a.Length; i++)
@@ -268,7 +268,7 @@ namespace AtCoder
                 return result;
             }
 
-            StaticModInt<TMod> TakeMod(ulong x) => StaticModInt<TMod>.Raw((int)(x % default(TMod).Mod));
+            static StaticModInt<TMod> TakeMod(ulong x) => StaticModInt<TMod>.Raw((int)(x % default(TMod).Mod));
         }
 
         /// <summary>
@@ -310,12 +310,12 @@ namespace AtCoder
                 return Array.Empty<StaticModInt<TMod>>();
             }
 
-            if (System.Math.Min(n, m) <= 60)
+            if (Math.Min(n, m) <= 60)
             {
                 return ConvolutionNaive(a, b);
             }
 
-            int z = 1 << Internal.InternalBit.CeilPow2(n + m - 1);
+            int z = 1 << InternalBit.CeilPow2(n + m - 1);
 
             var aTemp = new StaticModInt<TMod>[z];
             a.CopyTo(aTemp);
@@ -379,9 +379,9 @@ namespace AtCoder
                 // (m1 * m2 * m3) % 2^64
                 const ulong M1M2M3 = Mod1 * Mod2 * Mod3;
 
-                ulong i1 = (ulong)Internal.InternalMath.InvGCD((long)M2M3, (long)Mod1).Item2;
-                ulong i2 = (ulong)Internal.InternalMath.InvGCD((long)M1M3, (long)Mod2).Item2;
-                ulong i3 = (ulong)Internal.InternalMath.InvGCD((long)M1M2, (long)Mod3).Item2;
+                ulong i1 = (ulong)InternalMath.InvGCD((long)M2M3, (long)Mod1).Item2;
+                ulong i2 = (ulong)InternalMath.InvGCD((long)M1M3, (long)Mod2).Item2;
+                ulong i3 = (ulong)InternalMath.InvGCD((long)M1M2, (long)Mod3).Item2;
 
                 var c1 = Convolution<FFTMod1>(a, b);
                 var c2 = Convolution<FFTMod2>(a, b);
@@ -398,7 +398,7 @@ namespace AtCoder
                     x += (c2[i] * i2) % Mod2 * M1M3;
                     x += (c3[i] * i3) % Mod3 * M1M2;
 
-                    long diff = (long)c1[i] - Internal.InternalMath.SafeMod((long)x, (long)Mod1);
+                    long diff = (long)c1[i] - InternalMath.SafeMod((long)x, (long)Mod1);
                     if (diff < 0)
                     {
                         diff += (long)Mod1;
@@ -417,33 +417,32 @@ namespace AtCoder
 
                 return c;
             }
+        }
 
+        private static ulong[] Convolution<TMod>(ReadOnlySpan<long> a, ReadOnlySpan<long> b) where TMod : struct, IStaticMod
+        {
+            int z = 1 << InternalBit.CeilPow2(a.Length + b.Length - 1);
 
-            ulong[] Convolution<TMod>(ReadOnlySpan<long> a, ReadOnlySpan<long> b) where TMod : struct, IStaticMod
+            var aTemp = new StaticModInt<TMod>[z];
+            for (int i = 0; i < a.Length; i++)
             {
-                int z = 1 << Internal.InternalBit.CeilPow2(a.Length + b.Length - 1);
-
-                var aTemp = new StaticModInt<TMod>[z];
-                for (int i = 0; i < a.Length; i++)
-                {
-                    aTemp[i] = new StaticModInt<TMod>(a[i]);
-                }
-
-                var bTemp = new StaticModInt<TMod>[z];
-                for (int i = 0; i < b.Length; i++)
-                {
-                    bTemp[i] = new StaticModInt<TMod>(b[i]);
-                }
-
-                var c = AtCoder.MathLib.Convolution<TMod>(aTemp, bTemp, a.Length, b.Length, z);
-                var result = new ulong[c.Length];
-                for (int i = 0; i < result.Length; i++)
-                {
-                    result[i] = (ulong)c[i].Value;
-                }
-
-                return result;
+                aTemp[i] = new StaticModInt<TMod>(a[i]);
             }
+
+            var bTemp = new StaticModInt<TMod>[z];
+            for (int i = 0; i < b.Length; i++)
+            {
+                bTemp[i] = new StaticModInt<TMod>(b[i]);
+            }
+
+            var c = AtCoder.MathLib.Convolution<TMod>(aTemp, bTemp, a.Length, b.Length, z);
+            var result = new ulong[c.Length];
+            for (int i = 0; i < result.Length; i++)
+            {
+                result[i] = (ulong)c[i].Value;
+            }
+
+            return result;
         }
 
         private static StaticModInt<TMod>[] ConvolutionNaive<TMod>(ReadOnlySpan<StaticModInt<TMod>> a, ReadOnlySpan<StaticModInt<TMod>> b)

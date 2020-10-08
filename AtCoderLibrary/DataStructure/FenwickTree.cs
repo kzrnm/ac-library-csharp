@@ -140,7 +140,7 @@ namespace AtCoder
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Add(int p, TValue x)
         {
-            Debug.Assert(unchecked((uint)p < this.Length));
+            Debug.Assert(unchecked((uint)p < Length));
             for (p++; p < data.Length; p += InternalBit.ExtractLowestSetBit(p))
             {
                 data[p] = op.Add(data[p], x);

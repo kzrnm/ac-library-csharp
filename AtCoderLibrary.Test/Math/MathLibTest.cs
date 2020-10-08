@@ -223,7 +223,7 @@ namespace AtCoder
             static bool NextPermutation(long[] arr)
             {
                 Skip.If(true, "NextPermutation is not implemented.");
-                return false;
+                throw new Exception(arr.ToString());
             }
         }
     }

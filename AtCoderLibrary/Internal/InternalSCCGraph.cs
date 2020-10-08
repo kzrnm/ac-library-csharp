@@ -85,11 +85,11 @@ namespace AtCoder.Internal
                     if (ord[to] == -1)
                     {
                         DFS(to);
-                        low[v] = System.Math.Min(low[v], low[to]);
+                        low[v] = Math.Min(low[v], low[to]);
                     }
                     else
                     {
-                        low[v] = System.Math.Min(low[v], ord[to]);
+                        low[v] = Math.Min(low[v], ord[to]);
                     }
                 }
 

@@ -154,13 +154,13 @@ namespace AtCoder
         public static int[] ZAlgorithm<T>(ReadOnlySpan<T> s)
         {
             int n = s.Length;
-            if (n == 0) return new int[] { };
+            if (n == 0) return Array.Empty<int>();
             int[] z = new int[n];
             z[0] = 0;
             for (int i = 1, j = 0; i < n; i++)
             {
                 ref int k = ref z[i];
-                k = (j + z[j] <= i) ? 0 : System.Math.Min(j + z[j] - i, z[i - j]);
+                k = (j + z[j] <= i) ? 0 : Math.Min(j + z[j] - i, z[i - j]);
                 while (i + k < n && EqualityComparer<T>.Default.Equals(s[k], s[i + k])) k++;
                 if (j + z[j] < i + z[i]) j = i;
             }
