@@ -31,7 +31,7 @@ jobs:
     - name: Install dotnet-format
       run: dotnet tool install --global dotnet-format
     - name: Format
-      run: dotnet format --check
+      run: dotnet format AtCoderLibrary.sln --check
   test:
     runs-on: ubuntu-latest
 

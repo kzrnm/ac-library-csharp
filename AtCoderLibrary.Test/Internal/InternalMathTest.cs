@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Numerics;
-using System.Text;
 using FluentAssertions;
 using Xunit;
 using static AtCoder.MathUtil;

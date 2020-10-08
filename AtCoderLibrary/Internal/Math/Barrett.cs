@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Runtime.Intrinsics;
-using System.Runtime.Intrinsics.X86;
-using System.Text;
+﻿using System.Runtime.Intrinsics.X86;
 
 namespace AtCoder.Internal
 {
@@ -14,7 +9,7 @@ namespace AtCoder.Internal
     public class Barrett
     {
         public uint Mod { get; private set; }
-        private ulong IM;
+        private readonly ulong IM;
         public Barrett(uint m)
         {
             Mod = m;

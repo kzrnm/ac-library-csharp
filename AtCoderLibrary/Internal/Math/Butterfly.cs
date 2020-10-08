@@ -11,12 +11,12 @@ namespace AtCoder.Internal
         /// <summary>
         /// sumE[i] = ies[0] * ... * ies[i - 1] * es[i]
         /// </summary>
-        private static StaticModInt<T>[] sumE = CalcurateSumE();
+        private static readonly StaticModInt<T>[] sumE = CalcurateSumE();
 
         /// <summary>
         /// sumIE[i] = es[0] * ... * es[i - 1] * ies[i]
         /// </summary>
-        private static StaticModInt<T>[] sumIE = CalcurateSumIE();
+        private static readonly StaticModInt<T>[] sumIE = CalcurateSumIE();
 
         [MethodImpl(MethodImplOptions.AggressiveOptimization)]
         public static void Calculate(Span<StaticModInt<T>> a)
