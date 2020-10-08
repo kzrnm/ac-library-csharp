@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AtCoder.Utils;
 using FluentAssertions;
 using MersenneTwister;
 using Xunit;
@@ -9,8 +10,6 @@ namespace AtCoder
 {
     public class PriorityQueueTest
     {
-        private IComparer<int> ReverseComparerInt { get; } = Comparer<int>.Create((a, b) => b.CompareTo(a));
-        private IComparer<long> ReverseComparerLong { get; } = Comparer<long>.Create((a, b) => b.CompareTo(a));
         [Fact]
         public void UtilReverseTest()
         {
@@ -25,7 +24,7 @@ namespace AtCoder
                 var cpp = arr.ToArray();
                 Array.Sort(arr);
                 Array.Reverse(arr);
-                Array.Sort(cpp, ReverseComparerInt);
+                Array.Sort(cpp, ComparerUtil.ReverseComparerInt);
                 cpp.Should().Equal(cpp);
             }
             for (int n = 0; n < 200; n++)
@@ -38,7 +37,7 @@ namespace AtCoder
                 var cpp = arr.ToArray();
                 Array.Sort(arr);
                 Array.Reverse(arr);
-                Array.Sort(cpp, ReverseComparerLong);
+                Array.Sort(cpp, ComparerUtil.ReverseComparerLong);
                 cpp.Should().Equal(cpp);
             }
         }
@@ -101,7 +100,7 @@ namespace AtCoder
             for (int n = 0; n < 200; n++)
             {
                 var list = new List<int>();
-                var pq = new PriorityQueue<int>(ReverseComparerInt);
+                var pq = new PriorityQueue<int>(ComparerUtil.ReverseComparerInt);
                 for (int i = 0; i < n; i++)
                 {
                     var x = mt.Next();
@@ -109,7 +108,7 @@ namespace AtCoder
                     list.Add(x);
                     pq.Count.Should().Be(list.Count).And.Be(i + 1);
                 }
-                list.Sort(ReverseComparerInt);
+                list.Sort(ComparerUtil.ReverseComparerInt);
                 foreach (var lx in list)
                 {
                     pq.Dequeue().Should().Be(lx);
@@ -125,7 +124,7 @@ namespace AtCoder
             for (int n = 0; n < 200; n++)
             {
                 var list = new List<int>();
-                var pq = new PriorityQueue<long, int>(ReverseComparerLong);
+                var pq = new PriorityQueue<long, int>(ComparerUtil.ReverseComparerLong);
                 for (int i = 0; i < n; i++)
                 {
                     var x = mt.Next(0, int.MaxValue);
@@ -133,7 +132,7 @@ namespace AtCoder
                     list.Add(x);
                     pq.Count.Should().Be(list.Count).And.Be(i + 1);
                 }
-                list.Sort(ReverseComparerInt);
+                list.Sort(ComparerUtil.ReverseComparerInt);
                 foreach (var lx in list)
                 {
                     pq.Dequeue().Should().Be(KeyValuePair.Create((long)lx, -lx));
