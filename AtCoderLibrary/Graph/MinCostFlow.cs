@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 
 namespace AtCoder
 {
+#pragma warning disable CA1815 // Override equals and operator equals on value types
     public interface ICastOperator<TFrom, TTo>
         where TFrom : struct
         where TTo : struct
@@ -23,6 +24,7 @@ namespace AtCoder
     {
         public long Cast(int y) => y;
     }
+#pragma warning restore CA1815 // Override equals and operator equals on value types
 
     /// <summary>
     /// Minimum-cost flow problem を扱うライブラリ(int版)です。
@@ -354,8 +356,10 @@ namespace AtCoder
             TCap flow = default;
             TCost cost = default;
             TCost prevCostPerFlow = costOp.Decrement(default); //-1
-            var result = new List<(TCap cap, TCost cost)>();
-            result.Add((flow, cost));
+            var result = new List<(TCap cap, TCost cost)>
+            {
+                (flow, cost)
+            };
             while (capOp.LessThan(flow, flowLimit))
             {
                 if (!DualRef()) break;

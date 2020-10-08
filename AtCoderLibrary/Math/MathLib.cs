@@ -268,7 +268,7 @@ namespace AtCoder
                 return result;
             }
 
-            StaticModInt<TMod> TakeMod(ulong x) => StaticModInt<TMod>.Raw((int)(x % default(TMod).Mod));
+            static StaticModInt<TMod> TakeMod(ulong x) => StaticModInt<TMod>.Raw((int)(x % default(TMod).Mod));
         }
 
         /// <summary>
@@ -417,33 +417,32 @@ namespace AtCoder
 
                 return c;
             }
+        }
 
+        private static ulong[] Convolution<TMod>(ReadOnlySpan<long> a, ReadOnlySpan<long> b) where TMod : struct, IStaticMod
+        {
+            int z = 1 << InternalBit.CeilPow2(a.Length + b.Length - 1);
 
-            ulong[] Convolution<TMod>(ReadOnlySpan<long> a, ReadOnlySpan<long> b) where TMod : struct, IStaticMod
+            var aTemp = new StaticModInt<TMod>[z];
+            for (int i = 0; i < a.Length; i++)
             {
-                int z = 1 << InternalBit.CeilPow2(a.Length + b.Length - 1);
-
-                var aTemp = new StaticModInt<TMod>[z];
-                for (int i = 0; i < a.Length; i++)
-                {
-                    aTemp[i] = new StaticModInt<TMod>(a[i]);
-                }
-
-                var bTemp = new StaticModInt<TMod>[z];
-                for (int i = 0; i < b.Length; i++)
-                {
-                    bTemp[i] = new StaticModInt<TMod>(b[i]);
-                }
-
-                var c = AtCoder.MathLib.Convolution<TMod>(aTemp, bTemp, a.Length, b.Length, z);
-                var result = new ulong[c.Length];
-                for (int i = 0; i < result.Length; i++)
-                {
-                    result[i] = (ulong)c[i].Value;
-                }
-
-                return result;
+                aTemp[i] = new StaticModInt<TMod>(a[i]);
             }
+
+            var bTemp = new StaticModInt<TMod>[z];
+            for (int i = 0; i < b.Length; i++)
+            {
+                bTemp[i] = new StaticModInt<TMod>(b[i]);
+            }
+
+            var c = AtCoder.MathLib.Convolution<TMod>(aTemp, bTemp, a.Length, b.Length, z);
+            var result = new ulong[c.Length];
+            for (int i = 0; i < result.Length; i++)
+            {
+                result[i] = (ulong)c[i].Value;
+            }
+
+            return result;
         }
 
         private static StaticModInt<TMod>[] ConvolutionNaive<TMod>(ReadOnlySpan<StaticModInt<TMod>> a, ReadOnlySpan<StaticModInt<TMod>> b)

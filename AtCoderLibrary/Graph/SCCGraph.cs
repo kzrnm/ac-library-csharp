@@ -9,7 +9,7 @@ namespace AtCoder
     [DebuggerDisplay("Vertices = {_internal._n}, Edges = {_internal.edges.Count}")]
     public class SCCGraph
     {
-        Internal.SCCGraph _internal;
+        readonly Internal.SCCGraph _internal;
 
         /// <summary>
         /// <see cref="SCCGraph"/> クラスの新しいインスタンスを、<paramref name="n"/> 頂点 0 辺の有向グラフとして初期化します。

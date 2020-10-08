@@ -154,7 +154,7 @@ namespace AtCoder
         public static int[] ZAlgorithm<T>(ReadOnlySpan<T> s)
         {
             int n = s.Length;
-            if (n == 0) return new int[] { };
+            if (n == 0) return Array.Empty<int>();
             int[] z = new int[n];
             z[0] = 0;
             for (int i = 1, j = 0; i < n; i++)
