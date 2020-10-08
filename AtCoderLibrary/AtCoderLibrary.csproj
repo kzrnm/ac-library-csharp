@@ -9,7 +9,7 @@
 
     <EnableSourceLink>true</EnableSourceLink>
     <PackageId>ac-library-csharp</PackageId>
-    <Version>0.3.0</Version>
+    <Version>0.3.1</Version>
     <Description>ac-library ported to C#.</Description>
     <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
 
