@@ -3,7 +3,7 @@ using Xunit;
 
 namespace AtCoder.Internal
 {
-    public class InternalBitTest 
+    public class InternalBitTest
     {
         [Theory]
         [InlineData(0, 0)]

@@ -6,7 +6,7 @@ using Xunit;
 
 namespace AtCoder
 {
-    public class DSUTest 
+    public class DSUTest
     {
         [Fact]
         public void Zero()

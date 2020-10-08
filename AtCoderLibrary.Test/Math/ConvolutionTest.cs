@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
-using Xunit;
 using FluentAssertions;
 using MersenneTwister;
+using Xunit;
 
 namespace AtCoder
 {
-    public class ConvolutionTest 
+    public class ConvolutionTest
     {
         private struct Mod924844033 : IStaticMod
         {

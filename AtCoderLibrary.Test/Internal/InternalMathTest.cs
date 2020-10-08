@@ -8,7 +8,7 @@ using static AtCoder.MathUtil;
 
 namespace AtCoder.Internal
 {
-    public class InternalMathTest 
+    public class InternalMathTest
     {
 
         [Fact]
