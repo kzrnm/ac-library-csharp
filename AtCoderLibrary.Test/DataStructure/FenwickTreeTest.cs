@@ -5,7 +5,7 @@ using Xunit;
 
 namespace AtCoder
 {
-    public class FenwickTreeTest 
+    public class FenwickTreeTest
     {
         private readonly struct ModID0 : IDynamicModID { }
         private readonly struct ModID1 : IDynamicModID { }
