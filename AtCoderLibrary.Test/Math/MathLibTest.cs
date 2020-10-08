@@ -185,8 +185,7 @@ namespace AtCoder
                 }
             }
 
-            var factorInf = new long[] { 49, 73, 127, 337, 92737, 649657 };
-            do
+            foreach (var factorInf in StlFunction.NextPermutation(new long[] { 49, 73, 127, 337, 92737, 649657 }))
             {
                 foreach (long ans in pred)
                 {
@@ -200,10 +199,9 @@ namespace AtCoder
                     var res = MathLib.CRT(r.ToArray(), m.ToArray());
                     res.Should().Be((ans % INF, INF));
                 }
-            } while (NextPermutation(factorInf));
+            }
 
-            var factorInfn1 = new long[] { 2, 3, 715827883, 2147483647 };
-            do
+            foreach (var factorInfn1 in StlFunction.NextPermutation(new long[] { 2, 3, 715827883, 2147483647 }))
             {
                 foreach (long ans in pred)
                 {
@@ -217,12 +215,6 @@ namespace AtCoder
                     var res = MathLib.CRT(r.ToArray(), m.ToArray());
                     res.Should().Be((ans % (INF - 1), INF - 1));
                 }
-            } while (NextPermutation(factorInfn1));
-
-            static bool NextPermutation(long[] arr)
-            {
-                Skip.If(true, "NextPermutation is not implemented.");
-                throw new Exception(arr.ToString());
             }
         }
     }
