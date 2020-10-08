@@ -353,7 +353,7 @@ namespace AtCoder
 
             TCap flow = default;
             TCost cost = default;
-            TCost prev_cost = costOp.Decrement(default); //-1
+            TCost prevCostPerFlow = costOp.Decrement(default); //-1
             var result = new List<(TCap cap, TCost cost)>();
             result.Add((flow, cost));
             while (capOp.LessThan(flow, flowLimit))
@@ -375,12 +375,12 @@ namespace AtCoder
                 TCost d = costOp.Minus(dual[s]);
                 flow = capOp.Add(flow, c);
                 cost = costOp.Add(cost, costOp.Multiply(cast.Cast(c), d));
-                if (costOp.Equals(prev_cost, d))
+                if (costOp.Equals(prevCostPerFlow, d))
                 {
                     result.RemoveAt(result.Count - 1);
                 }
                 result.Add((flow, cost));
-                prev_cost = cost;
+                prevCostPerFlow = d;
             }
             return result;
         }
