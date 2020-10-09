@@ -72,7 +72,7 @@ namespace AtCoder
     /// </example>
     public readonly struct StaticModInt<T> : IEquatable<StaticModInt<T>> where T : struct, IStaticMod
     {
-        private readonly uint _v;
+        internal readonly uint _v;
         private static readonly T op = default;
 
         /// <summary>

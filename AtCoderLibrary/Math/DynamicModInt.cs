@@ -57,8 +57,8 @@ namespace AtCoder
     /// </example>
     public readonly struct DynamicModInt<T> : IEquatable<DynamicModInt<T>> where T : struct, IDynamicModID
     {
-        private readonly uint _v;
-        private static Internal.Barrett bt;
+        internal readonly uint _v;
+        internal static Internal.Barrett bt;
 
         /// <summary>
         /// 格納されている値を返します。

@@ -6,8 +6,8 @@ namespace AtCoder
 {
     public class DSU
     {
-        private readonly int _n;
-        private readonly int[] _parentOrSize;
+        internal readonly int _n;
+        internal readonly int[] _parentOrSize;
 
         /// <summary>
         /// <see cref="DSU"/> クラスの新しいインスタンスを、<paramref name="n"/> 頂点 0 辺のグラフとして初期化します。

@@ -11,7 +11,7 @@ namespace AtCoder
         #region NextPermutation
         public struct NextPermutationEnumerator<T> : IEnumerator<T[]>, IEnumerable<T[]> where T : IComparable<T>
         {
-            private readonly IEnumerable<T> _orig;
+            internal readonly IEnumerable<T> _orig;
             internal NextPermutationEnumerator(IEnumerable<T> orig)
             {
                 _orig = orig;

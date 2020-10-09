@@ -57,10 +57,10 @@ namespace AtCoder
         /// </summary>
         public int Length { get; }
 
-        private readonly int log;
-        private readonly int size;
-        private readonly TValue[] d;
-        private readonly F[] lz;
+        internal readonly int log;
+        internal readonly int size;
+        internal readonly TValue[] d;
+        internal readonly F[] lz;
 
 
         /// <summary>
@@ -104,10 +104,10 @@ namespace AtCoder
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void Update(int k) => d[k] = op.Operate(d[2 * k], d[2 * k + 1]);
+        internal void Update(int k) => d[k] = op.Operate(d[2 * k], d[2 * k + 1]);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void AllApply(int k, F f)
+        internal void AllApply(int k, F f)
         {
             AssertF(f, op.Identity, op.Identity);
             AssertMonoid(d[k]);
@@ -117,7 +117,7 @@ namespace AtCoder
             if (k < size) lz[k] = op.Composition(f, lz[k]);
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void Push(int k)
+        internal void Push(int k)
         {
             AllApply(2 * k, lz[k]);
             AllApply(2 * k + 1, lz[k]);
