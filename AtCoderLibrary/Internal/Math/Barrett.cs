@@ -9,7 +9,7 @@ namespace AtCoder.Internal
     public class Barrett
     {
         public uint Mod { get; private set; }
-        private readonly ulong IM;
+        internal readonly ulong IM;
         public Barrett(uint m)
         {
             Mod = m;

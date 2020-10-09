@@ -110,7 +110,7 @@ namespace AtCoder
         where TOp : struct, IArithmeticOperator<TValue>
     {
         private static readonly TOp op = default;
-        private readonly TValue[] data;
+        internal readonly TValue[] data;
 
         public int Length { get; }
 
@@ -162,7 +162,7 @@ namespace AtCoder
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private TValue Sum(int r)
+        internal TValue Sum(int r)
         {
             TValue s = default;
             for (; r > 0; r -= InternalBit.ExtractLowestSetBit(r))

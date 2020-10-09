@@ -70,7 +70,7 @@ namespace AtCoder
         /// <para>制約: 0≤|<paramref name="m"/>|&lt;10^8</para>
         /// <para>計算量: 時間O(|<paramref name="m"/>|log|<paramref name="m"/>|), 空間O(|<paramref name="m"/>|)</para>
         /// </remarks>
-        private static int[] SuffixArray<T>(ReadOnlyMemory<T> m)
+        internal static int[] SuffixArray<T>(ReadOnlyMemory<T> m)
         {
             var s = m.Span;
             var n = m.Length;

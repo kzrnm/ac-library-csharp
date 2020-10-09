@@ -12,8 +12,8 @@ namespace AtCoder
     public class TwoSat
     {
         readonly int _n;
-        readonly private bool[] _answer;
-        readonly private SCCGraph scc;
+        internal readonly bool[] _answer;
+        internal readonly SCCGraph scc;
 
         /// <summary>
         /// <see cref="TwoSat"/> クラスの新しいインスタンスを、<paramref name="n"/> 変数の 2-SAT として初期化します。

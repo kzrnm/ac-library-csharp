@@ -44,9 +44,9 @@ namespace AtCoder
         /// </summary>
         public int Length { get; }
 
-        private readonly int log;
-        private readonly int size;
-        private readonly TValue[] d;
+        internal readonly int log;
+        internal readonly int size;
+        internal readonly TValue[] d;
 
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace AtCoder
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void Update(int k) => d[k] = op.Operate(d[2 * k], d[2 * k + 1]);
+        internal void Update(int k) => d[k] = op.Operate(d[2 * k], d[2 * k + 1]);
 
         /// <summary>
         /// a[<paramref name="p"/>] を返します。

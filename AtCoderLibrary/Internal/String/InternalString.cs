@@ -301,7 +301,7 @@ namespace AtCoder.Internal
         /// <summary>
         /// 各要素が <paramref name="value"/> で初期化された長さ <paramref name="length"/> の配列を取得する。
         /// </summary>
-        private static T[] GetFilledArray<T>(T value, int length)
+        internal static T[] GetFilledArray<T>(T value, int length)
         {
             // Enumerable.Repeatより1-2割ほど高速（64bit環境、intの場合）
             // |           Method |     Mean |   Error |  StdDev |

@@ -380,7 +380,7 @@ namespace AtCoder
             public static bool operator !=(Edge left, Edge right) => !left.Equals(right);
         };
 
-        private class EdgeInternal
+        internal class EdgeInternal
         {
             public int To { get; set; }
             public int Rev { get; set; }
@@ -393,8 +393,8 @@ namespace AtCoder
             }
         };
 
-        private readonly int _n;
-        private readonly List<(int first, int second)> _pos;
-        private readonly List<EdgeInternal>[] _g;
+        internal readonly int _n;
+        internal readonly List<(int first, int second)> _pos;
+        internal readonly List<EdgeInternal>[] _g;
     }
 }

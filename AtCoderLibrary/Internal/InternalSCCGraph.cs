@@ -11,8 +11,8 @@ namespace AtCoder.Internal
     [DebuggerDisplay("Vertices = {_n}, Edges = {edges.Count}")]
     public class SCCGraph
     {
-        private readonly int _n;
-        private readonly List<Edge> edges;
+        internal readonly int _n;
+        internal readonly List<Edge> edges;
 
         public int VerticesNumbers => _n;
 
@@ -158,7 +158,7 @@ namespace AtCoder.Internal
         /// }
         /// </code>
         /// </example>
-        private class CSR
+        internal class CSR
         {
             /// <summary>
             /// 各頂点から伸びる有向辺数の累積和を取得します。
@@ -196,7 +196,7 @@ namespace AtCoder.Internal
         }
 
         [DebuggerDisplay("From = {From}, To = {To}")]
-        private readonly struct Edge
+        internal readonly struct Edge
         {
             public int From { get; }
             public int To { get; }

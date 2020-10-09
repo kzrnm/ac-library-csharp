@@ -10,7 +10,7 @@ namespace AtCoder
     {
         protected T[] data;
         protected readonly IComparer<T> _comparer;
-        private const int DefaultCapacity = 16;
+        internal const int DefaultCapacity = 16;
         public PriorityQueue() : this(Comparer<T>.Default) { }
         public PriorityQueue(int capacity) : this(capacity, Comparer<T>.Default) { }
         public PriorityQueue(IComparer<T> comparer) : this(DefaultCapacity, comparer) { }
@@ -24,7 +24,7 @@ namespace AtCoder
 
         public T Peek => data[0];
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void Resize()
+        internal void Resize()
         {
             Array.Resize(ref data, data.Length << 1);
         }
@@ -44,7 +44,7 @@ namespace AtCoder
             return res;
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void UpdateUp(int i)
+        internal void UpdateUp(int i)
         {
             if (i > 0)
             {
@@ -57,7 +57,7 @@ namespace AtCoder
             }
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void UpdateDown(int i)
+        internal void UpdateDown(int i)
         {
             var n = Count;
             var child = 2 * i + 1;
