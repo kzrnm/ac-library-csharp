@@ -46,13 +46,13 @@ namespace AtCoder
         /// </summary>
         /// <returns>--<paramref name="x"/></returns>
         T Decrement(T x);
+    }
+    public interface ICompareOperator<T> : IEqualityComparer<T>, IComparer<T> where T : struct
+    {
         /// <summary>
         /// Greater than operator &gt;
         /// </summary>
         /// <returns><paramref name="x"/> &gt; <paramref name="y"/></returns>
-    }
-    public interface ICompareOperator<T> : IEqualityComparer<T>, IComparer<T> where T : struct
-    {
         bool GreaterThan(T x, T y);
         /// <summary>
         /// Greater than or equal operator &gt;=
