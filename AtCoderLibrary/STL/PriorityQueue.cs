@@ -44,7 +44,7 @@ namespace AtCoder
             return res;
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal void UpdateUp(int i)
+        protected internal void UpdateUp(int i)
         {
             if (i > 0)
             {
@@ -57,7 +57,7 @@ namespace AtCoder
             }
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal void UpdateDown(int i)
+        protected internal void UpdateDown(int i)
         {
             var n = Count;
             var child = 2 * i + 1;
