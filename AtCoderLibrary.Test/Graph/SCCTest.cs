@@ -33,15 +33,12 @@ namespace AtCoder
         }
 
 
-        [SkippableFact]
+        [Fact]
         public void Invalid()
         {
-            using (var sem = new DebugAssertSemaphore())
-            {
-                var graph = new SCCGraph(2);
-                graph.AddEdge(0, 0);
-                graph.Invoking(graph => graph.AddEdge(0, 10)).Should().Throw<DebugAssertException>();
-            }
+            var graph = new SCCGraph(2);
+            graph.AddEdge(0, 0);
+            graph.Invoking(graph => graph.AddEdge(0, 10)).Should().ThrowDebugAssertIfDebug();
         }
 
         [Theory]

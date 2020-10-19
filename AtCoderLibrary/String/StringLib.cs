@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using AtCoder.Internal;
 
 namespace AtCoder
 {
@@ -18,7 +18,7 @@ namespace AtCoder
         /// </remarks>
         public static int[] LCPArray<T>(ReadOnlySpan<T> s, int[] sa)
         {
-            Debug.Assert(1 <= s.Length);
+            DebugUtil.Assert(1 <= s.Length);
             int[] rnk = new int[s.Length];
             for (int i = 0; i < s.Length; i++)
             {
@@ -134,10 +134,10 @@ namespace AtCoder
         /// </remarks>
         public static int[] SuffixArray(int[] s, int upper)
         {
-            Debug.Assert(0 <= upper);
+            DebugUtil.Assert(0 <= upper);
             foreach (var si in s)
             {
-                Debug.Assert(unchecked((uint)si) <= upper);
+                DebugUtil.Assert(unchecked((uint)si) <= upper);
             }
             return Internal.InternalString.SAIS(s, upper);
         }

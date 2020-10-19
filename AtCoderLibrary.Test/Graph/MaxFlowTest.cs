@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using AtCoder.Internal;
 using FluentAssertions;
 using MersenneTwister;
 using Xunit;
@@ -172,15 +173,13 @@ namespace AtCoder
             MFGraphInt.Edge e = new MFGraphInt.Edge(0, 0, 100, 0);
             g.GetEdge(0).Should().Be(e);
         }
+
         [Fact]
         public void Invalid()
         {
-            using (var sem = new DebugAssertSemaphore())
-            {
-                var g = new MFGraphInt(2);
-                g.Invoking(g => g.Flow(0, 0)).Should().Throw<DebugAssertException>();
-                g.Invoking(g => g.Flow(0, 0, 0)).Should().Throw<DebugAssertException>();
-            }
+            var g = new MFGraphInt(2);
+            g.Invoking(g => g.Flow(0, 0)).Should().ThrowDebugAssertIfDebug();
+            g.Invoking(g => g.Flow(0, 0, 0)).Should().ThrowDebugAssertIfDebug();
         }
 
         [Fact]

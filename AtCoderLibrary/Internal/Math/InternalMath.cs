@@ -23,7 +23,7 @@ namespace AtCoder.Internal
         /// </remarks>
         public static int PrimitiveRoot(int m)
         {
-            Debug.Assert(m >= 2);
+            DebugUtil.Assert(m >= 2);
 
             if (primitiveRootsCache.TryGetValue(m, out var p))
             {
@@ -130,7 +130,7 @@ namespace AtCoder.Internal
         /// </summary>
         public static bool IsPrime(int n)
         {
-            Debug.Assert(0 <= n);
+            DebugUtil.Assert(0 <= n);
             if (n <= 1) return false;
             if (n == 2 || n == 7 || n == 61) return true;
             if (n % 2 == 0) return false;

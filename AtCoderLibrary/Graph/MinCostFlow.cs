@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using AtCoder.Internal;
 
 namespace AtCoder
 {
@@ -105,10 +105,10 @@ namespace AtCoder
         /// </remarks>
         public int AddEdge(int from, int to, TCap cap, TCost cost)
         {
-            Debug.Assert(0 <= from && from < _n);
-            Debug.Assert(0 <= to && to < _n);
-            Debug.Assert(capOp.LessThanOrEqual(default, cap));
-            Debug.Assert(costOp.LessThanOrEqual(default, cost));
+            DebugUtil.Assert(0 <= from && from < _n);
+            DebugUtil.Assert(0 <= to && to < _n);
+            DebugUtil.Assert(capOp.LessThanOrEqual(default, cap));
+            DebugUtil.Assert(costOp.LessThanOrEqual(default, cost));
             int m = _pos.Count;
             _pos.Add((from, _g[from].Count));
 
@@ -133,7 +133,7 @@ namespace AtCoder
         public Edge GetEdge(int i)
         {
             int m = _pos.Count;
-            Debug.Assert(0 <= i && i < m);
+            DebugUtil.Assert(0 <= i && i < m);
             var _e = _g[_pos[i].first][_pos[i].second];
             var _re = _g[_e.To][_e.Rev];
             return new Edge(_pos[i].first, _e.To, capOp.Add(_e.Cap, _re.Cap), _re.Cap, _e.Cost);
@@ -287,9 +287,9 @@ namespace AtCoder
         /// </remarks>
         public List<(TCap cap, TCost cost)> Slope(int s, int t, TCap flowLimit)
         {
-            Debug.Assert(0 <= s && s < _n);
-            Debug.Assert(0 <= t && t < _n);
-            Debug.Assert(s != t);
+            DebugUtil.Assert(0 <= s && s < _n);
+            DebugUtil.Assert(0 <= t && t < _n);
+            DebugUtil.Assert(s != t);
             // variants (C = maxcost):
             // -(n-1)C <= dual[s] <= dual[i] <= dual[t] = 0
             // reduced cost (= e.cost + dual[e.from] - dual[e.to]) >= 0 for all edge

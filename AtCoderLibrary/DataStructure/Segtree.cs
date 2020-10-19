@@ -59,7 +59,7 @@ namespace AtCoder
         /// <param name="n">配列の長さ</param>
         public Segtree(int n)
         {
-            Debug.Assert(0 <= n);
+            DebugUtil.Assert(0 <= n);
             AssertMonoid(op.Identity);
             Length = n;
             log = InternalBit.CeilPow2(n);
@@ -103,7 +103,7 @@ namespace AtCoder
             set
             {
                 AssertMonoid(value);
-                Debug.Assert((uint)p < Length);
+                DebugUtil.Assert((uint)p < Length);
                 p += size;
                 d[p] = value;
                 for (int i = 1; i <= log; i++) Update(p >> i);
@@ -111,7 +111,7 @@ namespace AtCoder
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get
             {
-                Debug.Assert((uint)p < Length);
+                DebugUtil.Assert((uint)p < Length);
                 AssertMonoid(d[p + size]);
                 return d[p + size];
             }
@@ -130,7 +130,7 @@ namespace AtCoder
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public TValue Prod(int l, int r)
         {
-            Debug.Assert(0 <= l && l <= r && r <= Length);
+            DebugUtil.Assert(0 <= l && l <= r && r <= Length);
             TValue sml = op.Identity, smr = op.Identity;
             l += size;
             r += size;
@@ -184,8 +184,8 @@ namespace AtCoder
         /// </remarks>
         public int MaxRight(int l, Predicate<TValue> f)
         {
-            Debug.Assert((uint)l <= Length);
-            Debug.Assert(f(op.Identity));
+            DebugUtil.Assert((uint)l <= Length);
+            DebugUtil.Assert(f(op.Identity));
             if (l == Length) return Length;
             l += size;
             var sm = op.Identity;
@@ -240,8 +240,8 @@ namespace AtCoder
         /// </remarks>
         public int MinLeft(int r, Predicate<TValue> f)
         {
-            Debug.Assert((uint)r <= Length);
-            Debug.Assert(f(op.Identity));
+            DebugUtil.Assert((uint)r <= Length);
+            DebugUtil.Assert(f(op.Identity));
             if (r == 0) return 0;
             r += size;
             var sm = op.Identity;
@@ -320,9 +320,9 @@ namespace AtCoder
         [Conditional("DEBUG")]
         public static void AssertMonoid(TValue value)
         {
-            Debug.Assert(op.Operate(value, op.Identity).Equals(value),
+            DebugUtil.Assert(op.Operate(value, op.Identity).Equals(value),
                 $"{nameof(op.Operate)}({value}, {op.Identity}) != {value}");
-            Debug.Assert(op.Operate(op.Identity, value).Equals(value),
+            DebugUtil.Assert(op.Operate(op.Identity, value).Equals(value),
                 $"{nameof(op.Operate)}({op.Identity}, {value}) != {value}");
         }
     }

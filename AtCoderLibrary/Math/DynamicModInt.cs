@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using AtCoder.Internal;
 
 namespace AtCoder
 {
@@ -73,7 +73,7 @@ namespace AtCoder
             get => (int)bt.Mod;
             set
             {
-                Debug.Assert(1 <= value);
+                DebugUtil.Assert(1 <= value);
                 bt = new Internal.Barrett((uint)value);
             }
         }
@@ -89,8 +89,8 @@ namespace AtCoder
         public static DynamicModInt<T> Raw(int v)
         {
             var u = unchecked((uint)v);
-            Debug.Assert(bt != null, $"使用前に {nameof(DynamicModInt<T>)}<{nameof(T)}>.{nameof(Mod)} プロパティに mod の値を設定してください。");
-            Debug.Assert(u < Mod);
+            DebugUtil.Assert(bt != null, $"使用前に {nameof(DynamicModInt<T>)}<{nameof(T)}>.{nameof(Mod)} プロパティに mod の値を設定してください。");
+            DebugUtil.Assert(u < Mod);
             return new DynamicModInt<T>(u);
         }
 
@@ -108,7 +108,7 @@ namespace AtCoder
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static uint Round(long v)
         {
-            Debug.Assert(bt != null, $"使用前に {nameof(DynamicModInt<T>)}<{nameof(T)}>.{nameof(Mod)} プロパティに mod の値を設定してください。");
+            DebugUtil.Assert(bt != null, $"使用前に {nameof(DynamicModInt<T>)}<{nameof(T)}>.{nameof(Mod)} プロパティに mod の値を設定してください。");
             var x = v % bt.Mod;
             if (x < 0)
             {
@@ -196,7 +196,7 @@ namespace AtCoder
         /// </remarks>
         public DynamicModInt<T> Pow(long n)
         {
-            Debug.Assert(0 <= n);
+            DebugUtil.Assert(0 <= n);
             var x = this;
             var r = Raw(1);
 
@@ -223,7 +223,7 @@ namespace AtCoder
         public DynamicModInt<T> Inv()
         {
             var (g, x) = Internal.InternalMath.InvGCD(_v, bt.Mod);
-            Debug.Assert(g == 1);
+            DebugUtil.Assert(g == 1);
             return new DynamicModInt<T>(x);
         }
 

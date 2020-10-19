@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using AtCoder.Internal;
 
 namespace AtCoder
 {
@@ -69,8 +69,8 @@ namespace AtCoder
         /// </remarks>
         public static int BinarySearch(int ok, int ng, Predicate<int> Ok)
         {
-            Debug.Assert(Ok(ok));
-            Debug.Assert(!Ok(ng));
+            DebugUtil.Assert(Ok(ok));
+            DebugUtil.Assert(!Ok(ng));
             while (Math.Abs(ok - ng) > 1)
             {
                 var m = (ok + ng) >> 1;
@@ -89,8 +89,8 @@ namespace AtCoder
         /// </remarks>
         public static long BinarySearch(long ok, long ng, Predicate<long> Ok)
         {
-            Debug.Assert(Ok(ok));
-            Debug.Assert(!Ok(ng));
+            DebugUtil.Assert(Ok(ok));
+            DebugUtil.Assert(!Ok(ng));
             while (Math.Abs(ok - ng) > 1)
             {
                 var m = (ok + ng) >> 1;

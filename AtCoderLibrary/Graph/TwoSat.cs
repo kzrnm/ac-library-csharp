@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using AtCoder.Internal;
 
 namespace AtCoder
 {
@@ -23,7 +24,7 @@ namespace AtCoder
         /// </remarks>
         public TwoSat(int n)
         {
-            Debug.Assert(unchecked((uint)n <= 100_000_000));
+            DebugUtil.Assert(unchecked((uint)n <= 100_000_000));
             _n = n;
             _answer = new bool[n];
             scc = new SCCGraph(2 * n);
@@ -38,8 +39,8 @@ namespace AtCoder
         /// </remarks>
         public void AddClause(int i, bool f, int j, bool g)
         {
-            Debug.Assert(unchecked((uint)i < _n));
-            Debug.Assert(unchecked((uint)j < _n));
+            DebugUtil.Assert(unchecked((uint)i < _n));
+            DebugUtil.Assert(unchecked((uint)j < _n));
             scc.AddEdge(2 * i + (f ? 0 : 1), 2 * j + (g ? 1 : 0));
             scc.AddEdge(2 * j + (g ? 0 : 1), 2 * i + (f ? 1 : 0));
         }

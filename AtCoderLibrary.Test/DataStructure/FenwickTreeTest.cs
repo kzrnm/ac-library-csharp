@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using FluentAssertions;
 using Xunit;
@@ -135,24 +136,21 @@ namespace AtCoder
             }
         }
 
-        [SkippableFact]
+        [Fact]
         public void Invalid()
         {
-            using (var sem = new DebugAssertSemaphore())
-            {
-                Assert.Throws<DebugAssertException>(() => new IntFenwickTree(-1));
-                var s = new IntFenwickTree(10);
-                s.Invoking(s => s.Add(-1, 0)).Should().Throw<DebugAssertException>();
-                s.Invoking(s => s.Add(10, 0)).Should().Throw<DebugAssertException>();
+            new Action(() => new IntFenwickTree(-1)).Should().ThrowDebugAssertIfDebug();
+            var s = new IntFenwickTree(10);
+            s.Invoking(s => s.Add(-1, 0)).Should().ThrowDebugAssertIfDebug();
+            s.Invoking(s => s.Add(10, 0)).Should().ThrowDebugAssertIfDebug();
 
-                s.Invoking(s => s.Sum(-1, 3)).Should().Throw<DebugAssertException>();
-                s.Invoking(s => s.Sum(3, 11)).Should().Throw<DebugAssertException>();
-                s.Invoking(s => s.Sum(5, 3)).Should().Throw<DebugAssertException>();
+            s.Invoking(s => s.Sum(-1, 3)).Should().ThrowDebugAssertIfDebug();
+            s.Invoking(s => s.Sum(3, 11)).Should().ThrowDebugAssertIfDebug();
+            s.Invoking(s => s.Sum(5, 3)).Should().ThrowDebugAssertIfDebug();
 
-                s.Invoking(s => s[-1..3]).Should().Throw<DebugAssertException>();
-                s.Invoking(s => s[3..11]).Should().Throw<DebugAssertException>();
-                s.Invoking(s => s[5..3]).Should().Throw<DebugAssertException>();
-            }
+            s.Invoking(s => s[-1..3]).Should().ThrowDebugAssertIfDebug();
+            s.Invoking(s => s[3..11]).Should().ThrowDebugAssertIfDebug();
+            s.Invoking(s => s[5..3]).Should().ThrowDebugAssertIfDebug();
         }
 
         [Fact]

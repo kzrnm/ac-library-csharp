@@ -73,7 +73,7 @@ namespace AtCoder
         /// <param name="n">配列の長さ</param>
         public LazySegtree(int n)
         {
-            Debug.Assert(0 <= n);
+            DebugUtil.Assert(0 <= n);
             AssertMonoid(op.Identity);
             AssertFIdentity(op.Identity);
             AssertF(op.FIdentity, op.Identity, op.Identity);
@@ -137,7 +137,7 @@ namespace AtCoder
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             set
             {
-                Debug.Assert((uint)p < Length);
+                DebugUtil.Assert((uint)p < Length);
                 p += size;
                 for (int i = log; i >= 1; i--) Push(p >> i);
                 d[p] = value;
@@ -146,7 +146,7 @@ namespace AtCoder
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get
             {
-                Debug.Assert((uint)p < Length);
+                DebugUtil.Assert((uint)p < Length);
                 p += size;
                 for (int i = log; i >= 1; i--) Push(p >> i);
                 return d[p];
@@ -167,7 +167,7 @@ namespace AtCoder
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public TValue Prod(int l, int r)
         {
-            Debug.Assert(0 <= l && l <= r && r <= Length);
+            DebugUtil.Assert(0 <= l && l <= r && r <= Length);
             if (l == r) return op.Identity;
 
             l += size;
@@ -209,7 +209,7 @@ namespace AtCoder
         /// </remarks>
         public void Apply(int p, F f)
         {
-            Debug.Assert((uint)p < Length);
+            DebugUtil.Assert((uint)p < Length);
             p += size;
             for (int i = log; i >= 1; i--) Push(p >> i);
             d[p] = op.Mapping(f, d[p]);
@@ -225,7 +225,7 @@ namespace AtCoder
         /// </remarks>
         public void Apply(int l, int r, F f)
         {
-            Debug.Assert(0 <= l && l <= r && r <= Length);
+            DebugUtil.Assert(0 <= l && l <= r && r <= Length);
             if (l == r) return;
 
             l += size;
@@ -288,8 +288,8 @@ namespace AtCoder
         /// </remarks>
         public int MaxRight(int l, Predicate<TValue> g)
         {
-            Debug.Assert((uint)l <= Length);
-            Debug.Assert(g(op.Identity));
+            DebugUtil.Assert((uint)l <= Length);
+            DebugUtil.Assert(g(op.Identity));
             if (l == Length) return Length;
             l += size;
             for (int i = log; i >= 1; i--) Push(l >> i);
@@ -347,8 +347,8 @@ namespace AtCoder
         /// </remarks>
         public int MinLeft(int r, Predicate<TValue> g)
         {
-            Debug.Assert((uint)r <= Length);
-            Debug.Assert(g(op.Identity));
+            DebugUtil.Assert((uint)r <= Length);
+            DebugUtil.Assert(g(op.Identity));
             if (r == 0) return 0;
             r += size;
             for (int i = log; i >= 1; i--) Push((r - 1) >> i);
@@ -439,9 +439,9 @@ namespace AtCoder
         [Conditional("DEBUG_MONOID")]
         public static void AssertMonoid(TValue value)
         {
-            Debug.Assert(op.Operate(value, op.Identity).Equals(value),
+            DebugUtil.Assert(op.Operate(value, op.Identity).Equals(value),
                 $"{nameof(op.Operate)}({value}, {op.Identity}) != {value}");
-            Debug.Assert(op.Operate(op.Identity, value).Equals(value),
+            DebugUtil.Assert(op.Operate(op.Identity, value).Equals(value),
                 $"{nameof(op.Operate)}({op.Identity}, {value}) != {value}");
         }
 
@@ -452,7 +452,7 @@ namespace AtCoder
         [Conditional("DEBUG_MONOID")]
         public static void AssertFIdentity(TValue value)
         {
-            Debug.Assert(op.Mapping(op.FIdentity, value).Equals(value),
+            DebugUtil.Assert(op.Mapping(op.FIdentity, value).Equals(value),
                 $"{nameof(op.Mapping)}({op.FIdentity}, {value}) != {value}");
         }
 
@@ -463,7 +463,7 @@ namespace AtCoder
         [Conditional("DEBUG_MONOID")]
         public static void AssertF(F f, TValue v1, TValue v2)
         {
-            Debug.Assert(op.Mapping(op.FIdentity, op.Operate(v1, v2)).Equals(op.Operate(op.Mapping(op.FIdentity, v1), op.Mapping(op.FIdentity, v2))),
+            DebugUtil.Assert(op.Mapping(op.FIdentity, op.Operate(v1, v2)).Equals(op.Operate(op.Mapping(op.FIdentity, v1), op.Mapping(op.FIdentity, v2))),
                 $"{nameof(op.Mapping)}({nameof(op.Operate)}({v1}, {v2})) != {nameof(op.Operate)}({nameof(op.Mapping)}({op.Identity}, {v1}), {nameof(op.Mapping)}({op.Identity}, {v2}))");
         }
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using AtCoder.Internal;
 
 namespace AtCoder
 {
@@ -22,7 +23,7 @@ namespace AtCoder
         /// </remarks>
         public SCCGraph(int n)
         {
-            Debug.Assert(unchecked((uint)n <= 100_000_000));
+            DebugUtil.Assert(unchecked((uint)n <= 100_000_000));
             _internal = new Internal.SCCGraph(n);
         }
 
@@ -36,8 +37,8 @@ namespace AtCoder
         public void AddEdge(int from, int to)
         {
             int n = _internal.VerticesNumbers;
-            Debug.Assert(unchecked((uint)from < n));
-            Debug.Assert(unchecked((uint)to < n));
+            DebugUtil.Assert(unchecked((uint)from < n));
+            DebugUtil.Assert(unchecked((uint)to < n));
             _internal.AddEdge(from, to);
         }
 

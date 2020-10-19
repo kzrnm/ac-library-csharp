@@ -15,25 +15,22 @@ namespace AtCoder
             s.AllProd.Should().Be("$");
         }
 
-        [SkippableFact]
+        [Fact]
         public void Invalid()
         {
-            using (var sem = new DebugAssertSemaphore())
-            {
-                Assert.Throws<DebugAssertException>(() => new Segtree<string, MonoidOperator>(-1));
-                var s = new Segtree<string, MonoidOperator>(10);
-                s.Invoking(s => s[-1]).Should().Throw<DebugAssertException>();
-                s.Invoking(s => s[10]).Should().Throw<DebugAssertException>();
+            new Action(() => new Segtree<string, MonoidOperator>(-1)).Should().ThrowDebugAssertIfDebug();
+            var s = new Segtree<string, MonoidOperator>(10);
+            s.Invoking(s => s[-1]).Should().ThrowDebugAssertIfDebug();
+            s.Invoking(s => s[10]).Should().ThrowDebugAssertIfDebug();
 
-                s.Invoking(s => s.Prod(-1, -1)).Should().Throw<DebugAssertException>();
-                s.Invoking(s => s.Prod(3, 2)).Should().Throw<DebugAssertException>();
-                s.Invoking(s => s.Prod(0, 11)).Should().Throw<DebugAssertException>();
-                s.Invoking(s => s.Prod(-1, 11)).Should().Throw<DebugAssertException>();
+            s.Invoking(s => s.Prod(-1, -1)).Should().ThrowDebugAssertIfDebug();
+            s.Invoking(s => s.Prod(3, 2)).Should().ThrowDebugAssertIfDebug();
+            s.Invoking(s => s.Prod(0, 11)).Should().ThrowDebugAssertIfDebug();
+            s.Invoking(s => s.Prod(-1, 11)).Should().ThrowDebugAssertIfDebug();
 
-                s.Invoking(s => s.MaxRight(11, s => true)).Should().Throw<DebugAssertException>();
-                s.Invoking(s => s.MaxRight(-1, s => true)).Should().Throw<DebugAssertException>();
-                s.Invoking(s => s.MaxRight(0, s => false)).Should().Throw<DebugAssertException>();
-            }
+            s.Invoking(s => s.MaxRight(11, s => true)).Should().ThrowDebugAssertIfDebug();
+            s.Invoking(s => s.MaxRight(-1, s => true)).Should().ThrowDebugAssertIfDebug();
+            s.Invoking(s => s.MaxRight(0, s => false)).Should().ThrowDebugAssertIfDebug();
         }
 
         [Fact]

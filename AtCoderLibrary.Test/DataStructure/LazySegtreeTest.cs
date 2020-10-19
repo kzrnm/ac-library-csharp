@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using AtCoder.Internal;
 using FluentAssertions;
 using Xunit;
 
@@ -27,25 +28,22 @@ namespace AtCoder
             new LazySegtree<int, int, Starry>(10).AllProd.Should().Be(-1_000_000_000);
         }
 
-        [SkippableFact]
+        [Fact]
         public void Invalid()
         {
-            using (var sem = new DebugAssertSemaphore())
-            {
-                Assert.Throws<DebugAssertException>(() => new LazySegtree<int, int, Starry>(-1));
-                var s = new LazySegtree<int, int, Starry>(10);
-                s.Invoking(s => s[-1]).Should().Throw<DebugAssertException>();
-                s.Invoking(s => s[10]).Should().Throw<DebugAssertException>();
+            new Action(() => new LazySegtree<int, int, Starry>(-1)).Should().ThrowDebugAssertIfDebug();
+            var s = new LazySegtree<int, int, Starry>(10);
+            s.Invoking(s => s[-1]).Should().ThrowDebugAssertIfDebug();
+            s.Invoking(s => s[10]).Should().ThrowDebugAssertIfDebug();
 
-                s.Invoking(s => s.Prod(-1, -1)).Should().Throw<DebugAssertException>();
-                s.Invoking(s => s.Prod(3, 2)).Should().Throw<DebugAssertException>();
-                s.Invoking(s => s.Prod(0, 11)).Should().Throw<DebugAssertException>();
-                s.Invoking(s => s.Prod(-1, 11)).Should().Throw<DebugAssertException>();
+            s.Invoking(s => s.Prod(-1, -1)).Should().ThrowDebugAssertIfDebug();
+            s.Invoking(s => s.Prod(3, 2)).Should().ThrowDebugAssertIfDebug();
+            s.Invoking(s => s.Prod(0, 11)).Should().ThrowDebugAssertIfDebug();
+            s.Invoking(s => s.Prod(-1, 11)).Should().ThrowDebugAssertIfDebug();
 
-                s.Invoking(s => s.MaxRight(11, s => true)).Should().Throw<DebugAssertException>();
-                s.Invoking(s => s.MaxRight(-1, s => true)).Should().Throw<DebugAssertException>();
-                s.Invoking(s => s.MaxRight(0, s => false)).Should().Throw<DebugAssertException>();
-            }
+            s.Invoking(s => s.MaxRight(11, s => true)).Should().ThrowDebugAssertIfDebug();
+            s.Invoking(s => s.MaxRight(-1, s => true)).Should().ThrowDebugAssertIfDebug();
+            s.Invoking(s => s.MaxRight(0, s => false)).Should().ThrowDebugAssertIfDebug();
         }
 
         [Fact]

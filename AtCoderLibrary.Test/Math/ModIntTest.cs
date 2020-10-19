@@ -248,8 +248,7 @@ namespace AtCoder
             (new DynamicModInt<DynamicUsageID>(1) == new DynamicModInt<DynamicUsageID>(12)).Should().BeTrue();
             (new DynamicModInt<DynamicUsageID>(1) != new DynamicModInt<DynamicUsageID>(12)).Should().BeFalse();
 
-            using var sem = new DebugAssertSemaphore();
-            new DynamicModInt<DynamicUsageID>(3).Invoking(m => m.Pow(-1)).Should().Throw<DebugAssertException>();
+            new DynamicModInt<DynamicUsageID>(3).Invoking(m => m.Pow(-1)).Should().ThrowDebugAssertIfDebug();
         }
 
         private struct ConstructorID : IStaticMod, IDynamicModID

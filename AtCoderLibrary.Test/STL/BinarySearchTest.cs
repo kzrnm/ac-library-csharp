@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AtCoder.Internal;
 using AtCoder.Utils;
 using FluentAssertions;
 using Xunit;
@@ -144,20 +145,17 @@ namespace AtCoder
         [Fact]
         public void Invalid()
         {
-            using (var sem = new DebugAssertSemaphore())
-            {
-                Assert.Throws<DebugAssertException>(() => StlFunction.BinarySearch(-10, 20, n => n > 10));
-                Assert.Throws<DebugAssertException>(() => StlFunction.BinarySearch(-10, 20, n => n > -110));
-                Assert.Throws<DebugAssertException>(() => StlFunction.BinarySearch(-10, 20, n => n < -110));
-                Assert.Throws<DebugAssertException>(() => StlFunction.BinarySearch(-10, 20, n => n > 110));
-                Assert.Throws<DebugAssertException>(() => StlFunction.BinarySearch(-10, 20, n => n < 110));
+            new Action(() => StlFunction.BinarySearch(-10, 20, n => n > 10)).Should().ThrowDebugAssertIfDebug();
+            new Action(() => StlFunction.BinarySearch(-10, 20, n => n > -110)).Should().ThrowDebugAssertIfDebug();
+            new Action(() => StlFunction.BinarySearch(-10, 20, n => n < -110)).Should().ThrowDebugAssertIfDebug();
+            new Action(() => StlFunction.BinarySearch(-10, 20, n => n > 110)).Should().ThrowDebugAssertIfDebug();
+            new Action(() => StlFunction.BinarySearch(-10, 20, n => n < 110)).Should().ThrowDebugAssertIfDebug();
 
-                Assert.Throws<DebugAssertException>(() => StlFunction.BinarySearch(-10L, 20L, n => n > 10L));
-                Assert.Throws<DebugAssertException>(() => StlFunction.BinarySearch(-10L, 20L, n => n > -110L));
-                Assert.Throws<DebugAssertException>(() => StlFunction.BinarySearch(-10L, 20L, n => n < -110L));
-                Assert.Throws<DebugAssertException>(() => StlFunction.BinarySearch(-10L, 20L, n => n > 110L));
-                Assert.Throws<DebugAssertException>(() => StlFunction.BinarySearch(-10L, 20L, n => n < 110L));
-            }
+            new Action(() => StlFunction.BinarySearch(-10L, 20L, n => n > 10L)).Should().ThrowDebugAssertIfDebug();
+            new Action(() => StlFunction.BinarySearch(-10L, 20L, n => n > -110L)).Should().ThrowDebugAssertIfDebug();
+            new Action(() => StlFunction.BinarySearch(-10L, 20L, n => n < -110L)).Should().ThrowDebugAssertIfDebug();
+            new Action(() => StlFunction.BinarySearch(-10L, 20L, n => n > 110L)).Should().ThrowDebugAssertIfDebug();
+            new Action(() => StlFunction.BinarySearch(-10L, 20L, n => n < 110L)).Should().ThrowDebugAssertIfDebug();
         }
     }
 }

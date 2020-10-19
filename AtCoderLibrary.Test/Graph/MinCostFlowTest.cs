@@ -46,12 +46,9 @@ namespace AtCoder
         [Fact]
         public void OutOfRange()
         {
-            using (var sem = new DebugAssertSemaphore())
-            {
-                var g = new McfGraphInt(10);
-                g.Invoking(g => g.Slope(-1, 3)).Should().Throw<DebugAssertException>();
-                g.Invoking(g => g.Slope(3, 3)).Should().Throw<DebugAssertException>();
-            }
+            var g = new McfGraphInt(10);
+            g.Invoking(g => g.Slope(-1, 3)).Should().ThrowDebugAssertIfDebug();
+            g.Invoking(g => g.Slope(3, 3)).Should().ThrowDebugAssertIfDebug();
         }
 
         [Fact]
@@ -77,12 +74,9 @@ namespace AtCoder
         [Fact]
         public void Invalid()
         {
-            using (var sem = new DebugAssertSemaphore())
-            {
-                var g = new McfGraphInt(2);
-                g.Invoking(g => g.AddEdge(0, 0, -1, 0)).Should().Throw<DebugAssertException>();
-                g.Invoking(g => g.AddEdge(0, 0, 0, -1)).Should().Throw<DebugAssertException>();
-            }
+            var g = new McfGraphInt(2);
+            g.Invoking(g => g.AddEdge(0, 0, -1, 0)).Should().ThrowDebugAssertIfDebug();
+            g.Invoking(g => g.AddEdge(0, 0, 0, -1)).Should().ThrowDebugAssertIfDebug();
         }
     }
 }

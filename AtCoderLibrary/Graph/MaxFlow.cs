@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using AtCoder.Internal;
 
 namespace AtCoder
 {
@@ -70,9 +70,9 @@ namespace AtCoder
         public int AddEdge(int from, int to, TValue cap)
         {
             int m = _pos.Count;
-            Debug.Assert(0 <= from && from < _n);
-            Debug.Assert(0 <= to && to < _n);
-            Debug.Assert(op.LessThanOrEqual(default, cap));
+            DebugUtil.Assert(0 <= from && from < _n);
+            DebugUtil.Assert(0 <= to && to < _n);
+            DebugUtil.Assert(op.LessThanOrEqual(default, cap));
             _pos.Add((from, _g[from].Count));
             int fromId = _g[from].Count;
             int toId = _g[to].Count;
@@ -95,7 +95,7 @@ namespace AtCoder
         public Edge GetEdge(int i)
         {
             int m = _pos.Count;
-            Debug.Assert(0 <= i && i < m);
+            DebugUtil.Assert(0 <= i && i < m);
             var _e = _g[_pos[i].first][_pos[i].second];
             var _re = _g[_e.To][_e.Rev];
             return new Edge(_pos[i].first, _e.To, op.Add(_e.Cap, _re.Cap), _re.Cap);
@@ -133,8 +133,8 @@ namespace AtCoder
         public void ChangeEdge(int i, TValue newCap, TValue newFlow)
         {
             int m = _pos.Count;
-            Debug.Assert(0 <= i && i < m);
-            Debug.Assert(op.LessThanOrEqual(default, newFlow) && op.LessThanOrEqual(newFlow, newCap));
+            DebugUtil.Assert(0 <= i && i < m);
+            DebugUtil.Assert(op.LessThanOrEqual(default, newFlow) && op.LessThanOrEqual(newFlow, newCap));
             var _e = _g[_pos[i].first][_pos[i].second];
             var _re = _g[_e.To][_e.Rev];
             _e.Cap = op.Subtract(newCap, newFlow);
@@ -231,9 +231,9 @@ namespace AtCoder
         /// </remarks>
         public TValue Flow(int s, int t, TValue flowLimit)
         {
-            Debug.Assert(0 <= s && s < _n);
-            Debug.Assert(0 <= t && t < _n);
-            Debug.Assert(s != t);
+            DebugUtil.Assert(0 <= s && s < _n);
+            DebugUtil.Assert(0 <= t && t < _n);
+            DebugUtil.Assert(s != t);
 
             var level = new int[_n];
             var iter = new int[_n];

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
+using AtCoder.Internal;
 
 namespace AtCoder
 {
@@ -31,8 +31,8 @@ namespace AtCoder
         /// </remarks>
         public int Merge(int a, int b)
         {
-            Debug.Assert(0 <= a && a < _n);
-            Debug.Assert(0 <= b && b < _n);
+            DebugUtil.Assert(0 <= a && a < _n);
+            DebugUtil.Assert(0 <= b && b < _n);
             int x = Leader(a), y = Leader(b);
             if (x == y) return x;
             if (-_parentOrSize[x] < -_parentOrSize[y]) (x, y) = (y, x);
@@ -50,8 +50,8 @@ namespace AtCoder
         /// </remarks>
         public bool Same(int a, int b)
         {
-            Debug.Assert(0 <= a && a < _n);
-            Debug.Assert(0 <= b && b < _n);
+            DebugUtil.Assert(0 <= a && a < _n);
+            DebugUtil.Assert(0 <= b && b < _n);
             return Leader(a) == Leader(b);
         }
 
@@ -82,7 +82,7 @@ namespace AtCoder
         /// </remarks>
         public int Size(int a)
         {
-            Debug.Assert(0 <= a && a < _n);
+            DebugUtil.Assert(0 <= a && a < _n);
             return -_parentOrSize[Leader(a)];
         }
 
