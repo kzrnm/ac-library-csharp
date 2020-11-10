@@ -36,10 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="3.8.0-5.final">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="SourceExpander.Core" Version="1.1.0-beta.9" />
     <PackageReference Include="SourceExpander.Embedder" Version="1.1.0-beta.9">
       <PrivateAssets>all</PrivateAssets>
