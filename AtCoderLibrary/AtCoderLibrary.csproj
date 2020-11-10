@@ -40,8 +40,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="SourceExpander.Embedder" Version="1.1.0-beta.8" PrivateAssets="all" />
-    <PackageReference Include="SourceExpander.Core" Version="1.1.0-beta.8" />
+    <PackageReference Include="SourceExpander.Core" Version="1.1.0-beta.9" />
+    <PackageReference Include="SourceExpander.Embedder" Version="1.1.0-beta.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" />
     <PackageReference Include="ModuleInit.Fody" Version="2.1.1" PrivateAssets="all" />
   </ItemGroup>
