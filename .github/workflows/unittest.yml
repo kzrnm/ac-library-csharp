@@ -5,10 +5,12 @@ on:
     branches:
       - master
     paths:
+      - ".github/workflows/**"
       - "**.cs"
       - "!**.md"
   pull_request:
     paths:
+      - ".github/workflows/**"
       - "**.cs"
       - "!**.md"
 
@@ -22,32 +24,33 @@ jobs:
   format:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v1
-    - name: Setup .NET Core 3.1
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1
-    - name: Install dotnet-format
-      run: dotnet tool install --global dotnet-format
-    - name: Format
-      run: dotnet format AtCoderLibrary.sln --check
+      - uses: actions/checkout@v2
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.100
+      - name: Install dotnet-format
+        run: dotnet tool install --global dotnet-format
+      - name: Format
+        run: dotnet format AtCoderLibrary.sln --check --dry-run
   test:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
       - name: Setup .NET Core SDK
-        uses: actions/setup-dotnet@v1.6.0
+        uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 3.1
+          dotnet-version: 5.0.100
       - uses: actions/cache@v2
         with:
-          path: ~/.nuget/packages
+          path: ${{ github.workspace }}/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
       - name: Install dependencies
         run: dotnet restore AtCoderLibrary.sln
+      - name: Build
+        run: dotnet build AtCoderLibrary.sln --no-restore
       - name: Test
         run: dotnet test AtCoderLibrary.sln --no-restore --verbosity normal
