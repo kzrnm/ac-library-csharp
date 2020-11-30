@@ -69,10 +69,14 @@ jobs:
     needs: [new-version-only]
     steps:
       - uses: actions/checkout@v2
-      - name: Setup .NET SDK
+      - name: Setup .NET Core SDK 3.1
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 3.1.x
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
       - uses: actions/cache@v2
         with:
           path: ${{ github.workspace }}/.nuget/packages
