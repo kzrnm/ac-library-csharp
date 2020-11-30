@@ -1,12 +1,9 @@
-`ac-library-csharp` の使用方法です。
+# Usage of `ac-library-csharp`
 
-## Generator(recommend)
-
-Source Generatorsを使用してライブラリに埋め込んだソースコードを展開します。
+## Installation
 
 ```
-Install-Package Microsoft.Net.Compilers.Toolset
-Install-Package SourceExpander.Generator
+Install-Package SourceExpander
 Install-Package ac-library-csharp
 ```
 
