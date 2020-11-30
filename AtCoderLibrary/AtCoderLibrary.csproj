@@ -5,13 +5,14 @@
     <RootNamespace>AtCoder</RootNamespace>
     <OutputType>Library</OutputType>
     <LangVersion>8</LangVersion>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
 
     <EnableSourceLink>true</EnableSourceLink>
     <PackageId>ac-library-csharp</PackageId>
-    <Version>0.4.0</Version>
-    <Description>ac-library ported to C#.</Description>
+    <Version>1.0.0</Version>
+    <Description>C# port of ac-library</Description>
     <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)..\bin\Packages\$(Configuration)\</PackageOutputPath>
 
     <Authors>naminodarie</Authors>
     <PackageTags>ac-library-csharp</PackageTags>
@@ -35,11 +36,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SourceExpander.Embedder" Version="2.1.1">
+    <PackageReference Include="SourceExpander.Embedder" Version="2.2.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="SourceExpander.Core" Version="2.1.1" />
+    <PackageReference Include="SourceExpander.Core" Version="2.2.0" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" />
   </ItemGroup>
 
