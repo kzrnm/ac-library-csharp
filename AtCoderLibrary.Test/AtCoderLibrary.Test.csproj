@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-
     <IsPackable>false</IsPackable>
     <RootNamespace>AtCoder</RootNamespace>
   </PropertyGroup>
@@ -12,6 +11,8 @@
   </PropertyGroup>
   
   <ItemGroup>
+    <PackageReference Include="Base32768" Version="1.0.5" />
+    <PackageReference Include="SourceExpander.Core" Version="2.2.0" />
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
     <PackageReference Include="MersenneTwister" Version="1.0.6" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.0" />
