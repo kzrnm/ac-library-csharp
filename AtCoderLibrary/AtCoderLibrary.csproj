@@ -5,12 +5,12 @@
     <RootNamespace>AtCoder</RootNamespace>
     <OutputType>Library</OutputType>
     <LangVersion>8</LangVersion>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
 
     <EnableSourceLink>true</EnableSourceLink>
     <PackageId>ac-library-csharp</PackageId>
     <Version>0.4.0</Version>
-    <Description>ac-library ported to C#.</Description>
+    <Description>C# port of ac-library</Description>
     <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
     <PackageOutputPath>$(MSBuildThisFileDirectory)..\bin\Packages\$(Configuration)\</PackageOutputPath>
 
