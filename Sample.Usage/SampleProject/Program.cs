@@ -7,6 +7,7 @@ class Program
     {
         SourceExpander.Expander.Expand();
 
+        // https://atcoder.jp/contests/practice2/tasks/practice2_a
         var line = Console.ReadLine().Split(' ');
         var n = int.Parse(line[0]);
         var Q = int.Parse(line[1]);

@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ac-library-csharp" Version="1.0.0" />
+    <PackageReference Include="ac-library-csharp" Version="1.0.1" />
     <PackageReference Include="SourceExpander" Version="2.2.0" />
   </ItemGroup>
 
