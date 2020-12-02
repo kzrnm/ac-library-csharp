@@ -26,13 +26,9 @@
   <PropertyGroup>
     <NoWarn>$(NoWarn);CA1034</NoWarn>
   </PropertyGroup>
-  
+
   <ItemGroup>
-    <None Include="..\LICENSE">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-      <Visible>false</Visible>
-    </None>
+    <None Include="LICENSE" Pack="True" PackagePath="" />
   </ItemGroup>
 
   <ItemGroup>
