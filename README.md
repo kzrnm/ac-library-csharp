@@ -2,8 +2,19 @@
 
 README languages: [Japanese](README.ja.md)
 
-<!-- START doctoc -->
-<!-- END doctoc -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+## Table of Contents
+
+- [Packages](#packages)
+  - [ac-library-csharp](#ac-library-csharp)
+- [Status](#status)
+- [Getting started](#getting-started)
+  - [Installation](#installation)
+  - [output combinded source code](#output-combinded-source-code)
+- [License](#license)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Packages
 
