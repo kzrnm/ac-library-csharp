@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AtCoderLibrary\AtCoderLibrary.csproj" />
+    <ProjectReference Include="..\..\Source\AtCoderLibrary\AtCoderLibrary.csproj" />
   </ItemGroup>
 
 

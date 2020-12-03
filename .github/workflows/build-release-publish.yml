@@ -12,7 +12,7 @@ env:
   DOTNET_NOLOGO: true
   NUGET_XMLDOC_MODE: skip
   NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
-  WORKFLOW_VERSION_PROJ: AtCoderLibrary/AtCoderLibrary.csproj
+  WORKFLOW_VERSION_PROJ: Source/AtCoderLibrary/AtCoderLibrary.csproj
   WORKFLOW_BUILD_SLN: AtCoderLibrary.sln
   GIT_COMMIT: ${{ github.sha }}
 
