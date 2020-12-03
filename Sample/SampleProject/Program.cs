@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using AtCoder;
 
 class Program
@@ -7,27 +8,35 @@ class Program
     {
         SourceExpander.Expander.Expand();
 
-        // https://atcoder.jp/contests/practice2/tasks/practice2_a
+        // https://atcoder.jp/contests/practice2/tasks/practice2_j
         var line = Console.ReadLine().Split(' ');
-        var n = int.Parse(line[0]);
+        var N = int.Parse(line[0]);
         var Q = int.Parse(line[1]);
+        var seg = new Segtree<long, Op>(Console.ReadLine().Split(' ').Select(long.Parse).ToArray());
 
-        var dsu = new DSU(n);
-
-        for (int i = 0; i < Q; i++)
+        for (int q = 0; q < Q; q++)
         {
             line = Console.ReadLine().Split(' ');
             int t = int.Parse(line[0]);
-            int u = int.Parse(line[1]);
-            int v = int.Parse(line[2]);
-            if (t == 0)
+            int l = int.Parse(line[1]) - 1;
+            int r = int.Parse(line[2]);
+            switch (t)
             {
-                dsu.Merge(u, v);
-            }
-            else
-            {
-                Console.WriteLine(dsu.Same(u, v) ? 1 : 0);
+                case 1:
+                    seg[l] = r;
+                    break;
+                case 2:
+                    Console.WriteLine(seg.Prod(l, r));
+                    break;
+                case 3:
+                    Console.WriteLine(1 + seg.MaxRight(l, num => num < r));
+                    break;
             }
         }
     }
+}
+struct Op : ISegtreeOperator<long>
+{
+    public long Identity => long.MinValue;
+    public long Operate(long x, long y) => Math.Max(x, y);
 }
