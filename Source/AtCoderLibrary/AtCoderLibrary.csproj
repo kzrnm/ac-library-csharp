@@ -7,12 +7,9 @@
     <LangVersion>8</LangVersion>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
 
-    <EnableSourceLink>true</EnableSourceLink>
     <PackageId>ac-library-csharp</PackageId>
-    <Version>1.0.1</Version>
     <Description>C# port of ac-library</Description>
     <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
-    <PackageOutputPath>$(MSBuildThisFileDirectory)..\bin\Packages\$(Configuration)\</PackageOutputPath>
 
     <PackageLicenseExpression></PackageLicenseExpression>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
