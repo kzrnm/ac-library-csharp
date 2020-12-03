@@ -9,7 +9,7 @@ README languages: [Japanese](README.ja.md)
 
 ### ac-library-csharp
 
-C# port of [AtCoder Library](https://github.com/atcoder/ac-library/)
+[AtCoder Library](https://github.com/atcoder/ac-library/) の C# 移植です。
 
 ## Status
 
@@ -26,16 +26,16 @@ Install-Package ac-library-csharp
 
 ### output combinded source code
 
-Output combinded source code for submitting.
+提出用にソースコードを結合したファイルを出力する方式です。
 
-Require **.NET 5 SDK** or **Visual Studio 16.8** or later because SourceExpander use Source Generators.
+SourceExpander はソースジェネレーターを使用するライブラリなので **.NET 5 SDK** か **Visual Studio 16.8** (またはそれ以上のバージョン)が必要です。
 
 ```
 Install-Package SourceExpander
 Install-Package ac-library-csharp
 ```
 
-When you run `/home/any_directory/ac-library-csharp/Sample/SampleProject/Program.cs`, `SourceExpander.Expander.Expand()` creates `/home/any_directory/ac-library-csharp/Sample/SampleProject/Combined.csx`
+`/home/any_directory/ac-library-csharp/Sample/SampleProject/Program.cs`を実行すると, `SourceExpander.Expander.Expand()` で `/home/any_directory/ac-library-csharp/Sample/SampleProject/Combined.csx` が出力されます。
 
 ------
 
