@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <Authors>naminodarie</Authors>
-    <PackageTags>ac-library-csharp</PackageTags>
     <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://github.com/naminodarie/ac-library-csharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/naminodarie/ac-library-csharp</RepositoryUrl>

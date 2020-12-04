@@ -21,6 +21,7 @@ namespace AtCoderAnalyzer.Test
         {
             public Test()
             {
+                ReferenceAssemblies = ReferenceAssemblies.WithPackages(CSharpVerifierHelper.DefaultPackageIdentity);
                 SolutionTransforms.Add((solution, projectId) =>
                 {
                     var compilationOptions = solution.GetProject(projectId).CompilationOptions;

@@ -2,6 +2,7 @@
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Testing;
 
 namespace AtCoderAnalyzer.Test
 {
@@ -29,5 +30,9 @@ namespace AtCoderAnalyzer.Test
 
             return nullableWarnings;
         }
+
+
+        internal static readonly ImmutableArray<PackageIdentity> DefaultPackageIdentity
+            = ImmutableArray.Create(new PackageIdentity("ac-library-csharp", "1.0.1"));
     }
 }

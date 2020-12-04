@@ -7,6 +7,7 @@
     <LangVersion>8</LangVersion>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
 
+    <PackageTags>ac-library-csharp</PackageTags>
     <PackageId>ac-library-csharp</PackageId>
     <Description>C# port of ac-library</Description>
     <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
