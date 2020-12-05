@@ -15,7 +15,7 @@ namespace AtCoderAnalyzer
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AC0001_AC0002_IntToLongCodeFixProvider)), Shared]
     public class AC0001_AC0002_IntToLongCodeFixProvider : CodeFixProvider
     {
-        private const string title = "cast int to long";
+        private const string title = "Cast int to long";
         public override ImmutableArray<string> FixableDiagnosticIds
             => ImmutableArray.Create(
                 DiagnosticDescriptors.AC0001_MultiplyOverflowInt32.Id,
