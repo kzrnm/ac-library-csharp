@@ -1,0 +1,19 @@
+<Project>
+
+  <PropertyGroup>
+    <Authors>naminodarie</Authors>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/naminodarie/ac-library-csharp</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/naminodarie/ac-library-csharp</RepositoryUrl>
+
+    <Version>1.0.2</Version>
+    <AssemblyVersion>1.0.2.101</AssemblyVersion>
+    <RepositoryCommit Condition="'$(GIT_COMMIT)' != ''">$(GIT_COMMIT)</RepositoryCommit>
+
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)key.snk</AssemblyOriginatorKeyFile>
+
+    <PackageOutputPath>$(MSBuildThisFileDirectory)bin\Packages\$(Configuration)\</PackageOutputPath>
+  </PropertyGroup>
+
+</Project>

@@ -30,7 +30,7 @@ jobs:
       - name: Install dotnet-format
         run: dotnet tool install --global dotnet-format
       - name: Format
-        run: dotnet format ${{ env.WORKFLOW_BUILD_SLN }} --check --dry-run
+        run: dotnet format ${{ env.WORKFLOW_BUILD_SLN }} --check
   test:
     runs-on: ubuntu-latest
     steps:

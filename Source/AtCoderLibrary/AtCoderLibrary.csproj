@@ -7,19 +7,12 @@
     <LangVersion>8</LangVersion>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
 
-    <EnableSourceLink>true</EnableSourceLink>
+    <PackageTags>ac-library-csharp</PackageTags>
     <PackageId>ac-library-csharp</PackageId>
-    <Version>1.0.1</Version>
     <Description>C# port of ac-library</Description>
     <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
-    <PackageOutputPath>$(MSBuildThisFileDirectory)..\bin\Packages\$(Configuration)\</PackageOutputPath>
 
-    <Authors>naminodarie</Authors>
-    <PackageTags>ac-library-csharp</PackageTags>
     <PackageLicenseExpression></PackageLicenseExpression>
-    <RepositoryType>git</RepositoryType>
-    <PackageProjectUrl>https://github.com/naminodarie/ac-library-csharp</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/naminodarie/ac-library-csharp</RepositoryUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
