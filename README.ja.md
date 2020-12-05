@@ -11,6 +11,7 @@ README languages: [Japanese](README.ja.md)
 - [Status](#status)
 - [Getting started](#getting-started)
   - [Installation](#installation)
+  - [Install analyzer(optional)](#install-analyzeroptional)
   - [output combinded source code](#output-combinded-source-code)
 - [License](#license)
 
