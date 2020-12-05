@@ -42,6 +42,8 @@ Install-Package ac-library-csharp
 Install-Package AtCoderAnalyzer
 ```
 
+[AtCoderAnalyzer](/document_ja/analyzers/index.md) をインストールするとコードフィックス機能が提供されます。
+
 ### output combinded source code
 
 提出用にソースコードを結合したファイルを出力する方式です。

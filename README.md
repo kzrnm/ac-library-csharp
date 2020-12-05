@@ -42,6 +42,8 @@ Install-Package ac-library-csharp
 Install-Package AtCoderAnalyzer
 ```
 
+Installing [AtCoderAnalyzer(Japanese)](/document_ja/analyzers/index.md) provide some code fix.
+
 ### output combinded source code
 
 Output combinded source code for submitting.
