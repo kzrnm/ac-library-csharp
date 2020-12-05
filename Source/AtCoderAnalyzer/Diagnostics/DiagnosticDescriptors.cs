@@ -93,5 +93,20 @@ namespace AtCoderAnalyzer.Diagnostics
             DiagnosticSeverity.Error,
             isEnabledByDefault: true
             );
+
+        internal static readonly DiagnosticDescriptor AC0007_AgressiveInlining = new DiagnosticDescriptor(
+            "AC0007",
+            new LocalizableResourceString(
+                nameof(DiagnosticsResources.AC0007_Title),
+                DiagnosticsResources.ResourceManager,
+                typeof(DiagnosticsResources)),
+            new LocalizableResourceString(
+                nameof(DiagnosticsResources.AC0007_MessageFormat),
+                DiagnosticsResources.ResourceManager,
+                typeof(DiagnosticsResources)),
+            "Type Define",
+            DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+            );
     }
 }

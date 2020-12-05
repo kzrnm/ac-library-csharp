@@ -150,4 +150,10 @@
   <data name="AC0006_Title" xml:space="preserve">
     <value>Not defined ILazySegtreeOperator&lt;T, F&gt;</value>
   </data>
+  <data name="AC0007_MessageFormat" xml:space="preserve">
+    <value>Operator method '{0}' doesn't have [MethodImpl(MethodImplOptions.AggressiveInlining)] attribute</value>
+  </data>
+  <data name="AC0007_Title" xml:space="preserve">
+    <value>Operator method doesn't have AggressiveInlining</value>
+  </data>
 </root>

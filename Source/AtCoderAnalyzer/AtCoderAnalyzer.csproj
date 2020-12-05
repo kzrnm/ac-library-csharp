@@ -8,6 +8,7 @@
     <PackageId>AtCoderAnalyzer</PackageId>
     <Description>Analyzer For AtCoder library</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <NoWarn>$(NoWarn);CS1998</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
     <IncludeBuildOutput>false</IncludeBuildOutput>

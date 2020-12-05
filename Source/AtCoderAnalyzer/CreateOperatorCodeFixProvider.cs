@@ -4,11 +4,13 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AtCoderAnalyzer.Diagnostics;
+using AtCoderAnalyzer.Helpers;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static AtCoderAnalyzer.Helpers.Constants;
 
 namespace AtCoderAnalyzer
 {
@@ -16,7 +18,6 @@ namespace AtCoderAnalyzer
     public class CreateOperatorCodeFixProvider : CodeFixProvider
     {
         private const string title = "Create operator type";
-        private const string System_Runtime_CompilerServices = "System.Runtime.CompilerServices";
         public override ImmutableArray<string> FixableDiagnosticIds
             => ImmutableArray.Create(
                 DiagnosticDescriptors.AC0003_StaticModInt.Id,
@@ -42,21 +43,18 @@ namespace AtCoderAnalyzer
 
             var action = CodeAction.Create(title: title,
                createChangedDocument: c => CreateOperatorType(context.Document,
-               diagnostic.Id, genericNode.TypeArgumentList.Arguments, c),
+               root, diagnostic.Id, genericNode.TypeArgumentList.Arguments, c),
                equivalenceKey: title);
             context.RegisterCodeFix(action, diagnostic);
         }
+#pragma warning disable IDE0060
         private async Task<Document> CreateOperatorType(
             Document document,
+            CompilationUnitSyntax root,
             string diagnosticId,
             SeparatedSyntaxList<TypeSyntax> genericArgs,
             CancellationToken cancellationToken)
-        {
-            if (await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false)
-                is not CompilationUnitSyntax root)
-                return document;
-
-            return document.WithSyntaxRoot(diagnosticId switch
+            => document.WithSyntaxRoot(diagnosticId switch
             {
                 "AC0003" => AC0003_StaticModInt(root, genericArgs),
                 "AC0004" => AC0004_DynamicModInt(root, genericArgs),
@@ -64,7 +62,7 @@ namespace AtCoderAnalyzer
                 "AC0006" => AC0006_LazySegtreeOperator(root, genericArgs),
                 _ => root,
             });
-        }
+#pragma warning restore IDE0060
         private static SimpleBaseTypeSyntax ParseAtCoder(bool hasUsing, string text, params TypeSyntax[] genericTypes)
         {
             SimpleNameSyntax type;
@@ -126,31 +124,6 @@ namespace AtCoderAnalyzer
                     ParseAtCoder(hasUsing, "IDynamicModID")
                     ));
         }
-        private readonly AttributeListSyntax AggressiveInliningAttribute
-            = SyntaxFactory.AttributeList(
-                SyntaxFactory.SeparatedList(new[] {
-                    SyntaxFactory.Attribute(
-                        SyntaxFactory.ParseName("MethodImpl"))
-                    .AddArgumentListArguments(
-                        SyntaxFactory.AttributeArgument(
-                            SyntaxFactory.MemberAccessExpression(
-                                SyntaxKind.SimpleMemberAccessExpression,
-                                SyntaxFactory.IdentifierName("MethodImplOptions"),
-                                SyntaxFactory.IdentifierName("AggressiveInlining")
-                        )))
-                }));
-        private CompilationUnitSyntax AddSystem_Runtime_CompilerServicesSyntax(CompilationUnitSyntax root)
-        {
-            return root.AddUsings(
-                SyntaxFactory.UsingDirective(
-                    SyntaxFactory.QualifiedName(
-                        SyntaxFactory.QualifiedName(
-                            SyntaxFactory.IdentifierName("System"),
-                            SyntaxFactory.IdentifierName("Runtime")
-                        ),
-                        SyntaxFactory.IdentifierName("CompilerServices")
-                    )));
-        }
         private SyntaxNode AC0005_SegtreeOperator(CompilationUnitSyntax root, SeparatedSyntaxList<TypeSyntax> genericArgs)
         {
             var operatorTypeName = genericArgs[1].ToString();
@@ -166,7 +139,7 @@ namespace AtCoderAnalyzer
                     hasSystem_Runtime_CompilerServices = true;
             }
             if (!hasSystem_Runtime_CompilerServices)
-                root = AddSystem_Runtime_CompilerServicesSyntax(root);
+                root = SyntaxHelpers.AddSystem_Runtime_CompilerServicesSyntax(root);
 
             var segType = genericArgs[0];
             var baseType = ParseAtCoder(hasUsing, "ISegtreeOperator", segType);
@@ -190,7 +163,7 @@ namespace AtCoderAnalyzer
                                 SyntaxFactory.Parameter(SyntaxFactory.Identifier("y")).WithType(segType),
                             })
                             ))
-                    .AddAttributeLists(AggressiveInliningAttribute)
+                    .AddAttributeLists(SyntaxHelpers.AggressiveInliningAttributeList)
                     .WithBody(SyntaxFactory.Block(
                         SyntaxFactory.ReturnStatement(
                             SyntaxFactory.LiteralExpression(SyntaxKind.DefaultLiteralExpression))
@@ -214,7 +187,7 @@ namespace AtCoderAnalyzer
                     hasSystem_Runtime_CompilerServices = true;
             }
             if (!hasSystem_Runtime_CompilerServices)
-                root = AddSystem_Runtime_CompilerServicesSyntax(root);
+                root = SyntaxHelpers.AddSystem_Runtime_CompilerServicesSyntax(root);
 
             var segType = genericArgs[0];
             var funType = genericArgs[1];
@@ -248,7 +221,7 @@ namespace AtCoderAnalyzer
                                 SyntaxFactory.Parameter(SyntaxFactory.Identifier("g")).WithType(funType),
                             })
                             ))
-                    .AddAttributeLists(AggressiveInliningAttribute)
+                    .AddAttributeLists(SyntaxHelpers.AggressiveInliningAttributeList)
                     .WithBody(SyntaxFactory.Block(
                         SyntaxFactory.ReturnStatement(
                             SyntaxFactory.LiteralExpression(SyntaxKind.DefaultLiteralExpression))
@@ -264,7 +237,7 @@ namespace AtCoderAnalyzer
                                 SyntaxFactory.Parameter(SyntaxFactory.Identifier("x")).WithType(segType),
                             })
                             ))
-                    .AddAttributeLists(AggressiveInliningAttribute)
+                    .AddAttributeLists(SyntaxHelpers.AggressiveInliningAttributeList)
                     .WithBody(SyntaxFactory.Block(
                         SyntaxFactory.ReturnStatement(
                             SyntaxFactory.LiteralExpression(SyntaxKind.DefaultLiteralExpression))
@@ -280,7 +253,7 @@ namespace AtCoderAnalyzer
                                 SyntaxFactory.Parameter(SyntaxFactory.Identifier("y")).WithType(segType),
                             })
                             ))
-                    .AddAttributeLists(AggressiveInliningAttribute)
+                    .AddAttributeLists(SyntaxHelpers.AggressiveInliningAttributeList)
                     .WithBody(SyntaxFactory.Block(
                         SyntaxFactory.ReturnStatement(
                             SyntaxFactory.LiteralExpression(SyntaxKind.DefaultLiteralExpression))

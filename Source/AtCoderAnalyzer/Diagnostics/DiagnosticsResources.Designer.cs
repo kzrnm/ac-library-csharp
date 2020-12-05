@@ -158,5 +158,23 @@ namespace AtCoderAnalyzer.Diagnostics {
                 return ResourceManager.GetString("AC0006_Title", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Operator method &apos;{0}&apos; doesn&apos;t have [MethodImpl(MethodImplOptions.AggressiveInlining)] attribute に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string AC0007_MessageFormat {
+            get {
+                return ResourceManager.GetString("AC0007_MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Operator method doesn&apos;t have AggressiveInlining に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string AC0007_Title {
+            get {
+                return ResourceManager.GetString("AC0007_Title", resourceCulture);
+            }
+        }
     }
 }
