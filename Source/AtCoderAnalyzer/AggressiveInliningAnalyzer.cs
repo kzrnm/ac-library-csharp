@@ -84,7 +84,7 @@ namespace AtCoderAnalyzer
                 return;
 
             var diagnostic = Diagnostic.Create(
-                DiagnosticDescriptors.AC0007_AgressiveInlining, 
+                DiagnosticDescriptors.AC0007_AgressiveInlining,
                 symbol.Locations[0], symbol.Name);
             context.ReportDiagnostic(diagnostic);
         }

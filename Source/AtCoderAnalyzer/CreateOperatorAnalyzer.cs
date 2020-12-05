@@ -77,7 +77,7 @@ namespace AtCoderAnalyzer
             if (context.Node is not GenericNameSyntax genericNode)
                 return;
 
-            if (semanticModel.GetSymbolInfo(genericNode, context.CancellationToken).Symbol 
+            if (semanticModel.GetSymbolInfo(genericNode, context.CancellationToken).Symbol
                 is not ITypeSymbol symbol)
                 return;
 
