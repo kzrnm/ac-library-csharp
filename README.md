@@ -35,6 +35,12 @@ C# port of [AtCoder Library](https://github.com/atcoder/ac-library/)
 Install-Package ac-library-csharp
 ```
 
+### Install analyzer(optional)
+
+```
+Install-Package AtCoderAnalyzer
+```
+
 ### output combinded source code
 
 Output combinded source code for submitting.
@@ -43,7 +49,6 @@ Require **.NET 5 SDK** or **Visual Studio 16.8** or later because SourceExpander
 
 ```
 Install-Package SourceExpander
-Install-Package ac-library-csharp
 ```
 
 When you run `/home/any_directory/ac-library-csharp/Sample/SampleProject/Program.cs`, `SourceExpander.Expander.Expand()` creates `/home/any_directory/ac-library-csharp/Sample/SampleProject/Combined.csx`

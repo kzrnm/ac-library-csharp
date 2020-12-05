@@ -35,6 +35,12 @@ README languages: [Japanese](README.ja.md)
 Install-Package ac-library-csharp
 ```
 
+### Install analyzer(optional)
+
+```
+Install-Package AtCoderAnalyzer
+```
+
 ### output combinded source code
 
 提出用にソースコードを結合したファイルを出力する方式です。
@@ -43,7 +49,6 @@ SourceExpander はソースジェネレーターを使用するライブラリ�
 
 ```
 Install-Package SourceExpander
-Install-Package ac-library-csharp
 ```
 
 `/home/any_directory/ac-library-csharp/Sample/SampleProject/Program.cs`を実行すると, `SourceExpander.Expander.Expand()` で `/home/any_directory/ac-library-csharp/Sample/SampleProject/Combined.csx` が出力されます。
