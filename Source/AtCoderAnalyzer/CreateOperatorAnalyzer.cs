@@ -70,13 +70,18 @@ namespace AtCoderAnalyzer
                 return true;
             }
         }
+
         private void AnalyzeGenericNode(SyntaxNodeAnalysisContext context, ContainingOperatorTypes types)
         {
             var semanticModel = context.SemanticModel;
             if (context.Node is not GenericNameSyntax genericNode)
                 return;
 
-            if (semanticModel.GetTypeInfo(genericNode, context.CancellationToken).Type.OriginalDefinition
+            if (semanticModel.GetSymbolInfo(genericNode, context.CancellationToken).Symbol 
+                is not ITypeSymbol symbol)
+                return;
+
+            if (symbol.OriginalDefinition
                 is not INamedTypeSymbol type
                 || !types.Types.TryGetValue(type, out var descriptor))
                 return;
@@ -88,8 +93,7 @@ namespace AtCoderAnalyzer
                 return;
 
             var diagnostic = Diagnostic.Create(descriptor,
-                context.Node.GetLocation(),
-                operatorTypeSyntax.ToString());
+                genericNode.GetLocation(), operatorTypeSyntax.ToString());
             context.ReportDiagnostic(diagnostic);
         }
     }
