@@ -42,7 +42,7 @@ Install-Package ac-library-csharp
 Install-Package AtCoderAnalyzer
 ```
 
-Installing [AtCoderAnalyzer(Japanese)](/document_ja/analyzers/index.md) provide some code fix.
+Installing [AtCoderAnalyzer](/document_en/analyzers/index.md) provide some code fix.
 
 ### output combinded source code
 
