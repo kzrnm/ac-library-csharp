@@ -34,18 +34,63 @@ namespace AtCoderAnalyzer.Diagnostics
             );
 
 
-        internal static readonly DiagnosticDescriptor AC0003_StaticModIntOperator = new DiagnosticDescriptor(
-            "AC0002",
+        internal static readonly DiagnosticDescriptor AC0003_StaticModInt = new DiagnosticDescriptor(
+            "AC0003",
             new LocalizableResourceString(
-                nameof(DiagnosticsResources.AC0002_Title),
+                nameof(DiagnosticsResources.AC0003_Title),
                 DiagnosticsResources.ResourceManager,
                 typeof(DiagnosticsResources)),
             new LocalizableResourceString(
-                nameof(DiagnosticsResources.AC0001_AC0002_MessageFormat),
+                nameof(DiagnosticsResources.AC0003_MessageFormat),
                 DiagnosticsResources.ResourceManager,
                 typeof(DiagnosticsResources)),
-            "Overflow",
-            DiagnosticSeverity.Info,
+            "Type Define",
+            DiagnosticSeverity.Error,
+            isEnabledByDefault: true
+            );
+
+        internal static readonly DiagnosticDescriptor AC0004_DynamicModInt = new DiagnosticDescriptor(
+            "AC0004",
+            new LocalizableResourceString(
+                nameof(DiagnosticsResources.AC0004_Title),
+                DiagnosticsResources.ResourceManager,
+                typeof(DiagnosticsResources)),
+            new LocalizableResourceString(
+                nameof(DiagnosticsResources.AC0004_MessageFormat),
+                DiagnosticsResources.ResourceManager,
+                typeof(DiagnosticsResources)),
+            "Type Define",
+            DiagnosticSeverity.Error,
+            isEnabledByDefault: true
+            );
+
+        internal static readonly DiagnosticDescriptor AC0005_SegtreeOperator = new DiagnosticDescriptor(
+            "AC0005",
+            new LocalizableResourceString(
+                nameof(DiagnosticsResources.AC0005_Title),
+                DiagnosticsResources.ResourceManager,
+                typeof(DiagnosticsResources)),
+            new LocalizableResourceString(
+                nameof(DiagnosticsResources.AC0005_MessageFormat),
+                DiagnosticsResources.ResourceManager,
+                typeof(DiagnosticsResources)),
+            "Type Define",
+            DiagnosticSeverity.Error,
+            isEnabledByDefault: true
+            );
+
+        internal static readonly DiagnosticDescriptor AC0006_LazySegtreeOperator = new DiagnosticDescriptor(
+            "AC0006",
+            new LocalizableResourceString(
+                nameof(DiagnosticsResources.AC0006_Title),
+                DiagnosticsResources.ResourceManager,
+                typeof(DiagnosticsResources)),
+            new LocalizableResourceString(
+                nameof(DiagnosticsResources.AC0006_MessageFormat),
+                DiagnosticsResources.ResourceManager,
+                typeof(DiagnosticsResources)),
+            "Type Define",
+            DiagnosticSeverity.Error,
             isEnabledByDefault: true
             );
     }

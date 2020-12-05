@@ -86,5 +86,77 @@ namespace AtCoderAnalyzer.Diagnostics {
                 return ResourceManager.GetString("AC0002_Title", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Not defined IStaticMod: &apos;{0}&apos; に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string AC0003_MessageFormat {
+            get {
+                return ResourceManager.GetString("AC0003_MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Not defined IStaticMod に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string AC0003_Title {
+            get {
+                return ResourceManager.GetString("AC0003_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Not defined IDynamicModID: &apos;{0}&apos; に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string AC0004_MessageFormat {
+            get {
+                return ResourceManager.GetString("AC0004_MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Not defined IDynamicModID に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string AC0004_Title {
+            get {
+                return ResourceManager.GetString("AC0004_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Not defined ISegtreeOperator&lt;T&gt;: &apos;{0}&apos; に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string AC0005_MessageFormat {
+            get {
+                return ResourceManager.GetString("AC0005_MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Not defined ISegtreeOperator&lt;T&gt; に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string AC0005_Title {
+            get {
+                return ResourceManager.GetString("AC0005_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Not defined ILazySegtreeOperator&lt;T, F&gt;: &apos;{0}&apos; に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string AC0006_MessageFormat {
+            get {
+                return ResourceManager.GetString("AC0006_MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Not defined ILazySegtreeOperator&lt;T, F&gt; に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string AC0006_Title {
+            get {
+                return ResourceManager.GetString("AC0006_Title", resourceCulture);
+            }
+        }
     }
 }

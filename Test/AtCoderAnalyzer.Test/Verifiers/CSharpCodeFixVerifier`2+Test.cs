@@ -13,7 +13,8 @@ namespace AtCoderAnalyzer.Test
         {
             public Test()
             {
-                ReferenceAssemblies = ReferenceAssemblies.WithPackages(CSharpVerifierHelper.DefaultPackageIdentity);
+                CompilerDiagnostics = Microsoft.CodeAnalysis.Testing.CompilerDiagnostics.None;
+                ReferenceAssemblies = ReferenceAssemblies.WithPackages(ReferencesHelper.Packages);
                 SolutionTransforms.Add((solution, projectId) =>
                 {
                     var compilationOptions = solution.GetProject(projectId).CompilationOptions;

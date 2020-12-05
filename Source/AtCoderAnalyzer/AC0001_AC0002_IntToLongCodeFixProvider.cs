@@ -29,7 +29,7 @@ namespace AtCoderAnalyzer
             if (await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false)
                 is not CompilationUnitSyntax root)
                 return;
-            var diagnostic = context.Diagnostics.First();
+            var diagnostic = context.Diagnostics[0];
             var diagnosticSpan = diagnostic.Location.SourceSpan;
 
             var node = root.FindNode(diagnosticSpan);

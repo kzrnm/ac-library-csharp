@@ -126,4 +126,28 @@
   <data name="AC0002_Title" xml:space="preserve">
     <value>int left shift expression is assigned to long</value>
   </data>
+  <data name="AC0003_MessageFormat" xml:space="preserve">
+    <value>Not defined IStaticMod: '{0}'</value>
+  </data>
+  <data name="AC0003_Title" xml:space="preserve">
+    <value>Not defined IStaticMod</value>
+  </data>
+  <data name="AC0004_MessageFormat" xml:space="preserve">
+    <value>Not defined IDynamicModID: '{0}'</value>
+  </data>
+  <data name="AC0004_Title" xml:space="preserve">
+    <value>Not defined IDynamicModID</value>
+  </data>
+  <data name="AC0005_MessageFormat" xml:space="preserve">
+    <value>Not defined ISegtreeOperator&lt;T&gt;: '{0}'</value>
+  </data>
+  <data name="AC0005_Title" xml:space="preserve">
+    <value>Not defined ISegtreeOperator&lt;T&gt;</value>
+  </data>
+  <data name="AC0006_MessageFormat" xml:space="preserve">
+    <value>Not defined ILazySegtreeOperator&lt;T, F&gt;: '{0}'</value>
+  </data>
+  <data name="AC0006_Title" xml:space="preserve">
+    <value>Not defined ILazySegtreeOperator&lt;T, F&gt;</value>
+  </data>
 </root>
