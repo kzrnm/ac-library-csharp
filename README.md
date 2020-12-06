@@ -8,6 +8,7 @@ README languages: [Japanese](README.ja.md)
 
 - [Packages](#packages)
   - [ac-library-csharp](#ac-library-csharp)
+  - [AtCoderAnalyzer](#atcoderanalyzer)
 - [Status](#status)
 - [Getting started](#getting-started)
   - [Installation](#installation)
