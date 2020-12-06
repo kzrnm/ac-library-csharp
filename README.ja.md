@@ -23,6 +23,10 @@ README languages: [Japanese](README.ja.md)
 
 [AtCoder Library](https://github.com/atcoder/ac-library/) の C# 移植です。
 
+### AtCoderAnalyzer
+
+`ac-library-csharp` 向けのAnalyzer
+
 ## Status
 
 [![NuGet version (ac-library-csharp)](https://img.shields.io/nuget/v/ac-library-csharp.svg?style=flat-square)](https://www.nuget.org/packages/ac-library-csharp/)
