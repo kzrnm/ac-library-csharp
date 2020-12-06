@@ -2,7 +2,9 @@
 ; https://github.com/dotnet/roslyn-analyzers/blob/master/src/Microsoft.CodeAnalysis.Analyzers/ReleaseTrackingAnalyzers.Help.md
 
 
-### Version 1.0.2
+## Version 1.0.2
+
+### New Rules
 
 Rule ID | Category | Severity | Notes
 --------|----------|----------|-------
