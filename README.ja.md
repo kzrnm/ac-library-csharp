@@ -8,6 +8,7 @@ README languages: [Japanese](README.ja.md)
 
 - [Packages](#packages)
   - [ac-library-csharp](#ac-library-csharp)
+  - [AtCoderAnalyzer](#atcoderanalyzer)
 - [Status](#status)
 - [Getting started](#getting-started)
   - [Installation](#installation)
@@ -22,6 +23,10 @@ README languages: [Japanese](README.ja.md)
 ### ac-library-csharp
 
 [AtCoder Library](https://github.com/atcoder/ac-library/) の C# 移植です。
+
+### AtCoderAnalyzer
+
+`ac-library-csharp` 向けのAnalyzer
 
 ## Status
 

@@ -2,7 +2,9 @@
 ; https://github.com/dotnet/roslyn-analyzers/blob/master/src/Microsoft.CodeAnalysis.Analyzers/ReleaseTrackingAnalyzers.Help.md
 
 
-### Version 1.0.2
+## Release 1.0.2
+
+### New Rules
 
 Rule ID | Category | Severity | Notes
 --------|----------|----------|-------
@@ -12,4 +14,4 @@ AC0003 | Type Define | Error | Not defined IStaticMod
 AC0004 | Type Define | Error | Not defined IDynamicModID
 AC0005 | Type Define | Error | Not defined ISegtreeOperator<T>
 AC0006 | Type Define | Error | Not defined ILazySegtreeOperator<T, F>
-AC0007 | Type Define | Info | Operator method  doesn't have [MethodImpl(MethodImplOptions.AggressiveInlining)] attribute
+AC0007 | Type Define | Info | Operator method doesn't have `MethodImpl` attribute

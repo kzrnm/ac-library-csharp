@@ -16,6 +16,7 @@ namespace AtCoder
     /// }
     /// </code>
     /// </example>
+    [IsOperator]
     public interface IStaticMod
     {
         /// <summary>

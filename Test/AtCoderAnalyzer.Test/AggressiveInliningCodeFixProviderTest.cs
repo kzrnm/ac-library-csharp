@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Testing;
 using Xunit;
 using VerifyCS = AtCoderAnalyzer.Test.CSharpCodeFixVerifier<
@@ -37,26 +34,16 @@ struct BoolOp : INumOperator<bool>
     public bool MinValue => true;
     public bool MaxValue => false;
     public bool Add(bool x, bool y) => x || y;
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int Compare(bool x, bool y) => x.CompareTo(y);
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Decrement(bool x) => false;
     public bool Divide(bool x, bool y) => throw new NotImplementedException();
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Equals(bool x, bool y) => x == y;
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int GetHashCode(bool obj) => obj.GetHashCode();
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool GreaterThan(bool x, bool y) => x && !y;
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool GreaterThanOrEqual(bool x, bool y) => x || !y;
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Increment(bool x) => true;
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool LessThan(bool x, bool y) => y && !x;
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool LessThanOrEqual(bool x, bool y) => y || !x;
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Minus(bool x) => false;
     public bool Modulo(bool x, bool y) => true ? true : throw new NotImplementedException();
     public bool Multiply(bool x, bool y)
@@ -85,6 +72,7 @@ struct BoolOp : INumOperator<bool>
     public int Compare(bool x, bool y) => x.CompareTo(y);
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Decrement(bool x) => false;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Divide(bool x, bool y) => throw new NotImplementedException();
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Equals(bool x, bool y) => x == y;
@@ -102,20 +90,25 @@ struct BoolOp : INumOperator<bool>
     public bool LessThanOrEqual(bool x, bool y) => y || !x;
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Minus(bool x) => false;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Modulo(bool x, bool y) => true ? true : throw new NotImplementedException();
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Multiply(bool x, bool y)
     {
         throw new NotImplementedException();
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Subtract(bool x, bool y)
     {
         return default(bool?) ?? throw new NotImplementedException();
     }
 }
 ";
-            await VerifyCS.VerifyCodeFixAsync(source, new DiagnosticResult[]
-            {
-                VerifyCS.Diagnostic().WithSpan(9, 17, 9, 20).WithArguments("Add"),
+            await VerifyCS.VerifyCodeFixAsync(source, new DiagnosticResult[] {
+                VerifyCS.Diagnostic().WithSpan(5, 1, 30, 2).WithArguments(
+                    "Add, Compare, Decrement, Divide, Equals, GetHashCode, GreaterThan, GreaterThanOrEqual, Increment, LessThan, LessThanOrEqual, Minus, Modulo, Multiply, Subtract"),
             }, fixedSource);
         }
 
@@ -144,7 +137,7 @@ struct OpSeg : ISegtreeOperator<int>
 ";
             await VerifyCS.VerifyCodeFixAsync(source, new DiagnosticResult[]
             {
-                VerifyCS.Diagnostic("AC0007").WithSpan(7, 16, 7, 23).WithArguments("Operate"),
+                VerifyCS.Diagnostic("AC0007").WithSpan(4, 1, 8, 2).WithArguments("Operate"),
             }, fixedSource);
         }
 
@@ -197,9 +190,44 @@ struct Op : ILazySegtreeOperator<long, int>
 ";
             await VerifyCS.VerifyCodeFixAsync(source, new DiagnosticResult[]
             {
-                VerifyCS.Diagnostic("AC0007").WithSpan(8, 16, 8, 27).WithArguments("Composition"),
-                VerifyCS.Diagnostic("AC0007").WithSpan(9, 17, 9, 24).WithArguments("Mapping"),
-                VerifyCS.Diagnostic("AC0007").WithSpan(10, 17, 10, 24).WithArguments("Operate"),
+                VerifyCS.Diagnostic().WithSpan(4, 1, 11, 2).WithArguments("Composition, Mapping, Operate"),
+            }, fixedSource);
+        }
+
+        [Fact]
+        public async Task LazySegtreeOperator_Without_Using()
+        {
+            var source = @"
+using AtCoder;
+struct Op : ILazySegtreeOperator<long, int>
+{
+    public long Identity => 0L;
+    public int FIdentity => 0;
+    public int Composition(int f, int g) => 0;
+    public long Mapping(int f, long x) => 0L;
+    public long Operate(long x, long y) => 0L;
+}
+";
+            var fixedSource = @"
+using AtCoder;
+using System.Runtime.CompilerServices;
+
+struct Op : ILazySegtreeOperator<long, int>
+{
+    public long Identity => 0L;
+    public int FIdentity => 0;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int Composition(int f, int g) => 0;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public long Mapping(int f, long x) => 0L;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public long Operate(long x, long y) => 0L;
+}
+";
+            await VerifyCS.VerifyCodeFixAsync(source, new DiagnosticResult[]
+            {
+VerifyCS.Diagnostic().WithSpan(3, 1, 10, 2).WithArguments("Composition, Mapping, Operate"),
             }, fixedSource);
         }
 

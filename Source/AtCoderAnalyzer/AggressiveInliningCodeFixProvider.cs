@@ -8,6 +8,7 @@ using AtCoderAnalyzer.Helpers;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static AtCoderAnalyzer.Helpers.Constants;
 
@@ -16,7 +17,7 @@ namespace AtCoderAnalyzer
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AggressiveInliningCodeFixProvider)), Shared]
     public class AggressiveInliningCodeFixProvider : CodeFixProvider
     {
-        private const string title = "Add AggressiveInlining attribute";
+        private const string title = "Add AggressiveInlining";
         public override ImmutableArray<string> FixableDiagnosticIds
             => ImmutableArray.Create(
                 DiagnosticDescriptors.AC0007_AgressiveInlining.Id);
@@ -33,28 +34,59 @@ namespace AtCoderAnalyzer
             var diagnosticSpan = diagnostic.Location.SourceSpan;
 
             if (root.FindNode(diagnosticSpan)
-                is not MethodDeclarationSyntax methodDeclaration)
+                is not TypeDeclarationSyntax typeDeclarationSyntax)
                 return;
 
             var action = CodeAction.Create(title: title,
-               createChangedDocument: c => AddAggressiveInlining(context.Document, root, methodDeclaration, c),
+               createChangedDocument: c => AddAggressiveInlining(context.Document, root, typeDeclarationSyntax, c),
                equivalenceKey: title);
             context.RegisterCodeFix(action, diagnostic);
         }
 
-#pragma warning disable IDE0060
         private async Task<Document> AddAggressiveInlining(
             Document document, CompilationUnitSyntax root,
-            MethodDeclarationSyntax methodDeclaration, CancellationToken cancellationToken)
+            TypeDeclarationSyntax typeDeclarationSyntax, CancellationToken cancellationToken)
         {
+            root = root.ReplaceNode(typeDeclarationSyntax,
+                            new AddAggressiveInliningRewriter(await document.GetSemanticModelAsync(cancellationToken)).Visit(typeDeclarationSyntax));
+
             var hasSystem_Runtime_CompilerServices =
                 root.Usings.Any(sy => sy.Name.ToString() == System_Runtime_CompilerServices);
             if (!hasSystem_Runtime_CompilerServices)
                 root = SyntaxHelpers.AddSystem_Runtime_CompilerServicesSyntax(root);
 
-            return document.WithSyntaxRoot(root.ReplaceNode(methodDeclaration,
-                methodDeclaration.AddAttributeLists(SyntaxHelpers.AggressiveInliningAttributeList)));
+            return document.WithSyntaxRoot(root);
         }
-#pragma warning restore IDE0060
+
+        private class AddAggressiveInliningRewriter : CSharpSyntaxRewriter
+        {
+            private readonly SemanticModel semanticModel;
+            private readonly INamedTypeSymbol methodImpl;
+            public AddAggressiveInliningRewriter(SemanticModel semanticModel) : base(false)
+            {
+                this.semanticModel = semanticModel;
+                methodImpl = semanticModel.Compilation.GetTypeByMetadataName(
+                    System_Runtime_CompilerServices_MethodImplAttribute);
+            }
+            public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node)
+            {
+                if (methodImpl is null)
+                    return node;
+                if (semanticModel.GetDeclaredSymbol(node) is not IMethodSymbol m)
+                    return node;
+
+                if (m.MethodKind == MethodKind.Ordinary
+                    || m.MethodKind == MethodKind.ExplicitInterfaceImplementation)
+                {
+                    if (m.GetAttributes()
+                        .Select(at => at.AttributeClass)
+                        .Contains(methodImpl, SymbolEqualityComparer.Default))
+                        return node;
+
+                    return node.AddAttributeLists(SyntaxHelpers.AggressiveInliningAttributeList);
+                }
+                return node;
+            }
+        }
     }
 }

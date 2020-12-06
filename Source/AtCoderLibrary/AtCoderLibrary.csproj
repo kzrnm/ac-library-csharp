@@ -7,7 +7,7 @@
     <LangVersion>8</LangVersion>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
 
-    <PackageTags>ac-library-csharp</PackageTags>
+    <PackageTags>ac-library-csharp;AtCoder</PackageTags>
     <PackageId>ac-library-csharp</PackageId>
     <Description>C# port of ac-library</Description>
     <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SourceExpander.Embedder" Version="2.2.0">
+    <PackageReference Include="SourceExpander.Embedder" Version="2.2.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

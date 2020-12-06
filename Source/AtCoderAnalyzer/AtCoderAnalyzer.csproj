@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>9</LangVersion>
     <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
-    <PackageTags>ac-library-csharp;Analyzer</PackageTags>
+    <PackageTags>ac-library-csharp;AtCoder;Analyzer</PackageTags>
     <PackageId>AtCoderAnalyzer</PackageId>
     <Description>Analyzer For AtCoder library</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -17,6 +17,11 @@
     <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
     <DevelopmentDependency>true</DevelopmentDependency>
   </PropertyGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="AnalyzerReleases.Shipped.md" />
+    <AdditionalFiles Include="AnalyzerReleases.Unshipped.md" />
+  </ItemGroup>
 
   <ItemGroup>
     <Content Include="tools\*.ps1" Pack="true" PackagePath="tools\" />
@@ -55,5 +60,5 @@
       <TfmSpecificPackageFile Include="@(SatelliteDllsProjectOutputGroupOutput->'%(FinalOutputPath)')" PackagePath="analyzers\dotnet\%(SatelliteDllsProjectOutputGroupOutput.Culture)\" />
     </ItemGroup>
   </Target>
-  
+
 </Project>
