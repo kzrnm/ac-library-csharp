@@ -160,7 +160,7 @@ namespace AtCoderAnalyzer.Diagnostics {
         }
         
         /// <summary>
-        ///   Operator method &apos;{0}&apos; doesn&apos;t have [MethodImpl(MethodImplOptions.AggressiveInlining)] attribute に類似しているローカライズされた文字列を検索します。
+        ///   Operator methods &apos;{0}&apos; doesn&apos;t have MethodImpl attribute に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string AC0007_MessageFormat {
             get {
@@ -169,7 +169,7 @@ namespace AtCoderAnalyzer.Diagnostics {
         }
         
         /// <summary>
-        ///   Operator method doesn&apos;t have AggressiveInlining に類似しているローカライズされた文字列を検索します。
+        ///   Some operator methods don&apos;t have MethodImpl attribute に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string AC0007_Title {
             get {
