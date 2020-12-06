@@ -12,6 +12,7 @@ namespace AtCoder
     /// public readonly struct ModID123 : IDynamicModID { }
     /// </code>
     /// </example>
+    [IsOperator]
     public interface IDynamicModID { }
     public static class DynamicModIDExtension
     {

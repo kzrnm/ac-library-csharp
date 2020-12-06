@@ -11,6 +11,7 @@ namespace AtCoder
     /// </summary>
     /// <typeparam name="T">操作を行う型。</typeparam>
     /// <typeparam name="F">写像の型。</typeparam>
+    [IsOperator]
     public interface ILazySegtreeOperator<T, F>
     {
         /// <summary>

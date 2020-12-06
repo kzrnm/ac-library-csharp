@@ -10,6 +10,7 @@ namespace AtCoder
     /// モノイドを定義するインターフェイスです。
     /// </summary>
     /// <typeparam name="T">操作を行う型。</typeparam>
+    [IsOperator]
     public interface ISegtreeOperator<T>
     {
         /// <summary>

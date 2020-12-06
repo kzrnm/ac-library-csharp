@@ -4,6 +4,7 @@ using System.Collections.Generic;
 namespace AtCoder
 {
 #pragma warning disable CA1815 // Override equals and operator equals on value types
+    [IsOperator]
     public interface IArithmeticOperator<T> where T : struct
     {
         /// <summary>
@@ -47,6 +48,7 @@ namespace AtCoder
         /// <returns>--<paramref name="x"/></returns>
         T Decrement(T x);
     }
+    [IsOperator]
     public interface ICompareOperator<T> : IEqualityComparer<T>, IComparer<T> where T : struct
     {
         /// <summary>
