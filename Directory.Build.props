@@ -6,8 +6,8 @@
     <PackageProjectUrl>https://github.com/naminodarie/ac-library-csharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/naminodarie/ac-library-csharp</RepositoryUrl>
 
-    <Version>1.0.3</Version>
-    <AssemblyVersion>1.0.3.101</AssemblyVersion>
+    <Version>1.0.4-beta.1</Version>
+    <AssemblyVersion>1.0.1.1</AssemblyVersion>
     <RepositoryCommit Condition="'$(GIT_COMMIT)' != ''">$(GIT_COMMIT)</RepositoryCommit>
 
     <SignAssembly>True</SignAssembly>
