@@ -1,9 +1,12 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using AtCoderAnalyzer.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using static AtCoderAnalyzer.Helpers.Constants;
 
 namespace AtCoderAnalyzer
 {
@@ -12,10 +15,27 @@ namespace AtCoderAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
             => ImmutableArray.Create(
-                DiagnosticDescriptors.AC0003_StaticModInt,
-                DiagnosticDescriptors.AC0004_DynamicModInt,
-                DiagnosticDescriptors.AC0005_SegtreeOperator,
-                DiagnosticDescriptors.AC0006_LazySegtreeOperator);
+                DiagnosticDescriptors.AC0008_DefineOperatorType);
+
+        private class ContainingOperatorTypes
+        {
+            public INamedTypeSymbol IsOperatorAttribute { get; }
+
+            public ContainingOperatorTypes(INamedTypeSymbol isOperator)
+            {
+                IsOperatorAttribute = isOperator;
+            }
+            public static bool TryParseTypes(Compilation compilation, out ContainingOperatorTypes types)
+            {
+                types = null;
+                var isOperator = compilation.GetTypeByMetadataName(AtCoder_IsOperatorAttribute);
+                if (isOperator is null)
+                    return false;
+                types = new ContainingOperatorTypes(isOperator);
+                return true;
+            }
+        }
+
         public override void Initialize(AnalysisContext context)
         {
             context.EnableConcurrentExecution();
@@ -29,48 +49,6 @@ namespace AtCoderAnalyzer
                 }
             });
         }
-        private class ContainingOperatorTypes
-        {
-            public ImmutableDictionary<INamedTypeSymbol, DiagnosticDescriptor> Types { get; }
-
-            public ContainingOperatorTypes(
-             INamedTypeSymbol staticModInt,
-             INamedTypeSymbol dynamicModInt,
-             INamedTypeSymbol segtree,
-             INamedTypeSymbol lazySegtree)
-            {
-                var build = ImmutableDictionary.CreateBuilder<INamedTypeSymbol, DiagnosticDescriptor>(SymbolEqualityComparer.Default);
-                build.Add(staticModInt, DiagnosticDescriptors.AC0003_StaticModInt);
-                build.Add(dynamicModInt, DiagnosticDescriptors.AC0004_DynamicModInt);
-                build.Add(segtree, DiagnosticDescriptors.AC0005_SegtreeOperator);
-                build.Add(lazySegtree, DiagnosticDescriptors.AC0006_LazySegtreeOperator);
-                Types = build.ToImmutable();
-            }
-            public static bool TryParseTypes(Compilation compilation, out ContainingOperatorTypes types)
-            {
-                types = null;
-                var staticModInt = compilation.GetTypeByMetadataName("AtCoder.StaticModInt`1");
-                if (staticModInt is null)
-                    return false;
-                var dynamicModInt = compilation.GetTypeByMetadataName("AtCoder.DynamicModInt`1");
-                if (dynamicModInt is null)
-                    return false;
-                var segtree = compilation.GetTypeByMetadataName("AtCoder.Segtree`2");
-                if (segtree is null)
-                    return false;
-                var lazySegtree = compilation.GetTypeByMetadataName("AtCoder.LazySegtree`3");
-                if (lazySegtree is null)
-                    return false;
-
-                types = new ContainingOperatorTypes(
-                    staticModInt,
-                    dynamicModInt,
-                    segtree,
-                    lazySegtree);
-                return true;
-            }
-        }
-
         private void AnalyzeGenericNode(SyntaxNodeAnalysisContext context, ContainingOperatorTypes types)
         {
             var semanticModel = context.SemanticModel;
@@ -78,22 +56,37 @@ namespace AtCoderAnalyzer
                 return;
 
             if (semanticModel.GetSymbolInfo(genericNode, context.CancellationToken).Symbol
-                is not ITypeSymbol symbol)
+                is not INamedTypeSymbol symbol)
                 return;
 
-            if (symbol.OriginalDefinition
-                is not INamedTypeSymbol type
-                || !types.Types.TryGetValue(type, out var descriptor))
+            var originalTypes = symbol.TypeParameters;
+            var writtenTypes = symbol.TypeArguments;
+
+            if (originalTypes.Length != writtenTypes.Length)
                 return;
 
-            var operatorTypeSyntax = genericNode.TypeArgumentList.Arguments[genericNode.TypeArgumentList.Arguments.Count - 1];
-            var operatorType = semanticModel.GetTypeInfo(operatorTypeSyntax, context.CancellationToken).Type;
+            var notDefinedTypes = new List<string>();
+            for (int i = 0; i < originalTypes.Length; i++)
+            {
+                var originalType = originalTypes[i];
+                var writtenType = writtenTypes[i];
 
-            if (operatorType.TypeKind != TypeKind.Error)
+                if (!originalType.ConstraintTypes.SelectMany(ty => ty.GetAttributes())
+                    .Select(at => at.AttributeClass)
+                    .Contains(types.IsOperatorAttribute, SymbolEqualityComparer.Default))
+                    continue;
+
+                var k = originalType.TypeKind;
+                if (writtenType.TypeKind == TypeKind.Error)
+                {
+                    notDefinedTypes.Add(writtenType.Name.ToString());
+                }
+            }
+            if (notDefinedTypes.Count == 0)
                 return;
 
-            var diagnostic = Diagnostic.Create(descriptor,
-                genericNode.GetLocation(), operatorTypeSyntax.ToString());
+            var diagnostic = Diagnostic.Create(DiagnosticDescriptors.AC0008_DefineOperatorType,
+                genericNode.GetLocation(), string.Join(", ", notDefinedTypes));
             context.ReportDiagnostic(diagnostic);
         }
     }

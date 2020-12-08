@@ -30,12 +30,12 @@ class Program
 
 struct Op : IStaticMod
 {
-    public uint Mod => 1000000007;
+    public uint Mod => default;
 
-    public bool IsPrime => true;
+    public bool IsPrime => default;
 }";
             await VerifyCS.VerifyCodeFixAsync(source,
-                VerifyCS.Diagnostic("AC0003").WithSpan(5, 5, 5, 21).WithArguments("Op"),
+                VerifyCS.Diagnostic("AC0008").WithSpan(5, 5, 5, 21).WithArguments("Op"),
                 fixedSource);
         }
 
@@ -60,12 +60,12 @@ class Program
 
 struct Op : IStaticMod
 {
-    public uint Mod => 1000000007;
+    public uint Mod => default;
 
-    public bool IsPrime => true;
+    public bool IsPrime => default;
 }";
             await VerifyCS.VerifyCodeFixAsync(source,
-                VerifyCS.Diagnostic("AC0003").WithSpan(5, 13, 5, 29).WithArguments("Op"),
+                VerifyCS.Diagnostic("AC0008").WithSpan(5, 13, 5, 29).WithArguments("Op"),
                 fixedSource);
         }
 
@@ -88,12 +88,12 @@ class Program
 
 struct Op : AtCoder.IStaticMod
 {
-    public uint Mod => 1000000007;
+    public uint Mod => default;
 
-    public bool IsPrime => true;
+    public bool IsPrime => default;
 }";
             await VerifyCS.VerifyCodeFixAsync(source,
-                VerifyCS.Diagnostic("AC0003").WithSpan(4, 13, 4, 29).WithArguments("Op"),
+                VerifyCS.Diagnostic("AC0008").WithSpan(4, 13, 4, 29).WithArguments("Op"),
                 fixedSource);
         }
         #endregion StaticModInt
@@ -122,7 +122,7 @@ struct Op : IDynamicModID
 {
 }";
             await VerifyCS.VerifyCodeFixAsync(source,
-                VerifyCS.Diagnostic("AC0004").WithSpan(5, 5, 5, 22).WithArguments("Op"),
+                VerifyCS.Diagnostic("AC0008").WithSpan(5, 5, 5, 22).WithArguments("Op"),
                 fixedSource);
         }
 
@@ -149,7 +149,7 @@ struct Op : IDynamicModID
 {
 }";
             await VerifyCS.VerifyCodeFixAsync(source,
-                VerifyCS.Diagnostic("AC0004").WithSpan(5, 13, 5, 30).WithArguments("Op"),
+                VerifyCS.Diagnostic("AC0008").WithSpan(5, 13, 5, 30).WithArguments("Op"),
                 fixedSource);
         }
 
@@ -174,7 +174,7 @@ struct Op : AtCoder.IDynamicModID
 {
 }";
             await VerifyCS.VerifyCodeFixAsync(source,
-                VerifyCS.Diagnostic("AC0004").WithSpan(4, 13, 4, 30).WithArguments("Op"),
+                VerifyCS.Diagnostic("AC0008").WithSpan(4, 13, 4, 30).WithArguments("Op"),
                 fixedSource);
         }
         #endregion DynamicModInt
@@ -221,16 +221,13 @@ struct MinOp : ISegtreeOperator<int>
 
 struct OpSeg : ISegtreeOperator<int>
 {
-    public int Identity => default;
-
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int Operate(int x, int y)
-    {
-        return default;
-    }
+    public int Operate(int x, int y) => default;
+
+    public int Identity => default;
 }";
             await VerifyCS.VerifyCodeFixAsync(source,
-                VerifyCS.Diagnostic("AC0005").WithSpan(6, 5, 6, 24).WithArguments("OpSeg"),
+                VerifyCS.Diagnostic("AC0008").WithSpan(6, 5, 6, 24).WithArguments("OpSeg"),
                 fixedSource);
         }
 
@@ -275,16 +272,13 @@ struct MinOp : ISegtreeOperator<int>
 
 struct OpSeg : ISegtreeOperator<int>
 {
-    public int Identity => default;
-
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int Operate(int x, int y)
-    {
-        return default;
-    }
+    public int Operate(int x, int y) => default;
+
+    public int Identity => default;
 }";
             await VerifyCS.VerifyCodeFixAsync(source,
-                VerifyCS.Diagnostic("AC0005").WithSpan(6, 13, 6, 32).WithArguments("OpSeg"),
+                VerifyCS.Diagnostic("AC0008").WithSpan(6, 13, 6, 32).WithArguments("OpSeg"),
                 fixedSource);
         }
 
@@ -326,16 +320,13 @@ struct MinOp : AtCoder.ISegtreeOperator<int>
 
 struct OpSeg : AtCoder.ISegtreeOperator<int>
 {
-    public int Identity => default;
-
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int Operate(int x, int y)
-    {
-        return default;
-    }
+    public int Operate(int x, int y) => default;
+
+    public int Identity => default;
 }";
             await VerifyCS.VerifyCodeFixAsync(source,
-                VerifyCS.Diagnostic("AC0005").WithSpan(5, 13, 5, 32).WithArguments("OpSeg"),
+                VerifyCS.Diagnostic("AC0008").WithSpan(5, 13, 5, 32).WithArguments("OpSeg"),
                 fixedSource);
         }
 
@@ -380,16 +371,13 @@ struct MinOp : ISegtreeOperator<int>
 
 struct OpSeg : ISegtreeOperator<int>
 {
-    public int Identity => default;
-
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int Operate(int x, int y)
-    {
-        return default;
-    }
+    public int Operate(int x, int y) => default;
+
+    public int Identity => default;
 }";
             await VerifyCS.VerifyCodeFixAsync(source,
-                VerifyCS.Diagnostic("AC0005").WithSpan(7, 5, 7, 24).WithArguments("OpSeg"),
+                VerifyCS.Diagnostic("AC0008").WithSpan(7, 5, 7, 24).WithArguments("OpSeg"),
                 fixedSource);
         }
         #endregion Segtree
@@ -440,30 +428,19 @@ struct Op : ILazySegtreeOperator<long, int>
 
 struct OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c)>
 {
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public (int v, int size) Operate((int v, int size) x, (int v, int size) y) => default;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public (int v, int size) Mapping((int b, int c) f, (int v, int size) x) => default;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public (int b, int c) Composition((int b, int c) f, (int b, int c) g) => default;
+
     public (int v, int size) Identity => default;
 
     public (int b, int c) FIdentity => default;
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public (int b, int c) Composition((int b, int c) f, (int b, int c) g)
-    {
-        return default;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public (int v, int size) Mapping((int b, int c) f, (int v, int size) x)
-    {
-        return default;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public (int v, int size) Operate((int v, int size) x, (int v, int size) y)
-    {
-        return default;
-    }
 }";
             await VerifyCS.VerifyCodeFixAsync(source,
-                VerifyCS.Diagnostic("AC0006").WithSpan(6, 5, 6, 58).WithArguments("OpSeg"),
+                VerifyCS.Diagnostic("AC0008").WithSpan(6, 5, 6, 58).WithArguments("OpSeg"),
                 fixedSource);
         }
 
@@ -512,30 +489,19 @@ struct Op : AtCoder.ILazySegtreeOperator<long, int>
 
 struct OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c)>
 {
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public (int v, int size) Operate((int v, int size) x, (int v, int size) y) => default;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public (int v, int size) Mapping((int b, int c) f, (int v, int size) x) => default;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public (int b, int c) Composition((int b, int c) f, (int b, int c) g) => default;
+
     public (int v, int size) Identity => default;
 
     public (int b, int c) FIdentity => default;
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public (int b, int c) Composition((int b, int c) f, (int b, int c) g)
-    {
-        return default;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public (int v, int size) Mapping((int b, int c) f, (int v, int size) x)
-    {
-        return default;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public (int v, int size) Operate((int v, int size) x, (int v, int size) y)
-    {
-        return default;
-    }
 }";
             await VerifyCS.VerifyCodeFixAsync(source,
-                VerifyCS.Diagnostic("AC0006").WithSpan(6, 13, 6, 66).WithArguments("OpSeg"),
+                VerifyCS.Diagnostic("AC0008").WithSpan(6, 13, 6, 66).WithArguments("OpSeg"),
                 fixedSource);
         }
 
@@ -581,30 +547,19 @@ struct Op : AtCoder.ILazySegtreeOperator<long, int>
 
 struct OpSeg : AtCoder.ILazySegtreeOperator<(int v, int size), (int b, int c)>
 {
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public (int v, int size) Operate((int v, int size) x, (int v, int size) y) => default;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public (int v, int size) Mapping((int b, int c) f, (int v, int size) x) => default;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public (int b, int c) Composition((int b, int c) f, (int b, int c) g) => default;
+
     public (int v, int size) Identity => default;
 
     public (int b, int c) FIdentity => default;
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public (int b, int c) Composition((int b, int c) f, (int b, int c) g)
-    {
-        return default;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public (int v, int size) Mapping((int b, int c) f, (int v, int size) x)
-    {
-        return default;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public (int v, int size) Operate((int v, int size) x, (int v, int size) y)
-    {
-        return default;
-    }
 }";
             await VerifyCS.VerifyCodeFixAsync(source,
-                VerifyCS.Diagnostic("AC0006").WithSpan(5, 13, 5, 66).WithArguments("OpSeg"),
+                VerifyCS.Diagnostic("AC0008").WithSpan(5, 13, 5, 66).WithArguments("OpSeg"),
                 fixedSource);
         }
 
@@ -653,33 +608,70 @@ struct Op : ILazySegtreeOperator<long, int>
 
 struct OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c)>
 {
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public (int v, int size) Operate((int v, int size) x, (int v, int size) y) => default;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public (int v, int size) Mapping((int b, int c) f, (int v, int size) x) => default;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public (int b, int c) Composition((int b, int c) f, (int b, int c) g) => default;
+
     public (int v, int size) Identity => default;
 
     public (int b, int c) FIdentity => default;
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public (int b, int c) Composition((int b, int c) f, (int b, int c) g)
-    {
-        return default;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public (int v, int size) Mapping((int b, int c) f, (int v, int size) x)
-    {
-        return default;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public (int v, int size) Operate((int v, int size) x, (int v, int size) y)
-    {
-        return default;
-    }
 }";
             await VerifyCS.VerifyCodeFixAsync(source,
-                VerifyCS.Diagnostic("AC0006").WithSpan(7, 5, 7, 58).WithArguments("OpSeg"),
+                VerifyCS.Diagnostic("AC0008").WithSpan(7, 5, 7, 58).WithArguments("OpSeg"),
                 fixedSource);
         }
         #endregion LazySegtree
 
+        [Fact]
+        public async Task AnyDefinedType()
+        {
+            var source = @"
+using AtCoder;
+[IsOperator]
+public interface IAny<T> {
+    T Prop1 { set; get; }
+    T Prop2 { get; set; }
+}
+public class Generic<T, TOp> where TOp : IAny<T> { }
+class Program
+{
+    Generic<(int, long), Op> notDefined;
+    Generic<(int, long), Def<(int, long)>> defined;
+}
+struct Def<T> : IAny<T> { 
+    public T Prop1 { set; get; }
+    public T Prop2 { set; get; }
+}
+";
+            var fixedSource = @"
+using AtCoder;
+[IsOperator]
+public interface IAny<T> {
+    T Prop1 { set; get; }
+    T Prop2 { get; set; }
+}
+public class Generic<T, TOp> where TOp : IAny<T> { }
+class Program
+{
+    Generic<(int, long), Op> notDefined;
+    Generic<(int, long), Def<(int, long)>> defined;
+}
+struct Def<T> : IAny<T> { 
+    public T Prop1 { set; get; }
+    public T Prop2 { set; get; }
+}
+
+struct Op : IAny<(int, long)>
+{
+    public (int, long) Prop1 { set; get; }
+    public (int, long) Prop2 { set; get; }
+}";
+            await VerifyCS.VerifyCodeFixAsync(source,
+                VerifyCS.Diagnostic().WithSpan(11, 5, 11, 29).WithArguments("Op"),
+               fixedSource);
+        }
     }
 }

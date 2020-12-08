@@ -176,5 +176,23 @@ namespace AtCoderAnalyzer.Diagnostics {
                 return ResourceManager.GetString("AC0007_Title", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Not defined operator type: &apos;{0}&apos; に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string AC0008_MessageFormat {
+            get {
+                return ResourceManager.GetString("AC0008_MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Not defined operator type に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string AC0008_Title {
+            get {
+                return ResourceManager.GetString("AC0008_Title", resourceCulture);
+            }
+        }
     }
 }
