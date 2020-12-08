@@ -271,5 +271,50 @@ struct Op : ILazySegtreeOperator<long, int>
 ";
             await VerifyCS.VerifyAnalyzerAsync(source);
         }
+
+
+
+        [Fact]
+        public async Task AnyDefinedType()
+        {
+            var source = @"
+using AtCoder;
+[IsOperator]
+public interface IAny<T> {
+    T Fun1();
+    string Fun2(T v);
+}
+struct Def<T> : IAny<T> {
+    public T Fun1() => default;
+    public string Fun2(T v)
+    {
+        return v.ToString();
+    }
+}
+";
+            var fixedSource = @"
+using AtCoder;
+using System.Runtime.CompilerServices;
+
+[IsOperator]
+public interface IAny<T> {
+    T Fun1();
+    string Fun2(T v);
+}
+struct Def<T> : IAny<T> {
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public T Fun1() => default;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public string Fun2(T v)
+    {
+        return v.ToString();
+    }
+}
+";
+            await VerifyCS.VerifyCodeFixAsync(source,
+                VerifyCS.Diagnostic().WithSpan(8, 1, 14, 2).WithArguments("Fun1, Fun2"),
+                fixedSource);
+        }
     }
 }

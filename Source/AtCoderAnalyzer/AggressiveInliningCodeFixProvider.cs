@@ -50,9 +50,7 @@ namespace AtCoderAnalyzer
             root = root.ReplaceNode(typeDeclarationSyntax,
                             new AddAggressiveInliningRewriter(await document.GetSemanticModelAsync(cancellationToken)).Visit(typeDeclarationSyntax));
 
-            var hasSystem_Runtime_CompilerServices =
-                root.Usings.Any(sy => sy.Name.ToString() == System_Runtime_CompilerServices);
-            if (!hasSystem_Runtime_CompilerServices)
+            if (!root.Usings.ToNamespaceHashSet().Contains(System_Runtime_CompilerServices))
                 root = SyntaxHelpers.AddSystem_Runtime_CompilerServicesSyntax(root);
 
             return document.WithSyntaxRoot(root);

@@ -15,3 +15,29 @@ AC0004 | Type Define | Error | Not defined IDynamicModID
 AC0005 | Type Define | Error | Not defined ISegtreeOperator<T>
 AC0006 | Type Define | Error | Not defined ILazySegtreeOperator<T, F>
 AC0007 | Type Define | Info | Operator method doesn't have `MethodImpl` attribute
+
+## Release 1.0.3
+
+
+### Changed Rules
+
+Rule ID | Category | Severity | Notes
+--------|----------|----------|--------------------
+AC0007 | Type Define | Info | Some operator methods don't have `MethodImpl` attribute
+
+## Release 1.0.4
+
+### New Rules
+
+Rule ID | Category | Severity | Notes
+--------|----------|----------|-------
+AC0008 | Type Define | Error | Not defined operator type
+
+### Removed Rules
+
+Rule ID | Category | Severity | Notes
+--------|----------|----------|--------------------
+AC0003 | Type Define | Error | Not defined IStaticMod
+AC0004 | Type Define | Error | Not defined IDynamicModID
+AC0005 | Type Define | Error | Not defined ISegtreeOperator<T>
+AC0006 | Type Define | Error | Not defined ILazySegtreeOperator<T, F>
