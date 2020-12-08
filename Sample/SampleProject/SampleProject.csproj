@@ -3,27 +3,27 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseLocalReference>false</UseLocalReference>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="SourceExpander" Version="2.2.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="ac-library-csharp" Version="1.0.2" />
-    <PackageReference Include="AtCoderAnalyzer" Version="1.0.2">
+  <ItemGroup Condition="'$(UseLocalReference)' != 'true'">
+    <PackageReference Include="ac-library-csharp" Version="1.0.4" />
+    <PackageReference Include="AtCoderAnalyzer" Version="1.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-<!--
-
-  <ItemGroup>
+  
+  <ItemGroup Condition="'$(UseLocalReference)' == 'true'">
     <ProjectReference Include="..\..\Source\AtCoderLibrary\AtCoderLibrary.csproj" />
     <ProjectReference Include="..\..\Source\AtCoderAnalyzer\AtCoderAnalyzer.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <OutputItemType>Analyzer</OutputItemType>
     </ProjectReference>
   </ItemGroup>
--->
+
 </Project>
