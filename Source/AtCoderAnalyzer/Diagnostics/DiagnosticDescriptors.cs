@@ -45,7 +45,7 @@ namespace AtCoderAnalyzer.Diagnostics
                 typeof(DiagnosticsResources)),
             "Type Define",
             DiagnosticSeverity.Error,
-            isEnabledByDefault: false
+            isEnabledByDefault: true
             );
 
         internal static readonly DiagnosticDescriptor AC0007_AgressiveInlining = new DiagnosticDescriptor(
