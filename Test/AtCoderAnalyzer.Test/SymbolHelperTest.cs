@@ -11,8 +11,8 @@ namespace AtCoderAnalyzer.Test
 {
     public class SymbolHelperTest
     {
-        private CSharpSyntaxTree[] trees = new CSharpSyntaxTree[1];
-        private CSharpCompilation compilation;
+        private readonly CSharpSyntaxTree[] trees = new CSharpSyntaxTree[1];
+        private readonly CSharpCompilation compilation;
         public SymbolHelperTest()
         {
             trees[0] = (CSharpSyntaxTree)CSharpSyntaxTree.ParseText(@"namespace TestAssembly.TA {

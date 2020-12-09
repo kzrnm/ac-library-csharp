@@ -55,6 +55,9 @@ namespace AtCoderAnalyzer
             if (context.Node is not GenericNameSyntax genericNode)
                 return;
 
+            if (genericNode.TypeArgumentList.Arguments.Any(sy => sy.IsKind(SyntaxKind.OmittedTypeArgument)))
+                return;
+
             if (semanticModel.GetSymbolInfo(genericNode, context.CancellationToken).Symbol
                 is not INamedTypeSymbol symbol)
                 return;
