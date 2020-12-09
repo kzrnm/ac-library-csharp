@@ -640,6 +640,7 @@ class Program
 {
     Generic<(int, long), Op> notDefined;
     Generic<(int, long), Def<(int, long)>> defined;
+    System.Type Type = typeof(Generic<,>);
 }
 struct Def<T> : IAny<T> { 
     public T Prop1 { set; get; }
@@ -658,6 +659,7 @@ class Program
 {
     Generic<(int, long), Op> notDefined;
     Generic<(int, long), Def<(int, long)>> defined;
+    System.Type Type = typeof(Generic<,>);
 }
 struct Def<T> : IAny<T> { 
     public T Prop1 { set; get; }
