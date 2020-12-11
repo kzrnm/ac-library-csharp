@@ -25,6 +25,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="LICENSE" Pack="true" PackagePath="" Visible="false" />
+
     <ProjectReference Include="..\..\Source\AtCoderAnalyzer\AtCoderAnalyzer.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <OutputItemType>Analyzer</OutputItemType>
