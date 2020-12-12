@@ -5,6 +5,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://github.com/naminodarie/ac-library-csharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/naminodarie/ac-library-csharp</RepositoryUrl>
+    <PackageReleaseNotes>https://github.com/naminodarie/ac-library-csharp/blob/master/CHANGELOG.md</PackageReleaseNotes>
 
     <Version>1.0.5-beta.1</Version>
     <AssemblyVersion>1.0.5.1</AssemblyVersion>
