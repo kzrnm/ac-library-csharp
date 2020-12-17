@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/naminodarie/SourceExpander/master/schema/embedder.schema.json",
+  "embedding-type": "raw",
+  "enable-minify": true,
+  "remove-conditional": [
+    "DEBUG"
+  ],
+  "exclude-attributes": [
+    "System.Diagnostics.DebuggerBrowsableAttribute",
+    "System.Diagnostics.DebuggerDisplayAttribute",
+    "System.Diagnostics.DebuggerHiddenAttribute",
+    "System.Diagnostics.DebuggerNonUserCodeAttribute",
+    "System.Diagnostics.DebuggerStepperBoundaryAttribute",
+    "System.Diagnostics.DebuggerStepThroughAttribute",
+    "System.Diagnostics.DebuggerTypeProxyAttribute",
+    "System.Diagnostics.DebuggerVisualizerAttribute",
+    "AtCoder.IsOperatorAttribute"
+  ]
+}
