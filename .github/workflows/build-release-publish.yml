@@ -14,7 +14,6 @@ env:
   NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
   WORKFLOW_VERSION_PROJ: Directory.Build.props
   WORKFLOW_BUILD_SLN: AtCoderLibrary.sln
-  GIT_COMMIT: ${{ github.sha }}
 
 jobs:
   get-version:
@@ -57,16 +56,18 @@ jobs:
           echo "::set-output name=is-new::$IS_NEW"
           echo "::set-output name=is-prerelease::$IS_PRE"
 
-  new-version-only:
+  format:
     runs-on: ubuntu-latest
-    needs: [get-version]
-    if: ${{ needs.get-version.outputs.is-new == 'true' }}
     steps:
-      - run: echo "new-version"
+      - uses: actions/checkout@v2
+      - name: Install dotnet-format
+        run: dotnet tool install --global dotnet-format
+      - name: Format
+        run: dotnet format ${{ env.WORKFLOW_BUILD_SLN }} --check
 
   build:
     runs-on: ubuntu-latest
-    needs: [new-version-only]
+    needs: [get-version]
     steps:
       - uses: actions/checkout@v2
       - name: Setup .NET Core SDK 3.1
@@ -90,12 +91,21 @@ jobs:
       - name: Test
         run: dotnet test ${{ env.WORKFLOW_BUILD_SLN }} --no-restore --verbosity normal -c Release
       - uses: actions/upload-artifact@v1
+        if: ${{ needs.get-version.outputs.is-new == 'true' }}
         with:
           name: dist
           path: bin/Packages/Release
+
+  new-version-only:
+    runs-on: ubuntu-latest
+    needs: [get-version, build, format]
+    if: ${{ needs.get-version.outputs.is-new == 'true' }}
+    steps:
+      - run: echo "new-version"
+
   release:
     runs-on: ubuntu-latest
-    needs: [get-version, build]
+    needs: [get-version, new-version-only]
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v2
@@ -121,7 +131,7 @@ jobs:
           prerelease: ${{ needs.get-version.outputs.is-prerelease }}
   publish:
     runs-on: ubuntu-latest
-    needs: [build]
+    needs: [new-version-only]
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v2

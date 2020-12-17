@@ -1,18 +1,8 @@
 name: test
 
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - ".github/workflows/**"
-      - "**"
-      - "!**.md"
   pull_request:
-    paths:
-      - ".github/workflows/**"
-      - "**"
-      - "!**.md"
+    types: [opened, synchronize]
 
 env:
   DOTNET_CLI_TELEMETRY_OPTOUT: true

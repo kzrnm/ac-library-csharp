@@ -31,7 +31,7 @@ Analyzer for `ac-library-csharp`
 ## Status
 
 [![NuGet version (ac-library-csharp)](https://img.shields.io/nuget/v/ac-library-csharp.svg?style=flat-square)](https://www.nuget.org/packages/ac-library-csharp/)
-![test](https://github.com/naminodarie/ac-library-csharp/workflows/test/badge.svg?branch=master)
+![build](https://github.com/naminodarie/ac-library-csharp/workflows/Build-Release-Publish/badge.svg?branch=master)
 
 ## Getting started
 
