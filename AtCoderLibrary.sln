@@ -8,16 +8,19 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C9D4DB37-1705-454C-B223-B73CB823335D}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		CHANGELOG.md = CHANGELOG.md
 		Directory.Build.props = Directory.Build.props
+		README.ja.md = README.ja.md
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AtCoderLibrary.Test", "Test\AtCoderLibrary.Test\AtCoderLibrary.Test.csproj", "{D0662927-8142-43D2-ABA9-C1977107F0ED}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{573A3DC6-BEB2-4E3A-8EB3-E4CB88F3C8F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtCoderAnalyzer", "Source\AtCoderAnalyzer\AtCoderAnalyzer.csproj", "{1557AA29-1069-43ED-8552-791248C9E31C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AtCoderAnalyzer", "Source\AtCoderAnalyzer\AtCoderAnalyzer.csproj", "{1557AA29-1069-43ED-8552-791248C9E31C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtCoderAnalyzer.Test", "Test\AtCoderAnalyzer.Test\AtCoderAnalyzer.Test.csproj", "{522A1037-5060-4CBA-A4A3-99624FAD732E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AtCoderAnalyzer.Test", "Test\AtCoderAnalyzer.Test\AtCoderAnalyzer.Test.csproj", "{522A1037-5060-4CBA-A4A3-99624FAD732E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
