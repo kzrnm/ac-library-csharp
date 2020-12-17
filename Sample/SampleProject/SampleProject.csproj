@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SourceExpander" Version="2.2.1" />
+    <PackageReference Include="SourceExpander" Version="2.4.2" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(UseLocalReference)' != 'true'">
-    <PackageReference Include="ac-library-csharp" Version="1.0.4" />
-    <PackageReference Include="AtCoderAnalyzer" Version="1.0.4">
+    <PackageReference Include="ac-library-csharp" Version="1.0.5" />
+    <PackageReference Include="AtCoderAnalyzer" Version="1.0.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
