@@ -121,7 +121,7 @@ namespace AtCoderAnalyzer
             return document.WithSyntaxRoot(root);
         }
 
-        private (StructDeclarationSyntax syntax, bool hasMethod) CreateOperatorTypeSyntax(
+        private static (StructDeclarationSyntax syntax, bool hasMethod) CreateOperatorTypeSyntax(
             string operatorTypeName,
             ImmutableArray<ITypeSymbol> constraints,
             ImmutableHashSet<string> usings)
@@ -157,10 +157,10 @@ namespace AtCoderAnalyzer
             return ((StructDeclarationSyntax)simplifyTypeSyntax.Visit(dec), hasMethod);
         }
 
-        private BaseTypeSyntax CreateBaseTypeSyntax(INamedTypeSymbol symbol)
+        private static BaseTypeSyntax CreateBaseTypeSyntax(INamedTypeSymbol symbol)
             => SyntaxFactory.SimpleBaseType(symbol.ToTypeSyntax());
 
-        private PropertyDeclarationSyntax CreatePropertySyntax(IPropertySymbol symbol)
+        private static PropertyDeclarationSyntax CreatePropertySyntax(IPropertySymbol symbol)
         {
             var dec = SyntaxFactory.PropertyDeclaration(symbol.Type.ToTypeSyntax(), symbol.Name)
                 .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword));
@@ -186,7 +186,7 @@ namespace AtCoderAnalyzer
             });
         }
 
-        private MethodDeclarationSyntax CreateMethodSyntax(IMethodSymbol symbol)
+        private static MethodDeclarationSyntax CreateMethodSyntax(IMethodSymbol symbol)
         {
             var dec = SyntaxFactory.MethodDeclaration(symbol.ReturnType.ToTypeSyntax(), symbol.Name)
                     .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
@@ -200,7 +200,7 @@ namespace AtCoderAnalyzer
 
         #region Old
 #pragma warning disable IDE0060
-        private SyntaxNode AC0005_SegtreeOperator(CompilationUnitSyntax root, SeparatedSyntaxList<TypeSyntax> genericArgs)
+        private static SyntaxNode AC0005_SegtreeOperator(CompilationUnitSyntax root, SeparatedSyntaxList<TypeSyntax> genericArgs)
         {
             var operatorTypeName = genericArgs[1].ToString();
             bool hasUsing = false;
@@ -281,7 +281,7 @@ namespace AtCoderAnalyzer
             }
             return SyntaxFactory.SimpleBaseType(type);
         }
-        private SyntaxNode AC0003_StaticModInt(CompilationUnitSyntax root, SeparatedSyntaxList<TypeSyntax> genericArgs)
+        private static SyntaxNode AC0003_StaticModInt(CompilationUnitSyntax root, SeparatedSyntaxList<TypeSyntax> genericArgs)
         {
             var operatorTypeName = genericArgs[0].ToString();
             var hasUsing = root.Usings.Select(sy => sy.Name.ToString()).Any(n => n == "AtCoder");
@@ -313,7 +313,7 @@ namespace AtCoderAnalyzer
                 );
             return root.AddMembers(newMember);
         }
-        private SyntaxNode AC0004_DynamicModInt(CompilationUnitSyntax root, SeparatedSyntaxList<TypeSyntax> genericArgs)
+        private static SyntaxNode AC0004_DynamicModInt(CompilationUnitSyntax root, SeparatedSyntaxList<TypeSyntax> genericArgs)
         {
             var operatorTypeName = genericArgs[0].ToString();
             var hasUsing = root.Usings.Select(sy => sy.Name.ToString()).Any(n => n == "AtCoder");
@@ -324,7 +324,7 @@ namespace AtCoderAnalyzer
                     ));
         }
 
-        private SyntaxNode AC0006_LazySegtreeOperator(CompilationUnitSyntax root, SeparatedSyntaxList<TypeSyntax> genericArgs)
+        private static SyntaxNode AC0006_LazySegtreeOperator(CompilationUnitSyntax root, SeparatedSyntaxList<TypeSyntax> genericArgs)
         {
             var operatorTypeName = genericArgs[2].ToString();
             bool hasUsing = false;
