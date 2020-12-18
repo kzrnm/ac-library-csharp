@@ -37,7 +37,7 @@ namespace AtCoder
     /// <typeparamref name="TCap"/> から <typeparamref name="TCost"/> への型変換を提供する型
     /// </typeparam>
     /// <remarks>
-    /// <para>制約: <typeparamref name="TValue"/> は int, long。</para>
+    /// <para>制約: <typeparamref name="TCap"/>, <typeparamref name="TCost"/> は int, long。</para>
     /// </remarks>
     public class McfGraph<TCap, TCapOp, TCost, TCostOp, TCast>
         where TCap : struct

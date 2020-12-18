@@ -65,7 +65,7 @@ namespace AtCoder
 
 
         /// <summary>
-        /// 長さ <paramref name="n"/> の数列 a　を持つ <see cref="LazySegtree{TValue, TOp}"/> クラスの新しいインスタンスを作ります。初期値は <see cref="TOp.Identity"/> です。
+        /// 長さ <paramref name="n"/> の数列 a　を持つ <see cref="LazySegtree{TValue, F, TOp}"/> クラスの新しいインスタンスを作ります。初期値は <see cref="TOp.Identity"/> です。
         /// </summary>
         /// <remarks>
         /// <para>制約: 0≤<paramref name="n"/>≤10^8</para>
@@ -88,13 +88,13 @@ namespace AtCoder
         }
 
         /// <summary>
-        /// 長さ n=<paramref name="v"/>.Length の数列 a　を持つ <see cref="LazySegtree{TValue, TOp}"/> クラスの新しいインスタンスを作ります。初期値は <paramref name="v"/> です。
+        /// 長さ n=<paramref name="v"/>.Length の数列 a　を持つ <see cref="LazySegtree{TValue, F, TOp}"/> クラスの新しいインスタンスを作ります。初期値は <paramref name="v"/> です。
         /// </summary>
         /// <remarks>
         /// <para>制約: 0≤<paramref name="n"/>≤10^8</para>
         /// <para>計算量: O(<paramref name="n"/>)</para>
         /// </remarks>
-        /// <param name="n">配列の長さ</param>
+        /// <param name="v">初期配列</param>
         public LazySegtree(TValue[] v) : this(v.Length)
         {
             for (int i = 0; i < v.Length; i++) d[size + i] = v[i];
@@ -458,9 +458,8 @@ namespace AtCoder
         }
 
         /// <summary>
-        /// DEBUG_MONOID が定義されいているとき、F が分配法則を満たすかチェックする。
+        /// DEBUG_MONOID が定義されているとき、F が分配法則を満たすかチェックする。
         /// </summary>
-        /// <param name="value"></param>
         [Conditional("DEBUG_MONOID")]
         public static void AssertF(F f, TValue v1, TValue v2)
         {

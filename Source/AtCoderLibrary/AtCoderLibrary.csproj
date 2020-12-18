@@ -10,9 +10,13 @@
     <PackageTags>ac-library-csharp;AtCoder</PackageTags>
     <PackageId>ac-library-csharp</PackageId>
     <Description>C# port of ac-library</Description>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
 
     <NoWarn>$(NoWarn);CA1034</NoWarn>
+
+    <NoWarn>$(NoWarn);CS1574;CS1591;CS1734</NoWarn>
+    
     <PackageLicenseExpression></PackageLicenseExpression>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
@@ -32,7 +36,7 @@
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <OutputItemType>Analyzer</OutputItemType>
     </ProjectReference>
-    <PackageReference Include="SourceExpander.Embedder" Version="2.4.2">
+    <PackageReference Include="SourceExpander.Embedder" Version="2.4.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
