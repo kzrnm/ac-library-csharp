@@ -4,6 +4,7 @@ using AtCoder.Internal;
 
 namespace AtCoder
 {
+    using static MethodImplOptions;
     /// <summary>
     /// コンパイル時に決定する mod を表します。
     /// </summary>
@@ -44,13 +45,21 @@ namespace AtCoder
 
     public readonly struct StaticModIntOperator<T> : IArithmeticOperator<StaticModInt<T>> where T : struct, IStaticMod
     {
+        [MethodImpl(AggressiveInlining)]
         public StaticModInt<T> Add(StaticModInt<T> x, StaticModInt<T> y) => x + y;
+        [MethodImpl(AggressiveInlining)]
         public StaticModInt<T> Subtract(StaticModInt<T> x, StaticModInt<T> y) => x - y;
+        [MethodImpl(AggressiveInlining)]
         public StaticModInt<T> Multiply(StaticModInt<T> x, StaticModInt<T> y) => x * y;
+        [MethodImpl(AggressiveInlining)]
         public StaticModInt<T> Divide(StaticModInt<T> x, StaticModInt<T> y) => x / y;
+        [MethodImpl(AggressiveInlining)]
         public StaticModInt<T> Modulo(StaticModInt<T> x, StaticModInt<T> y) => throw new NotSupportedException();
+        [MethodImpl(AggressiveInlining)]
         public StaticModInt<T> Minus(StaticModInt<T> x) => -x;
+        [MethodImpl(AggressiveInlining)]
         public StaticModInt<T> Increment(StaticModInt<T> x) => ++x;
+        [MethodImpl(AggressiveInlining)]
         public StaticModInt<T> Decrement(StaticModInt<T> x) => --x;
     }
 #pragma warning restore CA1815 // Override equals and operator equals on value types
@@ -93,7 +102,7 @@ namespace AtCoder
         /// <para>定数倍高速化のための関数です。 <paramref name="v"/> に 0 未満または mod 以上の値を入れた場合の挙動は未定義です。</para>
         /// <para>制約: 0≤|<paramref name="v"/>|&lt;mod</para>
         /// </remarks>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public static StaticModInt<T> Raw(int v)
         {
             var u = unchecked((uint)v);
@@ -111,7 +120,7 @@ namespace AtCoder
 
         private StaticModInt(uint v) => _v = v;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         private static uint Round(long v)
         {
             var x = v % op.Mod;
@@ -122,7 +131,7 @@ namespace AtCoder
             return (uint)x;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public static StaticModInt<T> operator ++(StaticModInt<T> value)
         {
             var v = value._v + 1;
@@ -133,7 +142,7 @@ namespace AtCoder
             return new StaticModInt<T>(v);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public static StaticModInt<T> operator --(StaticModInt<T> value)
         {
             var v = value._v;
@@ -144,7 +153,7 @@ namespace AtCoder
             return new StaticModInt<T>(v - 1);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public static StaticModInt<T> operator +(StaticModInt<T> lhs, StaticModInt<T> rhs)
         {
             var v = lhs._v + rhs._v;
@@ -155,7 +164,7 @@ namespace AtCoder
             return new StaticModInt<T>(v);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public static StaticModInt<T> operator -(StaticModInt<T> lhs, StaticModInt<T> rhs)
         {
             unchecked
@@ -169,7 +178,7 @@ namespace AtCoder
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public static StaticModInt<T> operator *(StaticModInt<T> lhs, StaticModInt<T> rhs)
         {
             return new StaticModInt<T>((uint)((ulong)lhs._v * rhs._v % op.Mod));
@@ -223,7 +232,7 @@ namespace AtCoder
         /// <remarks>
         /// <para>制約: gcd(x, mod) = 1</para>
         /// </remarks>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public StaticModInt<T> Inv()
         {
             if (op.IsPrime)
@@ -240,7 +249,7 @@ namespace AtCoder
         }
 
         public override string ToString() => _v.ToString();
-        public override bool Equals(object obj) => obj is StaticModInt<T> && Equals((StaticModInt<T>)obj);
+        public override bool Equals(object obj) => obj is StaticModInt<T> m && Equals(m);
         public bool Equals(StaticModInt<T> other) => _v == other._v;
         public override int GetHashCode() => _v.GetHashCode();
     }
