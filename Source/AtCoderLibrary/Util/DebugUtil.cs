@@ -1,9 +1,12 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 
 namespace AtCoder.Internal
 {
-    internal static class DebugUtil
+
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public static class DebugUtil
     {
         /// <summary>
         /// if <paramref name="condition"/> is false, throw exception.

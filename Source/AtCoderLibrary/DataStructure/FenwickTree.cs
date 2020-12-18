@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using AtCoder.Internal;
 
@@ -24,7 +25,9 @@ namespace AtCoder
         where TOp : struct, IArithmeticOperator<TValue>
     {
         private static readonly TOp op = default;
-        internal readonly TValue[] data;
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public readonly TValue[] data;
 
         public int Length { get; }
 
@@ -76,7 +79,9 @@ namespace AtCoder
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal TValue Sum(int r)
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public TValue Sum(int r)
         {
             TValue s = default;
             for (; r > 0; r -= InternalBit.ExtractLowestSetBit(r))

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using AtCoder.Internal;
@@ -11,10 +12,18 @@ namespace AtCoder
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public class Deque<T> : IEnumerable<T>, IReadOnlyCollection<T>, ICollection<T>
     {
-        internal T[] data;
-        internal int mask;
-        internal int head;
-        internal int tail;
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public T[] data;
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public int mask;
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public int head;
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public int tail;
 
         public Deque() : this(8) { }
         public Deque(int capacity)
@@ -60,7 +69,8 @@ namespace AtCoder
             if (head == tail) Resize();
         }
 
-        private void Resize()
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public void Resize()
         {
             var oldSize = data.Length;
             var newArray = new T[oldSize << 1];
@@ -122,7 +132,7 @@ namespace AtCoder
             int index;
             public readonly int last;
             public T Current => deque.data[index];
-            internal Enumerator(Deque<T> deque, bool isReverse)
+            public Enumerator(Deque<T> deque, bool isReverse)
             {
                 this.deque = deque;
                 this.isReverse = isReverse;

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using AtCoder.Internal;
 
 namespace AtCoder
@@ -6,7 +7,9 @@ namespace AtCoder
     public class DSU
     {
         internal readonly int _n;
-        internal readonly int[] _parentOrSize;
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public readonly int[] _parentOrSize;
 
         /// <summary>
         /// <see cref="DSU"/> クラスの新しいインスタンスを、<paramref name="n"/> 頂点 0 辺のグラフとして初期化します。

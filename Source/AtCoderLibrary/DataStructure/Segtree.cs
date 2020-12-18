@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using AtCoder.Internal;
@@ -47,7 +48,9 @@ namespace AtCoder
 
         internal readonly int log;
         internal readonly int size;
-        internal readonly TValue[] d;
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public readonly TValue[] d;
 
 
         /// <summary>
@@ -87,7 +90,8 @@ namespace AtCoder
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal void Update(int k) => d[k] = op.Operate(d[2 * k], d[2 * k + 1]);
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public void Update(int k) => d[k] = op.Operate(d[2 * k], d[2 * k + 1]);
 
         /// <summary>
         /// a[<paramref name="p"/>] を返します。

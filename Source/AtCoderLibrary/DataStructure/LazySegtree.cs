@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using AtCoder.Internal;
@@ -60,8 +61,10 @@ namespace AtCoder
 
         internal readonly int log;
         internal readonly int size;
-        internal readonly TValue[] d;
-        internal readonly F[] lz;
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public readonly TValue[] d;
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public readonly F[] lz;
 
 
         /// <summary>
@@ -105,10 +108,14 @@ namespace AtCoder
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal void Update(int k) => d[k] = op.Operate(d[2 * k], d[2 * k + 1]);
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public void Update(int k) => d[k] = op.Operate(d[2 * k], d[2 * k + 1]);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal void AllApply(int k, F f)
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public void AllApply(int k, F f)
         {
             AssertF(f, op.Identity, op.Identity);
             AssertMonoid(d[k]);
@@ -118,7 +125,9 @@ namespace AtCoder
             if (k < size) lz[k] = op.Composition(f, lz[k]);
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal void Push(int k)
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public void Push(int k)
         {
             AllApply(2 * k, lz[k]);
             AllApply(2 * k + 1, lz[k]);
