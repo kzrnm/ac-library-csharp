@@ -1,7 +1,4 @@
-﻿using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Text.Json;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using SourceExpander;

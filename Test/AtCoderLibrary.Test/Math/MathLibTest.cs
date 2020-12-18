@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using AtCoder.Internal;
 using FluentAssertions;
 using Xunit;

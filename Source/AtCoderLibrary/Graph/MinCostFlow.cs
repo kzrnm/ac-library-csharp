@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using AtCoder.Internal;
 
 namespace AtCoder
@@ -453,7 +452,7 @@ namespace AtCoder
                 while (c > 0)
                 {
                     int p = (c - 1) >> 1;
-                    if (Compare(_heap[p].cost, cost) < 0)
+                    if (costOp.Compare(cost, _heap[p].cost) < 0)
                     {
                         _heap[c] = _heap[p];
                         c = p;
@@ -477,12 +476,12 @@ namespace AtCoder
                 int c = (p << 1) + 1;
                 while (c < n)
                 {
-                    if (c != n - 1 && Compare(_heap[c + 1].cost, _heap[c].cost) > 0)
+                    if (c != n - 1 && costOp.Compare(_heap[c].cost, _heap[c + 1].cost) > 0)
                     {
                         ++c;
                     }
 
-                    if (Compare(item.cost, _heap[c].cost) < 0)
+                    if (costOp.Compare(_heap[c].cost, item.cost) < 0)
                     {
                         _heap[p] = _heap[c];
                         p = c;
@@ -499,9 +498,6 @@ namespace AtCoder
 
                 return ret;
             }
-
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            private int Compare(TCost x, TCost y) => costOp.Compare(y, x);
         }
     }
 }

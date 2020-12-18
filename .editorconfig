@@ -74,7 +74,8 @@ dotnet_style_qualification_for_method = false:suggestion
 #prefer properties not to be prefaced with this. or Me. in Visual Basic
 dotnet_style_qualification_for_property = false:suggestion
 
-dotnet_diagnostic.IDE0005.severity = warning
+dotnet_diagnostic.CS0105.severity = warning
+dotnet_diagnostic.CS8019.severity = warning
 
 # IDE0062: ƒ[ƒJƒ‹ŠÖ”‚ğ 'static' ‚É‚µ‚Ü‚·
 csharp_prefer_static_local_function = true:silent

@@ -293,7 +293,7 @@ namespace AtCoder
             sa.Should().HaveCount(answer.Length);
             for (int i = 0; i < sa.Length; i++)
             {
-                s.Substring(sa[i]).Should().Be(answer[i]);
+                s[sa[i]..].Should().Be(answer[i]);
             }
         }
         [Fact]
