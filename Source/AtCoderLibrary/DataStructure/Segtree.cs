@@ -76,7 +76,7 @@ namespace AtCoder
         /// <para>制約: 0≤<paramref name="n"/>≤10^8</para>
         /// <para>計算量: O(<paramref name="n"/>)</para>
         /// </remarks>
-        /// <param name="n">配列の長さ</param>
+        /// <param name="v">初期配列</param>
         public Segtree(TValue[] v) : this(v.Length)
         {
             for (int i = 0; i < v.Length; i++) d[size + i] = v[i];

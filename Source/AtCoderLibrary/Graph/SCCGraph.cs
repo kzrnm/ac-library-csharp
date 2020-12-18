@@ -202,7 +202,7 @@ namespace AtCoder
             /// </summary>
             /// <example>
             /// <code>
-            /// for (int i = graph.Starts[v]; i < graph.Starts[v + 1]; i++)
+            /// for (int i = graph.Starts[v]; i &gt; graph.Starts[v + 1]; i++)
             /// {
             ///     int to = graph.Edges[i];
             /// }

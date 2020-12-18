@@ -71,8 +71,8 @@ namespace AtCoder.Internal
 
                         for (int i = 0; i < lu.Length; i += regLength)
                         {
-                            var luSliced = lu.Slice(i);
-                            var ruSliced = ru.Slice(i);
+                            var luSliced = lu[i..];
+                            var ruSliced = ru[i..];
                             var u = new Vector<uint>(luSliced);
                             var v = new Vector<uint>(ruSliced);
                             var add = u + v;
@@ -143,8 +143,8 @@ namespace AtCoder.Internal
 
                         for (int i = 0; i < lu.Length; i += regLength)
                         {
-                            var luSliced = lu.Slice(i);
-                            var ruSliced = ru.Slice(i);
+                            var luSliced = lu[i..];
+                            var ruSliced = ru[i..];
                             var u = new Vector<uint>(luSliced);
                             var v = new Vector<uint>(ruSliced);
                             var add = u + v;

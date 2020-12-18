@@ -4,6 +4,7 @@ using AtCoder.Internal;
 
 namespace AtCoder
 {
+    using static MethodImplOptions;
     /// <summary>
     /// 実行時に決定する mod の ID を表します。
     /// </summary>
@@ -25,13 +26,21 @@ namespace AtCoder
 
     public readonly struct DynamicModIntOperator<T> : IArithmeticOperator<DynamicModInt<T>> where T : struct, IDynamicModID
     {
+        [MethodImpl(AggressiveInlining)]
         public DynamicModInt<T> Add(DynamicModInt<T> x, DynamicModInt<T> y) => x + y;
+        [MethodImpl(AggressiveInlining)]
         public DynamicModInt<T> Subtract(DynamicModInt<T> x, DynamicModInt<T> y) => x - y;
+        [MethodImpl(AggressiveInlining)]
         public DynamicModInt<T> Multiply(DynamicModInt<T> x, DynamicModInt<T> y) => x * y;
+        [MethodImpl(AggressiveInlining)]
         public DynamicModInt<T> Divide(DynamicModInt<T> x, DynamicModInt<T> y) => x / y;
+        [MethodImpl(AggressiveInlining)]
         public DynamicModInt<T> Modulo(DynamicModInt<T> x, DynamicModInt<T> y) => throw new NotSupportedException();
+        [MethodImpl(AggressiveInlining)]
         public DynamicModInt<T> Minus(DynamicModInt<T> x) => -x;
+        [MethodImpl(AggressiveInlining)]
         public DynamicModInt<T> Increment(DynamicModInt<T> x) => ++x;
+        [MethodImpl(AggressiveInlining)]
         public DynamicModInt<T> Decrement(DynamicModInt<T> x) => --x;
     }
 #pragma warning restore CA1815 // Override equals and operator equals on value types
@@ -86,7 +95,7 @@ namespace AtCoder
         /// <para>定数倍高速化のための関数です。 <paramref name="v"/> に 0 未満または mod 以上の値を入れた場合の挙動は未定義です。</para>
         /// <para>制約: 0≤|<paramref name="v"/>|&lt;mod</para>
         /// </remarks>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public static DynamicModInt<T> Raw(int v)
         {
             var u = unchecked((uint)v);
@@ -106,7 +115,7 @@ namespace AtCoder
 
         private DynamicModInt(uint v) => _v = v;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         private static uint Round(long v)
         {
             DebugUtil.Assert(bt != null, $"使用前に {nameof(DynamicModInt<T>)}<{nameof(T)}>.{nameof(Mod)} プロパティに mod の値を設定してください。");
@@ -118,7 +127,7 @@ namespace AtCoder
             return (uint)x;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public static DynamicModInt<T> operator ++(DynamicModInt<T> value)
         {
             var v = value._v + 1;
@@ -129,7 +138,7 @@ namespace AtCoder
             return new DynamicModInt<T>(v);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public static DynamicModInt<T> operator --(DynamicModInt<T> value)
         {
             var v = value._v;
@@ -140,7 +149,7 @@ namespace AtCoder
             return new DynamicModInt<T>(v - 1);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public static DynamicModInt<T> operator +(DynamicModInt<T> lhs, DynamicModInt<T> rhs)
         {
             var v = lhs._v + rhs._v;
@@ -151,7 +160,7 @@ namespace AtCoder
             return new DynamicModInt<T>(v);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public static DynamicModInt<T> operator -(DynamicModInt<T> lhs, DynamicModInt<T> rhs)
         {
             unchecked
@@ -165,7 +174,7 @@ namespace AtCoder
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public static DynamicModInt<T> operator *(DynamicModInt<T> lhs, DynamicModInt<T> rhs)
         {
             uint z = bt.Mul(lhs._v, rhs._v);
@@ -220,7 +229,7 @@ namespace AtCoder
         /// <remarks>
         /// <para>制約: gcd(x, mod) = 1</para>
         /// </remarks>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public DynamicModInt<T> Inv()
         {
             var (g, x) = Internal.InternalMath.InvGCD(_v, bt.Mod);
@@ -229,7 +238,7 @@ namespace AtCoder
         }
 
         public override string ToString() => _v.ToString();
-        public override bool Equals(object obj) => obj is DynamicModInt<T> && Equals((DynamicModInt<T>)obj);
+        public override bool Equals(object obj) => obj is DynamicModInt<T> m && Equals(m);
         public bool Equals(DynamicModInt<T> other) => Value == other.Value;
         public override int GetHashCode() => _v.GetHashCode();
     }
