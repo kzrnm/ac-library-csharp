@@ -675,5 +675,50 @@ struct Op : IAny<(int, long)>
                 VerifyCS.Diagnostic().WithSpan(11, 5, 11, 29).WithArguments("Op"),
                fixedSource);
         }
+
+        [Fact]
+        public async Task AnyDefinedMethod()
+        {
+            var source = @"
+using AtCoder;
+[IsOperator]
+public interface IAny<T> {
+    T Prop1 { set; get; }
+    T Prop2 { get; set; }
+}
+class Program
+{
+    static void M<T, TOp>() where TOp : struct, IAny<T> {}
+    static void Run()
+    {
+        M<(int n, long m), Op>();
+    }
+}
+";
+            var fixedSource = @"
+using AtCoder;
+[IsOperator]
+public interface IAny<T> {
+    T Prop1 { set; get; }
+    T Prop2 { get; set; }
+}
+class Program
+{
+    static void M<T, TOp>() where TOp : struct, IAny<T> {}
+    static void Run()
+    {
+        M<(int n, long m), Op>();
+    }
+}
+
+struct Op : IAny<(int n, long m)>
+{
+    public (int n, long m) Prop1 { set; get; }
+    public (int n, long m) Prop2 { set; get; }
+}";
+            await VerifyCS.VerifyCodeFixAsync(source,
+                VerifyCS.Diagnostic().WithSpan(13, 9, 13, 31).WithArguments("Op"),
+               fixedSource);
+        }
     }
 }

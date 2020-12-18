@@ -40,13 +40,25 @@ namespace AtCoderAnalyzer
 
             var isOperatorAttribute = semanticModel.Compilation.GetTypeByMetadataName(AtCoder_IsOperatorAttribute);
 
-            if (semanticModel.GetSymbolInfo(genericNode, context.CancellationToken).Symbol
-                is not INamedTypeSymbol symbol)
-                return;
+
+            ImmutableArray<ITypeParameterSymbol> originalTypes;
+            ImmutableArray<ITypeSymbol> writtenTypes;
+            switch (semanticModel.GetSymbolInfo(genericNode, context.CancellationToken).Symbol)
+            {
+                case INamedTypeSymbol symbol:
+                    originalTypes = symbol.TypeParameters;
+                    writtenTypes = symbol.TypeArguments;
+                    break;
+                case IMethodSymbol symbol:
+                    originalTypes = symbol.TypeParameters;
+                    writtenTypes = symbol.TypeArguments;
+                    break;
+                default:
+                    return;
+            }
+
 
             var writtenTypeSyntaxes = genericNode.TypeArgumentList.Arguments;
-            var originalTypes = symbol.TypeParameters;
-            var writtenTypes = symbol.TypeArguments;
 
             if (originalTypes.Length != writtenTypes.Length)
                 return;

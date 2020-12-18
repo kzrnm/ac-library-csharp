@@ -58,14 +58,23 @@ namespace AtCoderAnalyzer
             if (genericNode.TypeArgumentList.Arguments.Any(sy => sy.IsKind(SyntaxKind.OmittedTypeArgument)))
                 return;
 
-            if (semanticModel.GetSymbolInfo(genericNode, context.CancellationToken).Symbol
-                is not INamedTypeSymbol symbol)
-                return;
+            ImmutableArray<ITypeParameterSymbol> originalTypes;
+            ImmutableArray<ITypeSymbol> writtenTypes;
+            switch (semanticModel.GetSymbolInfo(genericNode, context.CancellationToken).Symbol)
+            {
+                case INamedTypeSymbol symbol:
+                    originalTypes = symbol.TypeParameters;
+                    writtenTypes = symbol.TypeArguments;
+                    break;
+                case IMethodSymbol symbol:
+                    originalTypes = symbol.TypeParameters;
+                    writtenTypes = symbol.TypeArguments;
+                    break;
+                default:
+                    return;
+            }
 
-            var originalTypes = symbol.TypeParameters;
-            var writtenTypes = symbol.TypeArguments;
-
-            if (originalTypes.Length != writtenTypes.Length)
+            if (originalTypes.Length == 0 || originalTypes.Length != writtenTypes.Length)
                 return;
 
             var notDefinedTypes = new List<string>();

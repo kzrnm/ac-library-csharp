@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Split files
 - Use EditorBrowsable(EditorBrowsableState.Never) instead of private or internal
 
+### Changed
+- Raise AC0008 on Method
+
 ## [1.0.5] - 2020-12-18
 ### Added
 - SourceLink
