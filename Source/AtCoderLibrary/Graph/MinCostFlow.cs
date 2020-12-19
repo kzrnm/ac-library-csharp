@@ -210,7 +210,7 @@ namespace AtCoder
         /// </item>
         /// </list>
         /// 計算量: F を流量、m を追加した辺の本数として 
-        /// O(F(n + m) log n)
+        /// O(F(n + m) log (n + m))
         /// </remarks>
         public List<(TCap cap, TCost cost)> Slope(int s, int t)
         {
@@ -264,7 +264,7 @@ namespace AtCoder
         /// </item>
         /// </list>
         /// 計算量: F を流量、m を追加した辺の本数として 
-        /// O(F(n + m) log n)
+        /// O(F(n + m) log (n + m))
         /// </remarks>
         public List<(TCap cap, TCost cost)> Slope(int s, int t, TCap flowLimit)
         {
