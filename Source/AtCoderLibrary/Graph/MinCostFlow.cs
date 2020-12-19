@@ -59,12 +59,6 @@ namespace AtCoder
         public McfGraph(int n)
         {
             _n = n;
-            _g = new List<EdgeInternal>[n];
-            for (int i = 0; i < n; i++)
-            {
-                _g[i] = new List<EdgeInternal>();
-            }
-            _pos = new List<(int first, int second)>();
         }
 
         /// <summary>
@@ -90,16 +84,8 @@ namespace AtCoder
             DebugUtil.Assert(0 <= to && to < _n);
             DebugUtil.Assert(capOp.LessThanOrEqual(default, cap));
             DebugUtil.Assert(costOp.LessThanOrEqual(default, cost));
-            int m = _pos.Count;
-            _pos.Add((from, _g[from].Count));
-
-            int fromId = _g[from].Count;
-            int toId = _g[to].Count;
-
-            if (from == to) toId++;
-
-            _g[from].Add(new EdgeInternal(to, toId, cap, cost));
-            _g[to].Add(new EdgeInternal(from, fromId, default, costOp.Minus(cost)));
+            int m = _edges.Count;
+            _edges.Add(new Edge(from, to, cap, default, cost));
             return m;
         }
 
@@ -113,11 +99,9 @@ namespace AtCoder
         /// </remarks>
         public Edge GetEdge(int i)
         {
-            int m = _pos.Count;
+            int m = _edges.Count;
             DebugUtil.Assert(0 <= i && i < m);
-            var _e = _g[_pos[i].first][_pos[i].second];
-            var _re = _g[_e.To][_e.Rev];
-            return new Edge(_pos[i].first, _e.To, capOp.Add(_e.Cap, _re.Cap), _re.Cap, _e.Cost);
+            return _edges[i];
         }
 
         /// <summary>
@@ -127,16 +111,7 @@ namespace AtCoder
         /// <para>辺の順番はadd_edgeで追加された順番と同一。</para>
         /// <para>計算量: m を追加された辺数として O(m)</para>
         /// </remarks>
-        public List<Edge> Edges()
-        {
-            int m = _pos.Count;
-            var result = new List<Edge>();
-            for (int i = 0; i < m; i++)
-            {
-                result.Add(GetEdge(i));
-            }
-            return result;
-        }
+        public IReadOnlyList<Edge> Edges() => _edges;
 
         /// <summary>
         /// 頂点 <paramref name="s"/> から <paramref name="t"/> へ流せる限り流し、
@@ -271,51 +246,105 @@ namespace AtCoder
             DebugUtil.Assert(0 <= s && s < _n);
             DebugUtil.Assert(0 <= t && t < _n);
             DebugUtil.Assert(s != t);
+
+
+            int m = _edges.Count;
+            var edgeIdx = new int[m];
+
+            CSR<EdgeInternal> g;
+            {
+                var degree = new int[_n];
+                var redgeIdx = new int[m];
+                var elist = new List<(int from, EdgeInternal edge)>(2 * m);
+
+                for (int i = 0; i < m; i++)
+                {
+                    var e = _edges[i];
+                    edgeIdx[i] = degree[e.From]++;
+                    redgeIdx[i] = degree[e.To]++;
+                    elist.Add((e.From, new EdgeInternal(e.To, -1, capOp.Subtract(e.Cap, e.Flow), e.Cost)));
+                    elist.Add((e.To, new EdgeInternal(e.From, -1, e.Flow, costOp.Minus(e.Cost))));
+                }
+                g = new CSR<EdgeInternal>(_n, elist);
+                for (int i = 0; i < m; i++)
+                {
+                    var e = _edges[i];
+                    edgeIdx[i] += g.Start[e.From];
+                    redgeIdx[i] += g.Start[e.To];
+                    g.EList[edgeIdx[i]].Rev = redgeIdx[i];
+                    g.EList[redgeIdx[i]].Rev = edgeIdx[i];
+                }
+            }
+
+            var result = Slope(g, s, t, flowLimit);
+
+            for (int i = 0; i < m; i++)
+            {
+                var e = g.EList[edgeIdx[i]];
+                _edges[i].Flow = capOp.Subtract(_edges[i].Cap, e.Cap);
+            }
+
+            return result;
+        }
+
+
+        private List<(TCap cap, TCost cost)> Slope(CSR<EdgeInternal> g, int s, int t, TCap flowLimit)
+        {
             // variants (C = maxcost):
             // -(n-1)C <= dual[s] <= dual[i] <= dual[t] = 0
-            // reduced cost (= e.cost + dual[e.from] - dual[e.to]) >= 0 for all edge
+            // reduced cost (= e.cost + dual[e.from] - dual[e.To]) >= 0 for all edge
             var dual = new TCost[_n];
             var dist = new TCost[_n];
-            var pv = new int[_n];
-            var pe = new int[_n];
-            var vis = new bool[_n];
+            var prevE = new int[_n];
+
 
             bool DualRef()
             {
                 dist.AsSpan().Fill(costOp.MaxValue);
-                pv.AsSpan().Fill(-1);
-                pe.AsSpan().Fill(-1);
-                vis.AsSpan().Fill(false);
+                var vis = new bool[_n];
 
+                var queMin = new Stack<int>();
                 var que = new PriorityQueueForMcf();
+
                 dist[s] = default;
-                que.Enqueue(default, s);
-                while (que.Count > 0)
+                queMin.Push(s);
+                while (queMin.Count > 0 || que.Count > 0)
                 {
-                    int v = que.Dequeue().to;
+                    int v;
+                    if (queMin.Count > 0)
+                        v = queMin.Pop();
+                    else
+                        v = que.Dequeue().to;
                     if (vis[v]) continue;
                     vis[v] = true;
                     if (v == t) break;
                     // dist[v] = shortest(s, v) + dual[s] - dual[v]
                     // dist[v] >= 0 (all reduced cost are positive)
                     // dist[v] <= (n-1)C
-                    for (int i = 0; i < _g[v].Count; i++)
+                    var dualV = dual[v];
+                    var distV = dist[v];
+
+                    var gStartCur = g.Start[v];
+                    var gStartNext = g.Start[v + 1];
+                    for (int i = gStartCur; i < gStartNext; i++)
                     {
-                        var e = _g[v][i];
-                        if (vis[e.To] || capOp.Equals(e.Cap, default)) continue;
-                        // |-dual[e.to] + dual[v]| <= (n-1)C
+                        var e = g.EList[i];
+                        if (EqualityComparer<TCap>.Default.Equals(e.Cap, default)) continue;
+                        // |-dual[e.To] + dual[v]| <= (n-1)C
                         // cost <= C - -(n-1)C + 0 = nC
-                        TCost cost = costOp.Add(costOp.Subtract(e.Cost, dual[e.To]), dual[v]);
-                        if (costOp.GreaterThan(costOp.Subtract(dist[e.To], dist[v]), cost))
+                        var cost = costOp.Add(costOp.Subtract(e.Cost, dual[e.To]), dualV);
+                        if (costOp.GreaterThan(costOp.Subtract(dist[e.To], distV), cost))
                         {
-                            dist[e.To] = costOp.Add(dist[v], cost);
-                            pv[e.To] = v;
-                            pe[e.To] = i;
-                            que.Enqueue(dist[e.To], e.To);
+                            var distTo = costOp.Add(distV, cost);
+                            dist[e.To] = distTo;
+                            prevE[e.To] = e.Rev;
+                            if (EqualityComparer<TCost>.Default.Equals(distTo, distV))
+                                queMin.Push(e.To);
+                            else
+                                que.Enqueue(distTo, e.To);
                         }
                     }
                 }
-
                 if (!vis[t])
                 {
                     return false;
@@ -325,42 +354,42 @@ namespace AtCoder
                 {
                     if (!vis[v]) continue;
                     // dual[v] = dual[v] - dist[t] + dist[v]
-                    //         = dual[v] - (shortest(s, t) + dual[s] - dual[t]) + (shortest(s, v) + dual[s] - dual[v])
-                    //         = - shortest(s, t) + dual[t] + shortest(s, v)
-                    //         = shortest(s, v) - shortest(s, t) >= 0 - (n-1)C
+                    //         = dual[v] - (shortest(s, t) + dual[s] - dual[t]) +
+                    //         (shortest(s, v) + dual[s] - dual[v]) = - shortest(s,
+                    //         t) + dual[t] + shortest(s, v) = shortest(s, v) -
+                    //         shortest(s, t) >= 0 - (n-1)C
                     dual[v] = costOp.Subtract(dual[v], costOp.Subtract(dist[t], dist[v]));
                 }
-
                 return true;
             }
 
+
             TCap flow = default;
             TCost cost = default;
-            TCost prevCostPerFlow = costOp.Decrement(default); //-1
-            var result = new List<(TCap cap, TCost cost)>
-            {
-                (flow, cost)
-            };
+            TCost prevCostPerFlow = costOp.Decrement(default);
+            var result = new List<(TCap cap, TCost cost)> { (flow, cost) };
             while (capOp.LessThan(flow, flowLimit))
             {
                 if (!DualRef()) break;
-                TCap c = capOp.Subtract(flowLimit, flow);
-                for (int v = t; v != s; v = pv[v])
+                var c = capOp.Subtract(flowLimit, flow);
+                for (int v = t; v != s; v = g.EList[prevE[v]].To)
                 {
-                    if (capOp.LessThan(_g[pv[v]][pe[v]].Cap, c))
+                    var c2 = g.EList[g.EList[prevE[v]].Rev].Cap;
+                    if (capOp.LessThan(c2, c))
                     {
-                        c = _g[pv[v]][pe[v]].Cap;
+                        c = c2;
                     }
                 }
-                for (int v = t; v != s; v = pv[v])
+                for (int v = t; v != s; v = g.EList[prevE[v]].To)
                 {
-                    _g[pv[v]][pe[v]].Cap = capOp.Subtract(_g[pv[v]][pe[v]].Cap, c);
-                    _g[v][_g[pv[v]][pe[v]].Rev].Cap = capOp.Add(_g[v][_g[pv[v]][pe[v]].Rev].Cap, c);
+                    var e = g.EList[prevE[v]];
+                    e.Cap = capOp.Add(e.Cap, c);
+                    g.EList[e.Rev].Cap = capOp.Subtract(g.EList[e.Rev].Cap, c);
                 }
-                TCost d = costOp.Minus(dual[s]);
+                var d = costOp.Minus(dual[s]);
                 flow = capOp.Add(flow, c);
                 cost = costOp.Add(cost, costOp.Multiply(cast.Cast(c), d));
-                if (costOp.Equals(prevCostPerFlow, d))
+                if (EqualityComparer<TCost>.Default.Equals(prevCostPerFlow, d))
                 {
                     result.RemoveAt(result.Count - 1);
                 }
@@ -373,7 +402,7 @@ namespace AtCoder
         /// <summary>
         /// フローを流すグラフの各辺に対応した情報を持ちます。
         /// </summary>
-        public struct Edge : IEquatable<Edge>
+        public class Edge : IEquatable<Edge>
         {
             /// <summary>フローが流出する頂点。</summary>
             public int From { get; set; }
@@ -422,8 +451,7 @@ namespace AtCoder
         };
 
         private readonly int _n;
-        private readonly List<(int first, int second)> _pos;
-        private readonly List<EdgeInternal>[] _g;
+        private readonly List<Edge> _edges = new List<Edge>();
 
         private class PriorityQueueForMcf
         {
@@ -452,7 +480,7 @@ namespace AtCoder
                 while (c > 0)
                 {
                     int p = (c - 1) >> 1;
-                    if (costOp.Compare(cost, _heap[p].cost) < 0)
+                    if (costOp.LessThan(cost, _heap[p].cost))
                     {
                         _heap[c] = _heap[p];
                         c = p;
@@ -476,12 +504,12 @@ namespace AtCoder
                 int c = (p << 1) + 1;
                 while (c < n)
                 {
-                    if (c != n - 1 && costOp.Compare(_heap[c].cost, _heap[c + 1].cost) > 0)
+                    if (c != n - 1 && costOp.GreaterThan(_heap[c].cost, _heap[c + 1].cost))
                     {
                         ++c;
                     }
 
-                    if (costOp.Compare(_heap[c].cost, item.cost) < 0)
+                    if (costOp.LessThan(_heap[c].cost, item.cost))
                     {
                         _heap[p] = _heap[c];
                         p = c;
