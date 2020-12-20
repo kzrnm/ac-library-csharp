@@ -1,7 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Composition;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using AtCoderAnalyzer.Diagnostics;
 using AtCoderAnalyzer.Helpers;
@@ -146,22 +145,32 @@ namespace AtCoderAnalyzer
             var baseTypes = ImmutableArray.CreateBuilder<BaseTypeSyntax>(constraints.Length);
             var members = ImmutableList.CreateBuilder<MemberDeclarationSyntax>();
 
+            var added = ImmutableHashSet.CreateBuilder<INamedTypeSymbol>(SymbolEqualityComparer.Default);
+
             foreach (var constraint in constraints)
             {
                 if (constraint is not INamedTypeSymbol namedType)
                     continue;
                 baseTypes.Add(CreateBaseTypeSyntax(namedType));
 
-                foreach (var member in namedType.GetMembers())
+                foreach (var baseType in namedType.AllInterfaces.Append(namedType))
                 {
-                    if (member is IPropertySymbol property)
+                    if (!added.Add(baseType))
+                        continue;
+
+                    foreach (var member in baseType.GetMembers())
                     {
-                        members.Add(CreatePropertySyntax(property));
-                    }
-                    else if (member is IMethodSymbol method && method.MethodKind == MethodKind.Ordinary)
-                    {
-                        members.Add(CreateMethodSyntax(method));
-                        hasMethod = true;
+                        if (!member.IsAbstract)
+                            continue;
+                        if (member is IPropertySymbol property)
+                        {
+                            members.Add(CreatePropertySyntax(property));
+                        }
+                        else if (member is IMethodSymbol method && method.MethodKind == MethodKind.Ordinary)
+                        {
+                            members.Add(CreateMethodSyntax(method));
+                            hasMethod = true;
+                        }
                     }
                 }
             }
@@ -208,225 +217,5 @@ namespace AtCoderAnalyzer
                     .WithSemicolonToken(SyntaxHelpers.SemicolonToken);
             return dec;
         }
-        public int Prop { get; set; }
-
-        #region Old
-#pragma warning disable IDE0060
-        private static SyntaxNode AC0005_SegtreeOperator(CompilationUnitSyntax root, SeparatedSyntaxList<TypeSyntax> genericArgs)
-        {
-            var operatorTypeName = genericArgs[1].ToString();
-            bool hasUsing = false;
-            bool hasSystem_Runtime_CompilerServices = false;
-
-            foreach (var sy in root.Usings)
-            {
-                var name = sy.Name.ToString();
-                if (name == "AtCoder")
-                    hasUsing = true;
-                if (name == System_Runtime_CompilerServices)
-                    hasSystem_Runtime_CompilerServices = true;
-            }
-            if (!hasSystem_Runtime_CompilerServices)
-                root = SyntaxHelpers.AddSystem_Runtime_CompilerServicesSyntax(root);
-
-            var segType = genericArgs[0];
-            var baseType = ParseAtCoder(hasUsing, "ISegtreeOperator", segType);
-            var newMember =
-                SyntaxFactory.StructDeclaration(operatorTypeName)
-                .AddBaseListTypes(baseType)
-                .AddMembers(
-                    SyntaxFactory.PropertyDeclaration(segType, "Identity")
-                    .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
-                    .WithExpressionBody(
-                        SyntaxFactory.ArrowExpressionClause(
-                            SyntaxFactory.LiteralExpression(SyntaxKind.DefaultLiteralExpression))
-                        )
-                    .WithSemicolonToken(SyntaxHelpers.SemicolonToken),
-                    SyntaxFactory.MethodDeclaration(segType, "Operate")
-                    .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
-                    .WithParameterList(
-                        SyntaxFactory.ParameterList(
-                            SyntaxFactory.SeparatedList(new[] {
-                                SyntaxFactory.Parameter(SyntaxFactory.Identifier("x")).WithType(segType),
-                                SyntaxFactory.Parameter(SyntaxFactory.Identifier("y")).WithType(segType),
-                            })
-                            ))
-                    .AddAttributeLists(SyntaxHelpers.AggressiveInliningAttributeList)
-                    .WithBody(SyntaxFactory.Block(
-                        SyntaxFactory.ReturnStatement(
-                            SyntaxFactory.LiteralExpression(SyntaxKind.DefaultLiteralExpression))
-                            )
-                        )
-                );
-            return root.AddMembers(newMember);
-        }
-        private async Task<Document> CreateOperatorTypeOld(
-            Document document,
-            CompilationUnitSyntax root,
-            string diagnosticId,
-            SeparatedSyntaxList<TypeSyntax> genericArgs,
-            CancellationToken cancellationToken)
-            => document.WithSyntaxRoot(diagnosticId switch
-            {
-                "AC0003" => AC0003_StaticModInt(root, genericArgs),
-                "AC0004" => AC0004_DynamicModInt(root, genericArgs),
-                "AC0005" => AC0005_SegtreeOperator(root, genericArgs),
-                "AC0006" => AC0006_LazySegtreeOperator(root, genericArgs),
-                _ => root,
-            });
-        private static SimpleBaseTypeSyntax ParseAtCoder(bool hasUsing, string text, params TypeSyntax[] genericTypes)
-        {
-            SimpleNameSyntax type;
-            if (genericTypes.Length == 0)
-            {
-                type = SyntaxFactory.ParseName(text) as SimpleNameSyntax;
-            }
-            else
-            {
-                type = SyntaxFactory.GenericName(text).AddTypeArgumentListArguments(genericTypes);
-            }
-
-            if (!hasUsing)
-            {
-                return SyntaxFactory.SimpleBaseType(
-                    SyntaxFactory.QualifiedName(SyntaxFactory.IdentifierName("AtCoder"), type));
-            }
-            return SyntaxFactory.SimpleBaseType(type);
-        }
-        private static SyntaxNode AC0003_StaticModInt(CompilationUnitSyntax root, SeparatedSyntaxList<TypeSyntax> genericArgs)
-        {
-            var operatorTypeName = genericArgs[0].ToString();
-            var hasUsing = root.Usings.Select(sy => sy.Name.ToString()).Any(n => n == "AtCoder");
-            var newMember =
-                SyntaxFactory.StructDeclaration(operatorTypeName)
-                .AddBaseListTypes(
-                    ParseAtCoder(hasUsing, "IStaticMod")
-                    )
-                .AddMembers(
-                    SyntaxFactory.PropertyDeclaration(
-                        SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.UIntKeyword)),
-                        "Mod"
-                    ).AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
-                    .WithExpressionBody(
-                        SyntaxFactory.ArrowExpressionClause(
-                            SyntaxFactory.LiteralExpression(SyntaxKind.NumericLiteralExpression,
-                            SyntaxFactory.Literal(1000000007)))
-                        )
-                    .WithSemicolonToken(SyntaxHelpers.SemicolonToken),
-                    SyntaxFactory.PropertyDeclaration(
-                        SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.BoolKeyword)),
-                        "IsPrime"
-                    ).AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
-                    .WithExpressionBody(
-                        SyntaxFactory.ArrowExpressionClause(
-                            SyntaxFactory.LiteralExpression(SyntaxKind.TrueLiteralExpression))
-                        )
-                    .WithSemicolonToken(SyntaxHelpers.SemicolonToken)
-                );
-            return root.AddMembers(newMember);
-        }
-        private static SyntaxNode AC0004_DynamicModInt(CompilationUnitSyntax root, SeparatedSyntaxList<TypeSyntax> genericArgs)
-        {
-            var operatorTypeName = genericArgs[0].ToString();
-            var hasUsing = root.Usings.Select(sy => sy.Name.ToString()).Any(n => n == "AtCoder");
-            return root.AddMembers(
-                SyntaxFactory.StructDeclaration(operatorTypeName)
-                .AddBaseListTypes(
-                    ParseAtCoder(hasUsing, "IDynamicModID")
-                    ));
-        }
-
-        private static SyntaxNode AC0006_LazySegtreeOperator(CompilationUnitSyntax root, SeparatedSyntaxList<TypeSyntax> genericArgs)
-        {
-            var operatorTypeName = genericArgs[2].ToString();
-            bool hasUsing = false;
-            bool hasSystem_Runtime_CompilerServices = false;
-
-            foreach (var sy in root.Usings)
-            {
-                var name = sy.Name.ToString();
-                if (name == "AtCoder")
-                    hasUsing = true;
-                if (name == System_Runtime_CompilerServices)
-                    hasSystem_Runtime_CompilerServices = true;
-            }
-            if (!hasSystem_Runtime_CompilerServices)
-                root = SyntaxHelpers.AddSystem_Runtime_CompilerServicesSyntax(root);
-
-            var segType = genericArgs[0];
-            var funType = genericArgs[1];
-            var baseType = ParseAtCoder(hasUsing, "ILazySegtreeOperator", segType, funType);
-
-            var newMember =
-                SyntaxFactory.StructDeclaration(operatorTypeName)
-                .AddBaseListTypes(baseType)
-                .AddMembers(
-                    SyntaxFactory.PropertyDeclaration(segType, "Identity")
-                    .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
-                    .WithExpressionBody(
-                        SyntaxFactory.ArrowExpressionClause(
-                            SyntaxFactory.LiteralExpression(SyntaxKind.DefaultLiteralExpression))
-                        )
-                    .WithSemicolonToken(SyntaxHelpers.SemicolonToken),
-                    SyntaxFactory.PropertyDeclaration(funType, "FIdentity")
-                    .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
-                    .WithExpressionBody(
-                        SyntaxFactory.ArrowExpressionClause(
-                            SyntaxFactory.LiteralExpression(SyntaxKind.DefaultLiteralExpression))
-                        )
-                    .WithSemicolonToken(SyntaxHelpers.SemicolonToken),
-
-                    SyntaxFactory.MethodDeclaration(funType, "Composition")
-                    .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
-                    .WithParameterList(
-                        SyntaxFactory.ParameterList(
-                            SyntaxFactory.SeparatedList(new[] {
-                                SyntaxFactory.Parameter(SyntaxFactory.Identifier("f")).WithType(funType),
-                                SyntaxFactory.Parameter(SyntaxFactory.Identifier("g")).WithType(funType),
-                            })
-                            ))
-                    .AddAttributeLists(SyntaxHelpers.AggressiveInliningAttributeList)
-                    .WithBody(SyntaxFactory.Block(
-                        SyntaxFactory.ReturnStatement(
-                            SyntaxFactory.LiteralExpression(SyntaxKind.DefaultLiteralExpression))
-                            )
-                        ),
-
-                    SyntaxFactory.MethodDeclaration(segType, "Mapping")
-                    .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
-                    .WithParameterList(
-                        SyntaxFactory.ParameterList(
-                            SyntaxFactory.SeparatedList(new[] {
-                                SyntaxFactory.Parameter(SyntaxFactory.Identifier("f")).WithType(funType),
-                                SyntaxFactory.Parameter(SyntaxFactory.Identifier("x")).WithType(segType),
-                            })
-                            ))
-                    .AddAttributeLists(SyntaxHelpers.AggressiveInliningAttributeList)
-                    .WithBody(SyntaxFactory.Block(
-                        SyntaxFactory.ReturnStatement(
-                            SyntaxFactory.LiteralExpression(SyntaxKind.DefaultLiteralExpression))
-                            )
-                        ),
-
-                    SyntaxFactory.MethodDeclaration(segType, "Operate")
-                    .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
-                    .WithParameterList(
-                        SyntaxFactory.ParameterList(
-                            SyntaxFactory.SeparatedList(new[] {
-                                SyntaxFactory.Parameter(SyntaxFactory.Identifier("x")).WithType(segType),
-                                SyntaxFactory.Parameter(SyntaxFactory.Identifier("y")).WithType(segType),
-                            })
-                            ))
-                    .AddAttributeLists(SyntaxHelpers.AggressiveInliningAttributeList)
-                    .WithBody(SyntaxFactory.Block(
-                        SyntaxFactory.ReturnStatement(
-                            SyntaxFactory.LiteralExpression(SyntaxKind.DefaultLiteralExpression))
-                            )
-                        )
-                );
-            return root.AddMembers(newMember);
-        }
-#pragma warning restore IDE0060
-        #endregion Old
     }
 }
