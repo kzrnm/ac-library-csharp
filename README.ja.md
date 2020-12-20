@@ -22,7 +22,7 @@ README languages: [Japanese](README.ja.md)
 
 ### ac-library-csharp
 
-[AtCoder Library](https://github.com/atcoder/ac-library/) の C# 移植です。
+[AtCoder Library](https://github.com/atcoder/ac-library/tree/v1.3) の C# 移植です。
 
 ### AtCoderAnalyzer
 
