@@ -36,10 +36,6 @@ namespace AtCoder
         public bool LessThanOrEqual(ulong x, ulong y) => x <= y;
         [MethodImpl(AggressiveInlining)]
         public int Compare(ulong x, ulong y) => x.CompareTo(y);
-        [MethodImpl(AggressiveInlining)]
-        public bool Equals(ulong x, ulong y) => x == y;
-        [MethodImpl(AggressiveInlining)]
-        public int GetHashCode(ulong obj) => obj.GetHashCode();
     }
 #pragma warning restore CA1815 // Override equals and operator equals on value types
 }

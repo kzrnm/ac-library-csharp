@@ -35,10 +35,6 @@ namespace AtCoder
         public bool LessThanOrEqual(double x, double y) => x <= y;
         [MethodImpl(AggressiveInlining)]
         public int Compare(double x, double y) => x.CompareTo(y);
-        [MethodImpl(AggressiveInlining)]
-        public bool Equals(double x, double y) => x == y;
-        [MethodImpl(AggressiveInlining)]
-        public int GetHashCode(double obj) => obj.GetHashCode();
     }
 #pragma warning restore CA1815 // Override equals and operator equals on value types
 }

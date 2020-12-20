@@ -244,7 +244,7 @@ namespace AtCoder
                     int v = que.Dequeue();
                     foreach (var e in _g[v])
                     {
-                        if (op.Equals(e.Cap, default) || level[e.To] >= 0) continue;
+                        if (EqualityComparer<TValue>.Default.Equals(e.Cap, default) || level[e.To] >= 0) continue;
                         level[e.To] = level[v] + 1;
                         if (e.To == t) return;
                         que.Enqueue(e.To);
@@ -260,7 +260,7 @@ namespace AtCoder
                 for (; iter[v] < _g[v].Count; iter[v]++)
                 {
                     EdgeInternal e = _g[v][iter[v]];
-                    if (level_v <= level[e.To] || op.Equals(_g[e.To][e.Rev].Cap, default)) continue;
+                    if (level_v <= level[e.To] || EqualityComparer<TValue>.Default.Equals(_g[e.To][e.Rev].Cap, default)) continue;
                     var up1 = op.Subtract(up, res);
                     var up2 = _g[e.To][e.Rev].Cap;
                     var d = Dfs(e.To, op.LessThan(up1, up2) ? up1 : up2);
@@ -284,7 +284,7 @@ namespace AtCoder
                     iter[i] = 0;
                 }
                 var f = Dfs(t, op.Subtract(flowLimit, flow));
-                if (op.Equals(f, default)) break;
+                if (EqualityComparer<TValue>.Default.Equals(f, default)) break;
                 flow = op.Add(flow, f);
             }
             return flow;
@@ -321,7 +321,7 @@ namespace AtCoder
                 visited[p] = true;
                 foreach (var e in _g[p])
                 {
-                    if (!op.Equals(e.Cap, default) && !visited[e.To])
+                    if (!EqualityComparer<TValue>.Default.Equals(e.Cap, default) && !visited[e.To])
                     {
                         visited[e.To] = true;
                         que.Enqueue(e.To);
