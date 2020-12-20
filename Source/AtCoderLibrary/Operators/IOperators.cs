@@ -47,7 +47,7 @@ namespace AtCoder
         T Decrement(T x);
     }
     [IsOperator]
-    public interface ICompareOperator<T> : IEqualityComparer<T>, IComparer<T> where T : struct
+    public interface ICompareOperator<T> : IComparer<T> where T : struct
     {
         /// <summary>
         /// Greater than operator &gt;
