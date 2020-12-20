@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using AtCoder.Internal;
 
@@ -62,6 +63,11 @@ namespace AtCoder
         #endregion NextPermutation
 
         #region BinarySerch
+        private struct DefaultComparer<T> : IComparer<T> where T : IComparable<T>
+        {
+            public int Compare(T x, T y) => x.CompareTo(y);
+        }
+
         /// <summary>
         /// <paramref name="ok"/> と <paramref name="ng"/> の間で <paramref name="Ok"/>(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
         /// </summary>
@@ -118,7 +124,7 @@ namespace AtCoder
         /// <para>制約: <paramref name="a"/> がソート済み</para>
         /// <para>計算量: O(log <paramref name="n"/>)</para>
         /// </remarks>
-        public static int LowerBound<T>(this T[] a, T v) => BinarySearch(a.AsSpan(), v, Comparer<T>.Default, true);
+        public static int LowerBound<T>(this T[] a, T v) where T : IComparable<T> => BinarySearch(a.AsSpan(), v, default(DefaultComparer<T>), true);
 
         /// <summary>
         /// <paramref name="a"/> の要素のうち、<paramref name="v"/> より大きい値が現れる最小のインデックスを取得します。
@@ -136,7 +142,7 @@ namespace AtCoder
         /// <para>制約: <paramref name="a"/> がソート済み</para>
         /// <para>計算量: O(log <paramref name="n"/>)</para>
         /// </remarks>
-        public static int UpperBound<T>(this T[] a, T v) => BinarySearch(a.AsSpan(), v, Comparer<T>.Default, false);
+        public static int UpperBound<T>(this T[] a, T v) where T : IComparable<T> => BinarySearch(a.AsSpan(), v, default(DefaultComparer<T>), false);
         /// <summary>
         /// <paramref name="a"/> の要素のうち、<paramref name="v"/> 以上の値が現れる最小のインデックスを取得します。
         /// </summary>
@@ -153,7 +159,7 @@ namespace AtCoder
         /// <para>制約: <paramref name="a"/> がソート済み</para>
         /// <para>計算量: O(log <paramref name="n"/>)</para>
         /// </remarks>
-        public static int LowerBound<T>(this IList<T> a, T v) => BinarySearch(a, v, Comparer<T>.Default, true);
+        public static int LowerBound<T>(this IList<T> a, T v) where T : IComparable<T> => BinarySearch(a, v, default(DefaultComparer<T>), true);
 
         /// <summary>
         /// <paramref name="a"/> の要素のうち、<paramref name="v"/> より大きい値が現れる最小のインデックスを取得します。
@@ -171,7 +177,7 @@ namespace AtCoder
         /// <para>制約: <paramref name="a"/> がソート済み</para>
         /// <para>計算量: O(log <paramref name="n"/>)</para>
         /// </remarks>
-        public static int UpperBound<T>(this IList<T> a, T v) => BinarySearch(a, v, Comparer<T>.Default, false);
+        public static int UpperBound<T>(this IList<T> a, T v) where T : IComparable<T> => BinarySearch(a, v, default(DefaultComparer<T>), false);
         /// <summary>
         /// <paramref name="a"/> の要素のうち、<paramref name="v"/> 以上の値が現れる最小のインデックスを取得します。
         /// </summary>
@@ -188,7 +194,7 @@ namespace AtCoder
         /// <para>制約: <paramref name="a"/> がソート済み</para>
         /// <para>計算量: O(log <paramref name="n"/>)</para>
         /// </remarks>
-        public static int LowerBound<T>(this Span<T> a, T v) => BinarySearch(a, v, Comparer<T>.Default, true);
+        public static int LowerBound<T>(this Span<T> a, T v) where T : IComparable<T> => BinarySearch(a, v, default(DefaultComparer<T>), true);
 
         /// <summary>
         /// <paramref name="a"/> の要素のうち、<paramref name="v"/> より大きい値が現れる最小のインデックスを取得します。
@@ -206,7 +212,7 @@ namespace AtCoder
         /// <para>制約: <paramref name="a"/> がソート済み</para>
         /// <para>計算量: O(log <paramref name="n"/>)</para>
         /// </remarks>
-        public static int UpperBound<T>(this Span<T> a, T v) => BinarySearch(a, v, Comparer<T>.Default, false);
+        public static int UpperBound<T>(this Span<T> a, T v) where T : IComparable<T> => BinarySearch(a, v, default(DefaultComparer<T>), false);
         /// <summary>
         /// <paramref name="a"/> の要素のうち、<paramref name="v"/> 以上の値が現れる最小のインデックスを取得します。
         /// </summary>
@@ -223,7 +229,7 @@ namespace AtCoder
         /// <para>制約: <paramref name="a"/> がソート済み</para>
         /// <para>計算量: O(log <paramref name="n"/>)</para>
         /// </remarks>
-        public static int LowerBound<T>(this ReadOnlySpan<T> a, T v) => BinarySearch(a, v, Comparer<T>.Default, true);
+        public static int LowerBound<T>(this ReadOnlySpan<T> a, T v) where T : IComparable<T> => BinarySearch(a, v, default(DefaultComparer<T>), true);
 
         /// <summary>
         /// <paramref name="a"/> の要素のうち、<paramref name="v"/> より大きい値が現れる最小のインデックスを取得します。
@@ -241,7 +247,7 @@ namespace AtCoder
         /// <para>制約: <paramref name="a"/> がソート済み</para>
         /// <para>計算量: O(log <paramref name="n"/>)</para>
         /// </remarks>
-        public static int UpperBound<T>(this ReadOnlySpan<T> a, T v) => BinarySearch(a, v, Comparer<T>.Default, false);
+        public static int UpperBound<T>(this ReadOnlySpan<T> a, T v) where T : IComparable<T> => BinarySearch(a, v, default(DefaultComparer<T>), false);
         private static int BinarySearch<T, TOp>(this IList<T> a, T v, TOp cmp, bool isLowerBound)
             where TOp : IComparer<T>
         {

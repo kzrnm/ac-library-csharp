@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Raise AC0008 on Method
 - Follow ac-library v1.3
 - [Bug fix]Create all members in CreateOperatorCodeFixProvider
+- BinarySearch targets only IComparable<T>
 
 ## [1.0.5] - 2020-12-18
 ### Added
