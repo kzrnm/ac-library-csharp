@@ -145,22 +145,32 @@ namespace AtCoderAnalyzer
             var baseTypes = ImmutableArray.CreateBuilder<BaseTypeSyntax>(constraints.Length);
             var members = ImmutableList.CreateBuilder<MemberDeclarationSyntax>();
 
+            var added = ImmutableHashSet.CreateBuilder<INamedTypeSymbol>(SymbolEqualityComparer.Default);
+
             foreach (var constraint in constraints)
             {
                 if (constraint is not INamedTypeSymbol namedType)
                     continue;
                 baseTypes.Add(CreateBaseTypeSyntax(namedType));
 
-                foreach (var member in namedType.GetMembers())
+                foreach (var baseType in namedType.AllInterfaces.Append(namedType))
                 {
-                    if (member is IPropertySymbol property)
+                    if (!added.Add(baseType))
+                        continue;
+
+                    foreach (var member in baseType.GetMembers())
                     {
-                        members.Add(CreatePropertySyntax(property));
-                    }
-                    else if (member is IMethodSymbol method && method.MethodKind == MethodKind.Ordinary)
-                    {
-                        members.Add(CreateMethodSyntax(method));
-                        hasMethod = true;
+                        if (!member.IsAbstract)
+                            continue;
+                        if (member is IPropertySymbol property)
+                        {
+                            members.Add(CreatePropertySyntax(property));
+                        }
+                        else if (member is IMethodSymbol method && method.MethodKind == MethodKind.Ordinary)
+                        {
+                            members.Add(CreateMethodSyntax(method));
+                            hasMethod = true;
+                        }
                     }
                 }
             }
