@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Raise AC0008 on Method
+- Follow ac-library v1.3
+- Use Generic Comparer in BinarySearch, PriorityQueue
 
 ## [1.0.5] - 2020-12-18
 ### Added
