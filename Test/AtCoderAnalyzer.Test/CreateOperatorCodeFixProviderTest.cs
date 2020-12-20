@@ -651,10 +651,6 @@ class Program
 struct Op : ICompareOperator<short>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Equals(short x, short y) => default;
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int GetHashCode(short obj) => default;
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int Compare(short x, short y) => default;
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool GreaterThan(short x, short y) => default;
