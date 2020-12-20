@@ -22,7 +22,7 @@ README languages: [Japanese](README.ja.md)
 
 ### ac-library-csharp
 
-C# port of [AtCoder Library](https://github.com/atcoder/ac-library/)
+C# port of [AtCoder Library](https://github.com/atcoder/ac-library/tree/v1.3)
 
 ### AtCoderAnalyzer
 

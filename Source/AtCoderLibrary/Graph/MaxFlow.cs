@@ -268,9 +268,9 @@ namespace AtCoder
                     _g[v][iter[v]].Cap = op.Add(_g[v][iter[v]].Cap, d);
                     _g[e.To][e.Rev].Cap = op.Subtract(_g[e.To][e.Rev].Cap, d);
                     res = op.Add(res, d);
-                    if (res.Equals(up)) break;
+                    if (res.Equals(up)) return res;
                 }
-
+                level[v] = _n;
                 return res;
             }
 
@@ -283,12 +283,9 @@ namespace AtCoder
                 {
                     iter[i] = 0;
                 }
-                while (op.LessThan(flow, flowLimit))
-                {
-                    var f = Dfs(t, op.Subtract(flowLimit, flow));
-                    if (op.Equals(f, default)) break;
-                    flow = op.Add(flow, f);
-                }
+                var f = Dfs(t, op.Subtract(flowLimit, flow));
+                if (op.Equals(f, default)) break;
+                flow = op.Add(flow, f);
             }
             return flow;
         }

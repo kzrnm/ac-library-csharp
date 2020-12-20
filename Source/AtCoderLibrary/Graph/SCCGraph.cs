@@ -62,7 +62,7 @@ namespace AtCoder
         public class SCCGraph
         {
             private readonly int _n;
-            private readonly List<Edge> edges;
+            private readonly List<(int from, Edge e)> edges;
 
             public int VerticesNumbers => _n;
 
@@ -76,7 +76,7 @@ namespace AtCoder
             public SCCGraph(int n)
             {
                 _n = n;
-                edges = new List<Edge>();
+                edges = new List<(int from, Edge e)>();
             }
 
             /// <summary>
@@ -86,7 +86,7 @@ namespace AtCoder
             /// <para>制約: 0≤<paramref name="from"/>, <paramref name="to"/>&lt;n</para>
             /// <para>計算量: ならしO(1)</para>
             /// </remarks>
-            public void AddEdge(int from, int to) => edges.Add(new Edge(from, to));
+            public void AddEdge(int from, int to) => edges.Add((from, new Edge(to)));
 
             /// <summary>
             /// 強連結成分ごとに ID を割り振り、各頂点の所属する強連結成分の ID が記録された配列を取得します。
@@ -98,7 +98,7 @@ namespace AtCoder
             public (int groupNum, int[] ids) SCCIDs()
             {
                 // R. Tarjan のアルゴリズム
-                var g = new CSR(_n, edges);
+                var g = new CSR<Edge>(_n, edges);
                 int nowOrd = 0;
                 int groupNum = 0;
                 var visited = new Stack<int>(_n);
@@ -131,7 +131,7 @@ namespace AtCoder
                     // 頂点 v から伸びる有向辺を探索する。
                     for (int i = g.Start[v]; i < g.Start[v + 1]; i++)
                     {
-                        int to = g.EList[i];
+                        int to = g.EList[i].To;
                         if (ord[to] == -1)
                         {
                             DFS(to);
@@ -197,63 +197,13 @@ namespace AtCoder
                 return groups;
             }
 
-            /// <summary>
-            /// 有向グラフの辺集合を表します。
-            /// </summary>
-            /// <example>
-            /// <code>
-            /// for (int i = graph.Starts[v]; i &gt; graph.Starts[v + 1]; i++)
-            /// {
-            ///     int to = graph.Edges[i];
-            /// }
-            /// </code>
-            /// </example>
-            private class CSR
-            {
-                /// <summary>
-                /// 各頂点から伸びる有向辺数の累積和を取得します。
-                /// </summary>
-                public int[] Start { get; }
-
-                /// <summary>
-                /// 有向辺の終点の配列を取得します。
-                /// </summary>
-                public int[] EList { get; }
-
-                public CSR(int n, List<Edge> edges)
-                {
-                    // 本家 C++ 版 ACL を参考に実装。通常の隣接リストと比較して高速か否かは未検証。
-                    Start = new int[n + 1];
-                    EList = new int[edges.Count];
-
-                    foreach (var e in edges)
-                    {
-                        Start[e.From + 1]++;
-                    }
-
-                    for (int i = 1; i <= n; i++)
-                    {
-                        Start[i] += Start[i - 1];
-                    }
-
-                    var counter = new int[Start.Length];
-                    Start.CopyTo(counter, 0);
-                    foreach (var e in edges)
-                    {
-                        EList[counter[e.From]++] = e.To;
-                    }
-                }
-            }
-
-            [DebuggerDisplay("From = {From}, To = {To}")]
+            [DebuggerDisplay("To = {To}")]
             private readonly struct Edge
             {
-                public int From { get; }
                 public int To { get; }
 
-                public Edge(int from, int to)
+                public Edge(int to)
                 {
-                    From = from;
                     To = to;
                 }
             }
