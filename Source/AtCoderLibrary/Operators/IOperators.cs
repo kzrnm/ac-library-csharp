@@ -3,7 +3,7 @@
 namespace AtCoder
 {
     [IsOperator]
-    public interface IArithmeticOperator<T> where T : struct
+    public interface IArithmeticOperator<T>
     {
         /// <summary>
         /// Addition operator +
@@ -47,7 +47,7 @@ namespace AtCoder
         T Decrement(T x);
     }
     [IsOperator]
-    public interface ICompareOperator<T> : IComparer<T> where T : struct
+    public interface ICompareOperator<T> : IComparer<T>
     {
         /// <summary>
         /// Greater than operator &gt;
@@ -70,15 +70,16 @@ namespace AtCoder
         /// <returns><paramref name="x"/> &lt;= <paramref name="y"/></returns>
         bool LessThanOrEqual(T x, T y);
     }
-    public interface INumOperator<T> : IArithmeticOperator<T>, ICompareOperator<T> where T : struct
+    [IsOperator]
+    public interface INumOperator<T> : IArithmeticOperator<T>, ICompareOperator<T>
     {
         /// <summary>
         /// MinValue
         /// </summary>
-        public T MinValue { get; }
+        T MinValue { get; }
         /// <summary>
         /// MaxValue
         /// </summary>
-        public T MaxValue { get; }
+        T MaxValue { get; }
     }
 }
