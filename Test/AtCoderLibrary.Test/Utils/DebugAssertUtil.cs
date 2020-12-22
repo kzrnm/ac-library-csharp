@@ -1,8 +1,10 @@
 ﻿using System;
-using System.Threading.Tasks;
 using AtCoder.Internal;
-using FluentAssertions;
 using FluentAssertions.Specialized;
+#if !DEBUG
+using System.Threading.Tasks;
+using FluentAssertions;
+#endif
 
 namespace AtCoder
 {
