@@ -37,9 +37,6 @@ namespace AtCoderAnalyzer
 
             var semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
 
-            var isOperatorAttribute = semanticModel.Compilation.GetTypeByMetadataName(AtCoder_IsOperatorAttribute);
-
-
             ImmutableArray<ITypeParameterSymbol> originalTypes;
             ImmutableArray<ITypeSymbol> writtenTypes;
             switch (semanticModel.GetSymbolInfo(genericNode, context.CancellationToken).Symbol)
@@ -62,6 +59,9 @@ namespace AtCoderAnalyzer
             if (originalTypes.Length != writtenTypes.Length)
                 return;
 
+            if (!OperatorTypesMatcher.TryParseTypes(semanticModel.Compilation, out var types))
+                return;
+
             var defaultSet = ImmutableHashSet.Create<ITypeSymbol>(SymbolEqualityComparer.Default);
             var genericDicBuilder = ImmutableDictionary.CreateBuilder<ITypeParameterSymbol, ITypeSymbol>(SymbolEqualityComparer.Default);
             var constraintDicBuilder = ImmutableDictionary.CreateBuilder<string, ImmutableHashSet<ITypeSymbol>>();
@@ -72,9 +72,10 @@ namespace AtCoderAnalyzer
                 var constraintTypes = originalType.ConstraintTypes;
                 var writtenType = writtenTypes[i] as INamedTypeSymbol;
 
-                if (!constraintTypes.SelectMany(ty => ty.GetAttributes())
-                    .Select(at => at.AttributeClass)
-                    .Contains(isOperatorAttribute, SymbolEqualityComparer.Default))
+                if (!constraintTypes
+                    .OfType<INamedTypeSymbol>()
+                    .Select(ty => ty.ConstructedFrom)
+                    .Any(ty => types.IsMatch(ty)))
                 {
                     genericDicBuilder.Add(originalType, writtenType);
                     continue;

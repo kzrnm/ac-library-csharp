@@ -12,8 +12,12 @@ namespace AtCoderAnalyzer.Helpers
 
         public override SyntaxNode Visit(SyntaxNode node)
         {
-            if (node is QualifiedNameSyntax qualified && Usings.Contains(qualified.Left.ToString()))
-                return qualified.Right;
+            if (node is QualifiedNameSyntax qualified)
+            {
+                if (Usings.Contains(qualified.Left.ToString()))
+                    return qualified.Right;
+                return qualified;
+            }
             return base.Visit(node);
         }
     }

@@ -2,11 +2,11 @@
 using System.Collections.Immutable;
 using System.Linq;
 using AtCoderAnalyzer.Diagnostics;
+using AtCoderAnalyzer.Helpers;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using static AtCoderAnalyzer.Helpers.Constants;
 
 namespace AtCoderAnalyzer
 {
@@ -17,39 +17,20 @@ namespace AtCoderAnalyzer
             => ImmutableArray.Create(
                 DiagnosticDescriptors.AC0008_DefineOperatorType);
 
-        private class ContainingOperatorTypes
-        {
-            public INamedTypeSymbol IsOperatorAttribute { get; }
-
-            public ContainingOperatorTypes(INamedTypeSymbol isOperator)
-            {
-                IsOperatorAttribute = isOperator;
-            }
-            public static bool TryParseTypes(Compilation compilation, out ContainingOperatorTypes types)
-            {
-                types = null;
-                var isOperator = compilation.GetTypeByMetadataName(AtCoder_IsOperatorAttribute);
-                if (isOperator is null)
-                    return false;
-                types = new ContainingOperatorTypes(isOperator);
-                return true;
-            }
-        }
-
         public override void Initialize(AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.Analyze | GeneratedCodeAnalysisFlags.ReportDiagnostics);
             context.RegisterCompilationStartAction(compilationStartContext =>
             {
-                if (ContainingOperatorTypes.TryParseTypes(compilationStartContext.Compilation, out var types))
+                if (OperatorTypesMatcher.TryParseTypes(compilationStartContext.Compilation, out var types))
                 {
                     compilationStartContext.RegisterSyntaxNodeAction(
                         c => AnalyzeGenericNode(c, types), SyntaxKind.GenericName);
                 }
             });
         }
-        private void AnalyzeGenericNode(SyntaxNodeAnalysisContext context, ContainingOperatorTypes types)
+        private void AnalyzeGenericNode(SyntaxNodeAnalysisContext context, OperatorTypesMatcher types)
         {
             var semanticModel = context.SemanticModel;
             if (context.Node is not GenericNameSyntax genericNode)
@@ -83,9 +64,16 @@ namespace AtCoderAnalyzer
                 var originalType = originalTypes[i];
                 var writtenType = writtenTypes[i];
 
-                if (!originalType.ConstraintTypes.SelectMany(ty => ty.GetAttributes())
-                    .Select(at => at.AttributeClass)
-                    .Contains(types.IsOperatorAttribute, SymbolEqualityComparer.Default))
+
+
+                bool ok = false;
+                foreach (var ty in originalType.ConstraintTypes)
+                {
+                    if (ty is INamedTypeSymbol named)
+                        if (ok = types.IsMatch(named.ConstructedFrom))
+                            break;
+                }
+                if (!ok)
                     continue;
 
                 var k = originalType.TypeKind;

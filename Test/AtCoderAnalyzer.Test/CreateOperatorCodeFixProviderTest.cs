@@ -626,40 +626,32 @@ struct OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c)>
         #endregion LazySegtree
 
         [Fact]
-        public async Task ICompareOperator()
+        public async Task ICompare()
         {
-            var source = @"
+            var source = @"using System;
 using AtCoder;
-public class Generic<T, TOp> where TOp : ICompareOperator<T> { }
+public class Generic<T, TOp> where TOp : System.Collections.Generic.IComparer<T> { }
 class Program
 {
     Generic<short, Op> notDefined;
-    System.Type Type = typeof(Generic<,>);
+    Type Type = typeof(Generic<,>);
 }
 ";
-            var fixedSource = @"
+            var fixedSource = @"using System;
 using AtCoder;
 using System.Runtime.CompilerServices;
 
-public class Generic<T, TOp> where TOp : ICompareOperator<T> { }
+public class Generic<T, TOp> where TOp : System.Collections.Generic.IComparer<T> { }
 class Program
 {
     Generic<short, Op> notDefined;
-    System.Type Type = typeof(Generic<,>);
+    Type Type = typeof(Generic<,>);
 }
 
-struct Op : ICompareOperator<short>
+struct Op : System.Collections.Generic.IComparer<short>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int Compare(short x, short y) => default;
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool GreaterThan(short x, short y) => default;
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool GreaterThanOrEqual(short x, short y) => default;
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool LessThan(short x, short y) => default;
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool LessThanOrEqual(short x, short y) => default;
 }";
             await VerifyCS.VerifyCodeFixAsync(source,
                 VerifyCS.Diagnostic().WithSpan(6, 5, 6, 23).WithArguments("Op"),
