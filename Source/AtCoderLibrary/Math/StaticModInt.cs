@@ -45,6 +45,7 @@ namespace AtCoder
 
     public readonly struct StaticModIntOperator<T> : IArithmeticOperator<StaticModInt<T>> where T : struct, IStaticMod
     {
+        public StaticModInt<T> MultiplyIdentity => StaticModInt<T>.Raw(1);
         [MethodImpl(AggressiveInlining)]
         public StaticModInt<T> Add(StaticModInt<T> x, StaticModInt<T> y) => x + y;
         [MethodImpl(AggressiveInlining)]

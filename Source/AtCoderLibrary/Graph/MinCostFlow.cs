@@ -1,26 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using AtCoder.Internal;
 
 namespace AtCoder
 {
 #pragma warning disable CA1815 // Override equals and operator equals on value types
-    public interface ICastOperator<TFrom, TTo>
-        where TFrom : struct
-        where TTo : struct
+    [IsOperator]
+    public interface ICastOperator<in TFrom, out TTo>
     {
         TTo Cast(TFrom y);
     }
 
     public struct SameTypeCastOperator<T> : ICastOperator<T, T>
-        where T : struct
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T Cast(T y) => y;
     }
 
     public struct IntToLongCastOperator : ICastOperator<int, long>
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public long Cast(int y) => y;
     }
 #pragma warning restore CA1815 // Override equals and operator equals on value types
@@ -39,9 +40,7 @@ namespace AtCoder
     /// <para>制約: <typeparamref name="TCap"/>, <typeparamref name="TCost"/> は int, long。</para>
     /// </remarks>
     public class McfGraph<TCap, TCapOp, TCost, TCostOp, TCast>
-        where TCap : struct
         where TCapOp : struct, INumOperator<TCap>
-        where TCost : struct
         where TCostOp : struct, INumOperator<TCost>
         where TCast : ICastOperator<TCap, TCost>
     {

@@ -79,3 +79,6 @@ dotnet_diagnostic.CS8019.severity = warning
 
 # IDE0062: ƒ[ƒJƒ‹ŠÖ”‚ğ 'static' ‚É‚µ‚Ü‚·
 csharp_prefer_static_local_function = true:silent
+
+# IDE0034: default' ®‚ğ’Pƒ‰»‚·‚é
+csharp_prefer_simple_default_expression = true:silent

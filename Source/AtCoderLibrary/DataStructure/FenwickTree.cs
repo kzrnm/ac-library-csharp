@@ -21,8 +21,7 @@ namespace AtCoder
     /// <typeparam name="TOp">配列要素の操作を表す型</typeparam>
     [DebuggerTypeProxy(typeof(FenwickTree<,>.DebugView))]
     public class FenwickTree<TValue, TOp>
-        where TValue : struct
-        where TOp : struct, IArithmeticOperator<TValue>
+        where TOp : struct, IAdditionOperator<TValue>
     {
         private static readonly TOp op = default;
 
