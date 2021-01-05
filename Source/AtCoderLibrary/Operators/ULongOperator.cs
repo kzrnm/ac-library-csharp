@@ -5,10 +5,11 @@ namespace AtCoder
 {
     using static MethodImplOptions;
 #pragma warning disable CA1815 // Override equals and operator equals on value types
-    public readonly struct ULongOperator : INumOperator<ulong>
+    public readonly struct ULongOperator : INumOperator<ulong>, IShiftOperator<ulong>
     {
         public ulong MinValue => ulong.MinValue;
         public ulong MaxValue => ulong.MaxValue;
+        public ulong MultiplyIdentity => 1UL;
 
         [MethodImpl(AggressiveInlining)]
         public ulong Add(ulong x, ulong y) => x + y;
@@ -36,6 +37,10 @@ namespace AtCoder
         public bool LessThanOrEqual(ulong x, ulong y) => x <= y;
         [MethodImpl(AggressiveInlining)]
         public int Compare(ulong x, ulong y) => x.CompareTo(y);
+        [MethodImpl(AggressiveInlining)]
+        public ulong LeftShift(ulong x, int y) => x << y;
+        [MethodImpl(AggressiveInlining)]
+        public ulong RightShift(ulong x, int y) => x >> y;
     }
 #pragma warning restore CA1815 // Override equals and operator equals on value types
 }

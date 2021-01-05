@@ -26,6 +26,7 @@ namespace AtCoder
 
     public readonly struct DynamicModIntOperator<T> : IArithmeticOperator<DynamicModInt<T>> where T : struct, IDynamicModID
     {
+        public DynamicModInt<T> MultiplyIdentity => DynamicModInt<T>.Raw(1);
         [MethodImpl(AggressiveInlining)]
         public DynamicModInt<T> Add(DynamicModInt<T> x, DynamicModInt<T> y) => x + y;
         [MethodImpl(AggressiveInlining)]

@@ -18,7 +18,6 @@ namespace AtCoder
     /// </para>
     /// </remarks>
     public class MFGraph<TValue, TOp>
-         where TValue : struct
          where TOp : struct, INumOperator<TValue>
     {
         static readonly TOp op = default;
@@ -264,7 +263,7 @@ namespace AtCoder
                     var up1 = op.Subtract(up, res);
                     var up2 = _g[e.To][e.Rev].Cap;
                     var d = Dfs(e.To, op.LessThan(up1, up2) ? up1 : up2);
-                    if (op.Compare(d, default) <= 0) continue;
+                    if (op.LessThanOrEqual(d, default)) continue;
                     _g[v][iter[v]].Cap = op.Add(_g[v][iter[v]].Cap, d);
                     _g[e.To][e.Rev].Cap = op.Subtract(_g[e.To][e.Rev].Cap, d);
                     res = op.Add(res, d);

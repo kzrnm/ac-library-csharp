@@ -8,6 +8,7 @@ namespace AtCoder
     {
         public double MinValue => double.MinValue;
         public double MaxValue => double.MaxValue;
+        public double MultiplyIdentity => 1.0;
 
         [MethodImpl(AggressiveInlining)]
         public double Add(double x, double y) => x + y;

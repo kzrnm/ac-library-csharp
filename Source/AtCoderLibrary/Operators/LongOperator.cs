@@ -4,10 +4,11 @@ namespace AtCoder
 {
     using static MethodImplOptions;
 #pragma warning disable CA1815 // Override equals and operator equals on value types
-    public readonly struct LongOperator : INumOperator<long>
+    public readonly struct LongOperator : INumOperator<long>, IShiftOperator<long>
     {
         public long MinValue => long.MinValue;
         public long MaxValue => long.MaxValue;
+        public long MultiplyIdentity => 1L;
 
         [MethodImpl(AggressiveInlining)]
         public long Add(long x, long y) => x + y;
@@ -35,6 +36,10 @@ namespace AtCoder
         public bool LessThanOrEqual(long x, long y) => x <= y;
         [MethodImpl(AggressiveInlining)]
         public int Compare(long x, long y) => x.CompareTo(y);
+        [MethodImpl(AggressiveInlining)]
+        public long LeftShift(long x, int y) => x << y;
+        [MethodImpl(AggressiveInlining)]
+        public long RightShift(long x, int y) => x >> y;
     }
 #pragma warning restore CA1815 // Override equals and operator equals on value types
 }
