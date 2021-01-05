@@ -43,7 +43,8 @@ namespace AtCoder
         public bool IsPrime => true;
     }
 
-    public readonly struct StaticModIntOperator<T> : IArithmeticOperator<StaticModInt<T>> where T : struct, IStaticMod
+    public readonly struct StaticModIntOperator<T> : IArithmeticOperator<StaticModInt<T>>
+        where T : struct, IStaticMod
     {
         public StaticModInt<T> MultiplyIdentity => StaticModInt<T>.Raw(1);
         [MethodImpl(AggressiveInlining)]

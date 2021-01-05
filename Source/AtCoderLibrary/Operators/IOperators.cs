@@ -82,7 +82,7 @@ namespace AtCoder
     /// <typeparamref name="T"/> についての四則演算を定義します。
     /// </summary>
     [IsOperator]
-    public interface IArithmeticOperator<T> : IAdditionOperator<T>, IMultiplicationOperator<T>, IDivisionOperator<T> { }
+    public interface IArithmeticOperator<T> : IAdditionOperator<T>, IMultiplicationOperator<T>, IDivisionOperator<T>, IUnaryNumOperator<T> { }
 
     [IsOperator]
     public interface ICompareOperator<T> : IComparer<T>
@@ -109,7 +109,7 @@ namespace AtCoder
         bool LessThanOrEqual(T x, T y);
     }
     [IsOperator]
-    public interface INumOperator<T> : IArithmeticOperator<T>, IUnaryNumOperator<T>, ICompareOperator<T>
+    public interface INumOperator<T> : IArithmeticOperator<T>, ICompareOperator<T>
     {
         /// <summary>
         /// MinValue
