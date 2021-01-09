@@ -83,8 +83,7 @@ namespace AtCoder
         /// </remarks>
         public Edge GetEdge(int i)
         {
-            int m = _pos.Count;
-            DebugUtil.Assert(0 <= i && i < m);
+            DebugUtil.Assert(0 <= i && i < _pos.Count);
             var _e = _g[_pos[i].first][_pos[i].second];
             var _re = _g[_e.To][_e.Rev];
             return new Edge(_pos[i].first, _e.To, op.Add(_e.Cap, _re.Cap), _re.Cap);
@@ -97,13 +96,13 @@ namespace AtCoder
         /// <para>辺の順番はadd_edgeで追加された順番と同一。</para>
         /// <para>計算量: m を追加された辺数として O(m)</para>
         /// </remarks>
-        public List<Edge> Edges()
+        public Edge[] Edges()
         {
             int m = _pos.Count;
-            var result = new List<Edge>();
+            var result = new Edge[m];
             for (int i = 0; i < m; i++)
             {
-                result.Add(GetEdge(i));
+                result[i] = GetEdge(i);
             }
             return result;
         }
