@@ -266,7 +266,7 @@ namespace AtCoder
                     _g[v][iter[v]] = e.WithCap(op.Add(_g[v][iter[v]].Cap, d));
                     _g[e.To][e.Rev] = _g[e.To][e.Rev].WithCap(op.Subtract(_g[e.To][e.Rev].Cap, d));
                     res = op.Add(res, d);
-                    if (res.Equals(up)) return res;
+                    if (EqualityComparer<TValue>.Default.Equals(res, up)) return res;
                 }
                 level[v] = _n;
                 return res;
