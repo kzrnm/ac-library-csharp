@@ -18,7 +18,8 @@ namespace AtCoder
     /// </para>
     /// </remarks>
     public class MFGraph<TValue, TOp>
-         where TOp : struct, INumOperator<TValue>
+        where TValue : struct
+        where TOp : struct, INumOperator<TValue>
     {
         static readonly TOp op = default;
 
@@ -120,8 +121,7 @@ namespace AtCoder
         /// </remarks>
         public void ChangeEdge(int i, TValue newCap, TValue newFlow)
         {
-            int m = _pos.Count;
-            DebugUtil.Assert(0 <= i && i < m);
+            DebugUtil.Assert(0 <= i && i < _pos.Count);
             DebugUtil.Assert(op.LessThanOrEqual(default, newFlow) && op.LessThanOrEqual(newFlow, newCap));
             var _e = _g[_pos[i].first][_pos[i].second];
             var _re = _g[_e.To][_e.Rev];
@@ -250,15 +250,34 @@ namespace AtCoder
                 }
             }
 
+            //TValue Dfs(int v, TValue up)
+            //{
+            //    if (v == s) return up;
+            //    var res = default(TValue);
+            //    for (; iter[v] < _g[v].Count; iter[v]++)
+            //    {
+            //        EdgeInternal e = _g[v][iter[v]];
+            //        if (level[v] <= level[e.To] || EqualityComparer<TValue>.Default.Equals(_g[e.To][e.Rev].Cap, default)) continue;
+            //        var up1 = op.Subtract(up, res);
+            //        var up2 = _g[e.To][e.Rev].Cap;
+            //        var d = Dfs(e.To, op.LessThan(up1, up2) ? up1 : up2);
+            //        if (op.LessThanOrEqual(d, default)) continue;
+            //        _g[v][iter[v]] = e.WithCap(op.Add(_g[v][iter[v]].Cap, d));
+            //        _g[e.To][e.Rev] = _g[e.To][e.Rev].WithCap(op.Subtract(_g[e.To][e.Rev].Cap, d));
+            //        res = op.Add(res, d);
+            //        if (EqualityComparer<TValue>.Default.Equals(res, up)) return res;
+            //    }
+            //    level[v] = _n;
+            //    return res;
+            //}
             TValue Dfs(int v, TValue up)
             {
                 if (v == s) return up;
                 var res = default(TValue);
-                int level_v = level[v];
                 for (; iter[v] < _g[v].Count; iter[v]++)
                 {
                     EdgeInternal e = _g[v][iter[v]];
-                    if (level_v <= level[e.To] || EqualityComparer<TValue>.Default.Equals(_g[e.To][e.Rev].Cap, default)) continue;
+                    if (level[v] <= level[e.To] || EqualityComparer<TValue>.Default.Equals(_g[e.To][e.Rev].Cap, default)) continue;
                     var up1 = op.Subtract(up, res);
                     var up2 = _g[e.To][e.Rev].Cap;
                     var d = Dfs(e.To, op.LessThan(up1, up2) ? up1 : up2);
