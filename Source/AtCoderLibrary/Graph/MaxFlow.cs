@@ -125,8 +125,8 @@ namespace AtCoder
             DebugUtil.Assert(op.LessThanOrEqual(default, newFlow) && op.LessThanOrEqual(newFlow, newCap));
             var _e = _g[_pos[i].first][_pos[i].second];
             var _re = _g[_e.To][_e.Rev];
-            _e.Cap = op.Subtract(newCap, newFlow);
-            _re.Cap = newFlow;
+            _g[_pos[i].first][_pos[i].second] = _e.WithCap(op.Subtract(newCap, newFlow));
+            _g[_e.To][_e.Rev] = _re.WithCap(newFlow);
         }
 
         /// <summary>
@@ -263,8 +263,8 @@ namespace AtCoder
                     var up2 = _g[e.To][e.Rev].Cap;
                     var d = Dfs(e.To, op.LessThan(up1, up2) ? up1 : up2);
                     if (op.LessThanOrEqual(d, default)) continue;
-                    _g[v][iter[v]].Cap = op.Add(_g[v][iter[v]].Cap, d);
-                    _g[e.To][e.Rev].Cap = op.Subtract(_g[e.To][e.Rev].Cap, d);
+                    _g[v][iter[v]] = e.WithCap(op.Add(_g[v][iter[v]].Cap, d));
+                    _g[e.To][e.Rev] = _g[e.To][e.Rev].WithCap(op.Subtract(_g[e.To][e.Rev].Cap, d));
                     res = op.Add(res, d);
                     if (res.Equals(up)) return res;
                 }
@@ -365,11 +365,12 @@ namespace AtCoder
             public static bool operator !=(Edge left, Edge right) => !left.Equals(right);
         };
 
-        internal class EdgeInternal
+        internal struct EdgeInternal
         {
-            public int To { get; set; }
-            public int Rev { get; set; }
-            public TValue Cap { get; set; }
+            public int To;
+            public int Rev;
+            public TValue Cap;
+            public EdgeInternal WithCap(TValue newCap) => new EdgeInternal(To, Rev, newCap);
             public EdgeInternal(int to, int rev, TValue cap)
             {
                 To = to;
