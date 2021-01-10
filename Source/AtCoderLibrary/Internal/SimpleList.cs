@@ -8,7 +8,7 @@ namespace AtCoder.Internal
     public class SimpleList<T> : IList<T>, IReadOnlyList<T>
     {
         private T[] data;
-        private const int DefaultCapacity = 16;
+        private const int DefaultCapacity = 2;
         public SimpleList()
         {
             data = new T[DefaultCapacity];
