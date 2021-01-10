@@ -363,7 +363,7 @@ namespace AtCoder
                     }
                 }
 
-                var lms = new List<int>(m);
+                var lms = new SimpleList<int>(m);
                 for (int i = 1; i < ls.Length; i++)
                 {
                     if (!ls[i - 1] && ls[i])
@@ -377,7 +377,7 @@ namespace AtCoder
                 // LMSを再帰的にソート
                 if (m > 0)
                 {
-                    var sortedLms = new List<int>(m);
+                    var sortedLms = new SimpleList<int>(m);
                     foreach (var v in sa)
                     {
                         if (lmsMap[v] != -1)
@@ -441,7 +441,7 @@ namespace AtCoder
 
                 return sa;
 
-                void Induce(List<int> lms)
+                void Induce(SimpleList<int> lms)
                 {
                     var s = sm.Span;
                     sa.AsSpan().Fill(-1);

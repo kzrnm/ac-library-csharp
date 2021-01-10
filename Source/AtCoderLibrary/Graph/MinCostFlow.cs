@@ -254,7 +254,7 @@ namespace AtCoder
             {
                 var degree = new int[_n];
                 var redgeIdx = new int[m];
-                var elist = new List<(int from, EdgeInternal edge)>(2 * m);
+                var elist = new SimpleList<(int from, EdgeInternal edge)>(2 * m);
 
                 for (int i = 0; i < m; i++)
                 {
@@ -382,7 +382,7 @@ namespace AtCoder
                 for (int v = t; v != s; v = g.EList[prevE[v]].To)
                 {
                     var e = g.EList[prevE[v]];
-                    e.Cap = capOp.Add(e.Cap, c);
+                    g.EList[prevE[v]].Cap = capOp.Add(e.Cap, c);
                     g.EList[e.Rev].Cap = capOp.Subtract(g.EList[e.Rev].Cap, c);
                 }
                 var d = costOp.Minus(dual[s]);
@@ -434,12 +434,12 @@ namespace AtCoder
 
         };
 
-        private class EdgeInternal
+        private struct EdgeInternal
         {
-            public int To { get; set; }
-            public int Rev { get; set; }
-            public TCap Cap { get; set; }
-            public TCost Cost { get; set; }
+            public int To;
+            public int Rev;
+            public TCap Cap;
+            public TCost Cost;
             public EdgeInternal(int to, int rev, TCap cap, TCost cost)
             {
                 To = to;
@@ -450,7 +450,7 @@ namespace AtCoder
         };
 
         private readonly int _n;
-        private readonly List<Edge> _edges = new List<Edge>();
+        private readonly SimpleList<Edge> _edges = new SimpleList<Edge>();
 
         private class PriorityQueueForMcf
         {

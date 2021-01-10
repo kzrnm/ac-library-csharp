@@ -62,7 +62,7 @@ namespace AtCoder
         public class SCCGraph
         {
             private readonly int _n;
-            private readonly List<(int from, Edge e)> edges;
+            private readonly SimpleList<(int from, Edge e)> edges;
 
             public int VerticesNumbers => _n;
 
@@ -76,7 +76,7 @@ namespace AtCoder
             public SCCGraph(int n)
             {
                 _n = n;
-                edges = new List<(int from, Edge e)>();
+                edges = new SimpleList<(int from, Edge e)>();
             }
 
             /// <summary>

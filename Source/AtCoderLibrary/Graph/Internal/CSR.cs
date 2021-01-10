@@ -27,7 +27,7 @@ namespace AtCoder.Internal
         /// </summary>
         public readonly TEdge[] EList;
 
-        public CSR(int n, List<(int from, TEdge e)> edges)
+        public CSR(int n, ICollection<(int from, TEdge e)> edges)
         {
             // 本家 C++ 版 ACL を参考に実装。通常の隣接リストと比較して高速か否かは未検証。
             Start = new int[n + 1];
