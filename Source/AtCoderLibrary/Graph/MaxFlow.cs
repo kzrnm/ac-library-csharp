@@ -224,7 +224,7 @@ namespace AtCoder
             DebugUtil.Assert(s != t);
 
             var level = new int[_n];
-            int[] iter = null;
+            int[] iter;
             var que = new Queue<int>();
 
             void Bfs()
@@ -250,25 +250,78 @@ namespace AtCoder
                 }
             }
 
+            //TValue Dfs(int v, TValue up)
+            //{
+            //    if (v == s) return up;
+            //    var res = default(TValue);
+            //    for (; iter[v] < _g[v].Count; iter[v]++)
+            //    {
+            //        EdgeInternal e = _g[v][iter[v]];
+            //        if (level[v] <= level[e.To] || EqualityComparer<TValue>.Default.Equals(_g[e.To][e.Rev].Cap, default)) continue;
+            //        var up1 = op.Subtract(up, res);
+            //        var up2 = _g[e.To][e.Rev].Cap;
+            //        var d = Dfs(e.To, op.LessThan(up1, up2) ? up1 : up2);
+            //        if (op.LessThanOrEqual(d, default)) continue;
+            //        _g[v][iter[v]].Cap = op.Add(_g[v][iter[v]].Cap, d);
+            //        _g[e.To][e.Rev].Cap = op.Subtract(_g[e.To][e.Rev].Cap, d);
+            //        res = op.Add(res, d);
+            //        if (EqualityComparer<TValue>.Default.Equals(res, up)) return res;
+            //    }
+            //    level[v] = _n;
+            //    return res;
+            //}
+
             TValue Dfs(int v, TValue up)
             {
-                if (v == s) return up;
-                var res = default(TValue);
-                for (; iter[v] < _g[v].Count; iter[v]++)
+                var lastRes = default(TValue);
+                var stack = new Stack<(int v, TValue up, TValue res, bool childOk)>();
+                stack.Push((v, up, default, true));
+
+            DFS: while (stack.Count > 0)
                 {
-                    EdgeInternal e = _g[v][iter[v]];
-                    if (level[v] <= level[e.To] || EqualityComparer<TValue>.Default.Equals(_g[e.To][e.Rev].Cap, default)) continue;
-                    var up1 = op.Subtract(up, res);
-                    var up2 = _g[e.To][e.Rev].Cap;
-                    var d = Dfs(e.To, op.LessThan(up1, up2) ? up1 : up2);
-                    if (op.LessThanOrEqual(d, default)) continue;
-                    _g[v][iter[v]].Cap = op.Add(_g[v][iter[v]].Cap, d);
-                    _g[e.To][e.Rev].Cap = op.Subtract(_g[e.To][e.Rev].Cap, d);
-                    res = op.Add(res, d);
-                    if (EqualityComparer<TValue>.Default.Equals(res, up)) return res;
+                    TValue res;
+                    bool childOk;
+                    (v, up, res, childOk) = stack.Pop();
+                    if (v == s)
+                    {
+                        lastRes = up;
+                        continue;
+                    }
+                    for (; iter[v] < _g[v].Count; iter[v]++, childOk = true)
+                    {
+                        EdgeInternal e = _g[v][iter[v]];
+                        if (childOk)
+                        {
+                            if (level[v] <= level[e.To] || EqualityComparer<TValue>.Default.Equals(_g[e.To][e.Rev].Cap, default))
+                                continue;
+
+                            var up1 = op.Subtract(up, res);
+                            var up2 = _g[e.To][e.Rev].Cap;
+                            stack.Push((v, up, res, false));
+                            stack.Push((e.To, op.LessThan(up1, up2) ? up1 : up2, default, true));
+                            goto DFS;
+                        }
+                        else
+                        {
+                            var d = lastRes;
+                            if (op.GreaterThan(d, default))
+                            {
+                                _g[v][iter[v]].Cap = op.Add(_g[v][iter[v]].Cap, d);
+                                _g[e.To][e.Rev].Cap = op.Subtract(_g[e.To][e.Rev].Cap, d);
+                                res = op.Add(res, d);
+
+                                if (EqualityComparer<TValue>.Default.Equals(res, up))
+                                {
+                                    lastRes = res;
+                                    goto DFS;
+                                }
+                            }
+                        }
+                    }
+                    level[v] = _n;
+                    lastRes = res;
                 }
-                level[v] = _n;
-                return res;
+                return lastRes;
             }
 
             TValue flow = default;

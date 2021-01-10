@@ -122,43 +122,96 @@ namespace AtCoder
 
                 return (groupNum, ids);
 
+                //void DFS(int v)
+                //{
+                //    low[v] = nowOrd;
+                //    ord[v] = nowOrd++;
+                //    visited.Push(v);
+                //    // 頂点 v から伸びる有向辺を探索する。
+                //    for (int i = g.Start[v]; i < g.Start[v + 1]; i++)
+                //    {
+                //        int to = g.EList[i].To;
+                //        if (ord[to] == -1)
+                //        {
+                //            DFS(to);
+                //            low[v] = Math.Min(low[v], low[to]);
+                //        }
+                //        else
+                //        {
+                //            low[v] = Math.Min(low[v], ord[to]);
+                //        }
+                //    }
+                //    // v がSCCの根である場合、強連結成分に ID を割り振る。
+                //    if (low[v] == ord[v])
+                //    {
+                //        while (true)
+                //        {
+                //            int u = visited.Pop();
+                //            ord[u] = _n;
+                //            ids[u] = groupNum;
+                //            if (u == v)
+                //            {
+                //                break;
+                //            }
+                //        }
+                //        groupNum++;
+                //    }
+                //}
                 void DFS(int v)
                 {
-                    low[v] = nowOrd;
-                    ord[v] = nowOrd++;
-                    visited.Push(v);
-
-                    // 頂点 v から伸びる有向辺を探索する。
-                    for (int i = g.Start[v]; i < g.Start[v + 1]; i++)
+                    var stack = new Stack<(int v, int childIndex)>();
+                    stack.Push((v, g.Start[v]));
+                DFS: while (stack.Count > 0)
                     {
-                        int to = g.EList[i].To;
-                        if (ord[to] == -1)
+                        int ci;
+                        (v, ci) = stack.Pop();
+
+                        if (ci == g.Start[v])
                         {
-                            DFS(to);
+                            low[v] = nowOrd;
+                            ord[v] = nowOrd++;
+                            visited.Push(v);
+                        }
+                        else if (ci < 0)
+                        {
+                            ci = -ci;
+                            int to = g.EList[ci - 1].To;
                             low[v] = Math.Min(low[v], low[to]);
                         }
-                        else
-                        {
-                            low[v] = Math.Min(low[v], ord[to]);
-                        }
-                    }
 
-                    // v がSCCの根である場合、強連結成分に ID を割り振る。
-                    if (low[v] == ord[v])
-                    {
-                        while (true)
+                        // 頂点 v から伸びる有向辺を探索する。
+                        for (; ci < g.Start[v + 1]; ci++)
                         {
-                            int u = visited.Pop();
-                            ord[u] = _n;
-                            ids[u] = groupNum;
-
-                            if (u == v)
+                            int to = g.EList[ci].To;
+                            if (ord[to] == -1)
                             {
-                                break;
+                                stack.Push((v, -(ci + 1)));
+                                stack.Push((to, g.Start[to]));
+                                goto DFS;
+                            }
+                            else
+                            {
+                                low[v] = Math.Min(low[v], ord[to]);
                             }
                         }
 
-                        groupNum++;
+                        // v がSCCの根である場合、強連結成分に ID を割り振る。
+                        if (low[v] == ord[v])
+                        {
+                            while (true)
+                            {
+                                int u = visited.Pop();
+                                ord[u] = _n;
+                                ids[u] = groupNum;
+
+                                if (u == v)
+                                {
+                                    break;
+                                }
+                            }
+
+                            groupNum++;
+                        }
                     }
                 }
             }
