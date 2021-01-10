@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Avoid recursive in scc
+- Avoid recursive in MFGraph
 
 ## [1.1.0] - 2020-01-10
 ### Added
