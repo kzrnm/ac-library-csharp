@@ -122,43 +122,98 @@ namespace AtCoder
 
                 return (groupNum, ids);
 
+                //void DFS(int v)
+                //{
+                //    low[v] = nowOrd;
+                //    ord[v] = nowOrd++;
+                //    visited.Push(v);
+                //    // 頂点 v から伸びる有向辺を探索する。
+                //    for (int i = g.Start[v]; i < g.Start[v + 1]; i++)
+                //    {
+                //        int to = g.EList[i].To;
+                //        if (ord[to] == -1)
+                //        {
+                //            DFS(to);
+                //            low[v] = Math.Min(low[v], low[to]);
+                //        }
+                //        else
+                //        {
+                //            low[v] = Math.Min(low[v], ord[to]);
+                //        }
+                //    }
+                //    // v がSCCの根である場合、強連結成分に ID を割り振る。
+                //    if (low[v] == ord[v])
+                //    {
+                //        while (true)
+                //        {
+                //            int u = visited.Pop();
+                //            ord[u] = _n;
+                //            ids[u] = groupNum;
+                //            if (u == v)
+                //            {
+                //                break;
+                //            }
+                //        }
+                //        groupNum++;
+                //    }
+                //}
                 void DFS(int v)
                 {
-                    low[v] = nowOrd;
-                    ord[v] = nowOrd++;
-                    visited.Push(v);
-
-                    // 頂点 v から伸びる有向辺を探索する。
-                    for (int i = g.Start[v]; i < g.Start[v + 1]; i++)
+                    var stack = new Stack<(int v, int childIndex, bool childOk)>();
+                    stack.Push((v, g.Start[v], false));
+                    while (stack.Count > 0)
                     {
-                        int to = g.EList[i].To;
-                        if (ord[to] == -1)
-                        {
-                            DFS(to);
-                            low[v] = Math.Min(low[v], low[to]);
-                        }
-                        else
-                        {
-                            low[v] = Math.Min(low[v], ord[to]);
-                        }
-                    }
+                        int ci;
+                        bool childOk;
+                        (v, ci, childOk) = stack.Pop();
 
-                    // v がSCCの根である場合、強連結成分に ID を割り振る。
-                    if (low[v] == ord[v])
-                    {
-                        while (true)
+                        if (!childOk && ci == g.Start[v])
                         {
-                            int u = visited.Pop();
-                            ord[u] = _n;
-                            ids[u] = groupNum;
-
-                            if (u == v)
+                            low[v] = nowOrd;
+                            ord[v] = nowOrd++;
+                            visited.Push(v);
+                        }
+                    Loop:
+                        if (ci < g.Start[v + 1])
+                        {
+                            // 頂点 v から伸びる有向辺を探索する。
+                            int to = g.EList[ci].To;
+                            if (childOk)
                             {
-                                break;
+                                low[v] = Math.Min(low[v], low[to]);
                             }
+                            else if (ord[to] == -1)
+                            {
+                                stack.Push((v, ci, true));
+                                stack.Push((to, g.Start[to], false));
+                                continue;
+                            }
+                            else
+                            {
+                                low[v] = Math.Min(low[v], ord[to]);
+                            }
+                            ++ci;
+                            childOk = false;
+                            goto Loop;
                         }
 
-                        groupNum++;
+                        // v がSCCの根である場合、強連結成分に ID を割り振る。
+                        if (low[v] == ord[v])
+                        {
+                            while (true)
+                            {
+                                int u = visited.Pop();
+                                ord[u] = _n;
+                                ids[u] = groupNum;
+
+                                if (u == v)
+                                {
+                                    break;
+                                }
+                            }
+
+                            groupNum++;
+                        }
                     }
                 }
             }
