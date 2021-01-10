@@ -33,10 +33,10 @@ namespace AtCoder
         public MFGraph(int n)
         {
             _n = n;
-            _g = new List<EdgeInternal>[n];
-            for (int i = 0; i < n; i++)
+            _g = new SimpleList<EdgeInternal>[n];
+            for (int i = 0; i < _g.Length; i++)
             {
-                _g[i] = new List<EdgeInternal>();
+                _g[i] = new SimpleList<EdgeInternal>();
             }
             _pos = new List<(int first, int second)>();
         }
@@ -124,9 +124,9 @@ namespace AtCoder
             DebugUtil.Assert(0 <= i && i < _pos.Count);
             DebugUtil.Assert(op.LessThanOrEqual(default, newFlow) && op.LessThanOrEqual(newFlow, newCap));
             var _e = _g[_pos[i].first][_pos[i].second];
-            var _re = _g[_e.To][_e.Rev];
-            _g[_pos[i].first][_pos[i].second] = _e.WithCap(op.Subtract(newCap, newFlow));
-            _g[_e.To][_e.Rev] = _re.WithCap(newFlow);
+            //var _re = _g[_e.To][_e.Rev];
+            _g[_pos[i].first][_pos[i].second].Cap = op.Subtract(newCap, newFlow);
+            _g[_e.To][_e.Rev].Cap = newFlow;
         }
 
         /// <summary>
@@ -250,26 +250,6 @@ namespace AtCoder
                 }
             }
 
-            //TValue Dfs(int v, TValue up)
-            //{
-            //    if (v == s) return up;
-            //    var res = default(TValue);
-            //    for (; iter[v] < _g[v].Count; iter[v]++)
-            //    {
-            //        EdgeInternal e = _g[v][iter[v]];
-            //        if (level[v] <= level[e.To] || EqualityComparer<TValue>.Default.Equals(_g[e.To][e.Rev].Cap, default)) continue;
-            //        var up1 = op.Subtract(up, res);
-            //        var up2 = _g[e.To][e.Rev].Cap;
-            //        var d = Dfs(e.To, op.LessThan(up1, up2) ? up1 : up2);
-            //        if (op.LessThanOrEqual(d, default)) continue;
-            //        _g[v][iter[v]] = e.WithCap(op.Add(_g[v][iter[v]].Cap, d));
-            //        _g[e.To][e.Rev] = _g[e.To][e.Rev].WithCap(op.Subtract(_g[e.To][e.Rev].Cap, d));
-            //        res = op.Add(res, d);
-            //        if (EqualityComparer<TValue>.Default.Equals(res, up)) return res;
-            //    }
-            //    level[v] = _n;
-            //    return res;
-            //}
             TValue Dfs(int v, TValue up)
             {
                 if (v == s) return up;
@@ -282,8 +262,8 @@ namespace AtCoder
                     var up2 = _g[e.To][e.Rev].Cap;
                     var d = Dfs(e.To, op.LessThan(up1, up2) ? up1 : up2);
                     if (op.LessThanOrEqual(d, default)) continue;
-                    _g[v][iter[v]] = e.WithCap(op.Add(_g[v][iter[v]].Cap, d));
-                    _g[e.To][e.Rev] = _g[e.To][e.Rev].WithCap(op.Subtract(_g[e.To][e.Rev].Cap, d));
+                    _g[v][iter[v]].Cap = op.Add(_g[v][iter[v]].Cap, d);
+                    _g[e.To][e.Rev].Cap = op.Subtract(_g[e.To][e.Rev].Cap, d);
                     res = op.Add(res, d);
                     if (EqualityComparer<TValue>.Default.Equals(res, up)) return res;
                 }
@@ -386,7 +366,6 @@ namespace AtCoder
             public int To;
             public int Rev;
             public TValue Cap;
-            public EdgeInternal WithCap(TValue newCap) => new EdgeInternal(To, Rev, newCap);
             public EdgeInternal(int to, int rev, TValue cap)
             {
                 To = to;
@@ -397,6 +376,6 @@ namespace AtCoder
 
         internal readonly int _n;
         internal readonly List<(int first, int second)> _pos;
-        internal readonly List<EdgeInternal>[] _g;
+        internal readonly SimpleList<EdgeInternal>[] _g;
     }
 }
