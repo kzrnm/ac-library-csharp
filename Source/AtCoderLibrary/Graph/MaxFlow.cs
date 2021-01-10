@@ -38,7 +38,7 @@ namespace AtCoder
             {
                 _g[i] = new SimpleList<EdgeInternal>();
             }
-            _pos = new List<(int first, int second)>();
+            _pos = new SimpleList<(int first, int second)>();
         }
 
         /// <summary>
@@ -375,7 +375,7 @@ namespace AtCoder
         };
 
         internal readonly int _n;
-        internal readonly List<(int first, int second)> _pos;
+        internal readonly SimpleList<(int first, int second)> _pos;
         internal readonly SimpleList<EdgeInternal>[] _g;
     }
 }
