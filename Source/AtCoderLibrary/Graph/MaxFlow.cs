@@ -224,7 +224,7 @@ namespace AtCoder
             DebugUtil.Assert(s != t);
 
             var level = new int[_n];
-            var iter = new int[_n];
+            int[] iter = null;
             var que = new Queue<int>();
 
             void Bfs()
@@ -296,10 +296,7 @@ namespace AtCoder
             {
                 Bfs();
                 if (level[t] == -1) break;
-                for (int i = 0; i < _n; i++)
-                {
-                    iter[i] = 0;
-                }
+                iter = new int[_n];
                 var f = Dfs(t, op.Subtract(flowLimit, flow));
                 if (EqualityComparer<TValue>.Default.Equals(f, default)) break;
                 flow = op.Add(flow, f);
