@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using FluentAssertions;
 using MersenneTwister;
@@ -301,7 +300,7 @@ namespace AtCoder
 
             writer.WriteLine(g.Flow(s, t));
 
-            List<MFGraph<int, IntOperator>.Edge> edges = g.Edges();
+            MFGraph<int, IntOperator>.Edge[] edges = g.Edges();
             foreach (MFGraph<int, IntOperator>.Edge e in edges)
             {
                 if (e.From == s || e.To == t || e.Flow == 0) continue;
