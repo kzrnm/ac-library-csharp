@@ -14,7 +14,7 @@ namespace AtCoder
     {
         readonly int _n;
         internal readonly bool[] _answer;
-        internal readonly SCCGraph scc;
+        internal readonly Internal.SCCGraph scc;
 
         /// <summary>
         /// <see cref="TwoSat"/> クラスの新しいインスタンスを、<paramref name="n"/> 変数の 2-SAT として初期化します。
@@ -27,7 +27,7 @@ namespace AtCoder
             DebugUtil.Assert(unchecked((uint)n <= 100_000_000));
             _n = n;
             _answer = new bool[n];
-            scc = new SCCGraph(2 * n);
+            scc = new Internal.SCCGraph(2 * n);
         }
 
         /// <summary>
