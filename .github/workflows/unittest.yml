@@ -56,7 +56,9 @@ jobs:
       - name: Build
         run: dotnet build Test/AtCoderLibrary.LibraryChecker/AtCoderLibrary.LibraryChecker.sln --no-restore
       - name: Run
-        run: dotnet run --project Test/AtCoderLibrary.LibraryChecker/AtCoderLibrary.LibraryChecker.csproj
+        run: |
+          ulimit -s unlimited
+          dotnet run --project Test/AtCoderLibrary.LibraryChecker/AtCoderLibrary.LibraryChecker.csproj
   test:
     runs-on: ubuntu-latest
     steps:
