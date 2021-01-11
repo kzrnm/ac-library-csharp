@@ -3,7 +3,6 @@ using System.Reflection;
 using System.Linq;
 using System.Threading.Tasks;
 using Kzrnm.Competitive.IO;
-using System.Runtime.CompilerServices;
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
@@ -32,7 +31,7 @@ namespace AtCoder
         }
 
         static readonly UTF8Encoding UTF8NoBom = new UTF8Encoding(false);
-        static string CheckerRoot
+        static readonly string CheckerRoot
             = Path.Combine(Environment.CurrentDirectory, "Test", "library-checker-problems");
         static async Task Run(ISolver solver)
         {

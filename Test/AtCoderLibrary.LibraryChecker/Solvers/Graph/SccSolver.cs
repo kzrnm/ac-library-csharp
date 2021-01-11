@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Kzrnm.Competitive.IO;
 
-namespace AtCoder
+namespace AtCoder.Solvers.Graph
 {
     public class SccSolver : ISolver
     {
