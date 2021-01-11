@@ -48,7 +48,7 @@ namespace AtCoder
             }
             catch (ProcessErrorException e)
             {
-                Console.WriteLine($"ProcessErrorException: {e.Message}");
+                Console.WriteLine($"ProcessErrorException on {solver.Name}: {e.Message}");
                 foreach (var line in e.ErrorOutput)
                     Console.WriteLine(line);
                 if (e.ExitCode != 0)
@@ -86,7 +86,7 @@ namespace AtCoder
                 }
                 catch (ProcessErrorException e)
                 {
-                    Console.WriteLine($"ProcessErrorException: {e.Message}");
+                    Console.WriteLine($"ProcessErrorException on {solver.Name}-{fileNameWithoutExtension}: {e.Message}");
                     if (e.ExitCode != 0)
                         throw;
                 }
