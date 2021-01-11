@@ -48,10 +48,13 @@ namespace AtCoder
             catch (ProcessErrorException e)
             {
                 Console.WriteLine($"ProcessErrorException on {solver.Name}: {e.Message}");
-                foreach (var line in e.ErrorOutput)
-                    Console.WriteLine(line);
                 if (e.ExitCode != 0)
                     throw;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Exception on {solver.Name}: {e.Message}");
+                throw;
             }
 
             var inDir = Path.Combine(testDir, "in");
@@ -88,6 +91,11 @@ namespace AtCoder
                     Console.WriteLine($"ProcessErrorException on {solver.Name}-{fileNameWithoutExtension}: {e.Message}");
                     if (e.ExitCode != 0)
                         throw;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Exception on {solver.Name}-{fileNameWithoutExtension}: {e.Message}");
+                    throw;
                 }
             }
 
