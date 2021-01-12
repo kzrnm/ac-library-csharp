@@ -89,7 +89,7 @@ namespace AtCoder
         /// <para>辺の順番はadd_edgeで追加された順番と同一。</para>
         /// <para>計算量: m を追加された辺数として O(m)</para>
         /// </remarks>
-        public IReadOnlyList<Edge> Edges() => _edges;
+        public Span<Edge> Edges() => _edges.AsSpan();
 
         /// <summary>
         /// 頂点 <paramref name="s"/> から <paramref name="t"/> へ流せる限り流し、
