@@ -3,8 +3,12 @@
   "enabled": true,
   "embedding-type": "gzip-base32768",
   "enable-minify": true,
+  "embedding-source-class": {
+    "enabled": false
+  },
   "remove-conditional": [
-    "DEBUG"
+    "DEBUG",
+    "ATCODER_CONTRACT"
   ],
   "exclude-attributes": [
     "System.Diagnostics.DebuggerBrowsableAttribute",
