@@ -76,8 +76,6 @@ namespace AtCoder
         /// </remarks>
         public static int BinarySearch(int ok, int ng, Predicate<int> Ok)
         {
-            DebugUtil.Assert(Ok(ok));
-            DebugUtil.Assert(!Ok(ng));
             while (Math.Abs(ok - ng) > 1)
             {
                 var m = (ok + ng) >> 1;
@@ -96,8 +94,6 @@ namespace AtCoder
         /// </remarks>
         public static long BinarySearch(long ok, long ng, Predicate<long> Ok)
         {
-            DebugUtil.Assert(Ok(ok));
-            DebugUtil.Assert(!Ok(ng));
             while (Math.Abs(ok - ng) > 1)
             {
                 var m = (ok + ng) >> 1;

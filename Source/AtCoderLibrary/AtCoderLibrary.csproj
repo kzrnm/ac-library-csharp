@@ -19,6 +19,8 @@
     
     <PackageLicenseExpression></PackageLicenseExpression>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+
+    <DefineConstants>$(DefineConstants);ATCODER_CONTRACT</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

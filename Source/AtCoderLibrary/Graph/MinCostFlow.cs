@@ -58,10 +58,11 @@ namespace AtCoder
         /// </remarks>
         public int AddEdge(int from, int to, TCap cap, TCost cost)
         {
-            DebugUtil.Assert(0 <= from && from < _n);
-            DebugUtil.Assert(0 <= to && to < _n);
-            DebugUtil.Assert(capOp.LessThanOrEqual(default, cap));
-            DebugUtil.Assert(costOp.LessThanOrEqual(default, cost));
+            Contract.Assert((uint)from < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(from)} && {nameof(from)} < _n");
+            Contract.Assert((uint)to < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(to)} && {nameof(to)} < _n");
+            Contract.Assert(capOp.LessThanOrEqual(default, cap), reason: $"IndexOutOfRange: 0 <= {nameof(cap)}");
+            Contract.Assert(costOp.LessThanOrEqual(default, cost), reason: $"IndexOutOfRange: 0 <= {nameof(cost)}");
+
             int m = _edges.Count;
             _edges.Add(new Edge(from, to, cap, default, cost));
             return m;
@@ -77,8 +78,7 @@ namespace AtCoder
         /// </remarks>
         public Edge GetEdge(int i)
         {
-            int m = _edges.Count;
-            DebugUtil.Assert(0 <= i && i < m);
+            Contract.Assert((uint)i < (uint)_edges.Count, reason: $"IndexOutOfRange: 0 <= {nameof(i)} && {nameof(i)} < edgeCount");
             return _edges[i];
         }
 
@@ -221,10 +221,9 @@ namespace AtCoder
         /// </remarks>
         public List<(TCap cap, TCost cost)> Slope(int s, int t, TCap flowLimit)
         {
-            DebugUtil.Assert(0 <= s && s < _n);
-            DebugUtil.Assert(0 <= t && t < _n);
-            DebugUtil.Assert(s != t);
-
+            Contract.Assert((uint)s < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(s)} && {nameof(s)} < _n");
+            Contract.Assert((uint)t < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(t)} && {nameof(t)} < _n");
+            Contract.Assert(s != t, reason: $"{nameof(s)} and {nameof(t)} must be different.");
 
             int m = _edges.Count;
             var edgeIdx = new int[m];

@@ -60,9 +60,9 @@ namespace AtCoder
         public int AddEdge(int from, int to, TValue cap)
         {
             int m = _pos.Count;
-            DebugUtil.Assert(0 <= from && from < _n);
-            DebugUtil.Assert(0 <= to && to < _n);
-            DebugUtil.Assert(op.LessThanOrEqual(default, cap));
+            Contract.Assert((uint)from < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(from)} && {nameof(from)} < _n");
+            Contract.Assert((uint)to < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(to)} && {nameof(to)} < _n");
+            Contract.Assert(op.LessThanOrEqual(default, cap), reason: $"IndexOutOfRange: 0 <= {nameof(cap)}");
             _pos.Add((from, _g[from].Count));
             int fromId = _g[from].Count;
             int toId = _g[to].Count;
@@ -84,10 +84,11 @@ namespace AtCoder
         /// </remarks>
         public Edge GetEdge(int i)
         {
-            DebugUtil.Assert(0 <= i && i < _pos.Count);
-            var _e = _g[_pos[i].first][_pos[i].second];
+            Contract.Assert((uint)i < (uint)_pos.Count, reason: $"IndexOutOfRange: 0 <= {nameof(i)} && {nameof(i)} < edgeCount");
+            var (first, second) = _pos[i];
+            var _e = _g[first][second];
             var _re = _g[_e.To][_e.Rev];
-            return new Edge(_pos[i].first, _e.To, op.Add(_e.Cap, _re.Cap), _re.Cap);
+            return new Edge(first, _e.To, op.Add(_e.Cap, _re.Cap), _re.Cap);
         }
 
         /// <summary>
@@ -121,11 +122,12 @@ namespace AtCoder
         /// </remarks>
         public void ChangeEdge(int i, TValue newCap, TValue newFlow)
         {
-            DebugUtil.Assert(0 <= i && i < _pos.Count);
-            DebugUtil.Assert(op.LessThanOrEqual(default, newFlow) && op.LessThanOrEqual(newFlow, newCap));
-            var _e = _g[_pos[i].first][_pos[i].second];
+            Contract.Assert((uint)i < (uint)_pos.Count, reason: $"IndexOutOfRange: 0 <= {nameof(i)} && {nameof(i)} < edgeCount");
+            Contract.Assert(op.LessThanOrEqual(default, newFlow) && op.LessThanOrEqual(newFlow, newCap), reason: $"IndexOutOfRange: 0 <= {nameof(newFlow)} && {nameof(newFlow)} <= {nameof(newCap)}");
+            var (first, second) = _pos[i];
+            var _e = _g[first][second];
             //var _re = _g[_e.To][_e.Rev];
-            _g[_pos[i].first][_pos[i].second].Cap = op.Subtract(newCap, newFlow);
+            _g[first][second].Cap = op.Subtract(newCap, newFlow);
             _g[_e.To][_e.Rev].Cap = newFlow;
         }
 
@@ -219,9 +221,9 @@ namespace AtCoder
         /// </remarks>
         public TValue Flow(int s, int t, TValue flowLimit)
         {
-            DebugUtil.Assert(0 <= s && s < _n);
-            DebugUtil.Assert(0 <= t && t < _n);
-            DebugUtil.Assert(s != t);
+            Contract.Assert((uint)s < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(s)} && {nameof(s)} < _n");
+            Contract.Assert((uint)t < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(t)} && {nameof(t)} < _n");
+            Contract.Assert(s != t, reason: $"{nameof(s)} and {nameof(t)} must be different.");
 
             var level = new int[_n];
             int[] iter;

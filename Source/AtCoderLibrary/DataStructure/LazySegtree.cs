@@ -77,10 +77,6 @@ namespace AtCoder
         /// <param name="n">配列の長さ</param>
         public LazySegtree(int n)
         {
-            DebugUtil.Assert(0 <= n);
-            AssertMonoid(op.Identity);
-            AssertFIdentity(op.Identity);
-            AssertF(op.FIdentity, op.Identity, op.Identity);
             Length = n;
             log = InternalBit.CeilPow2(n);
             size = 1 << log;
@@ -117,10 +113,6 @@ namespace AtCoder
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void AllApply(int k, F f)
         {
-            AssertF(f, op.Identity, op.Identity);
-            AssertMonoid(d[k]);
-            AssertFIdentity(d[k]);
-            AssertF(f, d[k], d[k]);
             d[k] = op.Mapping(f, d[k]);
             if (k < size) lz[k] = op.Composition(f, lz[k]);
         }
@@ -147,7 +139,7 @@ namespace AtCoder
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             set
             {
-                DebugUtil.Assert((uint)p < Length);
+                Contract.Assert((uint)p < (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(p)} && {nameof(p)} < Length");
                 p += size;
                 for (int i = log; i >= 1; i--) Push(p >> i);
                 d[p] = value;
@@ -156,7 +148,7 @@ namespace AtCoder
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get
             {
-                DebugUtil.Assert((uint)p < Length);
+                Contract.Assert((uint)p < (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(p)} && {nameof(p)} < Length");
                 p += size;
                 for (int i = log; i >= 1; i--) Push(p >> i);
                 return d[p];
@@ -177,7 +169,7 @@ namespace AtCoder
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public TValue Prod(int l, int r)
         {
-            DebugUtil.Assert(0 <= l && l <= r && r <= Length);
+            Contract.Assert(0U <= (uint)l && (uint)l <= (uint)r && (uint)r <= (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(l)} && {nameof(l)} <= {nameof(r)} && {nameof(r)} <= Length");
             if (l == r) return op.Identity;
 
             l += size;
@@ -219,7 +211,7 @@ namespace AtCoder
         /// </remarks>
         public void Apply(int p, F f)
         {
-            DebugUtil.Assert((uint)p < Length);
+            Contract.Assert((uint)p < (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(p)} && {nameof(p)} < Length");
             p += size;
             for (int i = log; i >= 1; i--) Push(p >> i);
             d[p] = op.Mapping(f, d[p]);
@@ -235,7 +227,7 @@ namespace AtCoder
         /// </remarks>
         public void Apply(int l, int r, F f)
         {
-            DebugUtil.Assert(0 <= l && l <= r && r <= Length);
+            Contract.Assert(0U <= (uint)l && (uint)l <= (uint)r && (uint)r <= (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(l)} && {nameof(l)} <= {nameof(r)} && {nameof(r)} <= Length");
             if (l == r) return;
 
             l += size;
@@ -298,8 +290,8 @@ namespace AtCoder
         /// </remarks>
         public int MaxRight(int l, Predicate<TValue> g)
         {
-            DebugUtil.Assert((uint)l <= Length);
-            DebugUtil.Assert(g(op.Identity));
+            Contract.Assert((uint)l <= (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(l)} && {nameof(l)} <= Length");
+            Contract.Assert(g(op.Identity), reason: $"{nameof(g)}({nameof(TOp)}.{nameof(ILazySegtreeOperator<TValue, F>.Identity)}) must be true.");
             if (l == Length) return Length;
             l += size;
             for (int i = log; i >= 1; i--) Push(l >> i);
@@ -357,8 +349,8 @@ namespace AtCoder
         /// </remarks>
         public int MinLeft(int r, Predicate<TValue> g)
         {
-            DebugUtil.Assert((uint)r <= Length);
-            DebugUtil.Assert(g(op.Identity));
+            Contract.Assert((uint)r <= (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(r)} && {nameof(r)} <= Length");
+            Contract.Assert(g(op.Identity), reason: $"{nameof(g)}({nameof(TOp)}.{nameof(ILazySegtreeOperator<TValue, F>.Identity)}) must be true.");
             if (r == 0) return 0;
             r += size;
             for (int i = log; i >= 1; i--) Push((r - 1) >> i);
@@ -439,41 +431,6 @@ namespace AtCoder
                     return items.ToArray();
                 }
             }
-        }
-
-
-        /// <summary>
-        /// DEBUG_MONOID が定義されいているとき、Monoid が正しいかチェックする。
-        /// </summary>
-        /// <param name="value"></param>
-        [Conditional("DEBUG_MONOID")]
-        public static void AssertMonoid(TValue value)
-        {
-            DebugUtil.Assert(op.Operate(value, op.Identity).Equals(value),
-                $"{nameof(op.Operate)}({value}, {op.Identity}) != {value}");
-            DebugUtil.Assert(op.Operate(op.Identity, value).Equals(value),
-                $"{nameof(op.Operate)}({op.Identity}, {value}) != {value}");
-        }
-
-        /// <summary>
-        /// DEBUG_MONOID が定義されいているとき、FIdentity が恒等写像かチェックする。
-        /// </summary>
-        /// <param name="value"></param>
-        [Conditional("DEBUG_MONOID")]
-        public static void AssertFIdentity(TValue value)
-        {
-            DebugUtil.Assert(op.Mapping(op.FIdentity, value).Equals(value),
-                $"{nameof(op.Mapping)}({op.FIdentity}, {value}) != {value}");
-        }
-
-        /// <summary>
-        /// DEBUG_MONOID が定義されているとき、F が分配法則を満たすかチェックする。
-        /// </summary>
-        [Conditional("DEBUG_MONOID")]
-        public static void AssertF(F f, TValue v1, TValue v2)
-        {
-            DebugUtil.Assert(op.Mapping(op.FIdentity, op.Operate(v1, v2)).Equals(op.Operate(op.Mapping(op.FIdentity, v1), op.Mapping(op.FIdentity, v2))),
-                $"{nameof(op.Mapping)}({nameof(op.Operate)}({v1}, {v2})) != {nameof(op.Operate)}({nameof(op.Mapping)}({op.Identity}, {v1}), {nameof(op.Mapping)}({op.Identity}, {v2}))");
         }
     }
 }

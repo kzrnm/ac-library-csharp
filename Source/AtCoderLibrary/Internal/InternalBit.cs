@@ -32,7 +32,7 @@ namespace AtCoder.Internal
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int BSF(uint n)
         {
-            DebugUtil.Assert(n >= 1);
+            Contract.Assert(n > 0, reason: $"nameof(n) must positive");
             return BitOperations.TrailingZeroCount(n);
         }
 

@@ -63,8 +63,6 @@ namespace AtCoder
         /// <param name="n">配列の長さ</param>
         public Segtree(int n)
         {
-            DebugUtil.Assert(0 <= n);
-            AssertMonoid(op.Identity);
             Length = n;
             log = InternalBit.CeilPow2(n);
             size = 1 << log;
@@ -107,8 +105,7 @@ namespace AtCoder
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             set
             {
-                AssertMonoid(value);
-                DebugUtil.Assert((uint)p < Length);
+                Contract.Assert((uint)p < (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(p)} && {nameof(p)} < Length");
                 p += size;
                 d[p] = value;
                 for (int i = 1; i <= log; i++) Update(p >> i);
@@ -116,8 +113,7 @@ namespace AtCoder
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get
             {
-                DebugUtil.Assert((uint)p < Length);
-                AssertMonoid(d[p + size]);
+                Contract.Assert((uint)p < (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(p)} && {nameof(p)} < Length");
                 return d[p + size];
             }
         }
@@ -135,7 +131,7 @@ namespace AtCoder
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public TValue Prod(int l, int r)
         {
-            DebugUtil.Assert(0 <= l && l <= r && r <= Length);
+            Contract.Assert(0U <= (uint)l && (uint)l <= (uint)r && (uint)r <= (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(l)} && {nameof(l)} <= {nameof(r)} && {nameof(r)} <= Length");
             TValue sml = op.Identity, smr = op.Identity;
             l += size;
             r += size;
@@ -147,7 +143,6 @@ namespace AtCoder
                 l >>= 1;
                 r >>= 1;
             }
-            AssertMonoid(op.Operate(sml, smr));
             return op.Operate(sml, smr);
         }
 
@@ -189,8 +184,8 @@ namespace AtCoder
         /// </remarks>
         public int MaxRight(int l, Predicate<TValue> f)
         {
-            DebugUtil.Assert((uint)l <= Length);
-            DebugUtil.Assert(f(op.Identity));
+            Contract.Assert((uint)l <= (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(l)} && {nameof(l)} <= Length");
+            Contract.Assert(f(op.Identity), reason: $"{nameof(f)}({nameof(TOp)}.{nameof(ISegtreeOperator<TValue>.Identity)}) must be true.");
             if (l == Length) return Length;
             l += size;
             var sm = op.Identity;
@@ -245,8 +240,8 @@ namespace AtCoder
         /// </remarks>
         public int MinLeft(int r, Predicate<TValue> f)
         {
-            DebugUtil.Assert((uint)r <= Length);
-            DebugUtil.Assert(f(op.Identity));
+            Contract.Assert((uint)r <= (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(r)} && {nameof(r)} <= Length");
+            Contract.Assert(f(op.Identity), reason: $"{nameof(f)}({nameof(TOp)}.{nameof(ISegtreeOperator<TValue>.Identity)}) must be true.");
             if (r == 0) return 0;
             r += size;
             var sm = op.Identity;
@@ -316,19 +311,6 @@ namespace AtCoder
                     return items.ToArray();
                 }
             }
-        }
-
-        /// <summary>
-        /// Debug ビルドにおいて、Monoid が正しいかチェックする。
-        /// </summary>
-        /// <param name="value"></param>
-        [Conditional("DEBUG")]
-        public static void AssertMonoid(TValue value)
-        {
-            DebugUtil.Assert(op.Operate(value, op.Identity).Equals(value),
-                $"{nameof(op.Operate)}({value}, {op.Identity}) != {value}");
-            DebugUtil.Assert(op.Operate(op.Identity, value).Equals(value),
-                $"{nameof(op.Operate)}({op.Identity}, {value}) != {value}");
         }
     }
 }

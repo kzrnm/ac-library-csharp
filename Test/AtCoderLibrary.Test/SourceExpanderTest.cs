@@ -33,5 +33,14 @@ namespace AtCoder.Embedding
                     "AtCoder.IArithmeticOperator<T>",
                     "AtCoder.FenwickTree<TValue, TOp>");
         }
+
+
+        [Fact]
+        public async Task RemoveContract()
+        {
+            var embedded = await EmbeddedData.LoadFromAssembly(typeof(Mod1000000007));
+            var codes = embedded.SourceFiles.Select(s => s.CodeBody);
+            codes.Should().NotContain(code => code.Contains("Contract.Assert"));
+        }
     }
 }

@@ -37,8 +37,12 @@ namespace AtCoder
         public void Invalid()
         {
             var graph = new SCCGraph(2);
-            graph.AddEdge(0, 0);
-            graph.Invoking(graph => graph.AddEdge(0, 10)).Should().ThrowDebugAssertIfDebug();
+            graph.Invoking(graph => graph.AddEdge(0, 2)).Should().ThrowContractAssert();
+            graph.Invoking(graph => graph.AddEdge(2, 0)).Should().ThrowContractAssert();
+            graph.Invoking(graph => graph.AddEdge(-1, 1)).Should().ThrowContractAssert();
+            graph.Invoking(graph => graph.AddEdge(1, -1)).Should().ThrowContractAssert();
+            graph.Invoking(graph => graph.AddEdge(0, 1)).Should().NotThrow();
+            graph.Invoking(graph => graph.AddEdge(1, 0)).Should().NotThrow();
         }
 
         [Theory]

@@ -18,19 +18,31 @@ namespace AtCoder
         [Fact]
         public void Invalid()
         {
-            new Action(() => new Segtree<string, MonoidOperator>(-1)).Should().ThrowDebugAssertIfDebug();
             var s = new Segtree<string, MonoidOperator>(10);
-            s.Invoking(s => s[-1]).Should().ThrowDebugAssertIfDebug();
-            s.Invoking(s => s[10]).Should().ThrowDebugAssertIfDebug();
+            s.Invoking(s => s[-1]).Should().ThrowContractAssert();
+            s.Invoking(s => s[10]).Should().ThrowContractAssert();
+            s.Invoking(s => s[0]).Should().NotThrow();
+            s.Invoking(s => s[9]).Should().NotThrow();
 
-            s.Invoking(s => s.Prod(-1, -1)).Should().ThrowDebugAssertIfDebug();
-            s.Invoking(s => s.Prod(3, 2)).Should().ThrowDebugAssertIfDebug();
-            s.Invoking(s => s.Prod(0, 11)).Should().ThrowDebugAssertIfDebug();
-            s.Invoking(s => s.Prod(-1, 11)).Should().ThrowDebugAssertIfDebug();
+            s.Invoking(s => s.Prod(-1, -1)).Should().ThrowContractAssert();
+            s.Invoking(s => s.Prod(3, 2)).Should().ThrowContractAssert();
+            s.Invoking(s => s.Prod(0, 11)).Should().ThrowContractAssert();
+            s.Invoking(s => s.Prod(-1, 11)).Should().ThrowContractAssert();
+            s.Invoking(s => s.Prod(0, 0)).Should().NotThrow();
+            s.Invoking(s => s.Prod(10, 10)).Should().NotThrow();
+            s.Invoking(s => s.Prod(0, 10)).Should().NotThrow();
 
-            s.Invoking(s => s.MaxRight(11, s => true)).Should().ThrowDebugAssertIfDebug();
-            s.Invoking(s => s.MaxRight(-1, s => true)).Should().ThrowDebugAssertIfDebug();
-            s.Invoking(s => s.MaxRight(0, s => false)).Should().ThrowDebugAssertIfDebug();
+            s.Invoking(s => s.MaxRight(11, s => true)).Should().ThrowContractAssert();
+            s.Invoking(s => s.MaxRight(-1, s => true)).Should().ThrowContractAssert();
+            s.Invoking(s => s.MaxRight(0, s => false)).Should().ThrowContractAssert();
+            s.Invoking(s => s.MaxRight(0, s => true)).Should().NotThrow();
+            s.Invoking(s => s.MaxRight(10, s => true)).Should().NotThrow();
+
+            s.Invoking(s => s.MinLeft(11, s => true)).Should().ThrowContractAssert();
+            s.Invoking(s => s.MinLeft(-1, s => true)).Should().ThrowContractAssert();
+            s.Invoking(s => s.MinLeft(0, s => false)).Should().ThrowContractAssert();
+            s.Invoking(s => s.MinLeft(0, s => true)).Should().NotThrow();
+            s.Invoking(s => s.MinLeft(10, s => true)).Should().NotThrow();
         }
 
         [Fact]
