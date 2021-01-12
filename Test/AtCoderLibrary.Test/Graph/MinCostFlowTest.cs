@@ -47,9 +47,30 @@ namespace AtCoder
         [Fact]
         public void OutOfRange()
         {
-            var g = new McfGraphInt(10);
+            var g = new McfGraphInt(2);
             g.Invoking(g => g.Slope(-1, 3)).Should().ThrowContractAssert();
             g.Invoking(g => g.Slope(3, 3)).Should().ThrowContractAssert();
+
+            g.Invoking(g => g.Flow(0, 2)).Should().ThrowContractAssert();
+            g.Invoking(g => g.Flow(2, 0)).Should().ThrowContractAssert();
+            g.Invoking(g => g.Flow(2, 0, 0)).Should().ThrowContractAssert();
+            g.Invoking(g => g.Flow(0, 2, 0)).Should().ThrowContractAssert();
+            g.Invoking(g => g.Flow(0, 0)).Should().ThrowContractAssert();
+            g.Invoking(g => g.Flow(0, 0, 0)).Should().ThrowContractAssert();
+            g.Invoking(g => g.Flow(0, 1)).Should().NotThrow();
+            g.Invoking(g => g.Flow(1, 0, 1)).Should().NotThrow();
+
+            g.Invoking(g => g.AddEdge(0, 2, 0, 0)).Should().ThrowContractAssert();
+            g.Invoking(g => g.AddEdge(2, 0, 0, 0)).Should().ThrowContractAssert();
+            g.Invoking(g => g.AddEdge(0, 0, -1, 0)).Should().ThrowContractAssert();
+            g.Invoking(g => g.AddEdge(0, 0, 0, -1)).Should().ThrowContractAssert();
+            g.Invoking(g => g.AddEdge(0, 0, 0, 0)).Should().NotThrow();
+            g.Invoking(g => g.AddEdge(1, 0, 10, 0)).Should().NotThrow();
+
+            g.Invoking(g => g.GetEdge(-1)).Should().ThrowContractAssert();
+            g.Invoking(g => g.GetEdge(2)).Should().ThrowContractAssert();
+            g.Invoking(g => g.GetEdge(0)).Should().NotThrow();
+            g.Invoking(g => g.GetEdge(1)).Should().NotThrow();
         }
 
         [Fact]
