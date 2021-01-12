@@ -1,31 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using AtCoder.Internal;
 
 namespace AtCoder
 {
-#pragma warning disable CA1815 // Override equals and operator equals on value types
-    [IsOperator]
-    public interface ICastOperator<in TFrom, out TTo>
-    {
-        TTo Cast(TFrom y);
-    }
-
-    public struct SameTypeCastOperator<T> : ICastOperator<T, T>
-    {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T Cast(T y) => y;
-    }
-
-    public struct IntToLongCastOperator : ICastOperator<int, long>
-    {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public long Cast(int y) => y;
-    }
-#pragma warning restore CA1815 // Override equals and operator equals on value types
-
     /// <summary>
     /// Minimum-cost flow problem を扱うライブラリです。
     /// </summary>
@@ -40,9 +19,9 @@ namespace AtCoder
     /// <para>制約: <typeparamref name="TCap"/>, <typeparamref name="TCost"/> は int, long。</para>
     /// </remarks>
     public class McfGraph<TCap, TCapOp, TCost, TCostOp, TCast>
-        where TCapOp : struct, INumOperator<TCap>
-        where TCostOp : struct, INumOperator<TCost>
-        where TCast : ICastOperator<TCap, TCost>
+            where TCapOp : struct, INumOperator<TCap>
+            where TCostOp : struct, INumOperator<TCost>
+            where TCast : ICastOperator<TCap, TCost>
     {
         static readonly TCapOp capOp = default;
         static readonly TCostOp costOp = default;
@@ -110,7 +89,7 @@ namespace AtCoder
         /// <para>辺の順番はadd_edgeで追加された順番と同一。</para>
         /// <para>計算量: m を追加された辺数として O(m)</para>
         /// </remarks>
-        public IReadOnlyList<Edge> Edges() => _edges;
+        public Span<Edge> Edges() => _edges.AsSpan();
 
         /// <summary>
         /// 頂点 <paramref name="s"/> から <paramref name="t"/> へ流せる限り流し、
@@ -401,7 +380,7 @@ namespace AtCoder
         /// <summary>
         /// フローを流すグラフの各辺に対応した情報を持ちます。
         /// </summary>
-        public class Edge : IEquatable<Edge>
+        public struct Edge : IEquatable<Edge>
         {
             /// <summary>フローが流出する頂点。</summary>
             public int From { get; set; }
