@@ -380,7 +380,7 @@ namespace AtCoder
         /// <summary>
         /// フローを流すグラフの各辺に対応した情報を持ちます。
         /// </summary>
-        public class Edge : IEquatable<Edge>
+        public struct Edge : IEquatable<Edge>
         {
             /// <summary>フローが流出する頂点。</summary>
             public int From { get; set; }
