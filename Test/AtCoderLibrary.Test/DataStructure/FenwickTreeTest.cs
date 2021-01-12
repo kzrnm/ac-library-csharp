@@ -139,7 +139,6 @@ namespace AtCoder
         [Fact]
         public void Invalid()
         {
-            new Action(() => new IntFenwickTree(-1)).Should().ThrowContractAssert();
             var s = new IntFenwickTree(10);
             s.Invoking(s => s.Add(-1, 0)).Should().ThrowContractAssert();
             s.Invoking(s => s.Add(10, 0)).Should().ThrowContractAssert();

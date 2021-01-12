@@ -496,7 +496,7 @@ namespace AtCoder
         /// </remarks>
         public static long PowMod(long x, long n, int m)
         {
-            Contract.Assert(0 <= n && 1 <= m);
+            Contract.Assert(0 <= n && 1 <= m, reason: $"0 <= {nameof(n)} && 1 <= {nameof(m)}");
             if (m == 1) return 0;
             Barrett barrett = new Barrett((uint)m);
             uint r = 1, y = (uint)InternalMath.SafeMod(x, m);
@@ -520,9 +520,9 @@ namespace AtCoder
         /// </remarks>
         public static long InvMod(long x, long m)
         {
-            Contract.Assert(1 <= m);
+            Contract.Assert(1 <= m, reason: $"1 <= {nameof(m)}");
             var (g, res) = InternalMath.InvGCD(x, m);
-            Contract.Assert(g == 1);
+            Contract.Assert(g == 1, reason: $"gcd({nameof(x)}, {nameof(m)}) must be 1.");
             return res;
         }
         #endregion InvMod
@@ -538,12 +538,12 @@ namespace AtCoder
         /// <returns>答えは(存在するならば) y,z(0≤y&lt;z=lcm(<paramref name="m"/>[i])) を用いて x≡y(mod z) の形で書ける。答えがない場合は(0,0)、n=0 の時は(0,1)、それ以外の場合は(y,z)。</returns>
         public static (long, long) CRT(long[] r, long[] m)
         {
-            Contract.Assert(r.Length == m.Length);
+            Contract.Assert(r.Length == m.Length, reason: $"Length of {nameof(r)} and {nameof(m)} must be same.");
 
             long r0 = 0, m0 = 1;
             for (int i = 0; i < m.Length; i++)
             {
-                Contract.Assert(1 <= m[i]);
+                Contract.Assert(1 <= m[i], reason: $"All of {nameof(m)} must be greater or equal 1.");
                 long r1 = InternalMath.SafeMod(r[i], m[i]);
                 long m1 = m[i];
                 if (m0 < m1)

@@ -30,7 +30,6 @@ namespace AtCoder
         [Fact]
         public void Invalid()
         {
-            new Action(() => new LazySegtree<int, int, Starry>(-1)).Should().ThrowContractAssert();
             var s = new LazySegtree<int, int, Starry>(10);
             s.Invoking(s => s[-1]).Should().ThrowContractAssert();
             s.Invoking(s => s[10]).Should().ThrowContractAssert();

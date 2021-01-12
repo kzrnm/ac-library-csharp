@@ -18,7 +18,6 @@ namespace AtCoder
         [Fact]
         public void Invalid()
         {
-            new Action(() => new Segtree<string, MonoidOperator>(-1)).Should().ThrowContractAssert();
             var s = new Segtree<string, MonoidOperator>(10);
             s.Invoking(s => s[-1]).Should().ThrowContractAssert();
             s.Invoking(s => s[10]).Should().ThrowContractAssert();
