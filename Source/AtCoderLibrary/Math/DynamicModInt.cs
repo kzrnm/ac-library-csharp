@@ -84,7 +84,7 @@ namespace AtCoder
             get => (int)bt.Mod;
             set
             {
-                DebugUtil.Assert(1 <= value);
+                Contract.Assert(1 <= value);
                 bt = new Internal.Barrett((uint)value);
             }
         }
@@ -100,8 +100,8 @@ namespace AtCoder
         public static DynamicModInt<T> Raw(int v)
         {
             var u = unchecked((uint)v);
-            DebugUtil.Assert(bt != null, $"使用前に {nameof(DynamicModInt<T>)}<{nameof(T)}>.{nameof(Mod)} プロパティに mod の値を設定してください。");
-            DebugUtil.Assert(u < Mod);
+            Contract.Assert(bt != null, $"使用前に {nameof(DynamicModInt<T>)}<{nameof(T)}>.{nameof(Mod)} プロパティに mod の値を設定してください。");
+            Contract.Assert(u < Mod);
             return new DynamicModInt<T>(u);
         }
 
@@ -119,7 +119,7 @@ namespace AtCoder
         [MethodImpl(AggressiveInlining)]
         private static uint Round(long v)
         {
-            DebugUtil.Assert(bt != null, $"使用前に {nameof(DynamicModInt<T>)}<{nameof(T)}>.{nameof(Mod)} プロパティに mod の値を設定してください。");
+            Contract.Assert(bt != null, $"使用前に {nameof(DynamicModInt<T>)}<{nameof(T)}>.{nameof(Mod)} プロパティに mod の値を設定してください。");
             var x = v % bt.Mod;
             if (x < 0)
             {
@@ -207,7 +207,7 @@ namespace AtCoder
         /// </remarks>
         public DynamicModInt<T> Pow(long n)
         {
-            DebugUtil.Assert(0 <= n);
+            Contract.Assert(0 <= n);
             var x = this;
             var r = Raw(1);
 
@@ -234,7 +234,7 @@ namespace AtCoder
         public DynamicModInt<T> Inv()
         {
             var (g, x) = Internal.InternalMath.InvGCD(_v, bt.Mod);
-            DebugUtil.Assert(g == 1);
+            Contract.Assert(g == 1);
             return new DynamicModInt<T>(x);
         }
 

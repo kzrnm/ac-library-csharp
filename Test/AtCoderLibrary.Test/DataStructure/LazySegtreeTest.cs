@@ -30,19 +30,19 @@ namespace AtCoder
         [Fact]
         public void Invalid()
         {
-            new Action(() => new LazySegtree<int, int, Starry>(-1)).Should().ThrowDebugAssertIfDebug();
+            new Action(() => new LazySegtree<int, int, Starry>(-1)).Should().ThrowContractAssert();
             var s = new LazySegtree<int, int, Starry>(10);
-            s.Invoking(s => s[-1]).Should().ThrowDebugAssertIfDebug();
-            s.Invoking(s => s[10]).Should().ThrowDebugAssertIfDebug();
+            s.Invoking(s => s[-1]).Should().ThrowContractAssert();
+            s.Invoking(s => s[10]).Should().ThrowContractAssert();
 
-            s.Invoking(s => s.Prod(-1, -1)).Should().ThrowDebugAssertIfDebug();
-            s.Invoking(s => s.Prod(3, 2)).Should().ThrowDebugAssertIfDebug();
-            s.Invoking(s => s.Prod(0, 11)).Should().ThrowDebugAssertIfDebug();
-            s.Invoking(s => s.Prod(-1, 11)).Should().ThrowDebugAssertIfDebug();
+            s.Invoking(s => s.Prod(-1, -1)).Should().ThrowContractAssert();
+            s.Invoking(s => s.Prod(3, 2)).Should().ThrowContractAssert();
+            s.Invoking(s => s.Prod(0, 11)).Should().ThrowContractAssert();
+            s.Invoking(s => s.Prod(-1, 11)).Should().ThrowContractAssert();
 
-            s.Invoking(s => s.MaxRight(11, s => true)).Should().ThrowDebugAssertIfDebug();
-            s.Invoking(s => s.MaxRight(-1, s => true)).Should().ThrowDebugAssertIfDebug();
-            s.Invoking(s => s.MaxRight(0, s => false)).Should().ThrowDebugAssertIfDebug();
+            s.Invoking(s => s.MaxRight(11, s => true)).Should().ThrowContractAssert();
+            s.Invoking(s => s.MaxRight(-1, s => true)).Should().ThrowContractAssert();
+            s.Invoking(s => s.MaxRight(0, s => false)).Should().ThrowContractAssert();
         }
 
         [Fact]

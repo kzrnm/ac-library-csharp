@@ -58,10 +58,10 @@ namespace AtCoder
         /// </remarks>
         public int AddEdge(int from, int to, TCap cap, TCost cost)
         {
-            DebugUtil.Assert(0 <= from && from < _n);
-            DebugUtil.Assert(0 <= to && to < _n);
-            DebugUtil.Assert(capOp.LessThanOrEqual(default, cap));
-            DebugUtil.Assert(costOp.LessThanOrEqual(default, cost));
+            Contract.Assert(0 <= from && from < _n);
+            Contract.Assert(0 <= to && to < _n);
+            Contract.Assert(capOp.LessThanOrEqual(default, cap));
+            Contract.Assert(costOp.LessThanOrEqual(default, cost));
             int m = _edges.Count;
             _edges.Add(new Edge(from, to, cap, default, cost));
             return m;
@@ -78,7 +78,7 @@ namespace AtCoder
         public Edge GetEdge(int i)
         {
             int m = _edges.Count;
-            DebugUtil.Assert(0 <= i && i < m);
+            Contract.Assert(0 <= i && i < m);
             return _edges[i];
         }
 
@@ -221,9 +221,9 @@ namespace AtCoder
         /// </remarks>
         public List<(TCap cap, TCost cost)> Slope(int s, int t, TCap flowLimit)
         {
-            DebugUtil.Assert(0 <= s && s < _n);
-            DebugUtil.Assert(0 <= t && t < _n);
-            DebugUtil.Assert(s != t);
+            Contract.Assert(0 <= s && s < _n);
+            Contract.Assert(0 <= t && t < _n);
+            Contract.Assert(s != t);
 
 
             int m = _edges.Count;

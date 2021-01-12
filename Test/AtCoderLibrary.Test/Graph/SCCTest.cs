@@ -38,7 +38,7 @@ namespace AtCoder
         {
             var graph = new SCCGraph(2);
             graph.AddEdge(0, 0);
-            graph.Invoking(graph => graph.AddEdge(0, 10)).Should().ThrowDebugAssertIfDebug();
+            graph.Invoking(graph => graph.AddEdge(0, 10)).Should().ThrowContractAssert();
         }
 
         [Theory]

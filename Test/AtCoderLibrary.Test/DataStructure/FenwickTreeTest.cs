@@ -139,18 +139,18 @@ namespace AtCoder
         [Fact]
         public void Invalid()
         {
-            new Action(() => new IntFenwickTree(-1)).Should().ThrowDebugAssertIfDebug();
+            new Action(() => new IntFenwickTree(-1)).Should().ThrowContractAssert();
             var s = new IntFenwickTree(10);
-            s.Invoking(s => s.Add(-1, 0)).Should().ThrowDebugAssertIfDebug();
-            s.Invoking(s => s.Add(10, 0)).Should().ThrowDebugAssertIfDebug();
+            s.Invoking(s => s.Add(-1, 0)).Should().ThrowContractAssert();
+            s.Invoking(s => s.Add(10, 0)).Should().ThrowContractAssert();
 
-            s.Invoking(s => s.Sum(-1, 3)).Should().ThrowDebugAssertIfDebug();
-            s.Invoking(s => s.Sum(3, 11)).Should().ThrowDebugAssertIfDebug();
-            s.Invoking(s => s.Sum(5, 3)).Should().ThrowDebugAssertIfDebug();
+            s.Invoking(s => s.Sum(-1, 3)).Should().ThrowContractAssert();
+            s.Invoking(s => s.Sum(3, 11)).Should().ThrowContractAssert();
+            s.Invoking(s => s.Sum(5, 3)).Should().ThrowContractAssert();
 
-            s.Invoking(s => s[-1..3]).Should().ThrowDebugAssertIfDebug();
-            s.Invoking(s => s[3..11]).Should().ThrowDebugAssertIfDebug();
-            s.Invoking(s => s[5..3]).Should().ThrowDebugAssertIfDebug();
+            s.Invoking(s => s[-1..3]).Should().ThrowContractAssert();
+            s.Invoking(s => s[3..11]).Should().ThrowContractAssert();
+            s.Invoking(s => s[5..3]).Should().ThrowContractAssert();
         }
 
         [Fact]

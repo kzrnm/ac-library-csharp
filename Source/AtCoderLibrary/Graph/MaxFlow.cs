@@ -60,9 +60,9 @@ namespace AtCoder
         public int AddEdge(int from, int to, TValue cap)
         {
             int m = _pos.Count;
-            DebugUtil.Assert(0 <= from && from < _n);
-            DebugUtil.Assert(0 <= to && to < _n);
-            DebugUtil.Assert(op.LessThanOrEqual(default, cap));
+            Contract.Assert(0 <= from && from < _n);
+            Contract.Assert(0 <= to && to < _n);
+            Contract.Assert(op.LessThanOrEqual(default, cap));
             _pos.Add((from, _g[from].Count));
             int fromId = _g[from].Count;
             int toId = _g[to].Count;
@@ -84,7 +84,7 @@ namespace AtCoder
         /// </remarks>
         public Edge GetEdge(int i)
         {
-            DebugUtil.Assert(0 <= i && i < _pos.Count);
+            Contract.Assert(0 <= i && i < _pos.Count);
             var _e = _g[_pos[i].first][_pos[i].second];
             var _re = _g[_e.To][_e.Rev];
             return new Edge(_pos[i].first, _e.To, op.Add(_e.Cap, _re.Cap), _re.Cap);
@@ -121,8 +121,8 @@ namespace AtCoder
         /// </remarks>
         public void ChangeEdge(int i, TValue newCap, TValue newFlow)
         {
-            DebugUtil.Assert(0 <= i && i < _pos.Count);
-            DebugUtil.Assert(op.LessThanOrEqual(default, newFlow) && op.LessThanOrEqual(newFlow, newCap));
+            Contract.Assert(0 <= i && i < _pos.Count);
+            Contract.Assert(op.LessThanOrEqual(default, newFlow) && op.LessThanOrEqual(newFlow, newCap));
             var _e = _g[_pos[i].first][_pos[i].second];
             //var _re = _g[_e.To][_e.Rev];
             _g[_pos[i].first][_pos[i].second].Cap = op.Subtract(newCap, newFlow);
@@ -219,9 +219,9 @@ namespace AtCoder
         /// </remarks>
         public TValue Flow(int s, int t, TValue flowLimit)
         {
-            DebugUtil.Assert(0 <= s && s < _n);
-            DebugUtil.Assert(0 <= t && t < _n);
-            DebugUtil.Assert(s != t);
+            Contract.Assert(0 <= s && s < _n);
+            Contract.Assert(0 <= t && t < _n);
+            Contract.Assert(s != t);
 
             var level = new int[_n];
             int[] iter;

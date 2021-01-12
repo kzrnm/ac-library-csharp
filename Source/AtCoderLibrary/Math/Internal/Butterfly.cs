@@ -234,7 +234,7 @@ namespace AtCoder.Internal
             return sumIE;
         }
 
-        [Conditional("DEBUG")]
+        [Conditional("ATCODER_CONTRACT")]
         private static void CheckPow2(int n)
         {
             if (BitOperations.PopCount((uint)n) != 1)
