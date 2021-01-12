@@ -22,7 +22,7 @@ namespace AtCoder.Internal
         /// </remarks>
         public static int PrimitiveRoot(int m)
         {
-            Contract.Assert(m >= 2);
+            Contract.Assert(m >= 2, reason: $"{nameof(m)} must be greater or equal 2");
 
             if (primitiveRootsCache.TryGetValue(m, out var p))
             {
@@ -130,6 +130,7 @@ namespace AtCoder.Internal
         public static bool IsPrime(int n)
         {
             Contract.Assert(0 <= n);
+            Contract.Assert(0 <= n, reason: $"{nameof(n)} must not be negative.");
             if (n <= 1) return false;
             if (n == 2 || n == 7 || n == 61) return true;
             if (n % 2 == 0) return false;

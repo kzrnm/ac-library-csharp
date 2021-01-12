@@ -34,8 +34,8 @@ namespace AtCoder
         /// </remarks>
         public int Merge(int a, int b)
         {
-            Contract.Assert(0 <= a && a < _n);
-            Contract.Assert(0 <= b && b < _n);
+            Contract.Assert(0 <= a && a < _n, reason: $"IndexOutOfRange: 0 <= {nameof(a)} && {nameof(a)} < _n");
+            Contract.Assert(0 <= b && b < _n, reason: $"IndexOutOfRange: 0 <= {nameof(b)} && {nameof(b)} < _n");
             int x = Leader(a), y = Leader(b);
             if (x == y) return x;
             if (-_parentOrSize[x] < -_parentOrSize[y]) (x, y) = (y, x);
@@ -53,8 +53,8 @@ namespace AtCoder
         /// </remarks>
         public bool Same(int a, int b)
         {
-            Contract.Assert(0 <= a && a < _n);
-            Contract.Assert(0 <= b && b < _n);
+            Contract.Assert(0 <= a && a < _n, reason: $"IndexOutOfRange: 0 <= {nameof(a)} && {nameof(a)} < _n");
+            Contract.Assert(0 <= b && b < _n, reason: $"IndexOutOfRange: 0 <= {nameof(b)} && {nameof(b)} < _n");
             return Leader(a) == Leader(b);
         }
 
@@ -67,6 +67,7 @@ namespace AtCoder
         /// </remarks>
         public int Leader(int a)
         {
+            Contract.Assert(0 <= a && a < _n, reason: $"IndexOutOfRange: 0 <= {nameof(a)} && {nameof(a)} < _n");
             if (_parentOrSize[a] < 0) return a;
             while (0 <= _parentOrSize[_parentOrSize[a]])
             {
@@ -85,7 +86,7 @@ namespace AtCoder
         /// </remarks>
         public int Size(int a)
         {
-            Contract.Assert(0 <= a && a < _n);
+            Contract.Assert(0 <= a && a < _n, reason: $"IndexOutOfRange: 0 <= {nameof(a)} && {nameof(a)} < _n");
             return -_parentOrSize[Leader(a)];
         }
 
