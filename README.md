@@ -26,8 +26,46 @@ C# port of [AtCoder Library](https://github.com/atcoder/ac-library/tree/v1.3)
 
 ### AtCoderAnalyzer
 
-Analyzer for `ac-library-csharp`
+Analyzer for `ac-library-csharp` user.
 
+#### For example
+
+Create Operator type.
+
+From
+
+```C#
+using AtCoder;
+class Program
+{
+    static void Main()
+    {
+        var seg = new Segtree<int, Op>(10);
+    }
+}
+```
+
+To
+
+```C#
+using AtCoder;
+using System.Runtime.CompilerServices;
+
+class Program
+{
+    static void Main()
+    {
+        var seg = new Segtree<int, Op>(10);
+    }
+}
+struct Op : ISegtreeOperator<int>
+{
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int Operate(int x, int y) => default;
+
+    public int Identity => default;
+}
+```
 ## Status
 
 [![NuGet version (ac-library-csharp)](https://img.shields.io/nuget/v/ac-library-csharp.svg?style=flat-square)](https://www.nuget.org/packages/ac-library-csharp/)

@@ -26,7 +26,46 @@ README languages: [Japanese](README.ja.md)
 
 ### AtCoderAnalyzer
 
-`ac-library-csharp` 向けのAnalyzer
+`ac-library-csharp` 利用者向けのAnalyzer
+
+#### 利用例
+
+Operator 型を自動生成する機能などがあります。
+
+From
+
+```C#
+using AtCoder;
+class Program
+{
+    static void Main()
+    {
+        var seg = new Segtree<int, Op>(10);
+    }
+}
+```
+
+To
+
+```C#
+using AtCoder;
+using System.Runtime.CompilerServices;
+
+class Program
+{
+    static void Main()
+    {
+        var seg = new Segtree<int, Op>(10);
+    }
+}
+struct Op : ISegtreeOperator<int>
+{
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int Operate(int x, int y) => default;
+
+    public int Identity => default;
+}
+```
 
 ## Status
 
