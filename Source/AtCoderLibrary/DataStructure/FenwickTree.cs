@@ -40,7 +40,7 @@ namespace AtCoder
         /// <param name="n">配列の長さ</param>
         public FenwickTree(int n)
         {
-            DebugUtil.Assert(unchecked((uint)n <= 100_000_000));
+            Contract.Assert(unchecked((uint)n <= 100_000_000));
             Length = n;
             data = new TValue[n + 1];
         }
@@ -55,7 +55,7 @@ namespace AtCoder
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Add(int p, TValue x)
         {
-            DebugUtil.Assert(unchecked((uint)p < Length));
+            Contract.Assert(unchecked((uint)p < Length));
             for (p++; p < data.Length; p += InternalBit.ExtractLowestSetBit(p))
             {
                 data[p] = op.Add(data[p], x);
@@ -73,7 +73,7 @@ namespace AtCoder
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public TValue Sum(int l, int r)
         {
-            DebugUtil.Assert(0 <= l && l <= r && r < data.Length);
+            Contract.Assert(0 <= l && l <= r && r < data.Length);
             return op.Subtract(Sum(r), Sum(l));
         }
 

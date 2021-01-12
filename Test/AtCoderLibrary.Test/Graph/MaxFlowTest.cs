@@ -176,8 +176,8 @@ namespace AtCoder
         public void Invalid()
         {
             var g = new MFGraphInt(2);
-            g.Invoking(g => g.Flow(0, 0)).Should().ThrowDebugAssertIfDebug();
-            g.Invoking(g => g.Flow(0, 0, 0)).Should().ThrowDebugAssertIfDebug();
+            g.Invoking(g => g.Flow(0, 0)).Should().ThrowContractAssert();
+            g.Invoking(g => g.Flow(0, 0, 0)).Should().ThrowContractAssert();
         }
 
         [Fact]

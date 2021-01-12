@@ -144,17 +144,17 @@ namespace AtCoder
         [Fact]
         public void Invalid()
         {
-            new Action(() => StlFunction.BinarySearch(-10, 20, n => n > 10)).Should().ThrowDebugAssertIfDebug();
-            new Action(() => StlFunction.BinarySearch(-10, 20, n => n > -110)).Should().ThrowDebugAssertIfDebug();
-            new Action(() => StlFunction.BinarySearch(-10, 20, n => n < -110)).Should().ThrowDebugAssertIfDebug();
-            new Action(() => StlFunction.BinarySearch(-10, 20, n => n > 110)).Should().ThrowDebugAssertIfDebug();
-            new Action(() => StlFunction.BinarySearch(-10, 20, n => n < 110)).Should().ThrowDebugAssertIfDebug();
+            new Action(() => StlFunction.BinarySearch(-10, 20, n => n > 10)).Should().ThrowContractAssert();
+            new Action(() => StlFunction.BinarySearch(-10, 20, n => n > -110)).Should().ThrowContractAssert();
+            new Action(() => StlFunction.BinarySearch(-10, 20, n => n < -110)).Should().ThrowContractAssert();
+            new Action(() => StlFunction.BinarySearch(-10, 20, n => n > 110)).Should().ThrowContractAssert();
+            new Action(() => StlFunction.BinarySearch(-10, 20, n => n < 110)).Should().ThrowContractAssert();
 
-            new Action(() => StlFunction.BinarySearch(-10L, 20L, n => n > 10L)).Should().ThrowDebugAssertIfDebug();
-            new Action(() => StlFunction.BinarySearch(-10L, 20L, n => n > -110L)).Should().ThrowDebugAssertIfDebug();
-            new Action(() => StlFunction.BinarySearch(-10L, 20L, n => n < -110L)).Should().ThrowDebugAssertIfDebug();
-            new Action(() => StlFunction.BinarySearch(-10L, 20L, n => n > 110L)).Should().ThrowDebugAssertIfDebug();
-            new Action(() => StlFunction.BinarySearch(-10L, 20L, n => n < 110L)).Should().ThrowDebugAssertIfDebug();
+            new Action(() => StlFunction.BinarySearch(-10L, 20L, n => n > 10L)).Should().ThrowContractAssert();
+            new Action(() => StlFunction.BinarySearch(-10L, 20L, n => n > -110L)).Should().ThrowContractAssert();
+            new Action(() => StlFunction.BinarySearch(-10L, 20L, n => n < -110L)).Should().ThrowContractAssert();
+            new Action(() => StlFunction.BinarySearch(-10L, 20L, n => n > 110L)).Should().ThrowContractAssert();
+            new Action(() => StlFunction.BinarySearch(-10L, 20L, n => n < 110L)).Should().ThrowContractAssert();
         }
     }
 }

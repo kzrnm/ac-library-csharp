@@ -108,7 +108,7 @@ namespace AtCoder
         public static StaticModInt<T> Raw(int v)
         {
             var u = unchecked((uint)v);
-            DebugUtil.Assert(u < Mod);
+            Contract.Assert(u < Mod);
             return new StaticModInt<T>(u);
         }
 
@@ -211,7 +211,7 @@ namespace AtCoder
         /// </remarks>
         public StaticModInt<T> Pow(long n)
         {
-            DebugUtil.Assert(0 <= n);
+            Contract.Assert(0 <= n);
             var x = this;
             var r = new StaticModInt<T>(1U);
 
@@ -239,13 +239,13 @@ namespace AtCoder
         {
             if (op.IsPrime)
             {
-                DebugUtil.Assert(_v > 0);
+                Contract.Assert(_v > 0);
                 return Pow(op.Mod - 2);
             }
             else
             {
                 var (g, x) = Internal.InternalMath.InvGCD(_v, op.Mod);
-                DebugUtil.Assert(g == 1);
+                Contract.Assert(g == 1);
                 return new StaticModInt<T>(x);
             }
         }

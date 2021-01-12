@@ -48,8 +48,8 @@ namespace AtCoder
         public void OutOfRange()
         {
             var g = new McfGraphInt(10);
-            g.Invoking(g => g.Slope(-1, 3)).Should().ThrowDebugAssertIfDebug();
-            g.Invoking(g => g.Slope(3, 3)).Should().ThrowDebugAssertIfDebug();
+            g.Invoking(g => g.Slope(-1, 3)).Should().ThrowContractAssert();
+            g.Invoking(g => g.Slope(3, 3)).Should().ThrowContractAssert();
         }
 
         [Fact]
@@ -76,8 +76,8 @@ namespace AtCoder
         public void Invalid()
         {
             var g = new McfGraphInt(2);
-            g.Invoking(g => g.AddEdge(0, 0, -1, 0)).Should().ThrowDebugAssertIfDebug();
-            g.Invoking(g => g.AddEdge(0, 0, 0, -1)).Should().ThrowDebugAssertIfDebug();
+            g.Invoking(g => g.AddEdge(0, 0, -1, 0)).Should().ThrowContractAssert();
+            g.Invoking(g => g.AddEdge(0, 0, 0, -1)).Should().ThrowContractAssert();
         }
 
         [Fact]

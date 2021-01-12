@@ -23,7 +23,7 @@ namespace AtCoder
         /// </remarks>
         public SCCGraph(int n)
         {
-            DebugUtil.Assert(unchecked((uint)n <= 100_000_000));
+            Contract.Assert(unchecked((uint)n <= 100_000_000));
             _internal = new Internal.SCCGraph(n);
         }
 
@@ -37,8 +37,8 @@ namespace AtCoder
         public void AddEdge(int from, int to)
         {
             int n = _internal.VerticesNumbers;
-            DebugUtil.Assert(unchecked((uint)from < n));
-            DebugUtil.Assert(unchecked((uint)to < n));
+            Contract.Assert(unchecked((uint)from < n));
+            Contract.Assert(unchecked((uint)to < n));
             _internal.AddEdge(from, to);
         }
 

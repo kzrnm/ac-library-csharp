@@ -34,8 +34,8 @@ namespace AtCoder
         /// </remarks>
         public int Merge(int a, int b)
         {
-            DebugUtil.Assert(0 <= a && a < _n);
-            DebugUtil.Assert(0 <= b && b < _n);
+            Contract.Assert(0 <= a && a < _n);
+            Contract.Assert(0 <= b && b < _n);
             int x = Leader(a), y = Leader(b);
             if (x == y) return x;
             if (-_parentOrSize[x] < -_parentOrSize[y]) (x, y) = (y, x);
@@ -53,8 +53,8 @@ namespace AtCoder
         /// </remarks>
         public bool Same(int a, int b)
         {
-            DebugUtil.Assert(0 <= a && a < _n);
-            DebugUtil.Assert(0 <= b && b < _n);
+            Contract.Assert(0 <= a && a < _n);
+            Contract.Assert(0 <= b && b < _n);
             return Leader(a) == Leader(b);
         }
 
@@ -85,7 +85,7 @@ namespace AtCoder
         /// </remarks>
         public int Size(int a)
         {
-            DebugUtil.Assert(0 <= a && a < _n);
+            Contract.Assert(0 <= a && a < _n);
             return -_parentOrSize[Leader(a)];
         }
 

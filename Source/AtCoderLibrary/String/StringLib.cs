@@ -18,7 +18,7 @@ namespace AtCoder
         /// </remarks>
         public static int[] LCPArray<T>(ReadOnlySpan<T> s, int[] sa)
         {
-            DebugUtil.Assert(1 <= s.Length);
+            Contract.Assert(1 <= s.Length);
             int[] rnk = new int[s.Length];
             for (int i = 0; i < s.Length; i++)
             {
@@ -134,10 +134,10 @@ namespace AtCoder
         /// </remarks>
         public static int[] SuffixArray(int[] s, int upper)
         {
-            DebugUtil.Assert(0 <= upper);
+            Contract.Assert(0 <= upper);
             foreach (var si in s)
             {
-                DebugUtil.Assert(unchecked((uint)si) <= upper);
+                Contract.Assert(unchecked((uint)si) <= upper);
             }
             return Internal.InternalString.SAIS(s, upper);
         }
