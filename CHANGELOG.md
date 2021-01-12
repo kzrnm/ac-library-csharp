@@ -14,21 +14,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Avoid recursive in MFGraph
 - Replace DebugUtil.Assert to Contract.Assert
 
-## [1.1.0] - 2020-01-10
+## [1.1.0] - 2021-01-10
 ### Added
 - Add SimpleList<T>
 
 ### Changed
 - Optimize MaxFlow
 
-## [1.0.8] - 2020-01-05
+## [1.0.8] - 2021-01-05
 ### Added
 - Add IShiftOperator interface
 
 ### Changed
 - Split operator interfaces
 
-## [1.0.7] - 2020-01-03
+## [1.0.7] - 2021-01-03
 ### Added
 - Regard System.Collections.Generic.IComparer<T> as operator type
 
