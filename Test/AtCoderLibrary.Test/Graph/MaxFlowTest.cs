@@ -176,8 +176,35 @@ namespace AtCoder
         public void Invalid()
         {
             var g = new MFGraphInt(2);
+
+            g.Invoking(g => g.Flow(0, 2)).Should().ThrowContractAssert();
+            g.Invoking(g => g.Flow(2, 0)).Should().ThrowContractAssert();
+            g.Invoking(g => g.Flow(2, 0, 0)).Should().ThrowContractAssert();
+            g.Invoking(g => g.Flow(0, 2, 0)).Should().ThrowContractAssert();
             g.Invoking(g => g.Flow(0, 0)).Should().ThrowContractAssert();
             g.Invoking(g => g.Flow(0, 0, 0)).Should().ThrowContractAssert();
+            g.Invoking(g => g.Flow(0, 1)).Should().NotThrow();
+            g.Invoking(g => g.Flow(1, 0, 1)).Should().NotThrow();
+
+            g.Invoking(g => g.AddEdge(0, 2, 0)).Should().ThrowContractAssert();
+            g.Invoking(g => g.AddEdge(2, 0, 0)).Should().ThrowContractAssert();
+            g.Invoking(g => g.AddEdge(0, 0, -1)).Should().ThrowContractAssert();
+            g.Invoking(g => g.AddEdge(0, 0, 0)).Should().NotThrow();
+            g.Invoking(g => g.AddEdge(1, 0, 10)).Should().NotThrow();
+
+            g.Invoking(g => g.GetEdge(-1)).Should().ThrowContractAssert();
+            g.Invoking(g => g.GetEdge(2)).Should().ThrowContractAssert();
+            g.Invoking(g => g.GetEdge(0)).Should().NotThrow();
+            g.Invoking(g => g.GetEdge(1)).Should().NotThrow();
+
+            g.Invoking(g => g.ChangeEdge(-1, 2, 2)).Should().ThrowContractAssert();
+            g.Invoking(g => g.ChangeEdge(2, 2, 2)).Should().ThrowContractAssert();
+            g.Invoking(g => g.ChangeEdge(0, 2, 2)).Should().NotThrow();
+            g.Invoking(g => g.ChangeEdge(1, 2, 2)).Should().NotThrow();
+
+            g.Invoking(g => g.ChangeEdge(0, 1, 2)).Should().ThrowContractAssert();
+            g.Invoking(g => g.ChangeEdge(1, 1, 2)).Should().ThrowContractAssert();
+            g.Invoking(g => g.ChangeEdge(0, 0, -1)).Should().ThrowContractAssert();
         }
 
         [Fact]
