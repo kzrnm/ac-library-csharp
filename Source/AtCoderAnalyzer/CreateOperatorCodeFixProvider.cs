@@ -210,13 +210,16 @@ namespace AtCoderAnalyzer
 
         private static MethodDeclarationSyntax CreateMethodSyntax(IMethodSymbol symbol)
         {
+
             var dec = SyntaxFactory.MethodDeclaration(symbol.ReturnType.ToTypeSyntax(), symbol.Name)
                     .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
                     .AddAttributeLists(SyntaxHelpers.AggressiveInliningAttributeList)
-                    .WithParameterList(symbol.ToParameterListSyntax())
-                    .WithExpressionBody(SyntaxHelpers.ArrowDefault)
+                    .WithParameterList(symbol.ToParameterListSyntax());
+            if (symbol.ReturnsVoid)
+                return dec.WithBody(SyntaxFactory.Block());
+            else
+                return dec.WithExpressionBody(SyntaxHelpers.ArrowDefault)
                     .WithSemicolonToken(SyntaxHelpers.SemicolonToken);
-            return dec;
         }
     }
 }

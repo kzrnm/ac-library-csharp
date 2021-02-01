@@ -665,6 +665,7 @@ struct Op : System.Collections.Generic.IComparer<short>
 using AtCoder;
 [IsOperator]
 public interface IAny<T> {
+    void Init();
     T Prop1 { set; get; }
     T Prop2 { get; set; }
 }
@@ -675,15 +676,19 @@ class Program
     Generic<(int, long), Def<(int, long)>> defined;
     System.Type Type = typeof(Generic<,>);
 }
-struct Def<T> : IAny<T> { 
+struct Def<T> : IAny<T> {
+    public void Init() { }
     public T Prop1 { set; get; }
     public T Prop2 { set; get; }
 }
 ";
             var fixedSource = @"
 using AtCoder;
+using System.Runtime.CompilerServices;
+
 [IsOperator]
 public interface IAny<T> {
+    void Init();
     T Prop1 { set; get; }
     T Prop2 { get; set; }
 }
@@ -694,18 +699,24 @@ class Program
     Generic<(int, long), Def<(int, long)>> defined;
     System.Type Type = typeof(Generic<,>);
 }
-struct Def<T> : IAny<T> { 
+struct Def<T> : IAny<T> {
+    public void Init() { }
     public T Prop1 { set; get; }
     public T Prop2 { set; get; }
 }
 
 struct Op : IAny<(int, long)>
 {
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void Init()
+    {
+    }
+
     public (int, long) Prop1 { set; get; }
     public (int, long) Prop2 { set; get; }
 }";
             await VerifyCS.VerifyCodeFixAsync(source,
-                VerifyCS.Diagnostic().WithSpan(11, 5, 11, 29).WithArguments("Op"),
+                VerifyCS.Diagnostic().WithSpan(12, 5, 12, 29).WithArguments("Op"),
                fixedSource);
         }
 
@@ -716,6 +727,7 @@ struct Op : IAny<(int, long)>
 using AtCoder;
 [IsOperator]
 public interface IAny<T> {
+    void Init();
     T Prop1 { set; get; }
     T Prop2 { get; set; }
 }
@@ -730,8 +742,11 @@ class Program
 ";
             var fixedSource = @"
 using AtCoder;
+using System.Runtime.CompilerServices;
+
 [IsOperator]
 public interface IAny<T> {
+    void Init();
     T Prop1 { set; get; }
     T Prop2 { get; set; }
 }
@@ -746,11 +761,16 @@ class Program
 
 struct Op : IAny<(int n, long m)>
 {
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void Init()
+    {
+    }
+
     public (int n, long m) Prop1 { set; get; }
     public (int n, long m) Prop2 { set; get; }
 }";
             await VerifyCS.VerifyCodeFixAsync(source,
-                VerifyCS.Diagnostic().WithSpan(13, 9, 13, 31).WithArguments("Op"),
+                VerifyCS.Diagnostic().WithSpan(14, 9, 14, 31).WithArguments("Op"),
                fixedSource);
         }
     }
