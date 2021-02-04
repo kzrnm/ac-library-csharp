@@ -32,9 +32,9 @@ namespace AtCoder
         /// </summary>
         T Mapping(F f, T x);
         /// <summary>
-        /// 写像　<paramref name="f"/>, <paramref name="g"/> を 合成した写像 <paramref name="f"/>∘<paramref name="g"/>。
+        /// 写像　<paramref name="nf"/> を既存の写像 <paramref name="cf"/> に対して合成した写像 <paramref name="nf"/>∘<paramref name="cf"/>。
         /// </summary>
-        F Composition(F f, F g);
+        F Composition(F nf, F cf);
     }
 
     /// <summary>
