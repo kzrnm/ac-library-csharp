@@ -393,9 +393,7 @@ namespace AtCoder
             }
             [DebuggerBrowsable(DebuggerBrowsableState.Never)]
             private readonly string key;
-            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
             private readonly TValue value;
-            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
             private readonly F lazy;
         }
         private class DebugView

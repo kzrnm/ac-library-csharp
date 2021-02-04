@@ -281,7 +281,6 @@ namespace AtCoder
             }
             [DebuggerBrowsable(DebuggerBrowsableState.Never)]
             private readonly string key;
-            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
             private readonly TValue value;
         }
         private class DebugView

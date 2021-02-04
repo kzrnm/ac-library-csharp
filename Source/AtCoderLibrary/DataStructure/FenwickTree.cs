@@ -100,9 +100,7 @@ namespace AtCoder
                 this.sum = sum;
                 this.value = value;
             }
-            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
             public readonly TValue value;
-            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
             public readonly TValue sum;
         }
         internal class DebugView
