@@ -665,7 +665,7 @@ struct Op : System.Collections.Generic.IComparer<short>
 using AtCoder;
 [IsOperator]
 public interface IAny<T> {
-    void Init();
+    void Init(ref T val, out bool success, params int[] nums);
     T Prop1 { set; get; }
     T Prop2 { get; set; }
 }
@@ -677,7 +677,7 @@ class Program
     System.Type Type = typeof(Generic<,>);
 }
 struct Def<T> : IAny<T> {
-    public void Init() { }
+    public void Init(ref T val, out bool success, params int[] nums) { success = true; }
     public T Prop1 { set; get; }
     public T Prop2 { set; get; }
 }
@@ -688,7 +688,7 @@ using System.Runtime.CompilerServices;
 
 [IsOperator]
 public interface IAny<T> {
-    void Init();
+    void Init(ref T val, out bool success, params int[] nums);
     T Prop1 { set; get; }
     T Prop2 { get; set; }
 }
@@ -700,7 +700,7 @@ class Program
     System.Type Type = typeof(Generic<,>);
 }
 struct Def<T> : IAny<T> {
-    public void Init() { }
+    public void Init(ref T val, out bool success, params int[] nums) { success = true; }
     public T Prop1 { set; get; }
     public T Prop2 { set; get; }
 }
@@ -708,7 +708,7 @@ struct Def<T> : IAny<T> {
 struct Op : IAny<(int, long)>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Init()
+    public void Init(ref (int, long) val, out bool success, params int[] nums)
     {
     }
 

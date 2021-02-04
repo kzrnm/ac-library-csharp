@@ -32,8 +32,19 @@ namespace AtCoderAnalyzer.Helpers
             => SyntaxFactory.ParseTypeName(symbol.ToDisplayString());
 
         public static ParameterSyntax ToParameterSyntax(this IParameterSymbol symbol)
-            => SyntaxFactory.Parameter(SyntaxFactory.Identifier(symbol.Name))
-                    .WithType(symbol.Type.ToTypeSyntax());
+        {
+            var modifiers = symbol switch
+            {
+                { IsParams: true } => SyntaxFactory.TokenList(SyntaxFactory.Token(SyntaxKind.ParamsKeyword)),
+                { RefKind: RefKind.Out } => SyntaxFactory.TokenList(SyntaxFactory.Token(SyntaxKind.OutKeyword)),
+                { RefKind: RefKind.Ref } => SyntaxFactory.TokenList(SyntaxFactory.Token(SyntaxKind.RefKeyword)),
+                { RefKind: RefKind.In } => SyntaxFactory.TokenList(SyntaxFactory.Token(SyntaxKind.InKeyword)),
+                _ => SyntaxFactory.TokenList(),
+            };
+            return SyntaxFactory.Parameter(SyntaxFactory.Identifier(symbol.Name))
+                .WithModifiers(modifiers)
+                .WithType(symbol.Type.ToTypeSyntax());
+        }
 
         public static ParameterListSyntax ToParameterListSyntax(this IMethodSymbol symbol)
         {
