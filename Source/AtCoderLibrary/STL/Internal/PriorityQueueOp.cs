@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace AtCoder.Internal
 {
+    [DebuggerTypeProxy(typeof(PriorityQueueOp<,>.DebugView))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
-    public class PriorityQueueOp<T, TOp> where TOp : IComparer<T>
+    public class PriorityQueueOp<T, TOp> : IPriorityQueueOp<T, TOp>, IEnumerable
+        where TOp : IComparer<T>
     {
         protected T[] data;
         protected readonly TOp _comparer;
@@ -88,16 +91,23 @@ namespace AtCoder.Internal
             data[i] = tar;
         }
         public void Clear() => Count = 0;
-        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051", Justification = "for debugger")]
-        private T[] Items
+
+        private T[] GetItems()
         {
-            get
+            var arr = new ArraySegment<T>(data, 0, Count).ToArray();
+            Array.Sort(arr, _comparer);
+            return arr;
+        }
+        IEnumerator IEnumerable.GetEnumerator() => GetItems().GetEnumerator();
+        private class DebugView
+        {
+            private readonly PriorityQueueOp<T, TOp> pq;
+            public DebugView(PriorityQueueOp<T, TOp> pq)
             {
-                var arr = new ArraySegment<T>(data, 0, Count).ToArray();
-                Array.Sort(arr, _comparer);
-                return arr;
+                this.pq = pq;
             }
+            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+            public T[] Items => pq.GetItems();
         }
     }
 }
