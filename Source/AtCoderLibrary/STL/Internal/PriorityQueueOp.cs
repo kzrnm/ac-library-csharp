@@ -59,14 +59,13 @@ namespace AtCoder.Internal
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected internal void UpdateUp(int i)
         {
-            if (i > 0)
+            while (i > 0)
             {
                 var p = (i - 1) >> 1;
-                if (_comparer.Compare(data[i], data[p]) < 0)
-                {
-                    (data[p], data[i]) = (data[i], data[p]);
-                    UpdateUp(p);
-                }
+                if (_comparer.Compare(data[i], data[p]) >= 0)
+                    return;
+                (data[p], data[i]) = (data[i], data[p]);
+                i = p;
             }
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -74,14 +73,14 @@ namespace AtCoder.Internal
         {
             var n = Count;
             var child = 2 * i + 1;
-            if (child < n)
+            while (child < n)
             {
                 if (child != n - 1 && _comparer.Compare(data[child], data[child + 1]) > 0) child++;
-                if (_comparer.Compare(data[i], data[child]) > 0)
-                {
-                    (data[child], data[i]) = (data[i], data[child]);
-                    UpdateDown(child);
-                }
+                if (_comparer.Compare(data[i], data[child]) <= 0)
+                    return;
+                (data[child], data[i]) = (data[i], data[child]);
+                i = child;
+                child = 2 * i + 1;
             }
         }
         public void Clear() => Count = 0;
