@@ -60,13 +60,21 @@ namespace AtCoder
                     pq.Count.Should().Be(list.Count).And.Be(i + 1);
                 }
                 list.Sort();
-                int count = list.Count;
                 foreach (var lx in list)
                 {
-                    pq.Count.Should().Be(count--);
-                    pq.Peek.Should().Be(lx);
                     pq.Dequeue().Should().Be(lx);
                 }
+                pq.Count.Should().Be(0);
+
+                list.Reverse();
+                foreach (var lx in list)
+                    pq.Add(-lx);
+                foreach (var lx in list)
+                {
+                    pq.TryDequeue(out var res).Should().BeTrue();
+                    res.Should().Be(-lx);
+                }
+                pq.TryDequeue(out _).Should().BeFalse();
                 pq.Count.Should().Be(0);
             }
         }
@@ -87,13 +95,33 @@ namespace AtCoder
                     pq.Count.Should().Be(list.Count).And.Be(i + 1);
                 }
                 list.Sort();
-                int count = list.Count;
                 foreach (var lx in list)
                 {
-                    pq.Count.Should().Be(count--);
-                    pq.Peek.Should().Be(KeyValuePair.Create((long)lx, -lx));
                     pq.Dequeue().Should().Be(KeyValuePair.Create((long)lx, -lx));
                 }
+                pq.Count.Should().Be(0);
+
+
+                list.Reverse();
+                foreach (var lx in list)
+                    pq.Add(-lx, lx);
+                foreach (var lx in list)
+                {
+                    pq.TryDequeue(out var res).Should().BeTrue();
+                    res.Should().Be(KeyValuePair.Create(-(long)lx, lx));
+                }
+                pq.TryDequeue(out _).Should().BeFalse();
+                pq.Count.Should().Be(0);
+
+                foreach (var lx in list)
+                    pq.Add(-lx, lx);
+                foreach (var lx in list)
+                {
+                    pq.TryDequeue(out var key, out var val).Should().BeTrue();
+                    key.Should().Be(-lx);
+                    val.Should().Be(lx);
+                }
+                pq.TryDequeue(out _, out _).Should().BeFalse();
                 pq.Count.Should().Be(0);
             }
         }
@@ -115,13 +143,21 @@ namespace AtCoder
                     pq.Count.Should().Be(list.Count).And.Be(i + 1);
                 }
                 list.Sort(ComparerUtil.ReverseComparerInt);
-                int count = list.Count;
                 foreach (var lx in list)
                 {
-                    pq.Count.Should().Be(count--);
-                    pq.Peek.Should().Be(lx);
                     pq.Dequeue().Should().Be(lx);
                 }
+                pq.Count.Should().Be(0);
+
+                list.Reverse();
+                foreach (var lx in list)
+                    pq.Add(-lx);
+                foreach (var lx in list)
+                {
+                    pq.TryDequeue(out var res).Should().BeTrue();
+                    res.Should().Be(-lx);
+                }
+                pq.TryDequeue(out _).Should().BeFalse();
                 pq.Count.Should().Be(0);
             }
         }
@@ -142,13 +178,32 @@ namespace AtCoder
                     pq.Count.Should().Be(list.Count).And.Be(i + 1);
                 }
                 list.Sort(ComparerUtil.ReverseComparerInt);
-                int count = list.Count;
                 foreach (var lx in list)
                 {
-                    pq.Count.Should().Be(count--);
-                    pq.Peek.Should().Be(KeyValuePair.Create((long)lx, -lx));
                     pq.Dequeue().Should().Be(KeyValuePair.Create((long)lx, -lx));
                 }
+                pq.Count.Should().Be(0);
+
+                list.Reverse();
+                foreach (var lx in list)
+                    pq.Add(-lx, lx);
+                foreach (var lx in list)
+                {
+                    pq.TryDequeue(out var res).Should().BeTrue();
+                    res.Should().Be(KeyValuePair.Create(-(long)lx, lx));
+                }
+                pq.TryDequeue(out _).Should().BeFalse();
+                pq.Count.Should().Be(0);
+
+                foreach (var lx in list)
+                    pq.Add(-lx, lx);
+                foreach (var lx in list)
+                {
+                    pq.TryDequeue(out var key, out var val).Should().BeTrue();
+                    key.Should().Be(-lx);
+                    val.Should().Be(lx);
+                }
+                pq.TryDequeue(out _, out _).Should().BeFalse();
                 pq.Count.Should().Be(0);
             }
         }

@@ -38,6 +38,17 @@ namespace AtCoder.Internal
             UpdateUp(Count - 1);
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool TryDequeue(out T result)
+        {
+            if (Count == 0)
+            {
+                result = default(T);
+                return false;
+            }
+            result = Dequeue();
+            return true;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T Dequeue()
         {
             var res = data[0];
