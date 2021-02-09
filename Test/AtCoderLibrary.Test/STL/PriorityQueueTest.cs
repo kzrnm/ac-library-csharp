@@ -60,8 +60,11 @@ namespace AtCoder
                     pq.Count.Should().Be(list.Count).And.Be(i + 1);
                 }
                 list.Sort();
+                int count = list.Count;
                 foreach (var lx in list)
                 {
+                    pq.Count.Should().Be(count--);
+                    pq.Peek.Should().Be(lx);
                     pq.Dequeue().Should().Be(lx);
                 }
                 pq.Count.Should().Be(0);
@@ -84,8 +87,11 @@ namespace AtCoder
                     pq.Count.Should().Be(list.Count).And.Be(i + 1);
                 }
                 list.Sort();
+                int count = list.Count;
                 foreach (var lx in list)
                 {
+                    pq.Count.Should().Be(count--);
+                    pq.Peek.Should().Be(KeyValuePair.Create((long)lx, -lx));
                     pq.Dequeue().Should().Be(KeyValuePair.Create((long)lx, -lx));
                 }
                 pq.Count.Should().Be(0);
@@ -109,8 +115,11 @@ namespace AtCoder
                     pq.Count.Should().Be(list.Count).And.Be(i + 1);
                 }
                 list.Sort(ComparerUtil.ReverseComparerInt);
+                int count = list.Count;
                 foreach (var lx in list)
                 {
+                    pq.Count.Should().Be(count--);
+                    pq.Peek.Should().Be(lx);
                     pq.Dequeue().Should().Be(lx);
                 }
                 pq.Count.Should().Be(0);
@@ -133,8 +142,11 @@ namespace AtCoder
                     pq.Count.Should().Be(list.Count).And.Be(i + 1);
                 }
                 list.Sort(ComparerUtil.ReverseComparerInt);
+                int count = list.Count;
                 foreach (var lx in list)
                 {
+                    pq.Count.Should().Be(count--);
+                    pq.Peek.Should().Be(KeyValuePair.Create((long)lx, -lx));
                     pq.Dequeue().Should().Be(KeyValuePair.Create((long)lx, -lx));
                 }
                 pq.Count.Should().Be(0);
