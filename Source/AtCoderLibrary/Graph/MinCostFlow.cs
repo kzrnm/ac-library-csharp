@@ -281,7 +281,7 @@ namespace AtCoder
                 var vis = new bool[_n];
 
                 var queMin = new Stack<int>();
-                var que = new PriorityQueueForMcf();
+                var que = new PriorityQueueOp<TCost, int, TCostOp>();
 
                 dist[s] = default;
                 queMin.Push(s);
@@ -291,7 +291,7 @@ namespace AtCoder
                     if (queMin.Count > 0)
                         v = queMin.Pop();
                     else
-                        v = que.Dequeue().to;
+                        v = que.Dequeue().Value;
                     if (vis[v]) continue;
                     vis[v] = true;
                     if (v == t) break;
@@ -318,7 +318,7 @@ namespace AtCoder
                             if (EqualityComparer<TCost>.Default.Equals(distTo, distV))
                                 queMin.Push(e.To);
                             else
-                                que.Enqueue(distTo, e.To);
+                                que.Add(distTo, e.To);
                         }
                     }
                 }
@@ -429,80 +429,5 @@ namespace AtCoder
 
         private readonly int _n;
         private readonly SimpleList<Edge> _edges = new SimpleList<Edge>();
-
-        private class PriorityQueueForMcf
-        {
-            private (TCost cost, int to)[] _heap;
-
-            public int Count { get; private set; } = 0;
-            public PriorityQueueForMcf()
-            {
-                _heap = new (TCost cost, int to)[1024];
-            }
-
-            public void Enqueue(TCost cost, int to)
-            {
-                var pair = (cost, to);
-                if (_heap.Length == Count)
-                {
-                    var newHeap = new (TCost cost, int to)[_heap.Length * 2];
-                    _heap.CopyTo(newHeap, 0);
-                    _heap = newHeap;
-                }
-
-                _heap[Count] = pair;
-                ++Count;
-
-                int c = Count - 1;
-                while (c > 0)
-                {
-                    int p = (c - 1) >> 1;
-                    if (costOp.LessThan(cost, _heap[p].cost))
-                    {
-                        _heap[c] = _heap[p];
-                        c = p;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-
-                _heap[c] = pair;
-            }
-
-            public (TCost cost, int to) Dequeue()
-            {
-                (TCost cost, int to) ret = _heap[0];
-                int n = Count - 1;
-
-                var item = _heap[n];
-                int p = 0;
-                int c = (p << 1) + 1;
-                while (c < n)
-                {
-                    if (c != n - 1 && costOp.GreaterThan(_heap[c].cost, _heap[c + 1].cost))
-                    {
-                        ++c;
-                    }
-
-                    if (costOp.LessThan(_heap[c].cost, item.cost))
-                    {
-                        _heap[p] = _heap[c];
-                        p = c;
-                        c = (p << 1) + 1;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-
-                _heap[p] = item;
-                Count--;
-
-                return ret;
-            }
-        }
     }
 }
