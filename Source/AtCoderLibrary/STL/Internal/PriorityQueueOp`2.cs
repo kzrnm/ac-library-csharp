@@ -23,8 +23,9 @@ namespace AtCoder.Internal
         {
             if (comparer == null)
                 throw new ArgumentNullException(nameof(comparer));
-            keys = new TKey[Math.Max(capacity, DefaultCapacity)];
-            values = new TValue[Math.Max(capacity, DefaultCapacity)];
+            int size = Math.Max(capacity, DefaultCapacity);
+            keys = new TKey[size];
+            values = new TValue[size];
             _comparer = comparer;
         }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
