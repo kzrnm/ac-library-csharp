@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace AtCoder.Internal
+﻿namespace AtCoder.Internal
 {
-    public interface IPriorityQueueOp<T, TOp> where TOp : IComparer<T>
+    public interface IPriorityQueueOp<T>
     {
         int Count { get; }
         T Peek { get; }

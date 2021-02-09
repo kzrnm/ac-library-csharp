@@ -8,7 +8,7 @@ namespace AtCoder.Internal
 {
     [DebuggerTypeProxy(typeof(PriorityQueueOp<,>.DebugView))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
-    public class PriorityQueueOp<T, TOp> : IPriorityQueueOp<T, TOp>, IEnumerable
+    public class PriorityQueueOp<T, TOp> : IPriorityQueueOp<T>, IEnumerable
         where TOp : IComparer<T>
     {
         protected T[] data;
