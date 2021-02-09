@@ -59,29 +59,33 @@ namespace AtCoder.Internal
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected internal void UpdateUp(int i)
         {
+            var tar = data[i];
             while (i > 0)
             {
                 var p = (i - 1) >> 1;
-                if (_comparer.Compare(data[i], data[p]) >= 0)
-                    return;
-                (data[p], data[i]) = (data[i], data[p]);
+                if (_comparer.Compare(tar, data[p]) >= 0)
+                    break;
+                data[i] = data[p];
                 i = p;
             }
+            data[i] = tar;
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected internal void UpdateDown(int i)
         {
+            var tar = data[i];
             var n = Count;
             var child = 2 * i + 1;
             while (child < n)
             {
                 if (child != n - 1 && _comparer.Compare(data[child], data[child + 1]) > 0) child++;
-                if (_comparer.Compare(data[i], data[child]) <= 0)
-                    return;
-                (data[child], data[i]) = (data[i], data[child]);
+                if (_comparer.Compare(tar, data[child]) <= 0)
+                    break;
+                data[i] = data[child];
                 i = child;
                 child = 2 * i + 1;
             }
+            data[i] = tar;
         }
         public void Clear() => Count = 0;
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
