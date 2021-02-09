@@ -5,9 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.6] - 2021-02-09
+### Added
+- Add PriorityQueue.TryDequeue
+- Add New StlFunction.NextPermutation method like std::next_permutation
+
+### Changed
+- Avoid Recursive call in PriorityQueue
+- McfGraph use PriorityQueueOp
+- Rename StlFunction.NextPermutation to StlFunction.Permutations
+
 ## [1.2.5] - 2021-02-06
 ### Added
-Add DebugView to SimpleList<T>
+- Add DebugView to SimpleList<T>
 
 ## [1.2.4] - 2021-02-04
 ### Changed

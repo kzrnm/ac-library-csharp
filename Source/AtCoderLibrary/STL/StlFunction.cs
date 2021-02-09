@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using AtCoder.Internal;
 
 namespace AtCoder
 {
@@ -29,22 +28,7 @@ namespace AtCoder
                     Current = _orig.ToArray();
                     return true;
                 }
-
-                var arr = Current;
-
-                int i;
-                for (i = arr.Length - 2; i >= 0; i--)
-                    if (arr[i].CompareTo(arr[i + 1]) < 0)
-                        break;
-                if (i < 0)
-                    return false;
-                int j;
-                for (j = arr.Length - 1; j >= 0; j--)
-                    if (arr[i].CompareTo(arr[j]) < 0)
-                        break;
-                (arr[i], arr[j]) = (arr[j], arr[i]);
-                Array.Reverse(arr, i + 1, arr.Length - i - 1);
-                return true;
+                return NextPermutation(Current);
             }
             public void Reset() => Current = null;
             object IEnumerator.Current => Current;
@@ -53,11 +37,36 @@ namespace AtCoder
             IEnumerator<T[]> IEnumerable<T[]>.GetEnumerator() => this;
             IEnumerator IEnumerable.GetEnumerator() => this;
         }
+        /// <summary>
+        /// 順列を辞書順によるその次の順列に更新します。
+        /// </summary>
+        /// <returns>更新に成功したら <see langword="true"/>。順列の最後ならば <see langword="false"/> </returns>
+        public static bool NextPermutation<T>(T[] array) where T : IComparable<T> => NextPermutation(array.AsSpan());
+        /// <summary>
+        /// 順列を辞書順によるその次の順列に更新します。
+        /// </summary>
+        /// <returns>更新に成功したら <see langword="true"/>。順列の最後ならば <see langword="false"/> </returns>
+        public static bool NextPermutation<T>(Span<T> span) where T : IComparable<T>
+        {
+            int i;
+            for (i = span.Length - 2; i >= 0; i--)
+                if (span[i].CompareTo(span[i + 1]) < 0)
+                    break;
+            if (i < 0)
+                return false;
+            int j;
+            for (j = span.Length - 1; j >= 0; j--)
+                if (span[i].CompareTo(span[j]) < 0)
+                    break;
+            (span[i], span[j]) = (span[j], span[i]);
+            span.Slice(i + 1, span.Length - i - 1).Reverse();
+            return true;
+        }
 
         /// <summary>
-        /// 辞書順によるその次の順列を生成します。返すインスタンスは共通です。
+        /// 辞書順による順列を生成します。返すインスタンスは共通です。
         /// </summary>
-        public static NextPermutationEnumerator<T> NextPermutation<T>(IEnumerable<T> orig) where T : IComparable<T>
+        public static NextPermutationEnumerator<T> Permutations<T>(IEnumerable<T> orig) where T : IComparable<T>
             => new NextPermutationEnumerator<T>(orig);
         #endregion NextPermutation
 

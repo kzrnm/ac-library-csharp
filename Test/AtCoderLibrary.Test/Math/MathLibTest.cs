@@ -184,7 +184,7 @@ namespace AtCoder
                 }
             }
 
-            foreach (var factorInf in StlFunction.NextPermutation(new long[] { 49, 73, 127, 337, 92737, 649657 }))
+            foreach (var factorInf in StlFunction.Permutations(new long[] { 49, 73, 127, 337, 92737, 649657 }))
             {
                 foreach (long ans in pred)
                 {
@@ -200,7 +200,7 @@ namespace AtCoder
                 }
             }
 
-            foreach (var factorInfn1 in StlFunction.NextPermutation(new long[] { 2, 3, 715827883, 2147483647 }))
+            foreach (var factorInfn1 in StlFunction.Permutations(new long[] { 2, 3, 715827883, 2147483647 }))
             {
                 foreach (long ans in pred)
                 {

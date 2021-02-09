@@ -166,7 +166,7 @@ namespace AtCoder
 
         private void Generic<T>(T[] input, T[][] expected) where T : IComparable<T>
         {
-            var e = StlFunction.NextPermutation(input).GetEnumerator();
+            var e = StlFunction.Permutations(input).GetEnumerator();
             for (int i = 0; i < expected.Length; i++)
             {
                 e.MoveNext().Should().BeTrue();
