@@ -65,6 +65,17 @@ namespace AtCoder
                     pq.Dequeue().Should().Be(lx);
                 }
                 pq.Count.Should().Be(0);
+
+                list.Reverse();
+                foreach (var lx in list)
+                    pq.Add(-lx);
+                foreach (var lx in list)
+                {
+                    pq.TryDequeue(out var res).Should().BeTrue();
+                    res.Should().Be(-lx);
+                }
+                pq.TryDequeue(out _).Should().BeFalse();
+                pq.Count.Should().Be(0);
             }
         }
         [Fact]
@@ -88,6 +99,29 @@ namespace AtCoder
                 {
                     pq.Dequeue().Should().Be(KeyValuePair.Create((long)lx, -lx));
                 }
+                pq.Count.Should().Be(0);
+
+
+                list.Reverse();
+                foreach (var lx in list)
+                    pq.Add(-lx, lx);
+                foreach (var lx in list)
+                {
+                    pq.TryDequeue(out var res).Should().BeTrue();
+                    res.Should().Be(KeyValuePair.Create(-(long)lx, lx));
+                }
+                pq.TryDequeue(out _).Should().BeFalse();
+                pq.Count.Should().Be(0);
+
+                foreach (var lx in list)
+                    pq.Add(-lx, lx);
+                foreach (var lx in list)
+                {
+                    pq.TryDequeue(out var key, out var val).Should().BeTrue();
+                    key.Should().Be(-lx);
+                    val.Should().Be(lx);
+                }
+                pq.TryDequeue(out _, out _).Should().BeFalse();
                 pq.Count.Should().Be(0);
             }
         }
@@ -114,6 +148,17 @@ namespace AtCoder
                     pq.Dequeue().Should().Be(lx);
                 }
                 pq.Count.Should().Be(0);
+
+                list.Reverse();
+                foreach (var lx in list)
+                    pq.Add(-lx);
+                foreach (var lx in list)
+                {
+                    pq.TryDequeue(out var res).Should().BeTrue();
+                    res.Should().Be(-lx);
+                }
+                pq.TryDequeue(out _).Should().BeFalse();
+                pq.Count.Should().Be(0);
             }
         }
         [Fact]
@@ -137,6 +182,28 @@ namespace AtCoder
                 {
                     pq.Dequeue().Should().Be(KeyValuePair.Create((long)lx, -lx));
                 }
+                pq.Count.Should().Be(0);
+
+                list.Reverse();
+                foreach (var lx in list)
+                    pq.Add(-lx, lx);
+                foreach (var lx in list)
+                {
+                    pq.TryDequeue(out var res).Should().BeTrue();
+                    res.Should().Be(KeyValuePair.Create(-(long)lx, lx));
+                }
+                pq.TryDequeue(out _).Should().BeFalse();
+                pq.Count.Should().Be(0);
+
+                foreach (var lx in list)
+                    pq.Add(-lx, lx);
+                foreach (var lx in list)
+                {
+                    pq.TryDequeue(out var key, out var val).Should().BeTrue();
+                    key.Should().Be(-lx);
+                    val.Should().Be(lx);
+                }
+                pq.TryDequeue(out _, out _).Should().BeFalse();
                 pq.Count.Should().Be(0);
             }
         }

@@ -38,6 +38,17 @@ namespace AtCoder.Internal
             UpdateUp(Count - 1);
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool TryDequeue(out T result)
+        {
+            if (Count == 0)
+            {
+                result = default(T);
+                return false;
+            }
+            result = Dequeue();
+            return true;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T Dequeue()
         {
             var res = data[0];
@@ -48,30 +59,33 @@ namespace AtCoder.Internal
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected internal void UpdateUp(int i)
         {
-            if (i > 0)
+            var tar = data[i];
+            while (i > 0)
             {
                 var p = (i - 1) >> 1;
-                if (_comparer.Compare(data[i], data[p]) < 0)
-                {
-                    (data[p], data[i]) = (data[i], data[p]);
-                    UpdateUp(p);
-                }
+                if (_comparer.Compare(tar, data[p]) >= 0)
+                    break;
+                data[i] = data[p];
+                i = p;
             }
+            data[i] = tar;
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected internal void UpdateDown(int i)
         {
+            var tar = data[i];
             var n = Count;
             var child = 2 * i + 1;
-            if (child < n)
+            while (child < n)
             {
                 if (child != n - 1 && _comparer.Compare(data[child], data[child + 1]) > 0) child++;
-                if (_comparer.Compare(data[i], data[child]) > 0)
-                {
-                    (data[child], data[i]) = (data[i], data[child]);
-                    UpdateDown(child);
-                }
+                if (_comparer.Compare(tar, data[child]) <= 0)
+                    break;
+                data[i] = data[child];
+                i = child;
+                child = 2 * i + 1;
             }
+            data[i] = tar;
         }
         public void Clear() => Count = 0;
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
