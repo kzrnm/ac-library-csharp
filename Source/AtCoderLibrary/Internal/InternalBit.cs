@@ -4,15 +4,17 @@ using System.Runtime.Intrinsics.X86;
 
 namespace AtCoder.Internal
 {
+    using static MethodImplOptions;
     public static class InternalBit
     {
+
         /// <summary>
         /// _blsi_u32 OR <paramref name="n"/> &amp; -<paramref name="n"/>
         /// <para><paramref name="n"/>で立っているうちの最下位の 1 ビットのみを立てた整数を返す</para>
         /// </summary>
         /// <param name="n"></param>
         /// <returns><paramref name="n"/> &amp; -<paramref name="n"/></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public static int ExtractLowestSetBit(int n)
         {
             if (Bmi1.IsSupported)
@@ -29,7 +31,7 @@ namespace AtCoder.Internal
         /// <para>BSF: Bit Scan Forward</para>
         /// <para>制約: 1 ≤ <paramref name="n"/></para>
         /// </remarks>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public static int BSF(uint n)
         {
             Contract.Assert(n > 0, reason: $"nameof(n) must positive");
@@ -42,6 +44,7 @@ namespace AtCoder.Internal
         /// <remarks>
         /// <para>制約: 0≤<paramref name="n"/></para>
         /// </remarks>
+        [MethodImpl(AggressiveInlining)]
         public static int CeilPow2(int n)
         {
             var un = (uint)n;
