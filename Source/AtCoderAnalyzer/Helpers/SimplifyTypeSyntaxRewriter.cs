@@ -12,9 +12,10 @@ namespace AtCoderAnalyzer.Helpers
 
         public override SyntaxNode VisitQualifiedName(QualifiedNameSyntax node)
         {
+            var right = (SimpleNameSyntax)Visit(node.Right);
             if (Usings.Contains(node.Left.ToString()))
-                return base.Visit(node.Right);
-            return base.VisitQualifiedName(node);
+                return right;
+            return SyntaxFactory.QualifiedName(node.Left, right);
         }
     }
 }
