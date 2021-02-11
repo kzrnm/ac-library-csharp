@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - 2021-02-11
 ### Changed
+- Update CreateOperatorCodeFixProvider
 - Use Span<T>.Fill
 - CeilPow2 AggressiveInlining
 

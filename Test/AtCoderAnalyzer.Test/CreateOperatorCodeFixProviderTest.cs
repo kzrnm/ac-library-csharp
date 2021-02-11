@@ -654,7 +654,7 @@ struct Op : System.Collections.Generic.IComparer<short>
     public int Compare(short x, short y) => default;
 }";
             await VerifyCS.VerifyCodeFixAsync(source,
-                VerifyCS.Diagnostic().WithSpan(6, 5, 6, 23).WithArguments("Op"),
+                VerifyCS.Diagnostic("AC0008").WithSpan(6, 5, 6, 23).WithArguments("Op"),
                 fixedSource);
         }
 
@@ -716,7 +716,7 @@ struct Op : IAny<(int, long)>
     public (int, long) Prop2 { set; get; }
 }";
             await VerifyCS.VerifyCodeFixAsync(source,
-                VerifyCS.Diagnostic().WithSpan(12, 5, 12, 29).WithArguments("Op"),
+                VerifyCS.Diagnostic("AC0008").WithSpan(12, 5, 12, 29).WithArguments("Op"),
                fixedSource);
         }
 
@@ -770,8 +770,100 @@ struct Op : IAny<(int n, long m)>
     public (int n, long m) Prop2 { set; get; }
 }";
             await VerifyCS.VerifyCodeFixAsync(source,
-                VerifyCS.Diagnostic().WithSpan(14, 9, 14, 31).WithArguments("Op"),
+                VerifyCS.Diagnostic("AC0008").WithSpan(14, 9, 14, 31).WithArguments("Op"),
                fixedSource);
+        }
+
+        [Fact]
+        public async Task Array()
+        {
+            var source = @"
+using AtCoder;
+using System.Runtime.CompilerServices;
+
+[IsOperator]
+public interface IAny<T> {
+    T Prop { get; }
+}
+class Program
+{
+    static void M<T, TOp>() where TOp : struct, IAny<T> {}
+    static void Run()
+    {
+        M<System.Numerics.BigInteger[], BigOp>();
+    }
+}
+";
+            var fixedSource = @"
+using AtCoder;
+using System.Runtime.CompilerServices;
+
+[IsOperator]
+public interface IAny<T> {
+    T Prop { get; }
+}
+class Program
+{
+    static void M<T, TOp>() where TOp : struct, IAny<T> {}
+    static void Run()
+    {
+        M<System.Numerics.BigInteger[], BigOp>();
+    }
+}
+
+struct BigOp : IAny<System.Numerics.BigInteger[]>
+{
+    public System.Numerics.BigInteger[] Prop => default;
+}";
+            await VerifyCS.VerifyCodeFixAsync(source,
+                VerifyCS.Diagnostic("AC0008").WithSpan(14, 9, 14, 47).WithArguments("BigOp"),
+                fixedSource);
+        }
+
+        [Fact]
+        public async Task Generic()
+        {
+            var source = @"
+using AtCoder;
+using System.Runtime.CompilerServices;
+
+[IsOperator]
+public interface IAny<T> {
+    T Prop { get; }
+}
+class Program
+{
+    static void M<T, TOp>() where TOp : struct, IAny<T> {}
+    static void Run()
+    {
+        M<StaticModInt<Mod1000000007>, ModOp>();
+    }
+}
+";
+            var fixedSource = @"
+using AtCoder;
+using System.Runtime.CompilerServices;
+
+[IsOperator]
+public interface IAny<T> {
+    T Prop { get; }
+}
+class Program
+{
+    static void M<T, TOp>() where TOp : struct, IAny<T> {}
+    static void Run()
+    {
+        M<StaticModInt<Mod1000000007>, ModOp>();
+    }
+}
+
+struct ModOp : IAny<StaticModInt<Mod1000000007>>
+{
+    public StaticModInt<Mod1000000007> Prop => default;
+}";
+            await VerifyCS.VerifyCodeFixAsync(source,
+                VerifyCS.Diagnostic("AC0008").WithSpan(14, 9, 14, 46).WithArguments("ModOp"),
+                fixedSource);
         }
     }
 }
