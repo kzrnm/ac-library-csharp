@@ -34,7 +34,7 @@ namespace AtCoder.Internal
         [MethodImpl(AggressiveInlining)]
         public static int BSF(uint n)
         {
-            Contract.Assert(n > 0, reason: $"nameof(n) must positive");
+            Contract.Assert(n > 0, reason: $"{nameof(n)} must positive");
             return BitOperations.TrailingZeroCount(n);
         }
 
