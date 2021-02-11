@@ -231,11 +231,7 @@ namespace AtCoder
 
             void Bfs()
             {
-                for (int i = 0; i < _n; i++)
-                {
-                    level[i] = -1;
-                }
-
+                level.AsSpan().Fill(-1);
                 level[s] = 0;
                 que.Clear();
                 que.Enqueue(s);
