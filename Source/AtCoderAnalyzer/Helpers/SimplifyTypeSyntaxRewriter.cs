@@ -10,15 +10,11 @@ namespace AtCoderAnalyzer.Helpers
         private ImmutableHashSet<string> Usings { get; }
         public SimplifyTypeSyntaxRewriter(ImmutableHashSet<string> usings) => Usings = usings;
 
-        public override SyntaxNode Visit(SyntaxNode node)
+        public override SyntaxNode VisitQualifiedName(QualifiedNameSyntax node)
         {
-            if (node is QualifiedNameSyntax qualified)
-            {
-                if (Usings.Contains(qualified.Left.ToString()))
-                    return qualified.Right;
-                return qualified;
-            }
-            return base.Visit(node);
+            if (Usings.Contains(node.Left.ToString()))
+                return base.Visit(node.Right);
+            return base.VisitQualifiedName(node);
         }
     }
 }

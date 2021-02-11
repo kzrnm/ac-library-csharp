@@ -70,7 +70,7 @@ namespace AtCoderAnalyzer
                 var writtenTypeSyntax = writtenTypeSyntaxes[i];
                 var originalType = originalTypes[i];
                 var constraintTypes = originalType.ConstraintTypes;
-                var writtenType = writtenTypes[i] as INamedTypeSymbol;
+                var writtenType = writtenTypes[i] as ITypeSymbol;
 
                 if (!constraintTypes
                     .OfType<INamedTypeSymbol>()
