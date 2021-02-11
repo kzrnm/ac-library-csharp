@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using AtCoder.Internal;
 
@@ -22,7 +23,7 @@ namespace AtCoder
         {
             _n = n;
             _parentOrSize = new int[n];
-            for (int i = 0; i < _parentOrSize.Length; i++) _parentOrSize[i] = -1;
+            _parentOrSize.AsSpan().Fill(-1);
         }
 
         /// <summary>

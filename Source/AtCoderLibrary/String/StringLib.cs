@@ -350,7 +350,8 @@ namespace AtCoder
                     }
                 }
 
-                var lmsMap = GetFilledArray(-1, n + 1);
+                var lmsMap = new int[n + 1];
+                lmsMap.AsSpan().Fill(-1);
                 int m = 0;
                 for (int i = 1; i < ls.Length; i++)
                 {
@@ -478,28 +479,6 @@ namespace AtCoder
                         }
                     }
                 }
-            }
-
-            /// <summary>
-            /// 各要素が <paramref name="value"/> で初期化された長さ <paramref name="length"/> の配列を取得する。
-            /// </summary>
-            private static T[] GetFilledArray<T>(T value, int length)
-            {
-                // Enumerable.Repeatより1-2割ほど高速（64bit環境、intの場合）
-                // |           Method |     Mean |   Error |  StdDev |
-                // |----------------- |---------:|--------:|--------:|
-                // | EnumerableRepeat | 212.7 ms | 2.99 ms | 2.80 ms |
-                // |         SpanFill | 178.7 ms | 1.29 ms | 1.14 ms |
-
-                // ちなみにEnumerable.Rangeとnew[] + for文とでは有意差は見られない
-                // |          Method |     Mean |   Error |  StdDev |
-                // |---------------- |---------:|--------:|--------:|
-                // | EnumerableRange | 225.6 ms | 4.35 ms | 3.85 ms |
-                // |         SpanFor | 223.0 ms | 2.88 ms | 2.69 ms |
-
-                var result = new T[length];
-                result.AsSpan().Fill(value);
-                return result;
             }
         }
     }
