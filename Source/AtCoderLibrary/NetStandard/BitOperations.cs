@@ -1,7 +1,7 @@
 ﻿#if NETSTANDARD2_1
 using System.Runtime.CompilerServices;
 
-namespace System.Numerics
+namespace AtCoder.Internal
 {
     using static MethodImplOptions;
     public static class BitOperations

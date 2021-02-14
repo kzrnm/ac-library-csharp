@@ -1,6 +1,6 @@
-﻿using System.Numerics;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 #if !NETSTANDARD2_1
+using System.Numerics;
 using System.Runtime.Intrinsics.X86;
 #endif
 
