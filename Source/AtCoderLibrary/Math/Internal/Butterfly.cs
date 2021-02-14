@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Numerics;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+#if !NETSTANDARD2_1
+using System.Runtime.CompilerServices;
+#endif
 
 namespace AtCoder.Internal
 {
@@ -18,7 +20,9 @@ namespace AtCoder.Internal
         /// </summary>
         internal static readonly StaticModInt<T>[] sumIE = CalcurateSumIE();
 
+#if !NETSTANDARD2_1
         [MethodImpl(MethodImplOptions.AggressiveOptimization)]
+#endif
         public static void Calculate(Span<StaticModInt<T>> a)
         {
             CheckPow2(a.Length);
@@ -26,6 +30,9 @@ namespace AtCoder.Internal
             var h = InternalBit.CeilPow2(n);
 
             var regLength = Vector<uint>.Count;
+#if NETSTANDARD2_1
+            var copyTmp = new uint[regLength];
+#endif
 
             // 全要素がmodのVector<uint>を作成（比較および加減算用）
             var modV = new Vector<uint>(default(T).Mod);
@@ -84,8 +91,15 @@ namespace AtCoder.Internal
                             ge = Vector.GreaterThanOrEqual(sub, modV);
                             sub = Vector.ConditionalSelect(ge, sub + modV, sub);
 
+#if NETSTANDARD2_1
+                            add.CopyTo(copyTmp);
+                            copyTmp.CopyTo(luSliced);
+                            sub.CopyTo(copyTmp);
+                            copyTmp.CopyTo(ruSliced);
+#else
                             add.CopyTo(luSliced);
                             sub.CopyTo(ruSliced);
+#endif
                         }
                     }
 
@@ -94,7 +108,9 @@ namespace AtCoder.Internal
             }
         }
 
+#if !NETSTANDARD2_1
         [MethodImpl(MethodImplOptions.AggressiveOptimization)]
+#endif
         public static void CalculateInv(Span<StaticModInt<T>> a)
         {
             CheckPow2(a.Length);
@@ -102,6 +118,9 @@ namespace AtCoder.Internal
             var h = InternalBit.CeilPow2(n);
 
             var regLength = Vector<uint>.Count;
+#if NETSTANDARD2_1
+            var copyTmp = new uint[regLength];
+#endif
 
             // 全要素がmodのVector<uint>を作成（比較および加減算用）
             var modV = new Vector<uint>(default(T).Mod);
@@ -156,8 +175,15 @@ namespace AtCoder.Internal
                             // こちらは後で余りを取るのでマスク不要
                             sub += modV;
 
+#if NETSTANDARD2_1
+                            add.CopyTo(copyTmp);
+                            copyTmp.CopyTo(luSliced);
+                            sub.CopyTo(copyTmp);
+                            copyTmp.CopyTo(ruSliced);
+#else
                             add.CopyTo(luSliced);
                             sub.CopyTo(ruSliced);
+#endif
                         }
 
                         foreach (ref var r in rs)
@@ -181,17 +207,17 @@ namespace AtCoder.Internal
 
             // es[i]^(2^(2+i)) == 1
             Span<StaticModInt<T>> es =
-#if NETCOREAPP3_1
-                stackalloc
-#else
+#if NETSTANDARD2_1
                 new
+#else
+                stackalloc
 #endif
                 StaticModInt<T>[cnt2 - 1];
             Span<StaticModInt<T>> ies =
-#if NETCOREAPP3_1
-                stackalloc
-#else
+#if NETSTANDARD2_1
                 new
+#else
+                stackalloc
 #endif
                 StaticModInt<T>[cnt2 - 1];
 
@@ -225,17 +251,17 @@ namespace AtCoder.Internal
 
             // es[i]^(2^(2+i)) == 1
             Span<StaticModInt<T>> es =
-#if NETCOREAPP3_1
-                stackalloc
-#else
+#if NETSTANDARD2_1
                 new
+#else
+                stackalloc
 #endif
                 StaticModInt<T>[cnt2 - 1];
             Span<StaticModInt<T>> ies =
-#if NETCOREAPP3_1
-                stackalloc
-#else
+#if NETSTANDARD2_1
                 new
+#else
+                stackalloc
 #endif
                 StaticModInt<T>[cnt2 - 1];
 

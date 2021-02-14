@@ -1,6 +1,8 @@
 ﻿using System.Numerics;
 using System.Runtime.CompilerServices;
+#if !NETSTANDARD2_1
 using System.Runtime.Intrinsics.X86;
+#endif
 
 namespace AtCoder.Internal
 {
@@ -17,10 +19,12 @@ namespace AtCoder.Internal
         [MethodImpl(AggressiveInlining)]
         public static int ExtractLowestSetBit(int n)
         {
+#if !NETSTANDARD2_1
             if (Bmi1.IsSupported)
             {
                 return (int)Bmi1.ExtractLowestSetBit((uint)n);
             }
+#endif
             return n & -n;
         }
 
