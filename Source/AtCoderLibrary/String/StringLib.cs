@@ -75,7 +75,7 @@ namespace AtCoder
             var s = m.Span;
             var n = m.Length;
             var idx = Enumerable.Range(0, n).ToArray();
-            Array.Sort(idx, Compare);
+            Array.Sort(idx, new MemoryComparer<T>(m));
             var s2 = new int[n];
             var now = 0;
 
@@ -89,9 +89,16 @@ namespace AtCoder
                 s2[idx[i]] = now;
             }
 
-            return Internal.InternalString.SAIS(s2, now);
-
-            int Compare(int l, int r)
+            return InternalString.SAIS(s2, now);
+        }
+        class MemoryComparer<T> : IComparer<int>
+        {
+            ReadOnlyMemory<T> m;
+            public MemoryComparer(ReadOnlyMemory<T> m)
+            {
+                this.m = m;
+            }
+            public int Compare(int l, int r)
             {
                 var s = m.Span;
                 return Comparer<T>.Default.Compare(s[l], s[r]);
@@ -110,7 +117,7 @@ namespace AtCoder
         {
             var n = s.Length;
             int[] s2 = s.Select(c => (int)c).ToArray();
-            return Internal.InternalString.SAIS(s2, char.MaxValue);
+            return InternalString.SAIS(s2, char.MaxValue);
         }
 
 
@@ -370,7 +377,7 @@ namespace AtCoder
                     }
                 }
 
-                Induce(lms);
+                Induce(lms, sm, sa, ls, sumS, sumL);
 
                 // LMSを再帰的にソート
                 if (m > 0)
@@ -434,49 +441,49 @@ namespace AtCoder
                         sortedLms[i] = lms[recSA[i]];
                     }
 
-                    Induce(sortedLms);
+                    Induce(sortedLms, sm, sa, ls, sumS, sumL);
                 }
 
                 return sa;
+            }
+            static void Induce(SimpleList<int> lms, ReadOnlyMemory<int> sm, int[] sa, bool[] ls, int[] sumS, int[] sumL)
+            {
+                var s = sm.Span;
+                var n = s.Length;
+                sa.AsSpan().Fill(-1);
+                var buf = new int[sumS.Length];
 
-                void Induce(SimpleList<int> lms)
+                // LMS
+                sumS.AsSpan().CopyTo(buf);
+                foreach (var d in lms)
                 {
-                    var s = sm.Span;
-                    sa.AsSpan().Fill(-1);
-                    var buf = new int[sumS.Length];
-
-                    // LMS
-                    sumS.AsSpan().CopyTo(buf);
-                    foreach (var d in lms)
+                    if (d == n)
                     {
-                        if (d == n)
-                        {
-                            continue;
-                        }
-                        sa[buf[s[d]]++] = d;
+                        continue;
                     }
+                    sa[buf[s[d]]++] = d;
+                }
 
-                    // L-type
-                    sumL.AsSpan().CopyTo(buf);
-                    sa[buf[s[n - 1]]++] = n - 1;
-                    for (int i = 0; i < sa.Length; i++)
+                // L-type
+                sumL.AsSpan().CopyTo(buf);
+                sa[buf[s[n - 1]]++] = n - 1;
+                for (int i = 0; i < sa.Length; i++)
+                {
+                    int v = sa[i];
+                    if (v >= 1 && !ls[v - 1])
                     {
-                        int v = sa[i];
-                        if (v >= 1 && !ls[v - 1])
-                        {
-                            sa[buf[s[v - 1]]++] = v - 1;
-                        }
+                        sa[buf[s[v - 1]]++] = v - 1;
                     }
+                }
 
-                    // S-type
-                    sumL.AsSpan().CopyTo(buf);
-                    for (int i = sa.Length - 1; i >= 0; i--)
+                // S-type
+                sumL.AsSpan().CopyTo(buf);
+                for (int i = sa.Length - 1; i >= 0; i--)
+                {
+                    int v = sa[i];
+                    if (v >= 1 && ls[v - 1])
                     {
-                        int v = sa[i];
-                        if (v >= 1 && ls[v - 1])
-                        {
-                            sa[--buf[s[v - 1] + 1]] = v - 1;
-                        }
+                        sa[--buf[s[v - 1] + 1]] = v - 1;
                     }
                 }
             }

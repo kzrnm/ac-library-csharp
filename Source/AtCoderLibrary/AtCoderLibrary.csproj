@@ -1,10 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFrameworks>netstandard2.1;netcoreapp3.1</TargetFrameworks>
     <RootNamespace>AtCoder</RootNamespace>
     <OutputType>Library</OutputType>
-    <LangVersion>8</LangVersion>
+
+    <LangVersion Condition="'$(TargetFramework)' == 'netcoreapp3.1'">8</LangVersion>
+    <LangVersion Condition="'$(TargetFramework)' != 'netcoreapp3.1'">7.3</LangVersion>
+
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
 
     <PackageTags>ac-library-csharp;AtCoder</PackageTags>
@@ -13,9 +16,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
 
-    <NoWarn>$(NoWarn);CA1034</NoWarn>
-
-    <NoWarn>$(NoWarn);CS1574;CS1591;CS1734</NoWarn>
+    <NoWarn>$(NoWarn);CS1574;CA1034;CS1591;CS1734;IDE0039;IDE0057</NoWarn>
     
     <PackageLicenseExpression></PackageLicenseExpression>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>

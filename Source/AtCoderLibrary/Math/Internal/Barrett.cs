@@ -1,4 +1,6 @@
-﻿using System.Runtime.Intrinsics.X86;
+﻿#if !NETSTANDARD2_1
+using System.Runtime.Intrinsics.X86;
+#endif
 
 namespace AtCoder.Internal
 {
@@ -23,11 +25,16 @@ namespace AtCoder.Internal
         {
             ulong z = a;
             z *= b;
-            if (!Bmi2.X64.IsSupported) return (uint)(z % Mod);
-            var x = Bmi2.X64.MultiplyNoFlags(z, IM);
-            var v = unchecked((uint)(z - x * Mod));
-            if (Mod <= v) v += Mod;
-            return v;
+#if !NETSTANDARD2_1
+            if (Bmi2.X64.IsSupported)
+            {
+                var x = Bmi2.X64.MultiplyNoFlags(z, IM);
+                var v = unchecked((uint)(z - x * Mod));
+                if (Mod <= v) v += Mod;
+                return v;
+            }
+#endif
+            return (uint)(z % Mod);
         }
     }
 }

@@ -11,10 +11,17 @@ namespace AtCoder.Embedding
         [Fact]
         public async Task LanguageVersion()
         {
+            const string VERSION =
+#if NETCOREAPP3_0
+                          "7.3"
+#else
+                          "8.0"
+#endif
+                ;
             var embedded = await EmbeddedData.LoadFromAssembly(typeof(Mod1000000007));
             embedded.AssemblyMetadatas
                 .Should().ContainKey("SourceExpander.EmbeddedLanguageVersion")
-                .WhichValue.Should().Be("8.0");
+                .WhichValue.Should().Be(VERSION);
         }
 
         [Fact]

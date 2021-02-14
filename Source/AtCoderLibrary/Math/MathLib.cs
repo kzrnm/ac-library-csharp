@@ -101,7 +101,7 @@ namespace AtCoder
                     bTemp[i] = new StaticModInt<TMod>(b[i]);
                 }
 
-                var c = Convolution<TMod>(aTemp, bTemp, n, m, z)[0..(n + m - 1)];
+                var c = Convolution<TMod>(aTemp, bTemp, n, m, z).Slice(0, n + m - 1);
                 var result = new int[c.Length];
                 for (int i = 0; i < result.Length; i++)
                 {
@@ -154,7 +154,7 @@ namespace AtCoder
                     bTemp[i] = new StaticModInt<TMod>(b[i]);
                 }
 
-                var c = Convolution<TMod>(aTemp, bTemp, n, m, z)[0..(n + m - 1)];
+                var c = Convolution<TMod>(aTemp, bTemp, n, m, z).Slice(0, n + m - 1);
                 var result = new uint[c.Length];
                 for (int i = 0; i < result.Length; i++)
                 {
@@ -206,7 +206,7 @@ namespace AtCoder
                     bTemp[i] = new StaticModInt<TMod>(b[i]);
                 }
 
-                var c = Convolution<TMod>(aTemp, bTemp, n, m, z)[0..(n + m - 1)];
+                var c = Convolution<TMod>(aTemp, bTemp, n, m, z).Slice(0, n + m - 1);
                 var result = new long[c.Length];
                 for (int i = 0; i < result.Length; i++)
                 {
@@ -238,8 +238,9 @@ namespace AtCoder
 
             if (Math.Min(n, m) <= 60)
             {
-                var c = ConvolutionNaive<TMod>(a.Select(TakeMod).ToArray(),
-                                               b.Select(TakeMod).ToArray());
+                Func<ulong, StaticModInt<TMod>> takeMod = x => StaticModInt<TMod>.Raw((int)(x % default(TMod).Mod));
+                var c = ConvolutionNaive<TMod>(a.Select(takeMod).ToArray(),
+                                               b.Select(takeMod).ToArray());
                 return c.Select(ci => (ulong)ci.Value).ToArray();
             }
             else
@@ -249,16 +250,16 @@ namespace AtCoder
                 var aTemp = new StaticModInt<TMod>[z];
                 for (int i = 0; i < a.Length; i++)
                 {
-                    aTemp[i] = TakeMod(a[i]);
+                    aTemp[i] = StaticModInt<TMod>.Raw((int)(a[i] % default(TMod).Mod));
                 }
 
                 var bTemp = new StaticModInt<TMod>[z];
                 for (int i = 0; i < b.Length; i++)
                 {
-                    bTemp[i] = TakeMod(b[i]);
+                    bTemp[i] = StaticModInt<TMod>.Raw((int)(b[i] % default(TMod).Mod));
                 }
 
-                var c = Convolution<TMod>(aTemp, bTemp, n, m, z)[0..(n + m - 1)];
+                var c = Convolution<TMod>(aTemp, bTemp, n, m, z).Slice(0, n + m - 1);
                 var result = new ulong[c.Length];
                 for (int i = 0; i < result.Length; i++)
                 {
@@ -267,7 +268,6 @@ namespace AtCoder
                 return result;
             }
 
-            static StaticModInt<TMod> TakeMod(ulong x) => StaticModInt<TMod>.Raw((int)(x % default(TMod).Mod));
         }
 
         /// <summary>
@@ -328,16 +328,16 @@ namespace AtCoder
         private static Span<StaticModInt<TMod>> Convolution<TMod>(Span<StaticModInt<TMod>> a, Span<StaticModInt<TMod>> b, int n, int m, int z)
             where TMod : struct, IStaticMod
         {
-            Internal.Butterfly<TMod>.Calculate(a);
-            Internal.Butterfly<TMod>.Calculate(b);
+            Butterfly<TMod>.Calculate(a);
+            Butterfly<TMod>.Calculate(b);
 
             for (int i = 0; i < a.Length; i++)
             {
                 a[i] *= b[i];
             }
 
-            Internal.Butterfly<TMod>.CalculateInv(a);
-            var result = a[0..(n + m - 1)];
+            Butterfly<TMod>.CalculateInv(a);
+            var result = a.Slice(0, n + m - 1);
             var iz = new StaticModInt<TMod>(z).Inv();
             foreach (ref var r in result)
             {
