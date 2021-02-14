@@ -264,18 +264,14 @@ namespace AtCoder
             return result;
         }
 
-
-        private List<(TCap cap, TCost cost)> Slope(CSR<EdgeInternal> g, int s, int t, TCap flowLimit)
+        struct SlopeDualRef
         {
-            // variants (C = maxcost):
-            // -(n-1)C <= dual[s] <= dual[i] <= dual[t] = 0
-            // reduced cost (= e.cost + dual[e.from] - dual[e.To]) >= 0 for all edge
-            var dual = new TCost[_n];
-            var dist = new TCost[_n];
-            var prevE = new int[_n];
+            public TCost[] dual, dist;
+            public CSR<EdgeInternal> g;
+            public int[] prevE;
+            public int s, t, _n;
 
-
-            bool DualRef()
+            public bool DualRef()
             {
                 dist.AsSpan().Fill(costOp.MaxValue);
                 var vis = new bool[_n];
@@ -339,7 +335,26 @@ namespace AtCoder
                 }
                 return true;
             }
+        }
+        private List<(TCap cap, TCost cost)> Slope(CSR<EdgeInternal> g, int s, int t, TCap flowLimit)
+        {
+            // variants (C = maxcost):
+            // -(n-1)C <= dual[s] <= dual[i] <= dual[t] = 0
+            // reduced cost (= e.cost + dual[e.from] - dual[e.To]) >= 0 for all edge
+            var dual = new TCost[_n];
+            var dist = new TCost[_n];
+            var prevE = new int[_n];
 
+            var slopeDR = new SlopeDualRef
+            {
+                dual = dual,
+                dist = dist,
+                g = g,
+                prevE = prevE,
+                s = s,
+                t = t,
+                _n = _n,
+            };
 
             TCap flow = default;
             TCost cost = default;
@@ -347,7 +362,7 @@ namespace AtCoder
             var result = new List<(TCap cap, TCost cost)> { (flow, cost) };
             while (capOp.LessThan(flow, flowLimit))
             {
-                if (!DualRef()) break;
+                if (!slopeDR.DualRef()) break;
                 var c = capOp.Subtract(flowLimit, flow);
                 for (int v = t; v != s; v = g.EList[prevE[v]].To)
                 {

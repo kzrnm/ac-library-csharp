@@ -29,53 +29,52 @@ namespace AtCoder.Internal
                 return p;
             }
 
-            return primitiveRootsCache[m] = Calculate(m);
+            return primitiveRootsCache[m] = PrimitiveRootCalculate(m);
+        }
+        static int PrimitiveRootCalculate(int m)
+        {
+            Span<int> divs = stackalloc int[20];
+            divs[0] = 2;
+            int cnt = 1;
+            int x = (m - 1) / 2;
 
-            int Calculate(int m)
+            while (x % 2 == 0)
             {
-                Span<int> divs = stackalloc int[20];
-                divs[0] = 2;
-                int cnt = 1;
-                int x = (m - 1) / 2;
+                x >>= 1;
+            }
 
-                while (x % 2 == 0)
+            for (int i = 3; (long)i * i <= x; i += 2)
+            {
+                if (x % i == 0)
                 {
-                    x >>= 1;
-                }
-
-                for (int i = 3; (long)i * i <= x; i += 2)
-                {
-                    if (x % i == 0)
+                    divs[cnt++] = i;
+                    while (x % i == 0)
                     {
-                        divs[cnt++] = i;
-                        while (x % i == 0)
-                        {
-                            x /= i;
-                        }
+                        x /= i;
+                    }
+                }
+            }
+
+            if (x > 1)
+            {
+                divs[cnt++] = x;
+            }
+
+            for (int g = 2; ; g++)
+            {
+                bool ok = true;
+                for (int i = 0; i < cnt; i++)
+                {
+                    if (MathLib.PowMod(g, (m - 1) / divs[i], m) == 1)
+                    {
+                        ok = false;
+                        break;
                     }
                 }
 
-                if (x > 1)
+                if (ok)
                 {
-                    divs[cnt++] = x;
-                }
-
-                for (int g = 2; ; g++)
-                {
-                    bool ok = true;
-                    for (int i = 0; i < cnt; i++)
-                    {
-                        if (MathLib.PowMod(g, (m - 1) / divs[i], m) == 1)
-                        {
-                            ok = false;
-                            break;
-                        }
-                    }
-
-                    if (ok)
-                    {
-                        return g;
-                    }
+                    return g;
                 }
             }
         }

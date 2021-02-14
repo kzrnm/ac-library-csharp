@@ -71,8 +71,8 @@ namespace AtCoder.Internal
 
                         for (int i = 0; i < lu.Length; i += regLength)
                         {
-                            var luSliced = lu[i..];
-                            var ruSliced = ru[i..];
+                            var luSliced = lu.Slice(i);
+                            var ruSliced = ru.Slice(i);
                             var u = new Vector<uint>(luSliced);
                             var v = new Vector<uint>(ruSliced);
                             var add = u + v;
@@ -143,8 +143,8 @@ namespace AtCoder.Internal
 
                         for (int i = 0; i < lu.Length; i += regLength)
                         {
-                            var luSliced = lu[i..];
-                            var ruSliced = ru[i..];
+                            var luSliced = lu.Slice(i);
+                            var ruSliced = ru.Slice(i);
                             var u = new Vector<uint>(luSliced);
                             var v = new Vector<uint>(ruSliced);
                             var add = u + v;
@@ -180,8 +180,20 @@ namespace AtCoder.Internal
             var sumE = new StaticModInt<T>[30];
 
             // es[i]^(2^(2+i)) == 1
-            Span<StaticModInt<T>> es = stackalloc StaticModInt<T>[cnt2 - 1];
-            Span<StaticModInt<T>> ies = stackalloc StaticModInt<T>[cnt2 - 1];
+            Span<StaticModInt<T>> es =
+#if NETCOREAPP3_1
+                stackalloc
+#else
+                new
+#endif
+                StaticModInt<T>[cnt2 - 1];
+            Span<StaticModInt<T>> ies =
+#if NETCOREAPP3_1
+                stackalloc
+#else
+                new
+#endif
+                StaticModInt<T>[cnt2 - 1];
 
             for (int i = es.Length - 1; i >= 0; i--)
             {
@@ -212,8 +224,20 @@ namespace AtCoder.Internal
             var sumIE = new StaticModInt<T>[30];
 
             // es[i]^(2^(2+i)) == 1
-            Span<StaticModInt<T>> es = stackalloc StaticModInt<T>[cnt2 - 1];
-            Span<StaticModInt<T>> ies = stackalloc StaticModInt<T>[cnt2 - 1];
+            Span<StaticModInt<T>> es =
+#if NETCOREAPP3_1
+                stackalloc
+#else
+                new
+#endif
+                StaticModInt<T>[cnt2 - 1];
+            Span<StaticModInt<T>> ies =
+#if NETCOREAPP3_1
+                stackalloc
+#else
+                new
+#endif
+                StaticModInt<T>[cnt2 - 1];
 
             for (int i = es.Length - 1; i >= 0; i--)
             {
