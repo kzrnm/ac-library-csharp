@@ -21,12 +21,12 @@ namespace AtCoder.Solvers.Graph
                 g.AddEdge(u, v);
             }
 
-            List<List<int>> scc = g.SCC();
+            var scc = g.SCC();
 
-            cw.WriteLine(scc.Count);
-            foreach (List<int> v in scc)
+            cw.WriteLine(scc.Length);
+            foreach (var v in scc)
             {
-                cw.StreamWriter.Write(v.Count);
+                cw.StreamWriter.Write(v.Length);
                 cw.StreamWriter.Write(' ');
                 cw.WriteLineJoin(v);
             }
