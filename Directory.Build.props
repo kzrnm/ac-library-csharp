@@ -7,8 +7,8 @@
     <RepositoryUrl>https://github.com/naminodarie/ac-library-csharp</RepositoryUrl>
     <PackageReleaseNotes>https://github.com/naminodarie/ac-library-csharp/blob/master/CHANGELOG.md</PackageReleaseNotes>
 
-    <Version>1.4.1</Version>
-    <AssemblyVersion>1.4.1.100</AssemblyVersion>
+    <Version>1.4.2</Version>
+    <AssemblyVersion>1.4.2.100</AssemblyVersion>
     <RepositoryCommit Condition="'$(GIT_COMMIT)' != ''">$(GIT_COMMIT)</RepositoryCommit>
 
     <SignAssembly>True</SignAssembly>

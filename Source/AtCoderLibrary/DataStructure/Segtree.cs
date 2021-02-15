@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
@@ -295,7 +294,7 @@ namespace AtCoder
             {
                 get
                 {
-                    var items = new List<DebugItem>(segtree.Length);
+                    var items = new SimpleList<DebugItem>(segtree.Length);
                     for (int len = segtree.size; len > 0; len >>= 1)
                     {
                         int unit = segtree.size / len;

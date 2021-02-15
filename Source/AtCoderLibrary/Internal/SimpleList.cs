@@ -20,6 +20,21 @@ namespace AtCoder.Internal
         {
             data = new T[Math.Max(capacity, DefaultCapacity)];
         }
+        public SimpleList(IEnumerable<T> collection)
+        {
+            if (collection is ICollection<T> col)
+            {
+                data = new T[col.Count];
+                col.CopyTo(data, 0);
+                Count = col.Count;
+            }
+            else
+            {
+                data = new T[DefaultCapacity];
+                foreach (var item in collection)
+                    Add(item);
+            }
+        }
 
         public Span<T> AsSpan() => new Span<T>(data, 0, Count);
 
@@ -74,7 +89,7 @@ namespace AtCoder.Internal
         public bool Contains(T item) => IndexOf(item) >= 0;
         public int IndexOf(T item) => Array.IndexOf(data, item, 0, Count);
         public void CopyTo(T[] array, int arrayIndex) => Array.Copy(data, 0, array, arrayIndex, Count);
-
+        public T[] ToArray() => AsSpan().ToArray();
         #region Interface
         bool ICollection<T>.IsReadOnly => false;
         T IList<T>.this[int index] { get => data[index]; set => data[index] = value; }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using FluentAssertions;
@@ -12,7 +11,7 @@ namespace AtCoder
         [Fact]
         public void Empty()
         {
-            new SCCGraph(0).SCC().Should().Equal(Array.Empty<int>());
+            new SCCGraph(0).SCC().Should().Equal(Array.Empty<int[]>());
         }
         [Fact]
         public void Simple()
@@ -84,12 +83,12 @@ namespace AtCoder
                 g.AddEdge(u, v);
             }
 
-            List<List<int>> scc = g.SCC();
+            var scc = g.SCC();
 
-            writer.WriteLine(scc.Count);
-            foreach (List<int> v in scc)
+            writer.WriteLine(scc.Length);
+            foreach (var v in scc)
             {
-                writer.Write(v.Count);
+                writer.Write(v.Length);
                 writer.Write(' ');
                 writer.WriteLine(string.Join(" ", v));
             }
