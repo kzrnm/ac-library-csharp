@@ -58,7 +58,7 @@ namespace AtCoder
             var id = new int[2 * _n];
 
             // 強連結成分のリストを id として展開。
-            for (int i = 0; i < sccs.Count; i++)
+            for (int i = 0; i < sccs.Length; i++)
             {
                 foreach (var v in sccs[i])
                 {

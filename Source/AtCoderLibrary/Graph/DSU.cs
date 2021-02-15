@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using AtCoder.Internal;
 
@@ -96,21 +95,22 @@ namespace AtCoder
         /// </summary>
         /// <para>計算量: O(n)</para>
         /// <returns>「一つの連結成分の頂点番号のリスト」のリスト。</returns>
-        public List<int[]> Groups()
+        public int[][] Groups()
         {
             int[] leaderBuf = new int[_n];
             int[] id = new int[_n];
-            var result = new List<int[]>(_n);
+            var resultList = new SimpleList<int[]>(_n);
             for (int i = 0; i < leaderBuf.Length; i++)
             {
                 leaderBuf[i] = Leader(i);
                 if (i == leaderBuf[i])
                 {
-                    id[i] = result.Count;
-                    result.Add(new int[-_parentOrSize[i]]);
+                    id[i] = resultList.Count;
+                    resultList.Add(new int[-_parentOrSize[i]]);
                 }
             }
-            int[] ind = new int[result.Count];
+            var result = resultList.ToArray();
+            int[] ind = new int[result.Length];
             for (int i = 0; i < leaderBuf.Length; i++)
             {
                 var leaderID = id[leaderBuf[i]];

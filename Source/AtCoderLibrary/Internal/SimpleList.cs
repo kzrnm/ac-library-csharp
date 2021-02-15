@@ -74,7 +74,7 @@ namespace AtCoder.Internal
         public bool Contains(T item) => IndexOf(item) >= 0;
         public int IndexOf(T item) => Array.IndexOf(data, item, 0, Count);
         public void CopyTo(T[] array, int arrayIndex) => Array.Copy(data, 0, array, arrayIndex, Count);
-
+        public T[] ToArray() => AsSpan().ToArray();
         #region Interface
         bool ICollection<T>.IsReadOnly => false;
         T IList<T>.this[int index] { get => data[index]; set => data[index] = value; }

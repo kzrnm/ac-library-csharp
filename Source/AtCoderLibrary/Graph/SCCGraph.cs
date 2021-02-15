@@ -49,7 +49,7 @@ namespace AtCoder
         /// <para>- リストはトポロジカルソートされています。異なる強連結成分の頂点 u, v について、u から v に到達できる時、u の属するリストは v の属するリストよりも前です。</para>
         /// <para>計算量: 追加された辺の本数を m として O(n+m)</para>
         /// </remarks>
-        public List<List<int>> SCC() => _internal.SCC();
+        public int[][] SCC() => _internal.SCC();
     }
     namespace Internal
     {
@@ -223,27 +223,21 @@ namespace AtCoder
             /// <para>- リストはトポロジカルソートされています。異なる強連結成分の頂点 u, v について、u から v に到達できる時、u の属するリストは v の属するリストよりも前です。</para>
             /// <para>計算量: 追加された辺の本数を m として O(n+m)</para>
             /// </remarks>
-            public List<List<int>> SCC()
+            public int[][] SCC()
             {
                 var (groupNum, ids) = SCCIDs();
+                var groups = new int[groupNum][];
                 var counts = new int[groupNum];
+                var seen = new int[groupNum];
 
                 foreach (var x in ids)
-                {
                     counts[x]++;
-                }
-
-                var groups = new List<List<int>>(groupNum);
 
                 for (int i = 0; i < groupNum; i++)
-                {
-                    groups.Add(new List<int>(counts[i]));
-                }
+                    groups[i] = new int[counts[i]];
 
                 for (int i = 0; i < ids.Length; i++)
-                {
-                    groups[ids[i]].Add(i);
-                }
+                    groups[ids[i]][seen[ids[i]]++] = i;
 
                 return groups;
             }
