@@ -7,6 +7,31 @@ namespace AtCoder.Internal
     public class SimpleListTest
     {
         [Fact]
+        public void ConstructorCollection()
+        {
+            var list = new SimpleList<int>(new int[] { 1, 2, 3, 4, 5, 6 });
+            list.Should().HaveCount(6);
+            list.Should().Equal(1, 2, 3, 4, 5, 6);
+        }
+
+        [Fact]
+        public void ConstructorEnumerable()
+        {
+            IEnumerable<int> Nums()
+            {
+                yield return 1;
+                yield return 2;
+                yield return 3;
+                yield return 4;
+                yield return 5;
+                yield return 6;
+            }
+            var list = new SimpleList<int>(Nums());
+            list.Should().HaveCount(6);
+            list.Should().Equal(1, 2, 3, 4, 5, 6);
+        }
+
+        [Fact]
         public void AddAndRemove()
         {
             var list = new SimpleList<int>

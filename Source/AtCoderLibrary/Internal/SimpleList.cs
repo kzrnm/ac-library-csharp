@@ -20,6 +20,21 @@ namespace AtCoder.Internal
         {
             data = new T[Math.Max(capacity, DefaultCapacity)];
         }
+        public SimpleList(IEnumerable<T> collection)
+        {
+            if (collection is ICollection<T> col)
+            {
+                data = new T[col.Count];
+                col.CopyTo(data, 0);
+                Count = col.Count;
+            }
+            else
+            {
+                data = new T[DefaultCapacity];
+                foreach (var item in collection)
+                    Add(item);
+            }
+        }
 
         public Span<T> AsSpan() => new Span<T>(data, 0, Count);
 
