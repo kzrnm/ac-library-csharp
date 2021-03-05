@@ -8,6 +8,8 @@ using AtCoder.Internal;
 
 namespace AtCoder
 {
+    using static MethodImplOptions;
+
     [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public class Deque<T> : IEnumerable<T>, IReadOnlyCollection<T>, ICollection<T>
@@ -36,12 +38,12 @@ namespace AtCoder
 
         public int Count => (tail - head) & mask;
 
-        public T this[int i] => data[(head + i) & mask];
+        public ref T this[int i] => ref data[(head + i) & mask];
         public T First => data[head];
         public T Last => data[(tail - 1) & mask];
         private static void ThrowDequeIsEmpty() => throw new InvalidOperationException("deque is empty");
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public T PopFirst()
         {
             if (head == tail) ThrowDequeIsEmpty();
@@ -49,19 +51,19 @@ namespace AtCoder
             head = (head + 1) & mask;
             return item;
         }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public T PopLast()
         {
             if (head == tail) ThrowDequeIsEmpty();
             return data[tail = (tail - 1) & mask];
         }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public void AddFirst(T item)
         {
             data[head = (head - 1) & mask] = item;
             if (head == tail) Resize();
         }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public void AddLast(T item)
         {
             data[tail] = item;
