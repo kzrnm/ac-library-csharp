@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#if !NET6_0_OR_GREATER
+using System.Collections.Generic;
 using System.Diagnostics;
 using AtCoder.Internal;
 
@@ -13,3 +14,4 @@ namespace AtCoder
         public PriorityQueue(int capacity, IComparer<TKey> comparer) : base(capacity, comparer) { }
     }
 }
+#endif
