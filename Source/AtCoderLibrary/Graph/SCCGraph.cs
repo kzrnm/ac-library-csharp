@@ -12,7 +12,7 @@ namespace AtCoder
     [DebuggerDisplay("Vertices = {_internal._n}, Edges = {_internal.edges.Count}")]
     public class SCCGraph
     {
-        readonly Internal.SCCGraph _internal;
+        readonly InternalSCCGraph _internal;
 
         /// <summary>
         /// <see cref="SCCGraph"/> クラスの新しいインスタンスを、<paramref name="n"/> 頂点 0 辺の有向グラフとして初期化します。
@@ -23,7 +23,8 @@ namespace AtCoder
         /// </remarks>
         public SCCGraph(int n)
         {
-            _internal = new Internal.SCCGraph(n);
+            _internal = new InternalSCCGraph
+                (n);
         }
 
         /// <summary>
@@ -57,7 +58,7 @@ namespace AtCoder
         /// 有向グラフを強連結成分分解します。
         /// </summary>
         [DebuggerDisplay("Vertices = {_n}, Edges = {edges.Count}")]
-        public class SCCGraph
+        public class InternalSCCGraph
         {
             private readonly int _n;
             private readonly SimpleList<(int from, Edge e)> edges;
@@ -65,13 +66,13 @@ namespace AtCoder
             public int VerticesNumbers => _n;
 
             /// <summary>
-            /// <see cref="SCCGraph"/> クラスの新しいインスタンスを、<paramref name="n"/> 頂点 0 辺の有向グラフとして初期化します。
+            /// <see cref="InternalSCCGraph"/> クラスの新しいインスタンスを、<paramref name="n"/> 頂点 0 辺の有向グラフとして初期化します。
             /// </summary>
             /// <remarks>
             /// <para>制約: 0≤<paramref name="n"/>≤10^8</para>
             /// <para>計算量: O(<paramref name="n"/>)</para>
             /// </remarks>
-            public SCCGraph(int n)
+            public InternalSCCGraph(int n)
             {
                 _n = n;
                 edges = new SimpleList<(int from, Edge e)>();
