@@ -12,7 +12,7 @@ namespace AtCoderAnalyzer
     public class AggressiveInliningAnalyzer : DiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.AC0007_AgressiveInlining);
+            => ImmutableArray.Create(DiagnosticDescriptors.AC0007_AgressiveInlining_Descriptor);
 
         private class ContainingOperatorTypes
         {
@@ -75,9 +75,8 @@ namespace AtCoderAnalyzer
             if (notMethodImplMethods.Length == 0)
                 return;
 
-            var diagnostic = Diagnostic.Create(
-                DiagnosticDescriptors.AC0007_AgressiveInlining,
-                context.Node.GetLocation(), string.Join(", ", notMethodImplMethods));
+            var diagnostic = DiagnosticDescriptors.AC0007_AgressiveInlining(
+                context.Node.GetLocation(), notMethodImplMethods);
             context.ReportDiagnostic(diagnostic);
         }
     }

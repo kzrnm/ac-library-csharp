@@ -18,8 +18,8 @@ namespace AtCoderAnalyzer
         private const string title = "Cast int to long";
         public override ImmutableArray<string> FixableDiagnosticIds
             => ImmutableArray.Create(
-                DiagnosticDescriptors.AC0001_MultiplyOverflowInt32.Id,
-                DiagnosticDescriptors.AC0002_LeftShiftOverflowInt32.Id);
+                DiagnosticDescriptors.AC0001_MultiplyOverflowInt32_Descriptor.Id,
+                DiagnosticDescriptors.AC0002_LeftShiftOverflowInt32_Descriptor.Id);
 
         public sealed override FixAllProvider GetFixAllProvider()
             => WellKnownFixAllProviders.BatchFixer;

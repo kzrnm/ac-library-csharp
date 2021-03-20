@@ -19,7 +19,7 @@ namespace AtCoderAnalyzer
         private const string title = "Create operator type";
         public override ImmutableArray<string> FixableDiagnosticIds
             => ImmutableArray.Create(
-                DiagnosticDescriptors.AC0008_DefineOperatorType.Id);
+                DiagnosticDescriptors.AC0008_DefineOperatorType_Descriptor.Id);
         public sealed override FixAllProvider GetFixAllProvider()
             => WellKnownFixAllProviders.BatchFixer;
 
