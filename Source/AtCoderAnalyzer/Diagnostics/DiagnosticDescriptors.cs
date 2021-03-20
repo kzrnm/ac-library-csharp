@@ -1,10 +1,13 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using System.Collections.Generic;
+using Microsoft.CodeAnalysis;
 
 namespace AtCoderAnalyzer.Diagnostics
 {
     public static class DiagnosticDescriptors
     {
-        internal static readonly DiagnosticDescriptor AC0001_MultiplyOverflowInt32 = new DiagnosticDescriptor(
+        internal static Diagnostic AC0001_MultiplyOverflowInt32(SyntaxNode node)
+            => Diagnostic.Create(AC0001_MultiplyOverflowInt32_Descriptor, node.GetLocation(), node.ToString());
+        internal static readonly DiagnosticDescriptor AC0001_MultiplyOverflowInt32_Descriptor = new(
             "AC0001",
             new LocalizableResourceString(
                 nameof(DiagnosticsResources.AC0001_Title),
@@ -18,7 +21,9 @@ namespace AtCoderAnalyzer.Diagnostics
             DiagnosticSeverity.Warning,
             isEnabledByDefault: true
             );
-        internal static readonly DiagnosticDescriptor AC0002_LeftShiftOverflowInt32 = new DiagnosticDescriptor(
+        internal static Diagnostic AC0002_LeftShiftOverflowInt32(SyntaxNode node)
+            => Diagnostic.Create(AC0002_LeftShiftOverflowInt32_Descriptor, node.GetLocation(), node.ToString());
+        internal static readonly DiagnosticDescriptor AC0002_LeftShiftOverflowInt32_Descriptor = new(
             "AC0002",
             new LocalizableResourceString(
                 nameof(DiagnosticsResources.AC0002_Title),
@@ -33,22 +38,9 @@ namespace AtCoderAnalyzer.Diagnostics
             isEnabledByDefault: true
             );
 
-        internal static readonly DiagnosticDescriptor AC0008_DefineOperatorType = new DiagnosticDescriptor(
-            "AC0008",
-            new LocalizableResourceString(
-                nameof(DiagnosticsResources.AC0008_Title),
-                DiagnosticsResources.ResourceManager,
-                typeof(DiagnosticsResources)),
-            new LocalizableResourceString(
-                nameof(DiagnosticsResources.AC0008_MessageFormat),
-                DiagnosticsResources.ResourceManager,
-                typeof(DiagnosticsResources)),
-            "Type Define",
-            DiagnosticSeverity.Error,
-            isEnabledByDefault: true
-            );
-
-        internal static readonly DiagnosticDescriptor AC0007_AgressiveInlining = new DiagnosticDescriptor(
+        internal static Diagnostic AC0007_AgressiveInlining(Location location, IEnumerable<string> methods)
+            => Diagnostic.Create(AC0007_AgressiveInlining_Descriptor, location, string.Join(", ", methods));
+        internal static readonly DiagnosticDescriptor AC0007_AgressiveInlining_Descriptor = new(
             "AC0007",
             new LocalizableResourceString(
                 nameof(DiagnosticsResources.AC0007_Title),
@@ -60,6 +52,23 @@ namespace AtCoderAnalyzer.Diagnostics
                 typeof(DiagnosticsResources)),
             "Type Define",
             DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+            );
+
+        internal static Diagnostic AC0008_DefineOperatorType(Location location, IEnumerable<string> types)
+            => Diagnostic.Create(AC0008_DefineOperatorType_Descriptor, location, string.Join(", ", types));
+        internal static readonly DiagnosticDescriptor AC0008_DefineOperatorType_Descriptor = new(
+            "AC0008",
+            new LocalizableResourceString(
+                nameof(DiagnosticsResources.AC0008_Title),
+                DiagnosticsResources.ResourceManager,
+                typeof(DiagnosticsResources)),
+            new LocalizableResourceString(
+                nameof(DiagnosticsResources.AC0008_MessageFormat),
+                DiagnosticsResources.ResourceManager,
+                typeof(DiagnosticsResources)),
+            "Type Define",
+            DiagnosticSeverity.Error,
             isEnabledByDefault: true
             );
     }

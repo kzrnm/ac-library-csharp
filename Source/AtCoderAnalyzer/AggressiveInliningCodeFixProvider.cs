@@ -20,7 +20,7 @@ namespace AtCoderAnalyzer
         private const string title = "Add AggressiveInlining";
         public override ImmutableArray<string> FixableDiagnosticIds
             => ImmutableArray.Create(
-                DiagnosticDescriptors.AC0007_AgressiveInlining.Id);
+                DiagnosticDescriptors.AC0007_AgressiveInlining_Descriptor.Id);
 
         public sealed override FixAllProvider GetFixAllProvider()
             => WellKnownFixAllProviders.BatchFixer;

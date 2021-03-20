@@ -13,8 +13,8 @@ namespace AtCoderAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
             => ImmutableArray.Create(
-                DiagnosticDescriptors.AC0001_MultiplyOverflowInt32,
-                DiagnosticDescriptors.AC0002_LeftShiftOverflowInt32);
+                DiagnosticDescriptors.AC0001_MultiplyOverflowInt32_Descriptor,
+                DiagnosticDescriptors.AC0002_LeftShiftOverflowInt32_Descriptor);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -36,10 +36,10 @@ namespace AtCoderAnalyzer
             if (typeInfo.Type.SpecialType != SpecialType.System_Int32)
                 return;
 
-            DiagnosticDescriptor descriptor = node.Kind() switch
+            Diagnostic diagnostic = node.Kind() switch
             {
-                SyntaxKind.MultiplyExpression => DiagnosticDescriptors.AC0001_MultiplyOverflowInt32,
-                SyntaxKind.LeftShiftExpression => DiagnosticDescriptors.AC0002_LeftShiftOverflowInt32,
+                SyntaxKind.MultiplyExpression => DiagnosticDescriptors.AC0001_MultiplyOverflowInt32(context.Node),
+                SyntaxKind.LeftShiftExpression => DiagnosticDescriptors.AC0002_LeftShiftOverflowInt32(context.Node),
                 _ => throw new InvalidOperationException(),
             };
 
@@ -48,11 +48,6 @@ namespace AtCoderAnalyzer
                 if (semanticModel.GetTypeInfo(node, cancellationToken: context.CancellationToken)
                     .ConvertedType.SpecialType == SpecialType.System_Int64)
                 {
-                    var diagnostic = Diagnostic.Create(
-                        descriptor,
-                        context.Node.GetLocation(),
-                        context.Node.ToString());
-
                     context.ReportDiagnostic(diagnostic);
                     return;
                 }

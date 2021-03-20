@@ -15,7 +15,7 @@ namespace AtCoderAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
             => ImmutableArray.Create(
-                DiagnosticDescriptors.AC0008_DefineOperatorType);
+                DiagnosticDescriptors.AC0008_DefineOperatorType_Descriptor);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -85,8 +85,8 @@ namespace AtCoderAnalyzer
             if (notDefinedTypes.Count == 0)
                 return;
 
-            var diagnostic = Diagnostic.Create(DiagnosticDescriptors.AC0008_DefineOperatorType,
-                genericNode.GetLocation(), string.Join(", ", notDefinedTypes));
+            var diagnostic = DiagnosticDescriptors.AC0008_DefineOperatorType(
+                genericNode.GetLocation(), notDefinedTypes);
             context.ReportDiagnostic(diagnostic);
         }
     }
