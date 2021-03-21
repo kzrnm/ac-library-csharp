@@ -38,6 +38,7 @@ namespace AtCoderAnalyzer
 
             if (genericNode.TypeArgumentList.Arguments.Any(sy => sy.IsKind(SyntaxKind.OmittedTypeArgument)))
                 return;
+            var concurrentBuild = context.Compilation.Options.ConcurrentBuild;
 
             ImmutableArray<ITypeParameterSymbol> originalTypes;
             ImmutableArray<ITypeSymbol> writtenTypes;
@@ -64,23 +65,25 @@ namespace AtCoderAnalyzer
                 var originalType = originalTypes[i];
                 var writtenType = writtenTypes[i];
 
-
-
-                bool ok = false;
-                foreach (var ty in originalType.ConstraintTypes)
+                if (concurrentBuild)
                 {
-                    if (ty is INamedTypeSymbol named)
-                        if (ok = types.IsMatch(named.ConstructedFrom))
-                            break;
+                    if (originalType.ConstraintTypes.OfType<INamedTypeSymbol>()
+                          .AsParallel(context.CancellationToken)
+                          .Any(s => types.IsMatch(s.ConstructedFrom)))
+                        goto TypeMatch;
                 }
-                if (!ok)
-                    continue;
+                else
+                {
+                    if (originalType.ConstraintTypes.OfType<INamedTypeSymbol>()
+                          .Do(_ => context.CancellationToken.ThrowIfCancellationRequested())
+                          .Any(s => types.IsMatch(s.ConstructedFrom)))
+                        goto TypeMatch;
+                }
+                continue;
 
-                var k = originalType.TypeKind;
+            TypeMatch:
                 if (writtenType.TypeKind == TypeKind.Error)
-                {
                     notDefinedTypes.Add(writtenType.Name.ToString());
-                }
             }
             if (notDefinedTypes.Count == 0)
                 return;
