@@ -1,6 +1,6 @@
 # ac-library-csharp
 
-README languages: [Japanese](README.ja.md)
+README languages: [English](README.md), [日本語](README.ja.md)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -90,13 +90,17 @@ Installing [AtCoderAnalyzer](/document_en/analyzers/index.md) provide some code 
 
 ### output combinded source code
 
-Output combinded source code for submitting.
-
-Require **.NET 5 SDK** or **Visual Studio 16.8** or later because SourceExpander use Source Generators.
+ac-library-csharp supports https://github.com/naminodarie/SourceExpander
 
 ```
 Install-Package SourceExpander
 ```
+
+-----
+
+SourceExpander　outputs combinded source code for submitting.
+
+Require **.NET 5 SDK** or **Visual Studio 16.8** or later because SourceExpander use Source Generators.
 
 When you run `/home/any_directory/ac-library-csharp/Sample/SampleProject/Program.cs`, `SourceExpander.Expander.Expand()` creates `/home/any_directory/ac-library-csharp/Sample/SampleProject/Combined.csx`
 
@@ -112,7 +116,7 @@ class Program
 {
     static void Main()
     {
-        SourceExpander.Expander.Expand();
+        SourceExpander.Expander.Expand(); // output combined file
 
         // https://atcoder.jp/contests/practice2/tasks/practice2_a
         var line = Console.ReadLine().Split(' ');
@@ -156,7 +160,7 @@ class Program
 {
     static void Main()
     {
-        SourceExpander.Expander.Expand();
+        SourceExpander.Expander.Expand(); // output combined file
 
         // https://atcoder.jp/contests/practice2/tasks/practice2_j
         var line = Console.ReadLine().Split(' ');
