@@ -57,21 +57,59 @@ namespace AtCoderAnalyzer
             if (context.SemanticModel.GetDeclaredSymbol(context.Node, context.CancellationToken)
                 is not INamedTypeSymbol symbol)
                 return;
+            var concurrentBuild = context.Compilation.Options.ConcurrentBuild;
 
-            if (!symbol.AllInterfaces
-                .SelectMany(n => n.ConstructedFrom.GetAttributes())
-                .Select(at => at.AttributeClass)
-                .Contains(types.IsOperatorAttribute, SymbolEqualityComparer.Default))
-                return;
+            bool HasIsOperatorAttribute(INamedTypeSymbol symbol)
+            {
+                foreach (var at in symbol.ConstructedFrom.GetAttributes())
+                    if (SymbolEqualityComparer.Default.Equals(at.AttributeClass, types.IsOperatorAttribute))
+                        return true;
+                return false;
+            }
 
-            var notMethodImplMethods = symbol.GetMembers()
-                .OfType<IMethodSymbol>()
-                .Where(m => m.MethodKind == MethodKind.Ordinary
-                         || m.MethodKind == MethodKind.ExplicitInterfaceImplementation)
-                .Where(m => !m.GetAttributes().Select(at => at.AttributeClass).Contains(
-                        types.MethodImplAttribute, SymbolEqualityComparer.Default))
-                .Select(m => m.Name)
-                .ToArray();
+            if (concurrentBuild)
+            {
+                if (symbol.AllInterfaces
+                    .AsParallel(context.CancellationToken)
+                    .Any(HasIsOperatorAttribute))
+                    goto HasIsOperator;
+            }
+            else
+            {
+                if (symbol.AllInterfaces
+                    .Do(_ => context.CancellationToken.ThrowIfCancellationRequested())
+                    .Any(HasIsOperatorAttribute))
+                    goto HasIsOperator;
+            }
+            return;
+        HasIsOperator: { }
+
+            bool DoesNotHaveMethodImpl(IMethodSymbol m)
+            {
+                return m.MethodKind switch
+                {
+                    MethodKind.ExplicitInterfaceImplementation or MethodKind.Ordinary
+                    => !m.GetAttributes().Select(at => at.AttributeClass)
+                        .Contains(types.MethodImplAttribute, SymbolEqualityComparer.Default),
+                    _ => false,
+                };
+            }
+
+            string[] notMethodImplMethods;
+            if (concurrentBuild)
+                notMethodImplMethods = symbol.GetMembers()
+                    .AsParallel(context.CancellationToken)
+                    .OfType<IMethodSymbol>()
+                    .Where(DoesNotHaveMethodImpl)
+                    .Select(m => m.Name)
+                    .ToArray();
+            else
+                notMethodImplMethods = symbol.GetMembers()
+                    .Do(_ => context.CancellationToken.ThrowIfCancellationRequested())
+                    .OfType<IMethodSymbol>()
+                    .Where(DoesNotHaveMethodImpl)
+                    .Select(m => m.Name)
+                    .ToArray();
             if (notMethodImplMethods.Length == 0)
                 return;
 
