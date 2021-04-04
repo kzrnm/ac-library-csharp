@@ -39,7 +39,7 @@
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <OutputItemType>Analyzer</OutputItemType>
     </ProjectReference>
-    <PackageReference Include="SourceExpander.Embedder" Version="3.0.0">
+    <PackageReference Include="SourceExpander.Embedder" Version="3.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
