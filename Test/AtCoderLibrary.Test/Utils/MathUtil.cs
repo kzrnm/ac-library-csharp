@@ -41,11 +41,11 @@ namespace AtCoder
             long sum = 0;
             for (long i = 0; i < n; i++)
             {
-                sum += (a * i + b) / m;
+                long z = a * i + b;
+                sum += (z - InternalMath.SafeMod(z, m)) / m;
             }
             return sum;
         }
-
 
         public static List<int> Factors(int m)
         {

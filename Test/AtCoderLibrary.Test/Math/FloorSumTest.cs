@@ -15,11 +15,13 @@ namespace AtCoder
             {
                 for (int m = 1; m < 20; m++)
                 {
-                    for (int a = 0; a < 20; a++)
+                    for (int a = -20; a < 20; a++)
                     {
-                        for (int b = 0; b < 20; b++)
+                        for (int b = -20; b < 20; b++)
                         {
-                            MathLib.FloorSum(n, m, a, b).Should().Be(FloorSumNative(n, m, a, b));
+                            var expected = FloorSumNative(n, m, a, b);
+                            MathLib.FloorSum(n, m, a, b).Should()
+                                .Be(expected, "FloorSum({0},{1},{2},{3}) should be {4}", n, m, a, b, expected);
                         }
                     }
                 }
