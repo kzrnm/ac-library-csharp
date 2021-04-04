@@ -120,6 +120,14 @@ namespace AtCoder
         /// </remarks>
         public StaticModInt(long v) : this(Round(v)) { }
 
+        /// <summary>
+        /// StaticModInt&lt;<typeparamref name="T"/>&gt; 型のインスタンスを生成します。
+        /// </summary>
+        /// <remarks>
+        /// <paramref name="v"/>が mod 以上の場合、自動で mod を取ります。
+        /// </remarks>
+        public StaticModInt(ulong v) : this((uint)(v % op.Mod)) { }
+
         private StaticModInt(uint v) => _v = v;
 
         [MethodImpl(AggressiveInlining)]

@@ -69,7 +69,7 @@ namespace AtCoder
     public readonly struct DynamicModInt<T> : IEquatable<DynamicModInt<T>> where T : struct, IDynamicModID
     {
         internal readonly uint _v;
-        internal static Internal.Barrett bt;
+        internal static Barrett bt;
 
         /// <summary>
         /// 格納されている値を返します。
@@ -113,6 +113,15 @@ namespace AtCoder
         /// <para>- <paramref name="v"/> が 0 未満、もしくは mod 以上の場合、自動で mod を取ります。</para>
         /// </remarks>
         public DynamicModInt(long v) : this(Round(v)) { }
+
+        /// <summary>
+        /// DynamicModInt&lt;<typeparamref name="T"/>&gt; 型のインスタンスを生成します。
+        /// </summary>
+        /// <remarks>
+        /// <para>- 使用前に DynamicModInt&lt;<typeparamref name="T"/>&gt;.Mod に mod の値を設定する必要があります。</para>
+        /// <para>- <paramref name="v"/> が 0 未満、もしくは mod 以上の場合、自動で mod を取ります。</para>
+        /// </remarks>
+        public DynamicModInt(ulong v) : this((uint)(v % bt.Mod)) { }
 
         private DynamicModInt(uint v) => _v = v;
 
