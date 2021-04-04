@@ -2,12 +2,28 @@
 using System.Numerics;
 using FluentAssertions;
 using Xunit;
-using static AtCoder.MathUtil;
 
 namespace AtCoder.Internal
 {
     public class InternalMathTest
     {
+        static long Gcd(long a, long b)
+        {
+            (0 <= a && 0 <= b).Should().BeTrue();
+            if (b == 0) return a;
+            return Gcd(b, a % b);
+        }
+
+        private static bool IsPrimeNaive(long n)
+        {
+            (0 <= n && n <= int.MaxValue).Should().BeTrue();
+            if (n == 0 || n == 1) return false;
+            for (long i = 2; i * i <= n; i++)
+            {
+                if (n % i == 0) return false;
+            }
+            return true;
+        }
 
         [Fact]
         public void Barrett()

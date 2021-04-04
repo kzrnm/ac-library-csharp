@@ -93,7 +93,7 @@ namespace AtCoder
         }
         class MemoryComparer<T> : IComparer<int>
         {
-            ReadOnlyMemory<T> m;
+            readonly ReadOnlyMemory<T> m;
             public MemoryComparer(ReadOnlyMemory<T> m)
             {
                 this.m = m;

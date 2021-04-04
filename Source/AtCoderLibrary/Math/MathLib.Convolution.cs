@@ -4,9 +4,8 @@ using AtCoder.Internal;
 
 namespace AtCoder
 {
-    public static class MathLib
+    public static partial class MathLib
     {
-        #region Convolution
         /// <summary>
         /// 畳み込みを mod <paramref name="m"/> = 998244353 で計算します。
         /// </summary>
@@ -484,128 +483,5 @@ namespace AtCoder
             public uint Mod => 469762049;
             public bool IsPrime => true;
         }
-        #endregion Convolution
-
-        #region PowMod
-        /// <summary>
-        /// <paramref name="x"/>^<paramref name="n"/> mod <paramref name="m"/> を返します。
-        /// </summary>
-        /// <remarks>
-        /// <para>制約: 0≤<paramref name="n"/>, 1≤<paramref name="m"/></para>
-        /// <para>計算量: O(log<paramref name="n"/>)</para>
-        /// </remarks>
-        public static long PowMod(long x, long n, int m)
-        {
-            Contract.Assert(0 <= n && 1 <= m, reason: $"0 <= {nameof(n)} && 1 <= {nameof(m)}");
-            if (m == 1) return 0;
-            Barrett barrett = new Barrett((uint)m);
-            uint r = 1, y = (uint)InternalMath.SafeMod(x, m);
-            while (0 < n)
-            {
-                if ((n & 1) != 0) r = barrett.Mul(r, y);
-                y = barrett.Mul(y, y);
-                n >>= 1;
-            }
-            return r;
-        }
-        #endregion PowMod
-
-        #region InvMod
-        /// <summary>
-        /// <paramref name="x"/>y≡1(mod <paramref name="m"/>) なる y のうち、0≤y&lt;<paramref name="m"/> を満たすものを返します。
-        /// </summary>
-        /// <remarks>
-        /// <para>制約: gcd(<paramref name="x"/>,<paramref name="m"/>)=1, 1≤<paramref name="m"/></para>
-        /// <para>計算量: O(log<paramref name="m"/>)</para>
-        /// </remarks>
-        public static long InvMod(long x, long m)
-        {
-            Contract.Assert(1 <= m, reason: $"1 <= {nameof(m)}");
-            var (g, res) = InternalMath.InvGCD(x, m);
-            Contract.Assert(g == 1, reason: $"gcd({nameof(x)}, {nameof(m)}) must be 1.");
-            return res;
-        }
-        #endregion InvMod
-
-        #region CRT
-        /// <summary>
-        /// 同じ長さ n の配列 <paramref name="r"/>, <paramref name="m"/> について、x≡<paramref name="r"/>[i] (mod <paramref name="m"/>[i]),∀i∈{0,1,⋯,n−1} を解きます。
-        /// </summary>
-        /// <remarks>
-        /// <para>制約: |<paramref name="r"/>|=|<paramref name="m"/>|, 1≤<paramref name="m"/>[i], lcm(m[i]) が ll に収まる</para>
-        /// <para>計算量: O(nloglcm(<paramref name="m"/>))</para>
-        /// </remarks>
-        /// <returns>答えは(存在するならば) y,z(0≤y&lt;z=lcm(<paramref name="m"/>[i])) を用いて x≡y(mod z) の形で書ける。答えがない場合は(0,0)、n=0 の時は(0,1)、それ以外の場合は(y,z)。</returns>
-        public static (long y, long m) CRT(long[] r, long[] m)
-        {
-            Contract.Assert(r.Length == m.Length, reason: $"Length of {nameof(r)} and {nameof(m)} must be same.");
-
-            long r0 = 0, m0 = 1;
-            for (int i = 0; i < m.Length; i++)
-            {
-                Contract.Assert(1 <= m[i], reason: $"All of {nameof(m)} must be greater or equal 1.");
-                long r1 = InternalMath.SafeMod(r[i], m[i]);
-                long m1 = m[i];
-                if (m0 < m1)
-                {
-                    (r0, r1) = (r1, r0);
-                    (m0, m1) = (m1, m0);
-                }
-                if (m0 % m1 == 0)
-                {
-                    if (r0 % m1 != r1) return (0, 0);
-                    continue;
-                }
-                var (g, im) = InternalMath.InvGCD(m0, m1);
-
-                long u1 = (m1 / g);
-                if ((r1 - r0) % g != 0) return (0, 0);
-
-                long x = (r1 - r0) / g % u1 * im % u1;
-                r0 += x * m0;
-                m0 *= u1;
-                if (r0 < 0) r0 += m0;
-            }
-            return (r0, m0);
-        }
-        #endregion CRT
-
-        #region FloorSum
-        /// <summary>
-        /// sum_{i=0}^{<paramref name="n"/>-1} floor(<paramref name="a"/>*i+<paramref name="b"/>/<paramref name="m"/>) を返します。答えがオーバーフローしたならば  mod2^64 で等しい値を返します。
-        /// </summary>
-        /// <remarks>
-        /// <para>制約:</para>
-        /// <para> 0≤<paramref name="n"/>&lt;2^32</para>
-        /// <para> 1≤<paramref name="m"/>&lt;2^32</para>
-        /// <para>計算量: O(log(m))</para>
-        /// </remarks>
-        /// <returns></returns>
-        public static long FloorSum(long n, long m, long a, long b)
-        {
-            Contract.Assert(0 <= n && n < (1L << 32));
-            Contract.Assert(1 <= m && m < (1L << 32));
-            var nn = (ulong)n;
-            var mm = (ulong)m;
-            ulong aa, bb;
-            ulong ans = 0;
-            if (a < 0)
-            {
-                var a2 = (ulong)InternalMath.SafeMod(a, m);
-                ans -= nn * (nn - 1) / 2 * ((a2 - (ulong)a) / mm);
-                aa = a2;
-            }
-            else aa = (ulong)a;
-            if (b < 0)
-            {
-                var b2 = (ulong)InternalMath.SafeMod(b, m);
-                ans -= nn * ((b2 - (ulong)b) / mm);
-                bb = b2;
-            }
-            else bb = (ulong)b;
-
-            return (long)(ans + InternalMath.FloorSumUnsigned(nn, mm, aa, bb));
-        }
-        #endregion FloorSum
     }
 }

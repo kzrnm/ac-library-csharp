@@ -2,12 +2,18 @@
 using AtCoder.Internal;
 using FluentAssertions;
 using Xunit;
-using static AtCoder.MathUtil;
 
 namespace AtCoder
 {
     public class MathLibTest
     {
+        static long Gcd(long a, long b)
+        {
+            (0 <= a && 0 <= b).Should().BeTrue();
+            if (b == 0) return a;
+            return Gcd(b, a % b);
+        }
+
         [Fact]
         public void PowMod()
         {
