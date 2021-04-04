@@ -20,9 +20,6 @@ namespace AtCoder.Internal
         /// </summary>
         internal static readonly StaticModInt<T>[] sumIE = CalcurateSumIE();
 
-#if !NETSTANDARD2_1
-        [MethodImpl(MethodImplOptions.AggressiveOptimization)]
-#endif
         public static void Calculate(Span<StaticModInt<T>> a)
         {
             CheckPow2(a.Length);
@@ -108,9 +105,6 @@ namespace AtCoder.Internal
             }
         }
 
-#if !NETSTANDARD2_1
-        [MethodImpl(MethodImplOptions.AggressiveOptimization)]
-#endif
         public static void CalculateInv(Span<StaticModInt<T>> a)
         {
             CheckPow2(a.Length);
