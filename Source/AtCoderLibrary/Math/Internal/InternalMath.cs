@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace AtCoder.Internal
 {
@@ -116,6 +117,7 @@ namespace AtCoder.Internal
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static long SafeMod(long x, long m)
         {
             x %= m;
