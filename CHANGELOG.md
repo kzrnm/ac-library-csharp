@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Added
+- Add unsigned constructor to modint https://github.com/naminodarie/ac-library-csharp/pull/45
+- Add span overloads to convolution https://github.com/naminodarie/ac-library-csharp/pull/45
+### Changed
+- AtCoderAnalyzer can run parallel
+- Improve FloorSum https://github.com/naminodarie/ac-library-csharp/pull/42
 ## [1.4.4] - 2021-03-05
 ### Changed
 - Rename AtCoder.Internal.SCCGraph to AtCoder.Internal.InternalSCCGraph
