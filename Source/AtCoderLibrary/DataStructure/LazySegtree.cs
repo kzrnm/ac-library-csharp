@@ -177,7 +177,7 @@ namespace AtCoder
             for (int i = log; i >= 1; i--)
             {
                 if (((l >> i) << i) != l) Push(l >> i);
-                if (((r >> i) << i) != r) Push(r >> i);
+                if (((r >> i) << i) != r) Push((r - 1) >> i);
             }
 
             TValue sml = op.Identity, smr = op.Identity;
