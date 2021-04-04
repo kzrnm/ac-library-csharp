@@ -41,29 +41,36 @@ namespace AtCoder
                 return Array.Empty<StaticModInt<TMod>>();
             if (Math.Min(n, m) <= 60)
                 return ConvolutionNaive(a, b);
-            return ConvolutionFFT(a.ToArray(), b.ToArray());
+            return ConvolutionFFT(a, b);
         }
 
-        private static StaticModInt<TMod>[] ConvolutionFFT<TMod>(StaticModInt<TMod>[] a, StaticModInt<TMod>[] b)
+        private static StaticModInt<TMod>[] ConvolutionFFT<TMod>(ReadOnlySpan<StaticModInt<TMod>> a, ReadOnlySpan<StaticModInt<TMod>> b)
             where TMod : struct, IStaticMod
         {
             int n = a.Length, m = b.Length;
             int z = 1 << InternalBit.CeilPow2(n + m - 1);
-            Array.Resize(ref a, z);
-            Butterfly<TMod>.Calculate(a);
-            Array.Resize(ref b, z);
-            Butterfly<TMod>.Calculate(b);
+            var a2 = new StaticModInt<TMod>[z];
+            var b2 = new StaticModInt<TMod>[z];
+            a.CopyTo(a2);
+            b.CopyTo(b2);
 
+            var result = ConvolutionFFTInner(a2, b2);
+            Array.Resize(ref result, n + m - 1);
+            var iz = new StaticModInt<TMod>(z).Inv();
+            for (int i = 0; i < result.Length; i++)
+                result[i] *= iz;
+
+            return result;
+        }
+
+        private static StaticModInt<TMod>[] ConvolutionFFTInner<TMod>(StaticModInt<TMod>[] a, StaticModInt<TMod>[] b)
+            where TMod : struct, IStaticMod
+        {
+            Butterfly<TMod>.Calculate(a);
+            Butterfly<TMod>.Calculate(b);
             for (int i = 0; i < a.Length; i++)
                 a[i] *= b[i];
-
             Butterfly<TMod>.CalculateInv(a);
-            Array.Resize(ref a, n + m - 1);
-            var iz = new StaticModInt<TMod>(z).Inv();
-
-            for (int i = 0; i < a.Length; i++)
-                a[i] *= iz;
-
             return a;
         }
         private static StaticModInt<TMod>[] ConvolutionNaive<TMod>(ReadOnlySpan<StaticModInt<TMod>> a, ReadOnlySpan<StaticModInt<TMod>> b)
