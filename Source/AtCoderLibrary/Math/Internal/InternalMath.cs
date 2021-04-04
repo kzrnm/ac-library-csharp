@@ -152,5 +152,27 @@ namespace AtCoder.Internal
             }
             return true;
         }
+
+        public static ulong FloorSumUnsigned(ulong n, ulong m, ulong a, ulong b)
+        {
+            ulong ans = 0;
+            while (true)
+            {
+                if (a >= m)
+                {
+                    ans += (n - 1) * n / 2 * (a / m);
+                    a %= m;
+                }
+                if (b >= m)
+                {
+                    ans += n * (b / m);
+                    b %= m;
+                }
+
+                ulong yMax = a * n + b;
+                if (yMax < m) return ans;
+                (n, m, a, b) = (yMax / m, a, m, yMax % m);
+            }
+        }
     }
 }
