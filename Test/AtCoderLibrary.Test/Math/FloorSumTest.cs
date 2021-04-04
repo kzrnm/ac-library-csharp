@@ -1,13 +1,24 @@
 ﻿using System.IO;
 using System.Linq;
+using AtCoder.Internal;
 using FluentAssertions;
 using Xunit;
-using static AtCoder.MathUtil;
 
 namespace AtCoder
 {
     public class FloorSumTest
     {
+        private static long FloorSumNative(long n, long m, long a, long b)
+        {
+            long sum = 0;
+            for (long i = 0; i < n; i++)
+            {
+                long z = a * i + b;
+                sum += (z - InternalMath.SafeMod(z, m)) / m;
+            }
+            return sum;
+        }
+
         [Fact]
         public void FloorSum()
         {
