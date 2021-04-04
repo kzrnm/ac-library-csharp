@@ -586,7 +586,7 @@ namespace AtCoder
             {
                 if (a >= m)
                 {
-                    ans += (n - 1) * n * (a / m) / 2;
+                    ans += (n - 1) * n / 2 * (a / m);
                     a %= m;
                 }
                 if (b >= m)
@@ -595,11 +595,9 @@ namespace AtCoder
                     b %= m;
                 }
 
-                long yMax = (a * n + b) / m;
-                long xMax = yMax * m - b;
-                if (yMax == 0) return ans;
-                ans += (n - (xMax + a - 1) / a) * yMax;
-                (n, m, a, b) = (yMax, a, m, (a - xMax % a) % a);
+                long yMax = a * n + b;
+                if (yMax < m) return ans;
+                (n, m, a, b) = (yMax / m, a, m, yMax % m);
             }
         }
         #endregion FloorSum
