@@ -28,14 +28,12 @@ int main() {
 
 	n >>= 2;
 	long ans = 0;
-	auto graph = mcf_graph<long, long>(2 * n + 2);
+	auto graph = scc_graph(n);
 	for (int i = 0; i < n; i++)
 	{
-		graph.add_edge(2 * n, i, n - i, n + i);
-		graph.add_edge(i, i + n, n, n);
-		graph.add_edge(i + n, 2 * n + 1, i, n + i);
+		graph.add_edge(i, (int)((1000000007L * i) % n));
 	}
-	ans = graph.flow(2 * n, 2 * n + 1).second;
+	ans = graph.scc().size();
 	printf("%lld\n", ans);
 	return 0;
 }
