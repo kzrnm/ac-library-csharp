@@ -113,12 +113,7 @@ namespace AtCoder
         /// <para>制約: 0≤|<paramref name="s"/>|&lt;10^8</para>
         /// <para>計算量: O(|<paramref name="s"/>|)</para>
         /// </remarks>
-        public static int[] SuffixArray(string s)
-        {
-            var n = s.Length;
-            int[] s2 = s.Select(c => (int)c).ToArray();
-            return InternalString.SAIS(s2, char.MaxValue);
-        }
+        public static int[] SuffixArray(string s) => SuffixArray(s.AsMemory());
 
 
         /// <summary>

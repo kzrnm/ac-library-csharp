@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - AtCoderAnalyzer can run parallel
 - Improve FloorSum https://github.com/naminodarie/ac-library-csharp/pull/42
+- Optimize SuffixArray(string)
+
 ## [1.4.4] - 2021-03-05
 ### Changed
 - Rename AtCoder.Internal.SCCGraph to AtCoder.Internal.InternalSCCGraph
