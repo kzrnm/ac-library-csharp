@@ -1,0 +1,7 @@
+﻿{
+	"$schema": "https://raw.githubusercontent.com/naminodarie/SourceExpander/master/schema/expander.schema.json",
+	"ignore-file-pattern-regex": [
+		"\\\\obj",
+		"\\\\Main"
+	]
+}

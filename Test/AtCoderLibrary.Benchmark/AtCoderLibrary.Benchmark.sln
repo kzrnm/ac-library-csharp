@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.6.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AtCoderLibrary", "..\..\Source\AtCoderLibrary\AtCoderLibrary.csproj", "{8784D127-FEEF-4D7A-AE39-23D12B98F9F4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Benchmark", "Benchmark\Benchmark.csproj", "{4D4F0914-F34F-40D1-9ACF-FA0F8311E614}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8784D127-FEEF-4D7A-AE39-23D12B98F9F4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8784D127-FEEF-4D7A-AE39-23D12B98F9F4}.Debug|x64.Build.0 = Debug|Any CPU
+		{8784D127-FEEF-4D7A-AE39-23D12B98F9F4}.Release|x64.ActiveCfg = Release|Any CPU
+		{8784D127-FEEF-4D7A-AE39-23D12B98F9F4}.Release|x64.Build.0 = Release|Any CPU
+		{4D4F0914-F34F-40D1-9ACF-FA0F8311E614}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4D4F0914-F34F-40D1-9ACF-FA0F8311E614}.Debug|x64.Build.0 = Debug|Any CPU
+		{4D4F0914-F34F-40D1-9ACF-FA0F8311E614}.Release|x64.ActiveCfg = Release|Any CPU
+		{4D4F0914-F34F-40D1-9ACF-FA0F8311E614}.Release|x64.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {974C2BFF-6168-4689-8896-777389307007}
+	EndGlobalSection
+EndGlobal
