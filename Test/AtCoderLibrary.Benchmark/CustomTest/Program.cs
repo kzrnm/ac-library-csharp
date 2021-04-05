@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -30,12 +31,19 @@ var classes = new[]
 };
 
 var current = CurrentPath();
-var benchmarkDir = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(current)), "Benchmark");
+var currentDir = Path.GetDirectoryName(current);
+var benchmarkDir = Path.Combine(Path.GetDirectoryName(currentDir), "Benchmark");
 var csharpFiles = Directory.GetFiles(Path.Combine(benchmarkDir, "Combined"), "*.csx", SearchOption.TopDirectoryOnly).ToDictionary(Path.GetFileNameWithoutExtension);
 var cppFiles = Directory.GetFiles(Path.Combine(benchmarkDir, "C++"), "*.cpp", SearchOption.TopDirectoryOnly).ToDictionary(Path.GetFileNameWithoutExtension);
 
-Console.WriteLine("Url encoded AtCoder cookie:");
-var cookie = Console.ReadLine();
+var cancellationTokenSource = new CancellationTokenSource();
+
+string cookie = File.Exists(Path.Combine(currentDir, "Cookie.txt")) ? File.ReadAllText(Path.Combine(currentDir, "Cookie.txt")) : null;
+if (cookie is null)
+{
+    Console.WriteLine("Url encoded AtCoder cookie:");
+    cookie = Console.ReadLine();
+}
 
 var handler = new HttpClientHandler()
 {
@@ -48,15 +56,20 @@ client.DefaultRequestHeaders.AcceptEncoding.Add(new("gzip"));
 client.DefaultRequestHeaders.AcceptEncoding.Add(new("deflate"));
 var csrfToken = System.Text.RegularExpressions.Regex.Match(HttpUtility.UrlDecode(cookie), @"csrf_token:([^\0]+)").Groups[1].Value;
 
-using var sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(current), "Result.txt"));
-Console.CancelKeyPress += (_, _) => sw.Close();
+using var sw = new StreamWriter(Path.Combine(currentDir, "Result.txt"));
+Console.CancelKeyPress += (_, _) =>
+{
+    cancellationTokenSource.Cancel();
+    sw.Close();
+};
 
 sw.WriteLine("name\tC++\tC#");
 foreach (var name in classes)
 {
-    var cpp = await PostCustomTestAsync(cppFiles[name], 4003);
+    int cpp = -1, cs = -1;
+    cpp = await PostCustomTestAsync(cppFiles[name], 4003);
     Console.WriteLine($"C++: {name} {cpp}");
-    var cs = await PostCustomTestAsync(csharpFiles[name], 4010);
+    cs = await PostCustomTestAsync(csharpFiles[name], 4010);
     Console.WriteLine($"C#: {name} {cs}");
     sw.WriteLine($"{name}\t{cpp}\t{cs}");
 }
@@ -71,9 +84,9 @@ async Task<int> PostCustomTestAsync(string sourceFile, int langId)
         { "input", "16777216" },
         { "csrf_token", csrfToken },
     });
-    var postres = await client.PostAsync("https://atcoder.jp/contests/arc116/custom_test/submit/json", content);
-    await Task.Delay(15_000);
-    var res = await client.GetAsync("https://atcoder.jp/contests/arc116/custom_test/json");
+    var postres = await client.PostAsync("https://atcoder.jp/contests/arc116/custom_test/submit/json", content, cancellationTokenSource.Token);
+    await Task.Delay(15_000, cancellationTokenSource.Token);
+    var res = await client.GetAsync("https://atcoder.jp/contests/arc116/custom_test/json", cancellationTokenSource.Token);
     var dec = await JsonSerializer.DeserializeAsync<CustomTestResponse>(await res.Content.ReadAsStreamAsync());
 
     return dec.Result.TimeConsumption;
