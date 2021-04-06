@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using AtCoder;
+using AtCoder.Internal;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Diagnosers;
