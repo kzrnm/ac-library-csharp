@@ -25,7 +25,6 @@ typedef long long ll;
 int main() {
 	int n = 1 << 24;;
 
-	n >>= 1;
 	long ans = 0;
 	fenwick_tree<ll> fw(n);
 	for (int i = 0; i < n; i++)

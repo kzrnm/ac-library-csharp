@@ -13,7 +13,7 @@ LaunchCount=1  WarmupCount=3
 |              Method |       Mean |     Error |   StdDev |
 |-------------------- |-----------:|----------:|---------:|
 |         Convolution | 2,484.0 ms | 566.46 ms | 31.05 ms |
-|         FenwickTree | 2,047.4 ms | 942.11 ms | 51.64 ms |
+|         FenwickTree |   892.1 ms | 196.30 ms | 10.76 ms |
 |         LazySegtree | 1,362.7 ms | 201.68 ms | 11.05 ms |
 | LazySegtreeMaxRight | 2,567.6 ms |  99.79 ms |  5.47 ms |
 |            McfGraph |   900.3 ms | 159.50 ms |  8.74 ms |

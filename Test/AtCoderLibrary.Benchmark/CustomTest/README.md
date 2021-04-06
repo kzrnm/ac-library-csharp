@@ -3,7 +3,7 @@
 name|C++[ms]|C#[ms]|C#/C++
 ---|---:|---:|---:
 Convolution|818|1301|1.590
-FenwickTree|280|999|3.568
+FenwickTree|603|1370|2.272
 LazySegtree|787|1513|1.922
 LazySegtreeMaxRight|810|1514|1.869
 McfGraph|1567|1949|1.244

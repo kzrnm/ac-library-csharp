@@ -17,15 +17,15 @@ namespace AtCoder.Internal
         /// <param name="n"></param>
         /// <returns><paramref name="n"/> &amp; -<paramref name="n"/></returns>
         [MethodImpl(AggressiveInlining)]
-        public static int ExtractLowestSetBit(int n)
+        public static uint ExtractLowestSetBit(int n)
         {
 #if !NETSTANDARD2_1
             if (Bmi1.IsSupported)
             {
-                return (int)Bmi1.ExtractLowestSetBit((uint)n);
+                return Bmi1.ExtractLowestSetBit((uint)n);
             }
 #endif
-            return n & -n;
+            return (uint)(n & -n);
         }
 
         /// <summary>

@@ -51,11 +51,10 @@ namespace AtCoder
         /// <para>制約: 0≤<paramref name="p"/>&lt;n</para>
         /// <para>計算量: O(log n)</para>
         /// </remarks>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Add(int p, TValue x)
         {
             Contract.Assert((uint)p < (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(p)} && {nameof(p)} < Length");
-            for (p++; p < data.Length; p += InternalBit.ExtractLowestSetBit(p))
+            for (++p; p < data.Length; p += (int)InternalBit.ExtractLowestSetBit(p))
             {
                 data[p] = op.Add(data[p], x);
             }
@@ -77,12 +76,11 @@ namespace AtCoder
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-
         [EditorBrowsable(EditorBrowsableState.Never)]
         public TValue Sum(int r)
         {
             TValue s = default;
-            for (; r > 0; r -= InternalBit.ExtractLowestSetBit(r))
+            for (; r > 0; r &= r - 1)
             {
                 s = op.Add(s, data[r]);
             }
@@ -120,7 +118,7 @@ namespace AtCoder
                     items[0] = new DebugItem(data[1], data[1]);
                     for (int i = 2; i < data.Length; i++)
                     {
-                        int length = InternalBit.ExtractLowestSetBit(i);
+                        int length = (int)InternalBit.ExtractLowestSetBit(i);
                         var pr = i - length - 1;
                         var sum = op.Add(data[i], 0 <= pr ? items[pr].sum : default);
                         var val = op.Subtract(sum, items[i - 2].sum);
