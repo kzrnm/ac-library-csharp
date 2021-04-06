@@ -32,8 +32,7 @@ ll target;
 bool f(ll v) { return v * 3 / 2 <= target; }
 
 int main() {
-	int n;
-	scanf("%d", &n);
+	int n = 1 << 24;;
 
 	n >>= 3;
 	long ans = 0;

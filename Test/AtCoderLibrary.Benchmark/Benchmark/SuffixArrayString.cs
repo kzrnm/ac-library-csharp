@@ -13,6 +13,7 @@ public static class SuffixArrayString
     {
         long ans = 0;
 
+        n >>= 3;
         var c = new char[n];
         for (int i = 0; i < c.Length; i++)
             c[i] = (char)(i % 127);

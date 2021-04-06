@@ -23,9 +23,9 @@ using mint = modint998244353;
 typedef long long ll;
 
 int main() {
-	int n;
-	scanf("%d", &n);
+	int n = 1 << 24;;
 
+	n >>= 3;
 	long ans = 0;
 	char c[1'00'000'000];
 	for (int i = 0; i < n; i++)

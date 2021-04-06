@@ -56,40 +56,40 @@ client.DefaultRequestHeaders.AcceptEncoding.Add(new("gzip"));
 client.DefaultRequestHeaders.AcceptEncoding.Add(new("deflate"));
 var csrfToken = System.Text.RegularExpressions.Regex.Match(HttpUtility.UrlDecode(cookie), @"csrf_token:([^\0]+)").Groups[1].Value;
 
-using var sw = new StreamWriter(Path.Combine(currentDir, "Result.txt"));
 Console.CancelKeyPress += (_, _) =>
 {
     cancellationTokenSource.Cancel();
-    sw.Close();
 };
 
-sw.WriteLine("name\tC++\tC#");
 foreach (var name in classes)
 {
-    int cpp = -1, cs = -1;
-    cpp = await PostCustomTestAsync(cppFiles[name], 4003);
-    Console.WriteLine($"C++: {name} {cpp}");
-    cs = await PostCustomTestAsync(csharpFiles[name], 4010);
-    Console.WriteLine($"C#: {name} {cs}");
-    sw.WriteLine($"{name}\t{cpp}\t{cs}");
+    bool cpp = false, cs = false;
+    cpp = await PostPracticeAsync(cppFiles[name], 4003);
+    Console.WriteLine($"C++: {name} {(cpp ? "OK" : "NG")}");
+    await Task.Delay(15_000);
+    cs = await PostPracticeAsync(csharpFiles[name], 4010);
+    Console.WriteLine($"C#: {name} {(cs ? "OK" : "NG")}");
+    await Task.Delay(15_000);
 }
 return;
 
-async Task<int> PostCustomTestAsync(string sourceFile, int langId)
+async Task<bool> PostPracticeAsync(string sourceFile, int langId)
 {
     var content = new FormUrlEncodedContent(new Dictionary<string, string>
     {
+        { "data.TaskScreenName", "practice_1" },
         { "data.LanguageId", langId.ToString() },
         { "sourceCode", File.ReadAllText(sourceFile) },
-        { "input", "16777216" },
         { "csrf_token", csrfToken },
     });
-    var postres = await client.PostAsync("https://atcoder.jp/contests/arc116/custom_test/submit/json", content, cancellationTokenSource.Token);
-    await Task.Delay(15_000, cancellationTokenSource.Token);
-    var res = await client.GetAsync("https://atcoder.jp/contests/arc116/custom_test/json", cancellationTokenSource.Token);
-    var dec = await JsonSerializer.DeserializeAsync<CustomTestResponse>(await res.Content.ReadAsStreamAsync());
+    var res = await client.PostAsync("https://atcoder.jp/contests/practice/submit", content, cancellationTokenSource.Token);
 
-    return dec.Result.TimeConsumption;
+    if (!res.IsSuccessStatusCode)
+        return false;
+    var resContent = await res.Content.ReadAsStringAsync(cancellationTokenSource.Token);
+    if (resContent.Contains("href=\"/reset_password\""))
+        return false;
+    return true;
 }
 
 class CustomTestResponse

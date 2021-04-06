@@ -11,7 +11,7 @@ public static class Convolution
 {
     public static StaticModInt<Mod998244353> Calc(int n)
     {
-        n >>= 1;
+        n >>= 2;
         var a = new StaticModInt<Mod998244353>[n];
         var b = new StaticModInt<Mod998244353>[n];
         for (int i = 0; i < n; i++)

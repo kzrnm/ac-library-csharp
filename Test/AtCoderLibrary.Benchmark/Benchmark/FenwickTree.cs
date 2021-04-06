@@ -11,7 +11,7 @@ public static class FenwickTree
 {
     public static long Calc(int n)
     {
-        n <<= 1;
+        n >>= 1;
         long ans = 0;
         var fw = new LongFenwickTree(n);
         for (int i = 0; i < n; i++)

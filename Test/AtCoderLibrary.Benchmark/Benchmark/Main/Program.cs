@@ -14,7 +14,7 @@ class Program
                 var dir = Path.GetDirectoryName(source.Path);
                 var filename = Path.GetFileNameWithoutExtension(source.Path);
                 var sb = new StringBuilder(source.Code);
-                sb.AppendLine("class Program{static void Main()=>System.Console.WriteLine(" + filename + ".Calc(int.Parse(System.Console.ReadLine())));}");
+                sb.AppendLine("class Program{static void Main()=>System.Console.WriteLine(" + filename + ".Calc(1<<24));}");
                 File.WriteAllText(Path.Combine(dir, "Combined", filename + ".csx"), sb.ToString());
             }
             return;

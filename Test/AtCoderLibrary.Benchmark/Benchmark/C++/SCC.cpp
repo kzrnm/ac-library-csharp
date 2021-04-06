@@ -23,10 +23,9 @@ using mint = modint998244353;
 typedef long long ll;
 
 int main() {
-	int n;
-	scanf("%d", &n);
+	int n = 1 << 24;;
 
-	n >>= 2;
+	n >>= 3;
 	long ans = 0;
 	auto graph = scc_graph(n);
 	for (int i = 0; i < n; i++)

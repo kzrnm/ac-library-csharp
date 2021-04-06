@@ -23,10 +23,9 @@ using mint = modint998244353;
 typedef long long ll;
 
 int main() {
-	int n;
-	scanf("%d", &n);
+	int n = 1 << 24;;
 
-	n >>= 1;
+	n >>= 4;
 	long ans = 0;
 	vector<ll> s(n);
 	for (int i = 0; i < n; i++)

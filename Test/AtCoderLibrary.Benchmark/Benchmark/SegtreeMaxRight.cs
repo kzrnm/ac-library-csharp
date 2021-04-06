@@ -11,6 +11,7 @@ public static class SegtreeMaxRight
 {
     public static long Calc(int n)
     {
+        n >>= 1;
         long ans = 0;
         var seg = new Segtree<long, Op>(n);
         for (int i = 0; i < n; i++)

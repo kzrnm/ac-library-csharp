@@ -13,7 +13,6 @@ public static class ZAlgorithm
     {
         long ans = 0;
 
-        n <<= 3;
         var s = new long[n];
         for (int i = 0; i < s.Length; i++)
             s[i] = long.MaxValue + i % 2 == 0 ? i : -i;

@@ -23,10 +23,9 @@ using mint = modint998244353;
 typedef long long ll;
 
 int main() {
-	int n;
-	scanf("%d", &n);
+	int n = 1 << 24;;
 
-	n >>= 1;
+	n >>= 2;
 	vector<mint> a(n), b(n);
 	for (int i = 0; i < n; i++) {
 		a[i] = i + 1234;
