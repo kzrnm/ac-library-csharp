@@ -16,7 +16,7 @@ public static class SuffixArrayLong
         n >>= 4;
         var s = new long[n];
         for (int i = 0; i < s.Length; i++)
-            s[i] = long.MaxValue + i % 2 == 0 ? i : -i;
+            s[i] = long.MaxValue + (i % 2 == 0 ? i : -i);
         var sa = StringLib.SuffixArray(s);
         var lcp = StringLib.LCPArray(s, sa);
         ans = lcp[0];

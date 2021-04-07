@@ -14,6 +14,6 @@ SatisfiableTwoSat|234|389|1.662
 SCC|726|1044|1.438
 Segtree|736|986|1.340
 SegtreeMaxRight|446|823|1.845
-SuffixArrayLong|127|1533|12.071
+SuffixArrayLong|136|1287|9.463
 SuffixArrayString|215|1068|4.967
 ZAlgorithm|197|330|1.675

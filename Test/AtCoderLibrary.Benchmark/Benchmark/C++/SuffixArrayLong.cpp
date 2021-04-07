@@ -29,7 +29,7 @@ int main() {
 	long ans = 0;
 	vector<ll> s(n);
 	for (int i = 0; i < n; i++)
-		s[i] = ((1LL << 64) - 1) + i % 2 == 0 ? i : -i;
+		s[i] = ((1LL << 64) - 1) + (i % 2 == 0 ? i : -i);
 	auto sa = suffix_array(s);
 	auto lcp = lcp_array(s, sa);
 	ans = lcp[0];
