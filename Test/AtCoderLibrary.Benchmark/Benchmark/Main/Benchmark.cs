@@ -34,7 +34,9 @@ namespace Benchmark
     public class Benchmark
     {
         int n = 1 << 24;
-        [Benchmark] public StaticModInt<Mod998244353> Convolution() => global::Convolution.Calc(n);
+        
+        [Benchmark] public long Convolution() => global::Convolution.Calc(n);
+        [Benchmark] public long Convolution377487361() => global::Convolution377487361.Calc(n);
         [Benchmark] public long FenwickTree() => global::FenwickTree.Calc(n);
         [Benchmark] public long LazySegtree() => global::LazySegtree.Calc(n);
         [Benchmark] public long LazySegtreeMaxRight() => global::LazySegtreeMaxRight.Calc(n);

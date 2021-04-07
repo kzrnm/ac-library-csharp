@@ -10,19 +10,20 @@ Job=ShortRun  Toolchain=.NET Core 3.1  IterationCount=3
 LaunchCount=1  WarmupCount=3  
 
 ```
-|              Method |       Mean |     Error |   StdDev |
-|-------------------- |-----------:|----------:|---------:|
-|         Convolution | 2,484.0 ms | 566.46 ms | 31.05 ms |
-|         FenwickTree |   892.1 ms | 196.30 ms | 10.76 ms |
-|         LazySegtree | 1,362.7 ms | 201.68 ms | 11.05 ms |
-| LazySegtreeMaxRight | 2,567.6 ms |  99.79 ms |  5.47 ms |
-|            McfGraph |   900.3 ms | 159.50 ms |  8.74 ms |
-|             MfGraph |   549.4 ms | 354.94 ms | 19.46 ms |
-|            MfGraph1 |   726.2 ms | 220.67 ms | 12.10 ms |
-|                 SCC | 1,893.8 ms |  26.47 ms |  1.45 ms |
-|   SatisfiableTwoSat | 1,981.5 ms | 492.09 ms | 26.97 ms |
-|             Segtree | 1,478.8 ms |  50.42 ms |  2.76 ms |
-|     SegtreeMaxRight | 1,139.0 ms | 193.17 ms | 10.59 ms |
-|     SuffixArrayLong | 2,242.8 ms | 139.99 ms |  7.67 ms |
-|   SuffixArrayString | 2,214.2 ms | 450.91 ms | 24.72 ms |
-|          ZAlgorithm | 1,189.4 ms | 663.66 ms | 36.38 ms |
+|               Method |       Mean |     Error |   StdDev |
+|--------------------- |-----------:|----------:|---------:|
+|          Convolution | 1,297.3 ms | 312.41 ms | 17.12 ms |
+| Convolution377487361 | 1,225.0 ms |  28.15 ms |  1.54 ms |
+|          FenwickTree |   880.7 ms | 372.55 ms | 20.42 ms |
+|          LazySegtree | 1,449.4 ms | 301.91 ms | 16.55 ms |
+|  LazySegtreeMaxRight | 1,255.6 ms | 281.89 ms | 15.45 ms |
+|             McfGraph |   902.1 ms |  43.29 ms |  2.37 ms |
+|              MfGraph |   281.0 ms | 190.26 ms | 10.43 ms |
+|             MfGraph1 |   352.7 ms | 281.72 ms | 15.44 ms |
+|                  SCC |   922.7 ms | 291.31 ms | 15.97 ms |
+|    SatisfiableTwoSat |   307.5 ms | 710.52 ms | 38.95 ms |
+|              Segtree |   896.9 ms | 772.02 ms | 42.32 ms |
+|      SegtreeMaxRight |   606.4 ms | 165.41 ms |  9.07 ms |
+|      SuffixArrayLong |   273.9 ms | 532.51 ms | 29.19 ms |
+|    SuffixArrayString |   530.3 ms | 148.93 ms |  8.16 ms |
+|           ZAlgorithm |   169.1 ms | 148.91 ms |  8.16 ms |
