@@ -5,7 +5,7 @@ using Xunit;
 
 namespace AtCoder.Internal
 {
-    public class InternalMathTest
+    public partial class InternalMathTest
     {
         static long Gcd(long a, long b)
         {
@@ -165,7 +165,8 @@ namespace AtCoder.Internal
             for (int m = 2; m <= 10000; m++)
             {
                 if (!InternalMath.IsPrime(m)) continue;
-                int n = InternalMath.PrimitiveRoot(m);
+                //int n = InternalMath.PrimitiveRoot(m);
+                int n = mods[m].PrimitiveRoot();
                 n.Should().BeGreaterOrEqualTo(1);
                 m.Should().BeGreaterThan(n);
                 int x = 1;
@@ -183,30 +184,36 @@ namespace AtCoder.Internal
         [Fact]
         public void PrimitiveRootTemplateTest()
         {
-            MathUtil.IsPrimitiveRoot(2, InternalMath.PrimitiveRoot(2)).Should().BeTrue();
-            MathUtil.IsPrimitiveRoot(3, InternalMath.PrimitiveRoot(3)).Should().BeTrue();
-            MathUtil.IsPrimitiveRoot(5, InternalMath.PrimitiveRoot(5)).Should().BeTrue();
-            MathUtil.IsPrimitiveRoot(7, InternalMath.PrimitiveRoot(7)).Should().BeTrue();
-            MathUtil.IsPrimitiveRoot(11, InternalMath.PrimitiveRoot(11)).Should().BeTrue();
-            MathUtil.IsPrimitiveRoot(998244353, InternalMath.PrimitiveRoot(998244353)).Should().BeTrue();
-            MathUtil.IsPrimitiveRoot(1000000007, InternalMath.PrimitiveRoot(1000000007)).Should().BeTrue();
-            MathUtil.IsPrimitiveRoot(469762049, InternalMath.PrimitiveRoot(469762049)).Should().BeTrue();
-            MathUtil.IsPrimitiveRoot(167772161, InternalMath.PrimitiveRoot(167772161)).Should().BeTrue();
-            MathUtil.IsPrimitiveRoot(754974721, InternalMath.PrimitiveRoot(754974721)).Should().BeTrue();
-            MathUtil.IsPrimitiveRoot(324013369, InternalMath.PrimitiveRoot(324013369)).Should().BeTrue();
-            MathUtil.IsPrimitiveRoot(831143041, InternalMath.PrimitiveRoot(831143041)).Should().BeTrue();
-            MathUtil.IsPrimitiveRoot(1685283601, InternalMath.PrimitiveRoot(1685283601)).Should().BeTrue();
+            MathUtil.IsPrimitiveRoot(2, InternalMath.PrimitiveRoot<Mod2>()).Should().BeTrue();
+            MathUtil.IsPrimitiveRoot(3, InternalMath.PrimitiveRoot<Mod3>()).Should().BeTrue();
+            MathUtil.IsPrimitiveRoot(5, InternalMath.PrimitiveRoot<Mod5>()).Should().BeTrue();
+            MathUtil.IsPrimitiveRoot(7, InternalMath.PrimitiveRoot<Mod7>()).Should().BeTrue();
+            MathUtil.IsPrimitiveRoot(11, InternalMath.PrimitiveRoot<Mod11>()).Should().BeTrue();
+            MathUtil.IsPrimitiveRoot(998244353, InternalMath.PrimitiveRoot<Mod998244353>()).Should().BeTrue();
+            MathUtil.IsPrimitiveRoot(1000000007, InternalMath.PrimitiveRoot<Mod1000000007>()).Should().BeTrue();
+            MathUtil.IsPrimitiveRoot(469762049, InternalMath.PrimitiveRoot<Mod469762049>()).Should().BeTrue();
+            MathUtil.IsPrimitiveRoot(167772161, InternalMath.PrimitiveRoot<Mod167772161>()).Should().BeTrue();
+            MathUtil.IsPrimitiveRoot(754974721, InternalMath.PrimitiveRoot<Mod754974721>()).Should().BeTrue();
+            MathUtil.IsPrimitiveRoot(324013369, InternalMath.PrimitiveRoot<Mod324013369>()).Should().BeTrue();
+            MathUtil.IsPrimitiveRoot(831143041, InternalMath.PrimitiveRoot<Mod831143041>()).Should().BeTrue();
+            MathUtil.IsPrimitiveRoot(1685283601, InternalMath.PrimitiveRoot<Mod1685283601>()).Should().BeTrue();
         }
 
         [Fact]
         public void PrimitiveRootTest()
         {
+
             for (int i = 0; i < 1000; i++)
             {
                 int x = int.MaxValue - i;
                 if (!InternalMath.IsPrime(x)) continue;
-                MathUtil.IsPrimitiveRoot(x, InternalMath.PrimitiveRoot(x)).Should().BeTrue();
+                MathUtil.IsPrimitiveRoot(x, mods[x].PrimitiveRoot()).Should().BeTrue();
             }
         }
+    }
+
+    public interface IPrimitiveRootFactory : IStaticMod
+    {
+        int PrimitiveRoot();
     }
 }

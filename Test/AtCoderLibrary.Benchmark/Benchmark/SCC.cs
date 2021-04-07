@@ -11,7 +11,7 @@ public static class SCC
 {
     public static long Calc(int n)
     {
-        n >>= 2;
+        n >>= 3;
         long ans = 0;
         var graph = new SCCGraph(n);
         for (int i = 0; i < n; i++)

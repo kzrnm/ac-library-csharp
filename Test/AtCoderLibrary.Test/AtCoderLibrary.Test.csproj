@@ -9,19 +9,32 @@
   <PropertyGroup>
     <NoWarn>$(NoWarn);IDE0044;NETSDK1138</NoWarn>
   </PropertyGroup>
-  
+
   <ItemGroup>
-    <PackageReference Include="SourceExpander.Core" Version="2.5.0" />
+    <None Update="Internal\InternalMathTest.StaticMod.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>InternalMathTest.StaticMod.cs</LastGenOutput>
+    </None>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+    <None Include="Internal\InternalMathTest.StaticMod.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>InternalMathTest.StaticMod.tt</DependentUpon>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SourceExpander.Core" Version="3.1.0" />
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
     <PackageReference Include="MersenneTwister" Version="1.0.6" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
-    <PackageReference Include="SourceExpander.Embedder.Testing" Version="2.5.0" />
+    <PackageReference Include="SourceExpander.Embedder.Testing" Version="3.1.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="coverlet.collector" Version="1.3.0">
+    <PackageReference Include="coverlet.collector" Version="3.0.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -31,5 +44,12 @@
     <ProjectReference Include="..\..\Source\AtCoderLibrary\AtCoderLibrary.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Internal\InternalMathTest.StaticMod.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>InternalMathTest.StaticMod.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
 
 </Project>

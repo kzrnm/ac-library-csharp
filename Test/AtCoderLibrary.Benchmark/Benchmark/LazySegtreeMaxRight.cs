@@ -11,7 +11,7 @@ public static class LazySegtreeMaxRight
 {
     public static long Calc(int n)
     {
-        n >>= 2;
+        n >>= 3;
         long ans = 0;
         var seg = new LazySegtree<long, long, Op>(n);
         for (int i = 0; i < n; i++)

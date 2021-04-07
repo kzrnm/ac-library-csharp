@@ -23,19 +23,17 @@ using mint = modint998244353;
 typedef long long ll;
 
 int main() {
-	int n;
-	scanf("%d", &n);
+	int n = 1 << 24;;
 
-	n <<= 1;
 	long ans = 0;
 	fenwick_tree<ll> fw(n);
 	for (int i = 0; i < n; i++)
 	{
 		fw.add(i, i + 1234);
 	}
-	for (int i = 0; 2 * i <= n; i++)
+	for (int i = 0; i <= n; i++)
 	{
-		ans ^= fw.sum(i, 2 * i);
+		ans ^= fw.sum(0, i);
 	}
 	printf("%lld\n", ans);
 	return 0;

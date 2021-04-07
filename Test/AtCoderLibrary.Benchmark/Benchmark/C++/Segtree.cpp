@@ -29,9 +29,9 @@ ll target;
 bool f(ll v) { return v * 3 / 2 <= target; }
 
 int main() {
-	int n;
-	scanf("%d", &n);
+	int n = 1 << 24;;
 
+	n >>= 1;
 	long ans = 0;
 	auto seg = segtree<ll, op, e>(n);
 	for (int i = 0; i < n; i++)

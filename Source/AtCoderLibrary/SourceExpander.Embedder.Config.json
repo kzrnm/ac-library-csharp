@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/naminodarie/SourceExpander/master/schema/embedder.schema.json",
   "enabled": true,
   "embedding-type": "gzip-base32768",
-  "enable-minify": true,
+  "minify-level": "full",
   "embedding-source-class": {
     "enabled": false
   },

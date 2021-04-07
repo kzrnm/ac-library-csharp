@@ -11,7 +11,7 @@ public static class MfGraph
 {
     public static long Calc(int n)
     {
-        n >>= 4;
+        n >>= 5;
         long ans = 0;
         var graph = new MFGraphInt(2 * n + 2);
         for (int i = 0; i < n; i++)

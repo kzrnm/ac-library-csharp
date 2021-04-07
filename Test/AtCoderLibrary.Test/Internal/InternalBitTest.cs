@@ -19,10 +19,10 @@ namespace AtCoder.Internal
         [InlineData(1 << 30, 1 << 30)]
         [InlineData((1 << 30) + 1, 1)]
         [InlineData(int.MaxValue, 1)]
-        public void ExtractLowestSetBit(int input, int expected)
+        public void ExtractLowestSetBit(int input, uint expected)
         {
             InternalBit.ExtractLowestSetBit(input).Should().Be(expected);
-            (input & -input).Should().Be(expected);
+            (input & -input).Should().Be((int)expected);
         }
 
         [Theory]

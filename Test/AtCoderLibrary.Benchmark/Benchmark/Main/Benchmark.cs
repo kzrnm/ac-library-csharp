@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using AtCoder;
+using AtCoder.Internal;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Diagnosers;
@@ -23,7 +24,6 @@ public class BenchmarkConfig : ManualConfig
         //AddDiagnoser(MemoryDiagnoser.Default);
         AddExporter(BenchmarkDotNet.Exporters.MarkdownExporter.GitHub);
         AddJob(Job.ShortRun.WithToolchain(CsProjCoreToolchain.NetCoreApp31));
-        //AddJob(Job.ShortRun.WithToolchain(CsProjCoreToolchain.NetCoreApp30));
     }
 }
 
@@ -34,7 +34,9 @@ namespace Benchmark
     public class Benchmark
     {
         int n = 1 << 24;
-        [Benchmark] public StaticModInt<Mod998244353> Convolution() => global::Convolution.Calc(n);
+        
+        [Benchmark] public long Convolution() => global::Convolution.Calc(n);
+        [Benchmark] public long Convolution377487361() => global::Convolution377487361.Calc(n);
         [Benchmark] public long FenwickTree() => global::FenwickTree.Calc(n);
         [Benchmark] public long LazySegtree() => global::LazySegtree.Calc(n);
         [Benchmark] public long LazySegtreeMaxRight() => global::LazySegtreeMaxRight.Calc(n);

@@ -19,18 +19,20 @@
 using namespace std;
 using namespace atcoder;
 
-using mint = modint998244353;
+using mint = static_modint<377487361>;
 typedef long long ll;
 
 int main() {
 	int n = 1 << 24;;
 
-	long ans = 0;
-	vector<ll> s(n);
-	for (int i = 0; i < n; i++)
-		s[i] = (1LL << 64) - 1 + i % 2 == 0 ? i : -i;
-	auto z = z_algorithm(s);
-	ans = z[0];
-	printf("%lld\n", ans);
+	n >>= 2;
+	vector<mint> a(n), b(n);
+	for (int i = 0; i < n; i++) {
+		a[i] = i + 1234;
+		b[i] = i + 5678;
+	}
+
+	auto c = convolution(a, b);
+	printf("%d\n", c[0].val());
 	return 0;
 }
