@@ -221,13 +221,12 @@ namespace AtCoder
             /// </remarks>
             internal static int[] SADoubling(ReadOnlySpan<int> s)
             {
-                var n = s.Length;
-                var sa = Enumerable.Range(0, n).ToArray();
-                var rnk = new int[n];
-                var tmp = new int[n];
+                var sa = Enumerable.Range(0, s.Length).ToArray();
+                var rnk = new int[s.Length];
+                var tmp = new int[s.Length];
                 s.CopyTo(rnk);
 
-                for (int k = 1; k < n; k <<= 1)
+                for (int k = 1; k < rnk.Length; k <<= 1)
                 {
                     Array.Sort(sa, Compare);
                     tmp[sa[0]] = 0;
@@ -241,13 +240,13 @@ namespace AtCoder
                     {
                         if (rnk[x] != rnk[y])
                         {
-                            return rnk[x] - rnk[y];
+                            return rnk[x].CompareTo(rnk[y]);
                         }
 
-                        int rx = x + k < n ? rnk[x + k] : -1;
-                        int ry = y + k < n ? rnk[y + k] : -1;
+                        int rx = x + k < rnk.Length ? rnk[x + k] : -1;
+                        int ry = y + k < rnk.Length ? rnk[y + k] : -1;
 
-                        return rx - ry;
+                        return rx.CompareTo(ry);
                     }
                 }
 

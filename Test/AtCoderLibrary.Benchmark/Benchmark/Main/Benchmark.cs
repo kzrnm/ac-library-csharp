@@ -34,7 +34,7 @@ namespace Benchmark
     public class Benchmark
     {
         int n = 1 << 24;
-        
+
         [Benchmark] public long Convolution() => global::Convolution.Calc(n);
         [Benchmark] public long Convolution377487361() => global::Convolution377487361.Calc(n);
         [Benchmark] public long FenwickTree() => global::FenwickTree.Calc(n);
