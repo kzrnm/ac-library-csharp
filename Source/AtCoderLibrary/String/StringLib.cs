@@ -59,9 +59,49 @@ namespace AtCoder
         /// <para>計算量: O(|<paramref name="s"/>|)</para>
         /// </remarks>
         public static int[] LCPArray<T>(T[] s, int[] sa) => LCPArray((ReadOnlySpan<T>)s, sa);
+
+        /// <summary>
+        /// 数列 <paramref name="s"/> の LCP Array として、長さ |<paramref name="s"/>| の配列を返す。
+        /// </summary>
+        /// <remarks>
+        /// <para>LCP Array とは、i 番目の要素が s[sa[i]..|<paramref name="s"/>|), s[sa[i+1]..|<paramref name="s"/>|) の LCP(Longest Common Prefix) の長さのもの。</para>
+        /// <para>制約: 0≤|<paramref name="s"/>|≤10^8, <paramref name="sa"/> は <paramref name="s"/> の Suffix Array</para>
+        /// <para>計算量: O(|<paramref name="s"/>|)</para>
+        /// </remarks>
+        public static int[] LCPArray<T>(Span<T> s, int[] sa) => LCPArray((ReadOnlySpan<T>)s, sa);
         #endregion LCPArray
 
         #region SuffixArray
+        /// <summary>
+        /// 文字列 <paramref name="s"/> の Suffix Array として、長さ |<paramref name="s"/>| の配列を返す。
+        /// </summary>
+        /// <remarks>
+        /// <para>Suffix Array sa は (0,1,…,n−1) の順列であって、i=0,1,⋯,n−2 について s[sa[i]..n)&lt;s[sa[i+1]..n) を満たすもの。</para>
+        /// <para>制約: 0≤|<paramref name="s"/>|&lt;10^8</para>
+        /// <para>計算量: O(|<paramref name="s"/>|)</para>
+        /// </remarks>
+        public static int[] SuffixArray(string s) => SuffixArray(s.AsSpan());
+
+        /// <summary>
+        /// 数列 <paramref name="s"/> の Suffix Array として、長さ |<paramref name="s"/>| の配列を返す。
+        /// </summary>
+        /// <remarks>
+        /// <para>Suffix Array sa は (0,1,…,n−1) の順列であって、i=0,1,⋯,n−2 について s[sa[i]..n)&lt;s[sa[i+1]..n) を満たすもの。</para>
+        /// <para>制約: 0≤|<paramref name="s"/>|&lt;10^8</para>
+        /// <para>計算量: 時間O(|<paramref name="s"/>|log|<paramref name="s"/>|), 空間O(|<paramref name="s"/>|)</para>
+        /// </remarks>
+        public static int[] SuffixArray<T>(T[] s) => SuffixArray((ReadOnlySpan<T>)s);
+
+        /// <summary>
+        /// 数列 <paramref name="s"/> の Suffix Array として、長さ |<paramref name="s"/>| の配列を返す。
+        /// </summary>
+        /// <remarks>
+        /// <para>Suffix Array sa は (0,1,…,n−1) の順列であって、i=0,1,⋯,n−2 について s[sa[i]..n)&lt;s[sa[i+1]..n) を満たすもの。</para>
+        /// <para>制約: 0≤|<paramref name="s"/>|&lt;10^8</para>
+        /// <para>計算量: 時間O(|<paramref name="s"/>|log|<paramref name="s"/>|), 空間O(|<paramref name="s"/>|)</para>
+        /// </remarks>
+        public static int[] SuffixArray<T>(Span<T> s) => SuffixArray((ReadOnlySpan<T>)s);
+
         /// <summary>
         /// 列 <paramref name="m"/> の Suffix Array として、長さ |<paramref name="m"/>| の配列を返す。
         /// </summary>
@@ -70,7 +110,7 @@ namespace AtCoder
         /// <para>制約: 0≤|<paramref name="m"/>|&lt;10^8</para>
         /// <para>計算量: 時間O(|<paramref name="m"/>|log|<paramref name="m"/>|), 空間O(|<paramref name="m"/>|)</para>
         /// </remarks>
-        private static int[] SuffixArray<T>(ReadOnlySpan<T> s)
+        public static int[] SuffixArray<T>(ReadOnlySpan<T> s)
         {
             var idx = CreateIdx(s);
             var s2 = new int[s.Length];
@@ -94,27 +134,6 @@ namespace AtCoder
             Array.Sort(m.ToArray(), idx);
             return idx;
         }
-
-        /// <summary>
-        /// 文字列 <paramref name="s"/> の Suffix Array として、長さ |<paramref name="s"/>| の配列を返す。
-        /// </summary>
-        /// <remarks>
-        /// <para>Suffix Array sa は (0,1,…,n−1) の順列であって、i=0,1,⋯,n−2 について s[sa[i]..n)&lt;s[sa[i+1]..n) を満たすもの。</para>
-        /// <para>制約: 0≤|<paramref name="s"/>|&lt;10^8</para>
-        /// <para>計算量: O(|<paramref name="s"/>|)</para>
-        /// </remarks>
-        public static int[] SuffixArray(string s) => SuffixArray(s.AsSpan());
-
-
-        /// <summary>
-        /// 数列 <paramref name="s"/> の Suffix Array として、長さ |<paramref name="s"/>| の配列を返す。
-        /// </summary>
-        /// <remarks>
-        /// <para>Suffix Array sa は (0,1,…,n−1) の順列であって、i=0,1,⋯,n−2 について s[sa[i]..n)&lt;s[sa[i+1]..n) を満たすもの。</para>
-        /// <para>制約: 0≤|<paramref name="s"/>|&lt;10^8</para>
-        /// <para>計算量: 時間O(|<paramref name="s"/>|log|<paramref name="s"/>|), 空間O(|<paramref name="s"/>|)</para>
-        /// </remarks>
-        public static int[] SuffixArray<T>(T[] s) => SuffixArray<T>(s.AsSpan());
 
         /// <summary>
         /// 数列 <paramref name="s"/> の Suffix Array として、長さ |<paramref name="s"/>| の配列を返す。
