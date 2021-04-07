@@ -2,9 +2,6 @@
 using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.InteropServices;
-#if !NETSTANDARD2_1
-using System.Runtime.CompilerServices;
-#endif
 
 namespace AtCoder.Internal
 {
@@ -192,7 +189,7 @@ namespace AtCoder.Internal
 
         private static StaticModInt<T>[] CalcurateSumE()
         {
-            int g = InternalMath.PrimitiveRoot((int)default(T).Mod);
+            int g = InternalMath.PrimitiveRoot<T>();
             int cnt2 = InternalBit.BSF(default(T).Mod - 1);
             var e = new StaticModInt<T>(g).Pow((default(T).Mod - 1) >> cnt2);
             var ie = e.Inv();
@@ -236,7 +233,7 @@ namespace AtCoder.Internal
 
         private static StaticModInt<T>[] CalcurateSumIE()
         {
-            int g = InternalMath.PrimitiveRoot((int)default(T).Mod);
+            int g = InternalMath.PrimitiveRoot<T>();
             int cnt2 = InternalBit.BSF(default(T).Mod - 1);
             var e = new StaticModInt<T>(g).Pow((default(T).Mod - 1) >> cnt2);
             var ie = e.Inv();

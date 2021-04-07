@@ -9,7 +9,20 @@
   <PropertyGroup>
     <NoWarn>$(NoWarn);IDE0044;NETSDK1138</NoWarn>
   </PropertyGroup>
-  
+
+  <ItemGroup>
+    <None Update="Internal\InternalMathTest.StaticMod.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>InternalMathTest.StaticMod.cs</LastGenOutput>
+    </None>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+    <None Include="Internal\InternalMathTest.StaticMod.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>InternalMathTest.StaticMod.tt</DependentUpon>
+    </None>
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="SourceExpander.Core" Version="3.1.0" />
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
@@ -31,5 +44,12 @@
     <ProjectReference Include="..\..\Source\AtCoderLibrary\AtCoderLibrary.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Internal\InternalMathTest.StaticMod.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>InternalMathTest.StaticMod.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
 
 </Project>

@@ -6,7 +6,7 @@ namespace AtCoder.Internal
 {
     public static partial class InternalMath
     {
-        private static readonly Dictionary<int, int> primitiveRootsCache = new Dictionary<int, int>()
+        private static readonly Dictionary<uint, int> primitiveRootsCache = new Dictionary<uint, int>()
         {
             { 2, 1 },
             { 167772161, 3 },
@@ -16,24 +16,27 @@ namespace AtCoder.Internal
         };
 
         /// <summary>
-        /// <paramref name="m"/> の最小の原始根を求めます。
+        /// <typeparamref name="TMod"/> の最小の原始根を求めます。
         /// </summary>
         /// <remarks>
-        /// 制約: <paramref name="m"/> は素数
+        /// 制約: <typeparamref name="TMod"/> は素数
         /// </remarks>
-        public static int PrimitiveRoot(int m)
+        public static int PrimitiveRoot<TMod>() where TMod : struct, IStaticMod
         {
+            uint m = default(TMod).Mod;
             Contract.Assert(m >= 2, reason: $"{nameof(m)} must be greater or equal 2");
+            Contract.Assert(default(TMod).IsPrime, reason: $"{nameof(m)} must be prime number");
 
             if (primitiveRootsCache.TryGetValue(m, out var p))
             {
                 return p;
             }
 
-            return primitiveRootsCache[m] = PrimitiveRootCalculate(m);
+            return primitiveRootsCache[m] = PrimitiveRootCalculate<TMod>();
         }
-        static int PrimitiveRootCalculate(int m)
+        static int PrimitiveRootCalculate<TMod>() where TMod : struct, IStaticMod
         {
+            int m = (int)default(TMod).Mod;
             Span<int> divs = stackalloc int[20];
             divs[0] = 2;
             int cnt = 1;
@@ -60,23 +63,15 @@ namespace AtCoder.Internal
             {
                 divs[cnt++] = x;
             }
+            divs = divs.Slice(0, cnt);
 
             for (int g = 2; ; g++)
             {
-                bool ok = true;
-                for (int i = 0; i < cnt; i++)
-                {
-                    if (MathLib.PowMod(g, (m - 1) / divs[i], m) == 1)
-                    {
-                        ok = false;
-                        break;
-                    }
-                }
-
-                if (ok)
-                {
-                    return g;
-                }
+                foreach (var d in divs)
+                    if (new StaticModInt<TMod>(g).Pow((m - 1) / d).Value == 1)
+                        goto NEXT;
+                return g;
+            NEXT: { }
             }
         }
 

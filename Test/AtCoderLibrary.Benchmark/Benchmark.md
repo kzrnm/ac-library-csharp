@@ -12,18 +12,18 @@ LaunchCount=1  WarmupCount=3
 ```
 |               Method |       Mean |     Error |   StdDev |
 |--------------------- |-----------:|----------:|---------:|
-|          Convolution | 1,297.3 ms | 312.41 ms | 17.12 ms |
-| Convolution377487361 | 1,225.0 ms |  28.15 ms |  1.54 ms |
-|          FenwickTree |   880.7 ms | 372.55 ms | 20.42 ms |
-|          LazySegtree | 1,449.4 ms | 301.91 ms | 16.55 ms |
-|  LazySegtreeMaxRight | 1,255.6 ms | 281.89 ms | 15.45 ms |
-|             McfGraph |   902.1 ms |  43.29 ms |  2.37 ms |
-|              MfGraph |   281.0 ms | 190.26 ms | 10.43 ms |
-|             MfGraph1 |   352.7 ms | 281.72 ms | 15.44 ms |
-|                  SCC |   922.7 ms | 291.31 ms | 15.97 ms |
-|    SatisfiableTwoSat |   307.5 ms | 710.52 ms | 38.95 ms |
-|              Segtree |   896.9 ms | 772.02 ms | 42.32 ms |
-|      SegtreeMaxRight |   606.4 ms | 165.41 ms |  9.07 ms |
-|      SuffixArrayLong |   273.9 ms | 532.51 ms | 29.19 ms |
-|    SuffixArrayString |   530.3 ms | 148.93 ms |  8.16 ms |
-|           ZAlgorithm |   169.1 ms | 148.91 ms |  8.16 ms |
+|          Convolution | 1,235.5 ms |  47.25 ms |  2.59 ms |
+| Convolution377487361 | 1,233.8 ms | 303.75 ms | 16.65 ms |
+|          FenwickTree |   886.0 ms | 100.76 ms |  5.52 ms |
+|          LazySegtree | 1,377.0 ms | 231.94 ms | 12.71 ms |
+|  LazySegtreeMaxRight | 1,242.4 ms | 251.01 ms | 13.76 ms |
+|             McfGraph |   939.8 ms | 197.49 ms | 10.82 ms |
+|              MfGraph |   289.7 ms | 380.55 ms | 20.86 ms |
+|             MfGraph1 |   357.1 ms | 370.16 ms | 20.29 ms |
+|                  SCC |   922.9 ms | 150.73 ms |  8.26 ms |
+|    SatisfiableTwoSat |   240.8 ms | 134.69 ms |  7.38 ms |
+|              Segtree |   741.2 ms |  90.06 ms |  4.94 ms |
+|      SegtreeMaxRight |   587.2 ms | 268.77 ms | 14.73 ms |
+|      SuffixArrayLong |   244.7 ms |  36.09 ms |  1.98 ms |
+|    SuffixArrayString |   503.9 ms | 118.66 ms |  6.50 ms |
+|           ZAlgorithm |   159.5 ms | 119.88 ms |  6.57 ms |
