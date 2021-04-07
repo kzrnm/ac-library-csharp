@@ -31,9 +31,9 @@ int main() {
 	{
 		fw.add(i, i + 1234);
 	}
-	for (int i = 0; 2 * i <= n; i++)
+	for (int i = 0; i <= n; i++)
 	{
-		ans ^= fw.sum(i, 2 * i);
+		ans ^= fw.sum(0, i);
 	}
 	printf("%lld\n", ans);
 	return 0;
