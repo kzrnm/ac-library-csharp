@@ -5,16 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.5.0] - 2021-04-08
 ### Added
 - Add unsigned constructor to modint https://github.com/naminodarie/ac-library-csharp/pull/45
 - Add span overloads to convolution https://github.com/naminodarie/ac-library-csharp/pull/45
 ### Changed
 - AtCoderAnalyzer can run parallel
 - Improve FloorSum https://github.com/naminodarie/ac-library-csharp/pull/42
-- Optimize FenwickTree
-- Optimize Convolution
-- Optimize SuffixArray
+- Optimize FenwickTree https://github.com/naminodarie/ac-library-csharp/pull/47
+- Optimize Convolution https://github.com/naminodarie/ac-library-csharp/pull/47
+- Optimize SuffixArray https://github.com/naminodarie/ac-library-csharp/pull/47
 
 ## [1.4.4] - 2021-03-05
 ### Changed
