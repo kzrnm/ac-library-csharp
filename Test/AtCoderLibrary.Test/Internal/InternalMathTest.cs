@@ -202,7 +202,7 @@ namespace AtCoder.Internal
         [Fact]
         public void PrimitiveRootTest()
         {
-            
+
             for (int i = 0; i < 1000; i++)
             {
                 int x = int.MaxValue - i;
