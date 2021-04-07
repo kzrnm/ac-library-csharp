@@ -70,13 +70,10 @@ namespace AtCoder
         /// <para>制約: 0≤|<paramref name="m"/>|&lt;10^8</para>
         /// <para>計算量: 時間O(|<paramref name="m"/>|log|<paramref name="m"/>|), 空間O(|<paramref name="m"/>|)</para>
         /// </remarks>
-        private static int[] SuffixArray<T>(ReadOnlyMemory<T> m)
+        private static int[] SuffixArray<T>(ReadOnlySpan<T> s)
         {
-            var s = m.Span;
-            var n = m.Length;
-            var idx = Enumerable.Range(0, n).ToArray();
-            Array.Sort(idx, new MemoryComparer<T>(m));
-            var s2 = new int[n];
+            var idx = CreateIdx(s);
+            var s2 = new int[s.Length];
             var now = 0;
 
             // 座標圧縮
@@ -91,18 +88,11 @@ namespace AtCoder
 
             return InternalString.SAIS(s2, now);
         }
-        class MemoryComparer<T> : IComparer<int>
+        static int[] CreateIdx<T>(ReadOnlySpan<T> m)
         {
-            readonly ReadOnlyMemory<T> m;
-            public MemoryComparer(ReadOnlyMemory<T> m)
-            {
-                this.m = m;
-            }
-            public int Compare(int l, int r)
-            {
-                var s = m.Span;
-                return Comparer<T>.Default.Compare(s[l], s[r]);
-            }
+            var idx = Enumerable.Range(0, m.Length).ToArray();
+            Array.Sort(m.ToArray(), idx);
+            return idx;
         }
 
         /// <summary>
@@ -113,7 +103,7 @@ namespace AtCoder
         /// <para>制約: 0≤|<paramref name="s"/>|&lt;10^8</para>
         /// <para>計算量: O(|<paramref name="s"/>|)</para>
         /// </remarks>
-        public static int[] SuffixArray(string s) => SuffixArray(s.AsMemory());
+        public static int[] SuffixArray(string s) => SuffixArray(s.AsSpan());
 
 
         /// <summary>
@@ -124,7 +114,7 @@ namespace AtCoder
         /// <para>制約: 0≤|<paramref name="s"/>|&lt;10^8</para>
         /// <para>計算量: 時間O(|<paramref name="s"/>|log|<paramref name="s"/>|), 空間O(|<paramref name="s"/>|)</para>
         /// </remarks>
-        public static int[] SuffixArray<T>(T[] s) => SuffixArray<T>(s.AsMemory());
+        public static int[] SuffixArray<T>(T[] s) => SuffixArray<T>(s.AsSpan());
 
         /// <summary>
         /// 数列 <paramref name="s"/> の Suffix Array として、長さ |<paramref name="s"/>| の配列を返す。
@@ -198,28 +188,26 @@ namespace AtCoder
             /// <para>制約: 0≤|<paramref name="sm"/>|&lt;10^8</para>
             /// <para>計算量: 時間O(|<paramref name="sm"/>|^2 log|<paramref name="sm"/>|), 空間O(|<paramref name="sm"/>|)</para>
             /// </remarks>
-            internal static int[] SANaive(ReadOnlyMemory<int> sm)
+            internal static int[] SANaive(int[] s)
             {
-                var n = sm.Length;
-                var sa = Enumerable.Range(0, n).ToArray();
+                var sa = Enumerable.Range(0, s.Length).ToArray();
                 Array.Sort(sa, Compare);
                 return sa;
 
                 int Compare(int l, int r)
                 {
                     // l == r にはなり得ない
-                    var s = sm.Span;
                     while (l < s.Length && r < s.Length)
                     {
                         if (s[l] != s[r])
                         {
-                            return s[l] - s[r];
+                            return s[l].CompareTo(s[r]);
                         }
                         l++;
                         r++;
                     }
 
-                    return r - l;
+                    return r.CompareTo(l);
                 }
             }
 
@@ -231,9 +219,8 @@ namespace AtCoder
             /// <para>制約: 0≤|<paramref name="sm"/>|&lt;10^8</para>
             /// <para>計算量: 時間O(|<paramref name="sm"/>|(log|<paramref name="sm"/>|)^2), 空間O(|<paramref name="sm"/>|)</para>
             /// </remarks>
-            internal static int[] SADoubling(ReadOnlyMemory<int> sm)
+            internal static int[] SADoubling(ReadOnlySpan<int> s)
             {
-                var s = sm.Span;
                 var n = s.Length;
                 var sa = Enumerable.Range(0, n).ToArray();
                 var rnk = new int[n];
@@ -275,7 +262,7 @@ namespace AtCoder
             /// <para>制約: 0≤|<paramref name="sm"/>|&lt;10^8</para>
             /// <para>計算量: O(|<paramref name="sm"/>|)</para>
             /// </remarks>
-            public static int[] SAIS(ReadOnlyMemory<int> sm, int upper) => SAIS(sm, upper, 10, 40);
+            public static int[] SAIS(ReadOnlySpan<int> sm, int upper) => SAIS(sm, upper, 10, 40);
 
             /// <summary>
             /// 数列 <paramref name="sm"/> の Suffix Array を SA-IS 等により求め、長さ |<paramref name="sm"/>| の配列を返す。
@@ -285,9 +272,8 @@ namespace AtCoder
             /// <para>制約: 0≤|<paramref name="sm"/>|&lt;10^8</para>
             /// <para>計算量: O(|<paramref name="sm"/>|)</para>
             /// </remarks>
-            public static int[] SAIS(ReadOnlyMemory<int> sm, int upper, int thresholdNaive, int thresholdDouling)
+            public static int[] SAIS(ReadOnlySpan<int> s, int upper, int thresholdNaive, int thresholdDouling)
             {
-                var s = sm.Span;
                 var n = s.Length;
 
                 if (n == 0)
@@ -311,11 +297,11 @@ namespace AtCoder
                 }
                 else if (n < thresholdNaive)
                 {
-                    return SANaive(sm);
+                    return SANaive(s.ToArray());
                 }
                 else if (n < thresholdDouling)
                 {
-                    return SADoubling(sm);
+                    return SADoubling(s);
                 }
 
                 var sa = new int[n];
@@ -372,7 +358,7 @@ namespace AtCoder
                     }
                 }
 
-                Induce(lms, sm, sa, ls, sumS, sumL);
+                Induce(lms, s, sa, ls, sumS, sumL);
 
                 // LMSを再帰的にソート
                 if (m > 0)
@@ -436,14 +422,13 @@ namespace AtCoder
                         sortedLms[i] = lms[recSA[i]];
                     }
 
-                    Induce(sortedLms, sm, sa, ls, sumS, sumL);
+                    Induce(sortedLms, s, sa, ls, sumS, sumL);
                 }
 
                 return sa;
             }
-            static void Induce(SimpleList<int> lms, ReadOnlyMemory<int> sm, int[] sa, bool[] ls, int[] sumS, int[] sumL)
+            static void Induce(SimpleList<int> lms, ReadOnlySpan<int> s, int[] sa, bool[] ls, int[] sumS, int[] sumL)
             {
-                var s = sm.Span;
                 var n = s.Length;
                 sa.AsSpan().Fill(-1);
                 var buf = new int[sumS.Length];

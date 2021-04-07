@@ -24,6 +24,6 @@ LaunchCount=1  WarmupCount=3
 |    SatisfiableTwoSat |   240.8 ms | 134.69 ms |  7.38 ms |
 |              Segtree |   741.2 ms |  90.06 ms |  4.94 ms |
 |      SegtreeMaxRight |   587.2 ms | 268.77 ms | 14.73 ms |
-|      SuffixArrayLong |   244.7 ms |  36.09 ms |  1.98 ms |
-|    SuffixArrayString |   503.9 ms | 118.66 ms |  6.50 ms |
+|      SuffixArrayLong |   109.4 ms |    82.22 ms |  4.51 ms |
+|    SuffixArrayString |   241.7 ms |     9.46 ms |  0.52 ms |
 |           ZAlgorithm |   159.5 ms | 119.88 ms |  6.57 ms |
