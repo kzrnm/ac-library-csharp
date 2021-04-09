@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 
 namespace AtCoder.Internal
 {
+    using static MethodImplOptions;
     [DebuggerTypeProxy(typeof(PriorityQueueOp<,>.DebugView))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public class PriorityQueueOp<T, TOp> : IPriorityQueueOp<T>, IEnumerable
@@ -28,19 +29,19 @@ namespace AtCoder.Internal
         public int Count { get; private set; } = 0;
 
         public T Peek => data[0];
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         internal void Resize()
         {
             Array.Resize(ref data, data.Length << 1);
         }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public void Add(T value)
         {
             if (Count >= data.Length) Resize();
             data[Count++] = value;
             UpdateUp(Count - 1);
         }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public bool TryDequeue(out T result)
         {
             if (Count == 0)
@@ -51,7 +52,7 @@ namespace AtCoder.Internal
             result = Dequeue();
             return true;
         }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public T Dequeue()
         {
             var res = data[0];
@@ -59,7 +60,7 @@ namespace AtCoder.Internal
             UpdateDown(0);
             return res;
         }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         protected internal void UpdateUp(int i)
         {
             var tar = data[i];
@@ -73,7 +74,7 @@ namespace AtCoder.Internal
             }
             data[i] = tar;
         }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         protected internal void UpdateDown(int i)
         {
             var tar = data[i];
