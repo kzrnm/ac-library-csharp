@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 
 namespace AtCoder.Internal
 {
+    using static MethodImplOptions;
     [DebuggerTypeProxy(typeof(PriorityQueueOp<,,>.DebugView))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public class PriorityQueueOp<TKey, TValue, TKOp> :
@@ -32,15 +33,15 @@ namespace AtCoder.Internal
         public int Count { get; private set; } = 0;
 
         public KeyValuePair<TKey, TValue> Peek => KeyValuePair.Create(keys[0], values[0]);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         internal void Resize()
         {
             Array.Resize(ref keys, keys.Length << 1);
             Array.Resize(ref values, values.Length << 1);
         }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public void Add(KeyValuePair<TKey, TValue> pair) => Add(pair.Key, pair.Value);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public void Add(TKey key, TValue value)
         {
             if (Count >= keys.Length) Resize();
@@ -48,7 +49,7 @@ namespace AtCoder.Internal
             values[Count++] = value;
             UpdateUp(Count - 1);
         }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public bool TryDequeue(out TKey key, out TValue value)
         {
             if (Count == 0)
@@ -60,7 +61,7 @@ namespace AtCoder.Internal
             (key, value) = Dequeue();
             return true;
         }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public bool TryDequeue(out KeyValuePair<TKey, TValue> result)
         {
             if (Count == 0)
@@ -71,7 +72,7 @@ namespace AtCoder.Internal
             result = Dequeue();
             return true;
         }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public KeyValuePair<TKey, TValue> Dequeue()
         {
             var res = KeyValuePair.Create(keys[0], values[0]);
@@ -80,7 +81,7 @@ namespace AtCoder.Internal
             UpdateDown(0);
             return res;
         }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         protected internal void UpdateUp(int i)
         {
             var tar = keys[i];
@@ -97,7 +98,7 @@ namespace AtCoder.Internal
             keys[i] = tar;
             values[i] = tarVal;
         }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         protected internal void UpdateDown(int i)
         {
             var tar = keys[i];
