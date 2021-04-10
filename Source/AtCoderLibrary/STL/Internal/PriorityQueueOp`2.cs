@@ -9,7 +9,7 @@ namespace AtCoder.Internal
 {
     using static MethodImplOptions;
     [DebuggerTypeProxy(typeof(PriorityQueueOp<,,>.DebugView))]
-    [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
+    [DebuggerDisplay(nameof(Count) + " = {" + nameof(Count) + "}")]
     public class PriorityQueueOp<TKey, TValue, TKOp> :
         IPriorityQueueOp<KeyValuePair<TKey, TValue>>, IEnumerable
         where TKOp : IComparer<TKey>
@@ -122,17 +122,11 @@ namespace AtCoder.Internal
         }
         public void Clear() => Count = 0;
 
-        private KeyValuePair<TKey, TValue>[] GetItems()
-        {
-            var keys = new ArraySegment<TKey>(this.keys, 0, Count).ToArray();
-            var values = new ArraySegment<TValue>(this.values, 0, Count).ToArray();
-            Array.Sort(keys, values, _comparer);
-            var arr = new KeyValuePair<TKey, TValue>[Count];
-            for (int i = 0; i < arr.Length; i++)
-                arr[i] = KeyValuePair.Create(keys[i], values[i]);
-            return arr;
-        }
-        IEnumerator IEnumerable.GetEnumerator() => GetItems().GetEnumerator();
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public ReadOnlySpan<TKey> UnorderdKeys() => keys.AsSpan(0, Count);
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public ReadOnlySpan<TValue> UnorderdValues() => values.AsSpan(0, Count);
+        IEnumerator IEnumerable.GetEnumerator() => UnorderdValues().ToArray().GetEnumerator();
         private class DebugView
         {
             private readonly PriorityQueueOp<TKey, TValue, TKOp> pq;
@@ -141,7 +135,20 @@ namespace AtCoder.Internal
                 this.pq = pq;
             }
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-            public KeyValuePair<TKey, TValue>[] Items => pq.GetItems();
+            public KeyValuePair<TKey, TValue>[] Items
+            {
+                get
+                {
+                    var count = pq.Count;
+                    var keys = pq.keys.AsSpan(0, count).ToArray();
+                    var values = pq.values.AsSpan(0, count).ToArray();
+                    Array.Sort(keys, values, pq._comparer);
+                    var arr = new KeyValuePair<TKey, TValue>[count];
+                    for (int i = 0; i < arr.Length; i++)
+                        arr[i] = KeyValuePair.Create(keys[i], values[i]);
+                    return arr;
+                }
+            }
         }
     }
 }
