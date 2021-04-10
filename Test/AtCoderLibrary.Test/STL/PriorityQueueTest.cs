@@ -59,6 +59,7 @@ namespace AtCoder
                     list.Add(x);
                     pq.Count.Should().Be(list.Count).And.Be(i + 1);
                 }
+                pq.Unorderd().ToArray().Should().HaveCount(n);
                 list.Sort();
                 foreach (var lx in list)
                 {
@@ -94,6 +95,8 @@ namespace AtCoder
                     list.Add(x);
                     pq.Count.Should().Be(list.Count).And.Be(i + 1);
                 }
+                pq.UnorderdKeys().ToArray().Should().HaveCount(n);
+                pq.UnorderdValues().ToArray().Should().HaveCount(n);
                 list.Sort();
                 foreach (var lx in list)
                 {

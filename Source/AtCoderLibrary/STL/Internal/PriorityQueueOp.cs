@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
@@ -8,7 +9,7 @@ namespace AtCoder.Internal
 {
     using static MethodImplOptions;
     [DebuggerTypeProxy(typeof(PriorityQueueOp<,>.DebugView))]
-    [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
+    [DebuggerDisplay(nameof(Count) + " = {" + nameof(Count) + "}")]
     public class PriorityQueueOp<T, TOp> : IPriorityQueueOp<T>, IEnumerable
         where TOp : IComparer<T>
     {
@@ -93,13 +94,10 @@ namespace AtCoder.Internal
         }
         public void Clear() => Count = 0;
 
-        private T[] GetItems()
-        {
-            var arr = new ArraySegment<T>(data, 0, Count).ToArray();
-            Array.Sort(arr, _comparer);
-            return arr;
-        }
-        IEnumerator IEnumerable.GetEnumerator() => GetItems().GetEnumerator();
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public ReadOnlySpan<T> Unorderd() => data.AsSpan(0, Count);
+        IEnumerator IEnumerable.GetEnumerator() => Unorderd().ToArray().GetEnumerator();
         private class DebugView
         {
             private readonly PriorityQueueOp<T, TOp> pq;
@@ -108,7 +106,15 @@ namespace AtCoder.Internal
                 this.pq = pq;
             }
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-            public T[] Items => pq.GetItems();
+            public T[] Items
+            {
+                get
+                {
+                    var arr = pq.Unorderd().ToArray();
+                    Array.Sort(arr, pq._comparer);
+                    return arr;
+                }
+            }
         }
     }
 }

@@ -198,13 +198,20 @@ namespace AtCoder
         /// <para>- 制約: <paramref name="rhs"/> に乗法の逆元が存在する。（gcd(<paramref name="rhs"/>, mod) = 1）</para>
         /// <para>- 計算量: O(log(mod))</para>
         /// </remarks>
+        [MethodImpl(AggressiveInlining)]
         public static DynamicModInt<T> operator /(DynamicModInt<T> lhs, DynamicModInt<T> rhs) => lhs * rhs.Inv();
 
+        [MethodImpl(AggressiveInlining)]
         public static DynamicModInt<T> operator +(DynamicModInt<T> value) => value;
+        [MethodImpl(AggressiveInlining)]
         public static DynamicModInt<T> operator -(DynamicModInt<T> value) => new DynamicModInt<T>(Mod - value.Value);
+        [MethodImpl(AggressiveInlining)]
         public static bool operator ==(DynamicModInt<T> lhs, DynamicModInt<T> rhs) => lhs._v == rhs._v;
+        [MethodImpl(AggressiveInlining)]
         public static bool operator !=(DynamicModInt<T> lhs, DynamicModInt<T> rhs) => lhs._v != rhs._v;
+        [MethodImpl(AggressiveInlining)]
         public static implicit operator DynamicModInt<T>(int value) => new DynamicModInt<T>(value);
+        [MethodImpl(AggressiveInlining)]
         public static implicit operator DynamicModInt<T>(long value) => new DynamicModInt<T>(value);
 
         /// <summary>

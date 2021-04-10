@@ -189,11 +189,7 @@ namespace AtCoder
         }
 
         [MethodImpl(AggressiveInlining)]
-        public static StaticModInt<T> operator *(StaticModInt<T> lhs, StaticModInt<T> rhs)
-        {
-            return new StaticModInt<T>((uint)((ulong)lhs._v * rhs._v % op.Mod));
-        }
-
+        public static StaticModInt<T> operator *(StaticModInt<T> lhs, StaticModInt<T> rhs) => new StaticModInt<T>((uint)((ulong)lhs._v * rhs._v % op.Mod));
         /// <summary>
         /// 除算を行います。
         /// </summary>
@@ -201,13 +197,19 @@ namespace AtCoder
         /// <para>- 制約: <paramref name="rhs"/> に乗法の逆元が存在する。（gcd(<paramref name="rhs"/>, mod) = 1）</para>
         /// <para>- 計算量: O(log(mod))</para>
         /// </remarks>
+        [MethodImpl(AggressiveInlining)]
         public static StaticModInt<T> operator /(StaticModInt<T> lhs, StaticModInt<T> rhs) => lhs * rhs.Inv();
-
+        [MethodImpl(AggressiveInlining)]
         public static StaticModInt<T> operator +(StaticModInt<T> value) => value;
+        [MethodImpl(AggressiveInlining)]
         public static StaticModInt<T> operator -(StaticModInt<T> value) => new StaticModInt<T>(op.Mod - value._v);
+        [MethodImpl(AggressiveInlining)]
         public static bool operator ==(StaticModInt<T> lhs, StaticModInt<T> rhs) => lhs._v == rhs._v;
+        [MethodImpl(AggressiveInlining)]
         public static bool operator !=(StaticModInt<T> lhs, StaticModInt<T> rhs) => lhs._v != rhs._v;
+        [MethodImpl(AggressiveInlining)]
         public static implicit operator StaticModInt<T>(int value) => new StaticModInt<T>(value);
+        [MethodImpl(AggressiveInlining)]
         public static implicit operator StaticModInt<T>(long value) => new StaticModInt<T>(value);
 
         /// <summary>
