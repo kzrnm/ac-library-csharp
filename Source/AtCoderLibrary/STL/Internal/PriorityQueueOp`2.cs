@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
@@ -40,6 +41,7 @@ namespace AtCoder.Internal
             Array.Resize(ref values, values.Length << 1);
         }
         [MethodImpl(AggressiveInlining)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public void Add(KeyValuePair<TKey, TValue> pair) => Add(pair.Key, pair.Value);
         [MethodImpl(AggressiveInlining)]
         public void Add(TKey key, TValue value)
