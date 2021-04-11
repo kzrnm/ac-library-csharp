@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using AtCoder.Internal;
 using FluentAssertions;
+using MersenneTwister;
 using Xunit;
 
 namespace AtCoder
@@ -272,5 +274,52 @@ namespace AtCoder
             new StaticModInt<ConstructorID>(-10).Value.Should().Be(1);
             (1 + new StaticModInt<ConstructorID>(1)).Value.Should().Be(2);
         }
+
+        private struct MemoryID : IStaticMod, IDynamicModID
+        {
+            public uint Mod => 101;
+            public bool IsPrime => true;
+        }
+        [Fact]
+        public void Memory()
+        {
+            DynamicModInt<MemoryID>.Mod = 101;
+
+            var mt = MTRandom.Create();
+            for (int n = 0; n < 100; n++)
+            {
+                var arr = new DynamicModInt<MemoryID>[n];
+                var expected = new uint[n];
+                for (int i = 0; i < n; i++)
+                {
+                    var v = mt.NextUInt();
+                    arr[i] = v;
+                    expected[i] = v % 101;
+                }
+                MemoryMarshal.Cast<DynamicModInt<MemoryID>, uint>(arr).ToArray()
+                    .Should().Equal(expected);
+            }
+        }
+
+        [Fact]
+        public void MemoryStatic()
+        {
+            var mt = MTRandom.Create();
+            for (int n = 0; n < 100; n++)
+            {
+                var arr = new StaticModInt<MemoryID>[n];
+                var expected = new uint[n];
+                for (int i = 0; i < n; i++)
+                {
+                    var v = mt.NextUInt();
+                    arr[i] = v;
+                    expected[i] = v % 101;
+                }
+                MemoryMarshal.Cast<StaticModInt<MemoryID>, uint>(arr).ToArray()
+                    .Should().Equal(expected);
+            }
+        }
+
+
     }
 }
