@@ -40,13 +40,13 @@ void StaticModIntTest()
 
 ### DynamicModInt&lt;T&gt;
 
-型引数`T`に`ModID0`, `ModID1`, `ModID2`のいずれかを設定します。C++版と同様、ID別にmodを設定できます。
+型引数`T`に`DynamicModID0`, `DynamicModID1`, `DynamicModID2`のいずれかを設定します。C++版と同様、ID別にmodを設定できます。
 
 IDを4つ以上使い分けたい場合の設定方法については、Tipsをご参照ください。
 
 ```C#
 using System;
-using ModInt = AtCoder.DynamicModInt<AtCoder.ModID0>;   // ModIntという別名を付ける
+using ModInt = AtCoder.DynamicModInt<AtCoder.DynamicModID0>;   // ModIntという別名を付ける
 
 void DynamicModIntTest()
 {
@@ -131,28 +131,30 @@ void OtherModTest()
 
 ### 4種類以上のDynamicModInt&lt;T&gt;の使い分け
 
-`DynamicModInt<T>`には、型引数`T`として`IDynamicModID`を実装した構造体を渡すことができます。`IDynamicModID`は以下のような定義を持つ空のインターフェースです。
+`DynamicModInt<T>`には、型引数`T`として任意の構造体を渡すことができます。
+
+また、型引数用の構造体として `IDynamicModID` が定義済みです。 `IDynamicModID`は以下のような定義を持つ空のインターフェースです。
 
 ```C#
 public interface IDynamicModID { }
 ```
 
-デフォルトで`ModID0`, `ModID1`, `ModID2`の3種類が用意されていますが、4種類以上の`DynamicModInt<T>`を使い分けたい場合、以下のような構造体を自作して`DynamicModInt<T>`に渡せばよいです。
+デフォルトで`DynamicModID0`, `DynamicModID1`, `DynamicModID2`の3種類が用意されていますが、4種類以上の`DynamicModInt<T>`を使い分けたい場合、以下のような構造体を自作して`DynamicModInt<T>`に渡せばよいです。
 
 ```C#
-public struct ModID3 : IDynamicModID { }
+public struct DynamicModID3 : IDynamicModID { }
 
 void MultipleModTest()
 {
-    DynamicMod<ModID0>.Mod = 2;
-    DynamicMod<ModID1>.Mod = 3;
-    DynamicMod<ModID2>.Mod = 5;
-    DynamicMod<ModID3>.Mod = 7;
+    DynamicMod<DynamicModID0>.Mod = 2;
+    DynamicMod<DynamicModID1>.Mod = 3;
+    DynamicMod<DynamicModID2>.Mod = 5;
+    DynamicMod<DynamicModID3>.Mod = 7;
 
-    var a = new DynamicModInt<ModID0>(13);
-    var b = new DynamicModInt<ModID1>(13);
-    var c = new DynamicModInt<ModID2>(13);
-    var d = new DynamicModInt<ModID3>(13);
+    var a = new DynamicModInt<DynamicModID0>(13);
+    var b = new DynamicModInt<DynamicModID1>(13);
+    var c = new DynamicModInt<DynamicModID2>(13);
+    var d = new DynamicModInt<DynamicModID3>(13);
 
     Console.WriteLine(a);   // 1
     Console.WriteLine(b);   // 1
