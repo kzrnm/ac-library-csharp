@@ -24,7 +24,7 @@ namespace AtCoder
     public readonly struct ModID1 : IDynamicModID { }
     public readonly struct ModID2 : IDynamicModID { }
 
-    public readonly struct DynamicModIntOperator<T> : IArithmeticOperator<DynamicModInt<T>> where T : struct, IDynamicModID
+    public readonly struct DynamicModIntOperator<T> : IArithmeticOperator<DynamicModInt<T>> where T : struct
     {
         public DynamicModInt<T> MultiplyIdentity => DynamicModInt<T>.Raw(1);
         [MethodImpl(AggressiveInlining)]
@@ -66,7 +66,7 @@ namespace AtCoder
     /// }
     /// </code>
     /// </example>
-    public readonly struct DynamicModInt<T> : IEquatable<DynamicModInt<T>> where T : struct, IDynamicModID
+    public readonly struct DynamicModInt<T> : IEquatable<DynamicModInt<T>> where T : struct
     {
         internal readonly uint _v;
         internal static Barrett bt;
