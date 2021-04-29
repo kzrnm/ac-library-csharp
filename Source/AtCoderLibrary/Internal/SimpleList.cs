@@ -36,6 +36,7 @@ namespace AtCoder.Internal
             }
         }
 
+        public Memory<T> AsMemory() => new Memory<T>(data, 0, Count);
         public Span<T> AsSpan() => new Span<T>(data, 0, Count);
 
         public ref T this[int index]
