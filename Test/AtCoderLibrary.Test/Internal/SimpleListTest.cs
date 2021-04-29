@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using FluentAssertions;
 using Xunit;
 
@@ -85,6 +86,20 @@ namespace AtCoder.Internal
             };
             list.Sort(1, 3, Comparer<int>.Create((a, b) => b.CompareTo(a)));
             list.Should().Equal(2, 4, 3, 1, 5, 6);
+        }
+
+        [Fact]
+        public void MemoryAndSpan()
+        {
+            var list = new SimpleList<int>
+            {
+                2,3,4,1,5,6
+            };
+            list.AsSpan().ToArray().Should().Equal(2, 3, 4, 1, 5, 6);
+            list.AsMemory().ToArray().Should().Equal(2, 3, 4, 1, 5, 6);
+            MemoryMarshal.TryGetArray<int>(list.AsMemory(), out var arraySegment)
+                .Should().BeTrue();
+            arraySegment.Array.Should().StartWith(new[] { 2, 3, 4, 1, 5, 6 });
         }
     }
 }
