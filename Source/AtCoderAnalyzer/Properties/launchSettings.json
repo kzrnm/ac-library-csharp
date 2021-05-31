@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "AtCoderAnalyzer": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "..\\AtCoderLibrary\\AtCoderLibrary.csproj"
+    }
+  }
+}
