@@ -112,6 +112,7 @@ namespace AtCoder
         /// <para>- 使用前に DynamicModInt&lt;<typeparamref name="T"/>&gt;.Mod に mod の値を設定する必要があります。</para>
         /// <para>- <paramref name="v"/> が 0 未満、もしくは mod 以上の場合、自動で mod を取ります。</para>
         /// </remarks>
+        [MethodImpl(AggressiveInlining)]
         public DynamicModInt(long v) : this(Round(v)) { }
 
         /// <summary>
@@ -121,8 +122,10 @@ namespace AtCoder
         /// <para>- 使用前に DynamicModInt&lt;<typeparamref name="T"/>&gt;.Mod に mod の値を設定する必要があります。</para>
         /// <para>- <paramref name="v"/> が 0 未満、もしくは mod 以上の場合、自動で mod を取ります。</para>
         /// </remarks>
+        [MethodImpl(AggressiveInlining)]
         public DynamicModInt(ulong v) : this((uint)(v % bt.Mod)) { }
 
+        [MethodImpl(AggressiveInlining)]
         private DynamicModInt(uint v) => _v = v;
 
         [MethodImpl(AggressiveInlining)]

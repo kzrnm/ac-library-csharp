@@ -2,9 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace AtCoder
 {
+    using static MethodImplOptions;
     public static class StlFunction
     {
         #region NextPermutation
@@ -119,6 +121,7 @@ namespace AtCoder
         /// <para>制約: <paramref name="a"/> がソート済み</para>
         /// <para>計算量: O(log <paramref name="n"/>)</para>
         /// </remarks>
+        [MethodImpl(AggressiveInlining)]
         public static int LowerBound<T, TOp>(this T[] a, T v, TOp cmp) where TOp : IComparer<T> => BinarySearch(a.AsSpan(), v, cmp, true);
 
         /// <summary>
@@ -128,6 +131,7 @@ namespace AtCoder
         /// <para>制約: <paramref name="a"/> がソート済み</para>
         /// <para>計算量: O(log <paramref name="n"/>)</para>
         /// </remarks>
+        [MethodImpl(AggressiveInlining)]
         public static int LowerBound<T>(this T[] a, T v) where T : IComparable<T> => BinarySearch(a.AsSpan(), v, default(DefaultComparer<T>), true);
 
         /// <summary>
@@ -137,6 +141,7 @@ namespace AtCoder
         /// <para>制約: <paramref name="a"/> がソート済み</para>
         /// <para>計算量: O(log <paramref name="n"/>)</para>
         /// </remarks>
+        [MethodImpl(AggressiveInlining)]
         public static int UpperBound<T, TOp>(this T[] a, T v, TOp cmp) where TOp : IComparer<T> => BinarySearch(a.AsSpan(), v, cmp, false);
 
         /// <summary>
@@ -146,6 +151,7 @@ namespace AtCoder
         /// <para>制約: <paramref name="a"/> がソート済み</para>
         /// <para>計算量: O(log <paramref name="n"/>)</para>
         /// </remarks>
+        [MethodImpl(AggressiveInlining)]
         public static int UpperBound<T>(this T[] a, T v) where T : IComparable<T> => BinarySearch(a.AsSpan(), v, default(DefaultComparer<T>), false);
         /// <summary>
         /// <paramref name="a"/> の要素のうち、<paramref name="v"/> 以上の値が現れる最小のインデックスを取得します。
@@ -154,6 +160,7 @@ namespace AtCoder
         /// <para>制約: <paramref name="a"/> がソート済み</para>
         /// <para>計算量: O(log <paramref name="n"/>)</para>
         /// </remarks>
+        [MethodImpl(AggressiveInlining)]
         public static int LowerBound<T, TOp>(this IList<T> a, T v, TOp cmp) where TOp : IComparer<T> => BinarySearch(a, v, cmp, true);
 
         /// <summary>
@@ -163,6 +170,7 @@ namespace AtCoder
         /// <para>制約: <paramref name="a"/> がソート済み</para>
         /// <para>計算量: O(log <paramref name="n"/>)</para>
         /// </remarks>
+        [MethodImpl(AggressiveInlining)]
         public static int LowerBound<T>(this IList<T> a, T v) where T : IComparable<T> => BinarySearch(a, v, default(DefaultComparer<T>), true);
 
         /// <summary>
@@ -172,6 +180,7 @@ namespace AtCoder
         /// <para>制約: <paramref name="a"/> がソート済み</para>
         /// <para>計算量: O(log <paramref name="n"/>)</para>
         /// </remarks>
+        [MethodImpl(AggressiveInlining)]
         public static int UpperBound<T, TOp>(this IList<T> a, T v, TOp cmp) where TOp : IComparer<T> => BinarySearch(a, v, cmp, false);
 
         /// <summary>
@@ -181,6 +190,7 @@ namespace AtCoder
         /// <para>制約: <paramref name="a"/> がソート済み</para>
         /// <para>計算量: O(log <paramref name="n"/>)</para>
         /// </remarks>
+        [MethodImpl(AggressiveInlining)]
         public static int UpperBound<T>(this IList<T> a, T v) where T : IComparable<T> => BinarySearch(a, v, default(DefaultComparer<T>), false);
         /// <summary>
         /// <paramref name="a"/> の要素のうち、<paramref name="v"/> 以上の値が現れる最小のインデックスを取得します。
@@ -189,6 +199,7 @@ namespace AtCoder
         /// <para>制約: <paramref name="a"/> がソート済み</para>
         /// <para>計算量: O(log <paramref name="n"/>)</para>
         /// </remarks>
+        [MethodImpl(AggressiveInlining)]
         public static int LowerBound<T, TOp>(this Span<T> a, T v, TOp cmp) where TOp : IComparer<T> => BinarySearch(a, v, cmp, true);
 
         /// <summary>
@@ -198,6 +209,7 @@ namespace AtCoder
         /// <para>制約: <paramref name="a"/> がソート済み</para>
         /// <para>計算量: O(log <paramref name="n"/>)</para>
         /// </remarks>
+        [MethodImpl(AggressiveInlining)]
         public static int LowerBound<T>(this Span<T> a, T v) where T : IComparable<T> => BinarySearch(a, v, default(DefaultComparer<T>), true);
 
         /// <summary>
@@ -207,6 +219,7 @@ namespace AtCoder
         /// <para>制約: <paramref name="a"/> がソート済み</para>
         /// <para>計算量: O(log <paramref name="n"/>)</para>
         /// </remarks>
+        [MethodImpl(AggressiveInlining)]
         public static int UpperBound<T, TOp>(this Span<T> a, T v, TOp cmp) where TOp : IComparer<T> => BinarySearch(a, v, cmp, false);
 
         /// <summary>
@@ -216,6 +229,7 @@ namespace AtCoder
         /// <para>制約: <paramref name="a"/> がソート済み</para>
         /// <para>計算量: O(log <paramref name="n"/>)</para>
         /// </remarks>
+        [MethodImpl(AggressiveInlining)]
         public static int UpperBound<T>(this Span<T> a, T v) where T : IComparable<T> => BinarySearch(a, v, default(DefaultComparer<T>), false);
         /// <summary>
         /// <paramref name="a"/> の要素のうち、<paramref name="v"/> 以上の値が現れる最小のインデックスを取得します。
@@ -224,6 +238,7 @@ namespace AtCoder
         /// <para>制約: <paramref name="a"/> がソート済み</para>
         /// <para>計算量: O(log <paramref name="n"/>)</para>
         /// </remarks>
+        [MethodImpl(AggressiveInlining)]
         public static int LowerBound<T, TOp>(this ReadOnlySpan<T> a, T v, TOp cmp) where TOp : IComparer<T> => BinarySearch(a, v, cmp, true);
 
         /// <summary>
@@ -233,6 +248,7 @@ namespace AtCoder
         /// <para>制約: <paramref name="a"/> がソート済み</para>
         /// <para>計算量: O(log <paramref name="n"/>)</para>
         /// </remarks>
+        [MethodImpl(AggressiveInlining)]
         public static int LowerBound<T>(this ReadOnlySpan<T> a, T v) where T : IComparable<T> => BinarySearch(a, v, default(DefaultComparer<T>), true);
 
         /// <summary>
@@ -242,6 +258,7 @@ namespace AtCoder
         /// <para>制約: <paramref name="a"/> がソート済み</para>
         /// <para>計算量: O(log <paramref name="n"/>)</para>
         /// </remarks>
+        [MethodImpl(AggressiveInlining)]
         public static int UpperBound<T, TOp>(this ReadOnlySpan<T> a, T v, TOp cmp) where TOp : IComparer<T> => BinarySearch(a, v, cmp, false);
 
         /// <summary>
@@ -251,6 +268,7 @@ namespace AtCoder
         /// <para>制約: <paramref name="a"/> がソート済み</para>
         /// <para>計算量: O(log <paramref name="n"/>)</para>
         /// </remarks>
+        [MethodImpl(AggressiveInlining)]
         public static int UpperBound<T>(this ReadOnlySpan<T> a, T v) where T : IComparable<T> => BinarySearch(a, v, default(DefaultComparer<T>), false);
         private static int BinarySearch<T, TOp>(this IList<T> a, T v, TOp cmp, bool isLowerBound)
             where TOp : IComparer<T>

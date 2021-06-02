@@ -118,6 +118,7 @@ namespace AtCoder
         /// <remarks>
         /// <paramref name="v"/>が 0 未満、もしくは mod 以上の場合、自動で mod を取ります。
         /// </remarks>
+        [MethodImpl(AggressiveInlining)]
         public StaticModInt(long v) : this(Round(v)) { }
 
         /// <summary>
@@ -126,8 +127,10 @@ namespace AtCoder
         /// <remarks>
         /// <paramref name="v"/>が mod 以上の場合、自動で mod を取ります。
         /// </remarks>
+        [MethodImpl(AggressiveInlining)]
         public StaticModInt(ulong v) : this((uint)(v % op.Mod)) { }
 
+        [MethodImpl(AggressiveInlining)]
         private StaticModInt(uint v) => _v = v;
 
         [MethodImpl(AggressiveInlining)]
