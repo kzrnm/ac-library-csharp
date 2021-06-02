@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace AtCoder.Internal
@@ -15,7 +17,7 @@ namespace AtCoder.Internal
     /// </code>
     /// </example>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class CSR<TEdge>
+    public class CSR<TEdge> : IEnumerable<(int from, TEdge edge)>
     {
         /// <summary>
         /// 各頂点から伸びる有向辺数の累積和を取得します。
@@ -49,6 +51,42 @@ namespace AtCoder.Internal
                 EList[counter[from]++] = e;
             }
         }
-    }
+        public Enumerator GetEnumerator() => new Enumerator(this);
+        IEnumerator<(int from, TEdge edge)> IEnumerable<(int from, TEdge edge)>.GetEnumerator() => GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public struct Enumerator : IEnumerator<(int from, TEdge edge)>
+        {
+            public Enumerator(CSR<TEdge> g)
+            {
+                _g = g;
+                index = -1;
+                start = 0;
+            }
+            private CSR<TEdge> _g;
+            private int index;
+            private int start;
+            public (int from, TEdge edge) Current => (start, _g.EList[index]);
+            object IEnumerator.Current => Current;
 
+            public bool MoveNext()
+            {
+                if (++index < _g.Start[start + 1])
+                    return true;
+                return MoveNextStart();
+            }
+            private bool MoveNextStart()
+            {
+                for (++start; start + 1 < _g.Start.Length; ++start)
+                    if (index < _g.Start[start + 1])
+                        return true;
+                return false;
+            }
+            public void Reset()
+            {
+                index = -1;
+                start = 0;
+            }
+            void IDisposable.Dispose() { }
+        }
+    }
 }
