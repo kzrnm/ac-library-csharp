@@ -1,6 +1,8 @@
 ﻿#if !NETSTANDARD2_1
 using System.Runtime.Intrinsics.X86;
 #endif
+using System.Runtime.CompilerServices;
+
 
 namespace AtCoder.Internal
 {
@@ -10,7 +12,7 @@ namespace AtCoder.Internal
     /// </summary>
     public class Barrett
     {
-        public uint Mod { get; }
+        public readonly uint Mod;
         internal readonly ulong IM;
         public Barrett(uint m)
         {
@@ -21,10 +23,10 @@ namespace AtCoder.Internal
         /// <summary>
         /// <paramref name="a"/> * <paramref name="b"/> mod m
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint Mul(uint a, uint b)
         {
-            ulong z = a;
-            z *= b;
+            var z = (ulong)a * b;
 #if !NETSTANDARD2_1
             if (Bmi2.X64.IsSupported)
             {
