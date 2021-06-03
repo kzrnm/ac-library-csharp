@@ -9,6 +9,29 @@ namespace AtCoder.Embedding
     public class SourceExpanderTest
     {
         [Fact]
+        public async Task Symbol()
+        {
+            bool expected =
+#if NETCOREAPP3_0
+                          false
+#else
+                          true
+#endif
+                ;
+            var embedded = await EmbeddedData.LoadFromAssembly(typeof(Mod1000000007));
+            embedded.AssemblyMetadatas.Should().ContainKey("SourceExpander.EmbeddedSourceCode.GZipBase32768");
+            embedded.SourceFiles.Select(s => s.FileName)
+                .Should()
+                .HaveCountGreaterThan(2)
+                .And
+                .OnlyContain(name => name.StartsWith("AtCoderLibrary>"));
+            embedded.SourceFiles.SelectMany(s => s.Usings)
+                .Contains("using System.Runtime.Intrinsics.X86;")
+                .Should()
+                .Be(expected);
+        }
+
+        [Fact]
         public async Task LanguageVersion()
         {
             const string VERSION =
