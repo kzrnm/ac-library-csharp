@@ -1,4 +1,4 @@
-﻿#if NETSTANDARD2_1
+﻿#if !NETCOREAPP3_0_OR_GREATER
 using System.Runtime.CompilerServices;
 
 namespace AtCoder.Internal

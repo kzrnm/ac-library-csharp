@@ -1,4 +1,4 @@
-﻿#if !NETSTANDARD2_1
+﻿#if NETCOREAPP3_0_OR_GREATER
 using System.Runtime.Intrinsics.X86;
 #endif
 using System.Runtime.CompilerServices;
@@ -27,7 +27,7 @@ namespace AtCoder.Internal
         public uint Mul(uint a, uint b)
         {
             var z = (ulong)a * b;
-#if !NETSTANDARD2_1
+#if NETCOREAPP3_0_OR_GREATER
             if (Bmi2.X64.IsSupported)
             {
                 var x = Bmi2.X64.MultiplyNoFlags(z, IM);

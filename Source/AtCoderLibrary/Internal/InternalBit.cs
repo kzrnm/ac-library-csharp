@@ -1,5 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
-#if !NETSTANDARD2_1
+#if NETCOREAPP3_0_OR_GREATER
 using System.Numerics;
 using System.Runtime.Intrinsics.X86;
 #endif
@@ -19,7 +19,7 @@ namespace AtCoder.Internal
         [MethodImpl(AggressiveInlining)]
         public static uint ExtractLowestSetBit(int n)
         {
-#if !NETSTANDARD2_1
+#if NETCOREAPP3_0_OR_GREATER
             if (Bmi1.IsSupported)
             {
                 return Bmi1.ExtractLowestSetBit((uint)n);

@@ -24,7 +24,7 @@ namespace AtCoder.Internal
             var h = InternalBit.CeilPow2(n);
 
             var regLength = Vector<uint>.Count;
-#if NETSTANDARD2_1
+#if !NETCOREAPP3_0_OR_GREATER
             var copyTmp = new uint[regLength];
 #endif
 
@@ -85,7 +85,7 @@ namespace AtCoder.Internal
                             ge = Vector.GreaterThanOrEqual(sub, modV);
                             sub = Vector.ConditionalSelect(ge, sub + modV, sub);
 
-#if NETSTANDARD2_1
+#if !NETCOREAPP3_0_OR_GREATER
                             add.CopyTo(copyTmp);
                             copyTmp.CopyTo(luSliced);
                             sub.CopyTo(copyTmp);
@@ -109,7 +109,7 @@ namespace AtCoder.Internal
             var h = InternalBit.CeilPow2(n);
 
             var regLength = Vector<uint>.Count;
-#if NETSTANDARD2_1
+#if !NETCOREAPP3_0_OR_GREATER
             var copyTmp = new uint[regLength];
 #endif
 
@@ -166,7 +166,7 @@ namespace AtCoder.Internal
                             // こちらは後で余りを取るのでマスク不要
                             sub += modV;
 
-#if NETSTANDARD2_1
+#if !NETCOREAPP3_0_OR_GREATER
                             add.CopyTo(copyTmp);
                             copyTmp.CopyTo(luSliced);
                             sub.CopyTo(copyTmp);
@@ -198,14 +198,14 @@ namespace AtCoder.Internal
 
             // es[i]^(2^(2+i)) == 1
             Span<StaticModInt<T>> es =
-#if NETSTANDARD2_1
+#if !NETCOREAPP3_0_OR_GREATER
                 new
 #else
                 stackalloc
 #endif
                 StaticModInt<T>[cnt2 - 1];
             Span<StaticModInt<T>> ies =
-#if NETSTANDARD2_1
+#if !NETCOREAPP3_0_OR_GREATER
                 new
 #else
                 stackalloc
@@ -242,14 +242,14 @@ namespace AtCoder.Internal
 
             // es[i]^(2^(2+i)) == 1
             Span<StaticModInt<T>> es =
-#if NETSTANDARD2_1
+#if !NETCOREAPP3_0_OR_GREATER
                 new
 #else
                 stackalloc
 #endif
                 StaticModInt<T>[cnt2 - 1];
             Span<StaticModInt<T>> ies =
-#if NETSTANDARD2_1
+#if !NETCOREAPP3_0_OR_GREATER
                 new
 #else
                 stackalloc
