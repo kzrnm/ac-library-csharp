@@ -1,11 +1,9 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Diagnostics;
 
 namespace AtCoder.Internal
 {
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class Contract
     {
         /// <summary>
