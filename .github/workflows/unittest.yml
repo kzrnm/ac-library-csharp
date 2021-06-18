@@ -52,9 +52,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install --user -r requirements.txt
       - name: Install dependencies
-        run: dotnet restore Test/AtCoderLibrary.LibraryChecker/AtCoderLibrary.LibraryChecker.sln
+        run: dotnet restore ${{ env.WORKFLOW_BUILD_SLN }}
       - name: Build
-        run: dotnet build Test/AtCoderLibrary.LibraryChecker/AtCoderLibrary.LibraryChecker.sln --no-restore
+        run: dotnet build ${{ env.WORKFLOW_BUILD_SLN }} --no-restore
       - name: Run
         run: |
           ulimit -s unlimited
