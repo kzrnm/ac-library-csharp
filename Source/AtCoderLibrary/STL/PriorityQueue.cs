@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using AtCoder.Internal;
 
-namespace AtCoder
+namespace AtCoder.Stl
 {
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public class PriorityQueue<T> : PriorityQueueOp<T, IComparer<T>>

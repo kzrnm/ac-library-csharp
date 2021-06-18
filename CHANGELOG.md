@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Remove EditorBrowsableState.Never from Contract.
 - Hide Deque<T>.Add
+- Rename namespace of STL classes to AtCoder.Stl
 
 ## [1.5.6] - 2021-06-04
 ### Added
