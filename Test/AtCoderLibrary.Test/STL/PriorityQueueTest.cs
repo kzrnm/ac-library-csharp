@@ -55,7 +55,7 @@ namespace AtCoder.Stl
                 for (int i = 0; i < n; i++)
                 {
                     var x = mt.Next();
-                    pq.Add(x);
+                    pq.Enqueue(x);
                     list.Add(x);
                     pq.Count.Should().Be(list.Count).And.Be(i + 1);
                 }
@@ -69,7 +69,7 @@ namespace AtCoder.Stl
 
                 list.Reverse();
                 foreach (var lx in list)
-                    pq.Add(-lx);
+                    pq.Enqueue(-lx);
                 foreach (var lx in list)
                 {
                     pq.TryDequeue(out var res).Should().BeTrue();
@@ -91,7 +91,7 @@ namespace AtCoder.Stl
                 for (int i = 0; i < n; i++)
                 {
                     var x = mt.Next(0, int.MaxValue);
-                    pq.Add(x, -x);
+                    pq.Enqueue(x, -x);
                     list.Add(x);
                     pq.Count.Should().Be(list.Count).And.Be(i + 1);
                 }
@@ -107,7 +107,7 @@ namespace AtCoder.Stl
 
                 list.Reverse();
                 foreach (var lx in list)
-                    pq.Add(-lx, lx);
+                    pq.Enqueue(-lx, lx);
                 foreach (var lx in list)
                 {
                     pq.TryDequeue(out var res).Should().BeTrue();
@@ -117,7 +117,7 @@ namespace AtCoder.Stl
                 pq.Count.Should().Be(0);
 
                 foreach (var lx in list)
-                    pq.Add(-lx, lx);
+                    pq.Enqueue(-lx, lx);
                 foreach (var lx in list)
                 {
                     pq.TryDequeue(out var key, out var val).Should().BeTrue();
@@ -141,7 +141,7 @@ namespace AtCoder.Stl
                 for (int i = 0; i < n; i++)
                 {
                     var x = mt.Next();
-                    pq.Add(x);
+                    pq.Enqueue(x);
                     list.Add(x);
                     pq.Count.Should().Be(list.Count).And.Be(i + 1);
                 }
@@ -154,7 +154,7 @@ namespace AtCoder.Stl
 
                 list.Reverse();
                 foreach (var lx in list)
-                    pq.Add(-lx);
+                    pq.Enqueue(-lx);
                 foreach (var lx in list)
                 {
                     pq.TryDequeue(out var res).Should().BeTrue();
@@ -176,7 +176,7 @@ namespace AtCoder.Stl
                 for (int i = 0; i < n; i++)
                 {
                     var x = mt.Next(0, int.MaxValue);
-                    pq.Add(x, -x);
+                    pq.Enqueue(x, -x);
                     list.Add(x);
                     pq.Count.Should().Be(list.Count).And.Be(i + 1);
                 }
@@ -189,7 +189,7 @@ namespace AtCoder.Stl
 
                 list.Reverse();
                 foreach (var lx in list)
-                    pq.Add(-lx, lx);
+                    pq.Enqueue(-lx, lx);
                 foreach (var lx in list)
                 {
                     pq.TryDequeue(out var res).Should().BeTrue();
@@ -199,7 +199,7 @@ namespace AtCoder.Stl
                 pq.Count.Should().Be(0);
 
                 foreach (var lx in list)
-                    pq.Add(-lx, lx);
+                    pq.Enqueue(-lx, lx);
                 foreach (var lx in list)
                 {
                     pq.TryDequeue(out var key, out var val).Should().BeTrue();

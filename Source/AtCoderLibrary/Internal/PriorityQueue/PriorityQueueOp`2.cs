@@ -42,9 +42,9 @@ namespace AtCoder.Internal
         }
         [MethodImpl(AggressiveInlining)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public void Add(KeyValuePair<TKey, TValue> pair) => Add(pair.Key, pair.Value);
+        public void Enqueue(KeyValuePair<TKey, TValue> pair) => Enqueue(pair.Key, pair.Value);
         [MethodImpl(AggressiveInlining)]
-        public void Add(TKey key, TValue value)
+        public void Enqueue(TKey key, TValue value)
         {
             if (Count >= keys.Length) Resize();
             keys[Count] = key;
