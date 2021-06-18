@@ -314,7 +314,7 @@ namespace AtCoder
                             if (EqualityComparer<TCost>.Default.Equals(distTo, distV))
                                 queMin.Push(e.To);
                             else
-                                que.Add(distTo, e.To);
+                                que.Enqueue(distTo, e.To);
                         }
                     }
                 }

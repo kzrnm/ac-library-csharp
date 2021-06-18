@@ -4,7 +4,7 @@
     {
         int Count { get; }
         T Peek { get; }
-        void Add(T value);
+        void Enqueue(T value);
         T Dequeue();
         bool TryDequeue(out T result);
         void Clear();

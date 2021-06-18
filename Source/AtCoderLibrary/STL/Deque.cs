@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using AtCoder.Internal;
 
-namespace AtCoder
+namespace AtCoder.Stl
 {
     using static MethodImplOptions;
 
@@ -87,6 +87,7 @@ namespace AtCoder
         }
         public void Clear() => head = tail = 0;
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public void Add(T item) => AddLast(item);
         bool ICollection<T>.Contains(T item)
         {

@@ -36,7 +36,7 @@ namespace AtCoder.Internal
             Array.Resize(ref data, data.Length << 1);
         }
         [MethodImpl(AggressiveInlining)]
-        public void Add(T value)
+        public void Enqueue(T value)
         {
             if (Count >= data.Length) Resize();
             data[Count++] = value;
