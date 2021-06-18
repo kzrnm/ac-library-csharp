@@ -87,6 +87,7 @@ namespace AtCoder
         }
         public void Clear() => head = tail = 0;
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public void Add(T item) => AddLast(item);
         bool ICollection<T>.Contains(T item)
         {

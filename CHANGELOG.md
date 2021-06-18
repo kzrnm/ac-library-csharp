@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Changed
 - Remove EditorBrowsableState.Never from Contract.
+- Hide Deque<T>.Add
 
 ## [1.5.6] - 2021-06-04
 ### Added
