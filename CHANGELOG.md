@@ -10,8 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Remove EditorBrowsableState.Never from Contract.
 - Hide Deque<T>.Add
-- Rename namespace of STL classes to AtCoder.Stl
-- Raname PriorityQueue<T>.Add to PriorityQueue<T>.Enqueue  (thx @fairy-lettuce) https://github.com/naminodarie/ac-library-csharp/issues/53
+- **Breaking** Rename namespace of STL classes to AtCoder.Stl
+- **Breaking** Raname PriorityQueue<T>.Add to PriorityQueue<T>.Enqueue  (thx @fairy-lettuce) https://github.com/naminodarie/ac-library-csharp/issues/53
 
 ## [1.5.6] - 2021-06-04
 ### Added
