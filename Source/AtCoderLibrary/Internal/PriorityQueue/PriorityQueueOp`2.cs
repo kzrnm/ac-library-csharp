@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -10,8 +9,7 @@ namespace AtCoder.Internal
     using static MethodImplOptions;
     [DebuggerTypeProxy(typeof(PriorityQueueOp<,,>.DebugView))]
     [DebuggerDisplay(nameof(Count) + " = {" + nameof(Count) + "}")]
-    public class PriorityQueueOp<TKey, TValue, TKOp> :
-        IPriorityQueueOp<KeyValuePair<TKey, TValue>>, IEnumerable
+    public class PriorityQueueOp<TKey, TValue, TKOp> : IPriorityQueueOp<KeyValuePair<TKey, TValue>>
         where TKOp : IComparer<TKey>
     {
         protected TKey[] keys;
@@ -126,7 +124,6 @@ namespace AtCoder.Internal
         public ReadOnlySpan<TKey> UnorderdKeys() => keys.AsSpan(0, Count);
         [EditorBrowsable(EditorBrowsableState.Never)]
         public ReadOnlySpan<TValue> UnorderdValues() => values.AsSpan(0, Count);
-        IEnumerator IEnumerable.GetEnumerator() => UnorderdValues().ToArray().GetEnumerator();
         private class DebugView
         {
             private readonly PriorityQueueOp<TKey, TValue, TKOp> pq;
