@@ -108,8 +108,9 @@ namespace AtCoder
         /// <returns><paramref name="x"/> &lt;= <paramref name="y"/></returns>
         bool LessThanOrEqual(T x, T y);
     }
+
     [IsOperator]
-    public interface INumOperator<T> : IArithmeticOperator<T>, ICompareOperator<T>
+    public interface IMinMaxValue<T>
     {
         /// <summary>
         /// MinValue
@@ -121,6 +122,10 @@ namespace AtCoder
         T MaxValue { get; }
     }
 
+    [IsOperator]
+    public interface INumOperator<T> : IArithmeticOperator<T>, ICompareOperator<T>, IMinMaxValue<T>
+    {
+    }
 
     /// <summary>
     /// <typeparamref name="T"/> についてのシフト演算を定義します。
