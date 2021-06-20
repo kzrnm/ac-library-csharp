@@ -88,8 +88,8 @@ namespace AtCoder
                     {
                         for (int d = -10; d <= 10; d++)
                         {
-                            var res = MathLib.CRT(new long[] { c, d }, new long[] { a, b });
-                            if (res.Item2 == 0)
+                            var (y, m) = MathLib.CRT(new long[] { c, d }, new long[] { a, b });
+                            if (m == 0)
                             {
                                 for (int x = 0; x < a * b / Gcd(a, b); x++)
                                 {
@@ -97,9 +97,9 @@ namespace AtCoder
                                 }
                                 continue;
                             }
-                            res.Item2.Should().Be(a * b / Gcd(a, b));
-                            (res.Item1 % a).Should().Be(InternalMath.SafeMod(c, a));
-                            (res.Item1 % b).Should().Be(InternalMath.SafeMod(d, b));
+                            m.Should().Be(a * b / Gcd(a, b));
+                            (y % a).Should().Be(InternalMath.SafeMod(c, a));
+                            (y % b).Should().Be(InternalMath.SafeMod(d, b));
                         }
                     }
                 }
@@ -120,10 +120,10 @@ namespace AtCoder
                             {
                                 for (int f = -5; f <= 5; f++)
                                 {
-                                    var res = MathLib.CRT(new long[] { d, e, f }, new long[] { a, b, c });
+                                    var (y, m) = MathLib.CRT(new long[] { d, e, f }, new long[] { a, b, c });
                                     long lcm = a * b / Gcd(a, b);
                                     lcm = lcm * c / Gcd(lcm, c);
-                                    if (res.Item2 == 0)
+                                    if (m == 0)
                                     {
                                         for (int x = 0; x < lcm; x++)
                                         {
@@ -131,10 +131,10 @@ namespace AtCoder
                                         }
                                         continue;
                                     }
-                                    res.Item2.Should().Be(lcm);
-                                    (res.Item1 % a).Should().Be(InternalMath.SafeMod(d, a));
-                                    (res.Item1 % b).Should().Be(InternalMath.SafeMod(e, b));
-                                    (res.Item1 % c).Should().Be(InternalMath.SafeMod(f, c));
+                                    m.Should().Be(lcm);
+                                    (y % a).Should().Be(InternalMath.SafeMod(d, a));
+                                    (y % b).Should().Be(InternalMath.SafeMod(e, b));
+                                    (y % c).Should().Be(InternalMath.SafeMod(f, c));
                                 }
                             }
                         }
@@ -149,10 +149,10 @@ namespace AtCoder
             long r1 = 1_000_000_000_000L - 2;
             long m0 = 900577;
             long m1 = 1_000_000_000_000L;
-            var res = MathLib.CRT(new long[] { r0, r1 }, new long[] { m0, m1 });
-            res.Item2.Should().Be(m0 * m1);
-            (res.Item1 % m0).Should().Be(r0);
-            (res.Item1 % m1).Should().Be(r1);
+            var (y, m) = MathLib.CRT(new long[] { r0, r1 }, new long[] { m0, m1 });
+            m.Should().Be(m0 * m1);
+            (y % m0).Should().Be(r0);
+            (y % m1).Should().Be(r1);
         }
 
         [Fact]
