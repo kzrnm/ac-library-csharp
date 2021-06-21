@@ -4,7 +4,7 @@ using AtCoder.Utils;
 using FluentAssertions;
 using Xunit;
 
-namespace AtCoder.Stl
+namespace AtCoder.Extension
 {
     public class BinarySearchTest
     {

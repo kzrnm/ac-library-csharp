@@ -2,7 +2,7 @@
 using FluentAssertions;
 using Xunit;
 
-namespace AtCoder.Stl
+namespace AtCoder
 {
     public class NextPermutationTest
     {

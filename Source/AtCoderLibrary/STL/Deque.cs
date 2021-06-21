@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using AtCoder.Internal;
 
-namespace AtCoder.Stl
+namespace AtCoder
 {
     using static MethodImplOptions;
 

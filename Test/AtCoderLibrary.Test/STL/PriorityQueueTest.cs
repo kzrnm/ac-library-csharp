@@ -6,7 +6,7 @@ using FluentAssertions;
 using MersenneTwister;
 using Xunit;
 
-namespace AtCoder.Stl
+namespace AtCoder
 {
     public class PriorityQueueTest
     {

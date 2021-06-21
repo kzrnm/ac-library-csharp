@@ -4,7 +4,7 @@ using AtCoder.Internal;
 using FluentAssertions;
 using Xunit;
 
-namespace AtCoder.Stl
+namespace AtCoder
 {
     public class DequeTest
     {
