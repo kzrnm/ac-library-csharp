@@ -211,7 +211,7 @@ namespace AtCoder
         }
 
         /// <summary>
-        /// 以下の条件を両方満たす r を(いずれか一つ)返します。
+        /// 以下の条件を両方満たす l を(いずれか一つ)返します。
         /// <list type="bullet">
         /// <item>
         /// <description>l = <paramref name="r"/> もしくは <paramref name="f"/>(op(a[l], a[l + 1], ..., a[<paramref name="r"/> - 1])) = true</description>
