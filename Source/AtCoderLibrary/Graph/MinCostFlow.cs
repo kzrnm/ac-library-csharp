@@ -424,8 +424,7 @@ namespace AtCoder
             public override int GetHashCode() => HashCode.Combine(From, To, Cap, Flow, Cost);
             public static bool operator ==(Edge left, Edge right) => left.Equals(right);
             public static bool operator !=(Edge left, Edge right) => !left.Equals(right);
-
-        };
+        }
 
         private struct EdgeInternal
         {
@@ -440,7 +439,7 @@ namespace AtCoder
                 Cap = cap;
                 Cost = cost;
             }
-        };
+        }
 
         private readonly int _n;
         private readonly SimpleList<Edge> _edges = new SimpleList<Edge>();
