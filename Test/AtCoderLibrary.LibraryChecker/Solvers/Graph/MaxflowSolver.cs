@@ -11,7 +11,7 @@ namespace AtCoder.Solvers.Graph
             int l = cr;
             int r = cr;
             int m = cr;
-            var mf = new MFGraphInt(l + r + 2);
+            var mf = new MfGraphInt(l + r + 2);
             for (int i = 0; i < m; i++)
             {
                 int a = cr;

@@ -10,21 +10,20 @@ namespace AtCoder
     /// 有向グラフを強連結成分分解します。
     /// </summary>
     [DebuggerDisplay("Vertices = {_internal._n}, Edges = {_internal.edges.Count}")]
-    public class SCCGraph
+    public class SccGraph
     {
-        readonly InternalSCCGraph _internal;
+        readonly InternalSccGraph _internal;
 
         /// <summary>
-        /// <see cref="SCCGraph"/> クラスの新しいインスタンスを、<paramref name="n"/> 頂点 0 辺の有向グラフとして初期化します。
+        /// <see cref="SccGraph"/> クラスの新しいインスタンスを、<paramref name="n"/> 頂点 0 辺の有向グラフとして初期化します。
         /// </summary>
         /// <remarks>
         /// <para>制約: 0≤<paramref name="n"/>≤10^8</para>
         /// <para>計算量: O(<paramref name="n"/>)</para>
         /// </remarks>
-        public SCCGraph(int n)
+        public SccGraph(int n)
         {
-            _internal = new InternalSCCGraph
-                (n);
+            _internal = new InternalSccGraph(n);
         }
 
         /// <summary>
@@ -58,7 +57,7 @@ namespace AtCoder
         /// 有向グラフを強連結成分分解します。
         /// </summary>
         [DebuggerDisplay("Vertices = {_n}, Edges = {edges.Count}")]
-        public class InternalSCCGraph
+        public class InternalSccGraph
         {
             private readonly int _n;
             private readonly SimpleList<(int from, Edge e)> edges;
@@ -66,13 +65,13 @@ namespace AtCoder
             public int VerticesNumbers => _n;
 
             /// <summary>
-            /// <see cref="InternalSCCGraph"/> クラスの新しいインスタンスを、<paramref name="n"/> 頂点 0 辺の有向グラフとして初期化します。
+            /// <see cref="InternalSccGraph"/> クラスの新しいインスタンスを、<paramref name="n"/> 頂点 0 辺の有向グラフとして初期化します。
             /// </summary>
             /// <remarks>
             /// <para>制約: 0≤<paramref name="n"/>≤10^8</para>
             /// <para>計算量: O(<paramref name="n"/>)</para>
             /// </remarks>
-            public InternalSCCGraph(int n)
+            public InternalSccGraph(int n)
             {
                 _n = n;
                 edges = new SimpleList<(int from, Edge e)>();
@@ -256,3 +255,4 @@ namespace AtCoder
         }
     }
 }
+

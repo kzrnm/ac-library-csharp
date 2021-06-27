@@ -112,7 +112,7 @@ namespace AtCoder
                 var (s, t) = mt.NextPair(0, n);
                 if (mt.NextBool()) (s, t) = (t, s);
 
-                var gMf = new MFGraphInt(n);
+                var gMf = new MfGraphInt(n);
                 var g = new McfGraphInt(n);
                 for (int i = 0; i < m; i++)
                 {

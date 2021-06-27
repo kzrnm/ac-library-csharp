@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 - Optimize MaxFlow
+- **Breaking** Rename some classes to camel case
 
 ## [1.6.4] - 2021-06-21
 - **Breaking** Rename namespace of STL classes to AtCoder.Stl to AtCoder
