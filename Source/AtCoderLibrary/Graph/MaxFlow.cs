@@ -18,7 +18,7 @@ namespace AtCoder
     /// また頂点 v について g(v, f) = (Σ_in(v) f_e) - (Σ_out(v) f_e) とします。 
     /// </para>
     /// </remarks>
-    public class MFGraph<TValue, TOp>
+    public class MfGraph<TValue, TOp>
         where TValue : struct
         where TOp : struct, INumOperator<TValue>
     {
@@ -31,7 +31,7 @@ namespace AtCoder
         /// <para>制約: 0 ≤ <paramref name="n"/> ≤ 10^8</para>
         /// <para>計算量: O(<paramref name="n"/>)</para>
         /// </remarks>
-        public MFGraph(int n)
+        public MfGraph(int n)
         {
             _n = n;
             _g = new SimpleList<EdgeInternal>[n];

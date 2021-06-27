@@ -11,12 +11,12 @@ namespace AtCoder
         [Fact]
         public void Empty()
         {
-            new SCCGraph(0).SCC().Should().Equal(Array.Empty<int[]>());
+            new SccGraph(0).SCC().Should().Equal(Array.Empty<int[]>());
         }
         [Fact]
         public void Simple()
         {
-            var graph = new SCCGraph(2);
+            var graph = new SccGraph(2);
             graph.AddEdge(0, 1);
             graph.AddEdge(1, 0);
             graph.SCC().Should().HaveCount(1);
@@ -24,7 +24,7 @@ namespace AtCoder
         [Fact]
         public void SelfLoop()
         {
-            var graph = new SCCGraph(2);
+            var graph = new SccGraph(2);
             graph.AddEdge(0, 0);
             graph.AddEdge(0, 0);
             graph.AddEdge(1, 1);
@@ -35,7 +35,7 @@ namespace AtCoder
         [Fact]
         public void Invalid()
         {
-            var graph = new SCCGraph(2);
+            var graph = new SccGraph(2);
             graph.Invoking(graph => graph.AddEdge(0, 2)).Should().ThrowContractAssert();
             graph.Invoking(graph => graph.AddEdge(2, 0)).Should().ThrowContractAssert();
             graph.Invoking(graph => graph.AddEdge(-1, 1)).Should().ThrowContractAssert();
@@ -74,7 +74,7 @@ namespace AtCoder
             int[] nm = reader.ReadLine().Split().Select(int.Parse).ToArray();
             (int n, int m) = (nm[0], nm[1]);
 
-            var g = new SCCGraph(n);
+            var g = new SccGraph(n);
 
             for (int i = 0; i < m; i++)
             {

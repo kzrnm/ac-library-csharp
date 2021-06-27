@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Kzrnm.Competitive.IO;
+﻿using Kzrnm.Competitive.IO;
 
 namespace AtCoder.Solvers.Graph
 {
@@ -12,7 +11,7 @@ namespace AtCoder.Solvers.Graph
             int n = cr;
             int m = cr;
 
-            var g = new SCCGraph(n);
+            var g = new SccGraph(n);
 
             for (int i = 0; i < m; i++)
             {
