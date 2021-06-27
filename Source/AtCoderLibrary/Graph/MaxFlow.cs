@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using AtCoder.Internal;
 
 namespace AtCoder
@@ -86,9 +87,9 @@ namespace AtCoder
         {
             Contract.Assert((uint)i < (uint)_pos.Count, reason: $"IndexOutOfRange: 0 <= {nameof(i)} && {nameof(i)} < edgeCount");
             var (first, second) = _pos[i];
-            var _e = _g[first][second];
-            var _re = _g[_e.To][_e.Rev];
-            return new Edge(first, _e.To, op.Add(_e.Cap, _re.Cap), _re.Cap);
+            var (to, rev, cap) = _g[first][second];
+            var _reCap = _g[to][rev].Cap;
+            return new Edge(first, to, op.Add(cap, _reCap), _reCap);
         }
 
         /// <summary>
@@ -100,9 +101,8 @@ namespace AtCoder
         /// </remarks>
         public Edge[] Edges()
         {
-            int m = _pos.Count;
-            var result = new Edge[m];
-            for (int i = 0; i < m; i++)
+            var result = new Edge[_pos.Count];
+            for (int i = 0; i < result.Length; i++)
             {
                 result[i] = GetEdge(i);
             }
@@ -125,10 +125,10 @@ namespace AtCoder
             Contract.Assert((uint)i < (uint)_pos.Count, reason: $"IndexOutOfRange: 0 <= {nameof(i)} && {nameof(i)} < edgeCount");
             Contract.Assert(op.LessThanOrEqual(default, newFlow) && op.LessThanOrEqual(newFlow, newCap), reason: $"IndexOutOfRange: 0 <= {nameof(newFlow)} && {nameof(newFlow)} <= {nameof(newCap)}");
             var (first, second) = _pos[i];
-            var _e = _g[first][second];
+            var (to, rev, _) = _g[first][second];
             //var _re = _g[_e.To][_e.Rev];
             _g[first][second].Cap = op.Subtract(newCap, newFlow);
-            _g[_e.To][_e.Rev].Cap = newFlow;
+            _g[to][rev].Cap = newFlow;
         }
 
         /// <summary>
@@ -238,12 +238,12 @@ namespace AtCoder
                 while (que.Count > 0)
                 {
                     int v = que.Dequeue();
-                    foreach (var e in _g[v])
+                    foreach (var (to, _, cap) in _g[v].AsSpan())
                     {
-                        if (EqualityComparer<TValue>.Default.Equals(e.Cap, default) || level[e.To] >= 0) continue;
-                        level[e.To] = level[v] + 1;
-                        if (e.To == t) return;
-                        que.Enqueue(e.To);
+                        if (EqualityComparer<TValue>.Default.Equals(cap, default) || level[to] >= 0) continue;
+                        level[to] = level[v] + 1;
+                        if (to == t) return;
+                        que.Enqueue(to);
                     }
                 }
             }
@@ -285,18 +285,18 @@ namespace AtCoder
                         lastRes = up;
                         continue;
                     }
-                    for (; iter[v] < _g[v].Count; iter[v]++, childOk = true)
+                    for (ref var itrv = ref iter[v]; itrv < _g[v].Count; itrv++)
                     {
-                        EdgeInternal e = _g[v][iter[v]];
+                        var (to, rev, cap) = _g[v][itrv];
                         if (childOk)
                         {
-                            if (level[v] <= level[e.To] || EqualityComparer<TValue>.Default.Equals(_g[e.To][e.Rev].Cap, default))
+                            if (level[v] <= level[to] || EqualityComparer<TValue>.Default.Equals(_g[to][rev].Cap, default))
                                 continue;
 
                             var up1 = op.Subtract(up, res);
-                            var up2 = _g[e.To][e.Rev].Cap;
+                            var up2 = _g[to][rev].Cap;
                             stack.Push((v, up, res, false));
-                            stack.Push((e.To, op.LessThan(up1, up2) ? up1 : up2, default, true));
+                            stack.Push((to, op.LessThan(up1, up2) ? up1 : up2, default, true));
                             goto DFS;
                         }
                         else
@@ -304,8 +304,8 @@ namespace AtCoder
                             var d = lastRes;
                             if (op.GreaterThan(d, default))
                             {
-                                _g[v][iter[v]].Cap = op.Add(_g[v][iter[v]].Cap, d);
-                                _g[e.To][e.Rev].Cap = op.Subtract(_g[e.To][e.Rev].Cap, d);
+                                _g[v][itrv].Cap = op.Add(cap, d);
+                                _g[to][rev].Cap = op.Subtract(_g[to][rev].Cap, d);
                                 res = op.Add(res, d);
 
                                 if (EqualityComparer<TValue>.Default.Equals(res, up))
@@ -314,6 +314,7 @@ namespace AtCoder
                                     goto DFS;
                                 }
                             }
+                            childOk = true;
                         }
                     }
                     level[v] = _n;
@@ -364,12 +365,12 @@ namespace AtCoder
             {
                 int p = que.Dequeue();
                 visited[p] = true;
-                foreach (var e in _g[p])
+                foreach (var (to, _, cap) in _g[p])
                 {
-                    if (!EqualityComparer<TValue>.Default.Equals(e.Cap, default) && !visited[e.To])
+                    if (!EqualityComparer<TValue>.Default.Equals(cap, default) && !visited[to])
                     {
-                        visited[e.To] = true;
-                        que.Enqueue(e.To);
+                        visited[to] = true;
+                        que.Enqueue(to);
                     }
                 }
             }
@@ -414,14 +415,21 @@ namespace AtCoder
 
         internal struct EdgeInternal
         {
-            public int To;
-            public int Rev;
-            public TValue Cap;
+            int To { get; }
+            int Rev { get; }
+            public TValue Cap { get; set; }
             public EdgeInternal(int to, int rev, TValue cap)
             {
                 To = to;
                 Rev = rev;
                 Cap = cap;
+            }
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void Deconstruct(out int to, out int rev, out TValue cap)
+            {
+                to = To;
+                rev = Rev;
+                cap = Cap;
             }
         }
 
