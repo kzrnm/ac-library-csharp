@@ -6,7 +6,7 @@ using Xunit;
 
 namespace AtCoder
 {
-    public class SCCTest
+    public class SccTest
     {
         [Fact]
         public void Empty()
