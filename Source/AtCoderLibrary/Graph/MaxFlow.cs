@@ -410,7 +410,7 @@ namespace AtCoder
                 => HashCode.Combine(From, To, Cap, Flow);
             public static bool operator ==(Edge left, Edge right) => left.Equals(right);
             public static bool operator !=(Edge left, Edge right) => !left.Equals(right);
-        };
+        }
 
         internal struct EdgeInternal
         {
@@ -423,7 +423,7 @@ namespace AtCoder
                 Rev = rev;
                 Cap = cap;
             }
-        };
+        }
 
         internal readonly int _n;
         internal readonly SimpleList<(int first, int second)> _pos;
