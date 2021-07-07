@@ -82,4 +82,4 @@ jobs:
       - name: Build
         run: dotnet build ${{ env.WORKFLOW_BUILD_SLN }} --no-restore
       - name: Test
-        run: dotnet test ${{ env.WORKFLOW_BUILD_SLN }} --no-restore --verbosity normal
+        run: dotnet test ${{ env.WORKFLOW_BUILD_SLN }} --no-restore --verbosity normal --logger GitHubActions

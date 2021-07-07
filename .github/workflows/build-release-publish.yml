@@ -128,7 +128,7 @@ jobs:
       - name: Build
         run: dotnet build ${{ env.WORKFLOW_BUILD_SLN }} --no-restore -c Release
       - name: Test
-        run: dotnet test ${{ env.WORKFLOW_BUILD_SLN }} --no-restore --verbosity normal -c Release
+        run: dotnet test ${{ env.WORKFLOW_BUILD_SLN }} --no-restore --verbosity normal -c Release --logger GitHubActions
       - uses: actions/upload-artifact@v1
         if: ${{ needs.get-version.outputs.is-new == 'true' }}
         with:
