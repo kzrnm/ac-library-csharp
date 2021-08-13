@@ -30,7 +30,6 @@ namespace AtCoder
         /// </summary>
         bool IsPrime { get; }
     }
-#pragma warning disable CA1815 // Override equals and operator equals on value types
     public readonly struct Mod1000000007 : IStaticMod
     {
         public uint Mod => 1000000007;
@@ -64,7 +63,6 @@ namespace AtCoder
         [MethodImpl(AggressiveInlining)]
         public StaticModInt<T> Decrement(StaticModInt<T> x) => --x;
     }
-#pragma warning restore CA1815 // Override equals and operator equals on value types
 
     /// <summary>
     /// 四則演算時に自動で mod を取る整数型。mod の値はコンパイル時に決定している必要があります。

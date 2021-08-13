@@ -19,7 +19,6 @@ namespace AtCoder
     {
         public static void SetMod<T>(this T _, int mod) where T : struct, IDynamicModID => DynamicModInt<T>.Mod = mod;
     }
-#pragma warning disable CA1815 // Override equals and operator equals on value types
     public readonly struct DynamicModID0 : IDynamicModID { }
     public readonly struct DynamicModID1 : IDynamicModID { }
     public readonly struct DynamicModID2 : IDynamicModID { }
@@ -44,7 +43,6 @@ namespace AtCoder
         [MethodImpl(AggressiveInlining)]
         public DynamicModInt<T> Decrement(DynamicModInt<T> x) => --x;
     }
-#pragma warning restore CA1815 // Override equals and operator equals on value types
 
     /// <summary>
     /// 四則演算時に自動で mod を取る整数型。実行時に mod が決まる場合でも使用可能です。
