@@ -61,11 +61,12 @@ class Program
                 Console.WriteLine(line);
             }
         }
+        catch (ProcessErrorException e) when (e.ExitCode == 0)
+        { }
         catch (ProcessErrorException e)
         {
             Console.WriteLine($"ProcessErrorException on {solver.Name}: {e.Message}");
-            if (e.ExitCode != 0)
-                throw;
+            throw;
         }
         catch (Exception e)
         {
