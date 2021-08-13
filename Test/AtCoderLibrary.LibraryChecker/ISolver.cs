@@ -1,6 +1,6 @@
 ﻿using Kzrnm.Competitive.IO;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     public interface ISolver
     {

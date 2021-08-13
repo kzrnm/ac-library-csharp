@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Kzrnm.Competitive;
 using Kzrnm.Competitive.IO;
 
 namespace AtCoder.Solvers.DataStructure
