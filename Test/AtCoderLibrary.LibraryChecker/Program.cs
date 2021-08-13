@@ -14,6 +14,7 @@ namespace AtCoder
     {
         static async Task Main()
         {
+            await Clone();
             var solvers = new List<ISolver>();
             var tasks = new List<Task>();
 
@@ -32,7 +33,22 @@ namespace AtCoder
 
         static readonly UTF8Encoding UTF8NoBom = new UTF8Encoding(false);
         static readonly string CheckerRoot
-            = Path.Combine(Environment.CurrentDirectory, "Test", "library-checker-problems");
+            = Path.Combine(Path.GetTempPath(), "library-checker-problems");
+
+        static async ValueTask Clone()
+        {
+            if (Directory.Exists(CheckerRoot)) return;
+            try
+            {
+                await ProcessX.StartAsync($"git clone --depth 1 https://github.com/yosupo06/library-checker-problems " + CheckerRoot).ToTask();
+            }
+            catch (ProcessErrorException e) when (e.ExitCode == 0)
+            {
+                foreach (var line in e.ErrorOutput)
+                    Console.WriteLine(line);
+            }
+        }
+
         static async Task Run(ISolver solver)
         {
             var testDir = Directory.EnumerateDirectories(CheckerRoot, solver.Name, SearchOption.AllDirectories).Single();
