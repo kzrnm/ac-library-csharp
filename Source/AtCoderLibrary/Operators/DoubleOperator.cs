@@ -3,7 +3,6 @@
 namespace AtCoder
 {
     using static MethodImplOptions;
-#pragma warning disable CA1815 // Override equals and operator equals on value types
     public readonly struct DoubleOperator : INumOperator<double>
     {
         public double MinValue => double.MinValue;
@@ -37,5 +36,4 @@ namespace AtCoder
         [MethodImpl(AggressiveInlining)]
         public int Compare(double x, double y) => x.CompareTo(y);
     }
-#pragma warning restore CA1815 // Override equals and operator equals on value types
 }

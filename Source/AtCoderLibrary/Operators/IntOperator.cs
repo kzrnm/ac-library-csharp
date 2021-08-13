@@ -3,7 +3,6 @@
 namespace AtCoder
 {
     using static MethodImplOptions;
-#pragma warning disable CA1815 // Override equals and operator equals on value types
     public readonly struct IntOperator : INumOperator<int>, IShiftOperator<int>
     {
         public int MinValue => int.MinValue;
@@ -41,5 +40,4 @@ namespace AtCoder
         [MethodImpl(AggressiveInlining)]
         public int RightShift(int x, int y) => x >> y;
     }
-#pragma warning restore CA1815 // Override equals and operator equals on value types
 }

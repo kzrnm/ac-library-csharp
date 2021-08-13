@@ -2,7 +2,6 @@
 
 namespace AtCoder
 {
-#pragma warning disable CA1815 // Override equals and operator equals on value types
     [IsOperator]
     public interface ICastOperator<in TFrom, out TTo>
     {
@@ -20,5 +19,4 @@ namespace AtCoder
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public long Cast(int y) => y;
     }
-#pragma warning restore CA1815 // Override equals and operator equals on value types
 }

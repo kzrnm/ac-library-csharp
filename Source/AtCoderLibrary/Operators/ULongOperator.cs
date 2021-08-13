@@ -4,7 +4,6 @@ using System.Runtime.CompilerServices;
 namespace AtCoder
 {
     using static MethodImplOptions;
-#pragma warning disable CA1815 // Override equals and operator equals on value types
     public readonly struct ULongOperator : INumOperator<ulong>, IShiftOperator<ulong>
     {
         public ulong MinValue => ulong.MinValue;
@@ -42,5 +41,4 @@ namespace AtCoder
         [MethodImpl(AggressiveInlining)]
         public ulong RightShift(ulong x, int y) => x >> y;
     }
-#pragma warning restore CA1815 // Override equals and operator equals on value types
 }
