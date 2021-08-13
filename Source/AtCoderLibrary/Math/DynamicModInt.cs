@@ -35,7 +35,7 @@ namespace AtCoder
         [MethodImpl(AggressiveInlining)]
         public DynamicModInt<T> Divide(DynamicModInt<T> x, DynamicModInt<T> y) => x / y;
         [MethodImpl(AggressiveInlining)]
-        public DynamicModInt<T> Modulo(DynamicModInt<T> x, DynamicModInt<T> y) => throw new NotSupportedException();
+        DynamicModInt<T> IDivisionOperator<DynamicModInt<T>>.Modulo(DynamicModInt<T> x, DynamicModInt<T> y) => throw new NotSupportedException();
         [MethodImpl(AggressiveInlining)]
         public DynamicModInt<T> Minus(DynamicModInt<T> x) => -x;
         [MethodImpl(AggressiveInlining)]

@@ -21,7 +21,7 @@ namespace AtCoder
         [MethodImpl(AggressiveInlining)]
         public ulong Modulo(ulong x, ulong y) => x % y;
         [MethodImpl(AggressiveInlining)]
-        public ulong Minus(ulong x) => throw new InvalidOperationException("Ulong type cannot be negative.");
+        ulong IUnaryNumOperator<ulong>.Minus(ulong x) => throw new InvalidOperationException("Ulong type cannot be negative.");
         [MethodImpl(AggressiveInlining)]
         public ulong Increment(ulong x) => ++x;
         [MethodImpl(AggressiveInlining)]

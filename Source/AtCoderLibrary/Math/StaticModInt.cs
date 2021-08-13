@@ -55,7 +55,7 @@ namespace AtCoder
         [MethodImpl(AggressiveInlining)]
         public StaticModInt<T> Divide(StaticModInt<T> x, StaticModInt<T> y) => x / y;
         [MethodImpl(AggressiveInlining)]
-        public StaticModInt<T> Modulo(StaticModInt<T> x, StaticModInt<T> y) => throw new NotSupportedException();
+        StaticModInt<T> IDivisionOperator<StaticModInt<T>>.Modulo(StaticModInt<T> x, StaticModInt<T> y) => throw new NotSupportedException();
         [MethodImpl(AggressiveInlining)]
         public StaticModInt<T> Minus(StaticModInt<T> x) => -x;
         [MethodImpl(AggressiveInlining)]

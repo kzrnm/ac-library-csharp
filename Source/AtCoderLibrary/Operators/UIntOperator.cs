@@ -21,7 +21,7 @@ namespace AtCoder
         [MethodImpl(AggressiveInlining)]
         public uint Modulo(uint x, uint y) => x % y;
         [MethodImpl(AggressiveInlining)]
-        public uint Minus(uint x) => throw new InvalidOperationException("Uint type cannot be negative.");
+        uint IUnaryNumOperator<uint>.Minus(uint x) => throw new InvalidOperationException("Uint type cannot be negative.");
         [MethodImpl(AggressiveInlining)]
         public uint Increment(uint x) => ++x;
         [MethodImpl(AggressiveInlining)]
