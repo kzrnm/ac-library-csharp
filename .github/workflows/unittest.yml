@@ -26,7 +26,8 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/checkout@v2
+      - name: checkout library-checker-problems
+        uses: actions/checkout@v2
         with:
           repository: yosupo06/library-checker-problems
           path: library-checker-problems

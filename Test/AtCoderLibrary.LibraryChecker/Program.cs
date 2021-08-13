@@ -5,8 +5,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using AtCoder;
 using Cysharp.Diagnostics;
+using Kzrnm.Competitive;
 using Kzrnm.Competitive.IO;
 
 class Program
