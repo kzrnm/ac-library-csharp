@@ -60,10 +60,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install dotnet-format
-        run: dotnet tool install --global dotnet-format
+      - name: Setup .NET Core SDK 6.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.100-preview.7.21379.14
       - name: Format
-        run: dotnet format ${{ env.WORKFLOW_BUILD_SLN }} --check
+        run: dotnet format ${{ env.WORKFLOW_BUILD_SLN }} --verify-no-changes
 
   library-checker:
     runs-on: ubuntu-latest
