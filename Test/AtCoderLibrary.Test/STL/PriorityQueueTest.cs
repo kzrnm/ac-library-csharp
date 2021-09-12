@@ -87,7 +87,7 @@ namespace AtCoder
             for (int n = 0; n < 200; n++)
             {
                 var list = new List<int>();
-                var pq = new PriorityQueue<long, int>();
+                var pq = new PriorityQueueDictionary<long, int>();
                 for (int i = 0; i < n; i++)
                 {
                     var x = mt.Next(0, int.MaxValue);
@@ -172,7 +172,7 @@ namespace AtCoder
             for (int n = 0; n < 200; n++)
             {
                 var list = new List<int>();
-                var pq = new PriorityQueue<long, int>(ComparerUtil.ReverseComparerLong);
+                var pq = new PriorityQueueDictionary<long, int>(ComparerUtil.ReverseComparerLong);
                 for (int i = 0; i < n; i++)
                 {
                     var x = mt.Next(0, int.MaxValue);
