@@ -1,11 +1,11 @@
 <Project>
 
   <PropertyGroup>
-    <Authors>naminodarie</Authors>
+    <Authors>kzrnm</Authors>
     <RepositoryType>git</RepositoryType>
-    <PackageProjectUrl>https://github.com/naminodarie/ac-library-csharp</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/naminodarie/ac-library-csharp</RepositoryUrl>
-    <PackageReleaseNotes>https://github.com/naminodarie/ac-library-csharp/blob/master/CHANGELOG.md</PackageReleaseNotes>
+    <PackageProjectUrl>https://github.com/kzrnm/ac-library-csharp</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/kzrnm/ac-library-csharp</RepositoryUrl>
+    <PackageReleaseNotes>https://github.com/kzrnm/ac-library-csharp/blob/master/CHANGELOG.md</PackageReleaseNotes>
 
     <Version>1.6.5</Version>
     <AssemblyVersion>1.6.5.100</AssemblyVersion>

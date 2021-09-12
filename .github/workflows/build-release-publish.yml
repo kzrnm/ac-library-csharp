@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Get version
-        uses: naminodarie/get-net-sdk-project-versions-action@v1
+        uses: kzrnm/get-net-sdk-project-versions-action@v1
         id: get-version
         with:
           proj-path: ${{ env.WORKFLOW_VERSION_PROJ }}

@@ -6,16 +6,17 @@ README languages: [English](README.md), [日本語](README.ja.md)
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**
 
-- [Packages](#packages)
-  - [ac-library-csharp](#ac-library-csharp)
-  - [AtCoderAnalyzer](#atcoderanalyzer)
-    - [利用例](#%E5%88%A9%E7%94%A8%E4%BE%8B)
-- [Status](#status)
-- [Getting started](#getting-started)
-  - [Installation](#installation)
-  - [Install analyzer(optional)](#install-analyzeroptional)
-  - [output combinded source code](#output-combinded-source-code)
-- [License](#license)
+- [ac-library-csharp](#ac-library-csharp)
+  - [Packages](#packages)
+    - [ac-library-csharp](#ac-library-csharp-1)
+    - [AtCoderAnalyzer](#atcoderanalyzer)
+      - [利用例](#利用例)
+  - [Status](#status)
+  - [Getting started](#getting-started)
+    - [Installation](#installation)
+    - [Install analyzer(optional)](#install-analyzeroptional)
+    - [output combinded source code](#output-combinded-source-code)
+  - [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -71,7 +72,7 @@ struct Op : ISegtreeOperator<int>
 ## Status
 
 [![NuGet version (ac-library-csharp)](https://img.shields.io/nuget/v/ac-library-csharp.svg?style=flat-square)](https://www.nuget.org/packages/ac-library-csharp/)
-![test](https://github.com/naminodarie/ac-library-csharp/workflows/test/badge.svg?branch=master)
+![test](https://github.com/kzrnm/ac-library-csharp/workflows/test/badge.svg?branch=master)
 
 ## Getting started
 
@@ -91,7 +92,7 @@ Install-Package AtCoderAnalyzer
 
 ### output combinded source code
 
-ac-library-csharp は https://github.com/naminodarie/SourceExpander に対応しています。
+ac-library-csharp は https://github.com/kzrnm/SourceExpander に対応しています。
 
 ```
 Install-Package SourceExpander

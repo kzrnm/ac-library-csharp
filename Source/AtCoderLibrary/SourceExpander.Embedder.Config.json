@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/naminodarie/SourceExpander/master/schema/embedder.schema.json",
+  "$schema": "https://raw.githubusercontent.com/kzrnm/SourceExpander/master/schema/embedder.schema.json",
   "enabled": true,
   "embedding-type": "gzip-base32768",
   "minify-level": "full",
