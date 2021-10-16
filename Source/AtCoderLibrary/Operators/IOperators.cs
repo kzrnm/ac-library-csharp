@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AtCoder
+namespace AtCoder.Operators
 {
     /// <summary>
     /// <typeparamref name="T"/> についての加法演算を定義します。

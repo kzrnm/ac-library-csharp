@@ -44,7 +44,7 @@ namespace AtCoder.Embedding
             var embedded = await EmbeddedData.LoadFromAssembly(typeof(Mod1000000007));
             embedded.AssemblyMetadatas
                 .Should().ContainKey("SourceExpander.EmbeddedLanguageVersion")
-                .WhichValue.Should().Be(VERSION);
+                .WhoseValue.Should().Be(VERSION);
         }
 
         [Fact]
@@ -60,8 +60,8 @@ namespace AtCoder.Embedding
             embedded.SourceFiles.SelectMany(s => s.TypeNames)
                 .Should()
                 .Contain(
-                    "AtCoder.IArithmeticOperator<T>",
-                    "AtCoder.FenwickTree<TValue, TOp>");
+                "AtCoder.Operators.IArithmeticOperator<T>",
+                "AtCoder.Segtree<TValue, TOp>");
         }
 
 

@@ -1,4 +1,6 @@
-﻿namespace AtCoder
+﻿using AtCoder.Operators;
+
+namespace AtCoder
 {
 
     /// <summary>

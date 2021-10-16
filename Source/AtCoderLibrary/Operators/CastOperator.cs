@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace AtCoder
+namespace AtCoder.Operators
 {
     [IsOperator]
     public interface ICastOperator<in TFrom, out TTo>
