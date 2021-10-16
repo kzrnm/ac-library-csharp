@@ -14,7 +14,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Competitive.IO" Version="0.5.1" />
-		<PackageReference Include="ProcessX" Version="1.3.0" />
+		<PackageReference Include="ProcessX" Version="1.5.3" />
 	</ItemGroup>
 
 	<ItemGroup>
