@@ -1,63 +1,61 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;netcoreapp3.1</TargetFrameworks>
-    <RootNamespace>AtCoder</RootNamespace>
-    <OutputType>Library</OutputType>
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.1;netcoreapp3.1</TargetFrameworks>
+		<RootNamespace>AtCoder</RootNamespace>
+		<OutputType>Library</OutputType>
 
-    <LangVersion Condition="'$(TargetFramework)' == 'netcoreapp3.1'">8</LangVersion>
-    <LangVersion Condition="'$(TargetFramework)' != 'netcoreapp3.1'">7.3</LangVersion>
+		<LangVersion Condition="'$(TargetFramework)' == 'netcoreapp3.1'">8</LangVersion>
+		<LangVersion Condition="'$(TargetFramework)' != 'netcoreapp3.1'">7.3</LangVersion>
 
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+		<AllowUnsafeBlocks>false</AllowUnsafeBlocks>
 
-    <PackageTags>ac-library-csharp;AtCoder</PackageTags>
-    <PackageId>ac-library-csharp</PackageId>
-    <Description>C# port of ac-library</Description>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
+		<PackageTags>ac-library-csharp;AtCoder</PackageTags>
+		<PackageId>ac-library-csharp</PackageId>
+		<Description>C# port of ac-library</Description>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
 
-    <NoWarn>$(NoWarn);CS1574;CA1034;CS1591;CS1734;IDE0039;IDE0057</NoWarn>
-    
-    <PackageLicenseExpression></PackageLicenseExpression>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<NoWarn>$(NoWarn);CS1574;CA1034;CS1591;CS1734;IDE0039;IDE0057</NoWarn>
 
-    <DefineConstants>$(DefineConstants);ATCODER_CONTRACT</DefineConstants>
-  </PropertyGroup>
+		<PackageLicenseExpression></PackageLicenseExpression>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 
-  <ItemGroup>
-    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-      <_Parameter1>AtCoderLibrary.Test, PublicKey=002400000480000094000000060200000024000052534131000400000100010019f27fe0b62f6a374e67a12dbd713e0b521d251abc73fcb1e3929cc74a99905daae786e8854b1ccd7401ecb850627c58ecf491bebe9a2fef9effbc63e74e1c00e036282d754dd6c8ffd12e8fd07897bf31b551f68d594c2bdd5be8009adc6eb625e10629d36d731246a8a9c353b62c49902024cf1c7fc0f59952325eec2df5a6</_Parameter1>
-    </AssemblyAttribute>
-  </ItemGroup>
+		<DefineConstants>$(DefineConstants);ATCODER_CONTRACT</DefineConstants>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Source\AtCoderAnalyzer\AtCoderAnalyzer.csproj">
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <OutputItemType>Analyzer</OutputItemType>
-    </ProjectReference>
-    <PackageReference Include="SourceExpander.Embedder" Version="3.2.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
+	<ItemGroup>
+		<InternalsVisibleTo Include="AtCoderLibrary.Test, PublicKey=002400000480000094000000060200000024000052534131000400000100010019f27fe0b62f6a374e67a12dbd713e0b521d251abc73fcb1e3929cc74a99905daae786e8854b1ccd7401ecb850627c58ecf491bebe9a2fef9effbc63e74e1c00e036282d754dd6c8ffd12e8fd07897bf31b551f68d594c2bdd5be8009adc6eb625e10629d36d731246a8a9c353b62c49902024cf1c7fc0f59952325eec2df5a6" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Include="LICENSE" Pack="True" PackagePath="" />
-    <None Include="Math\MathLib.Convolution.Primitives.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>MathLib.Convolution.Primitives.tt</DependentUpon>
-    </None>
-    <None Update="Math\MathLib.Convolution.Primitives.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>MathLib.Convolution.Primitives.cs</LastGenOutput>
-    </None>
-    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-    <Compile Update="Math\MathLib.Convolution.Primitives.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>MathLib.Convolution.Primitives.tt</DependentUpon>
-    </Compile>
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Source\AtCoderAnalyzer\AtCoderAnalyzer.csproj">
+			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+			<OutputItemType>Analyzer</OutputItemType>
+		</ProjectReference>
+		<PackageReference Include="SourceExpander.Embedder" Version="3.2.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="LICENSE" Pack="True" PackagePath="" />
+		<None Include="Math\MathLib.Convolution.Primitives.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>MathLib.Convolution.Primitives.tt</DependentUpon>
+		</None>
+		<None Update="Math\MathLib.Convolution.Primitives.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>MathLib.Convolution.Primitives.cs</LastGenOutput>
+		</None>
+		<Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+		<Compile Update="Math\MathLib.Convolution.Primitives.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>MathLib.Convolution.Primitives.tt</DependentUpon>
+		</Compile>
+	</ItemGroup>
 
 </Project>
