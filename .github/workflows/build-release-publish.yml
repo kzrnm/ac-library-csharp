@@ -48,10 +48,11 @@ jobs:
             fi
             IS_NEW=true
           elif [ "${{ steps.check-tag.outputs.exists }}" = "false" ]; then
-            if [ "${{ steps.get-version.outputs.version-suffix }}" = "" ]; then
-              echo "new version tag project: ${{ steps.get-version.outputs.version }}"
-              IS_NEW=true
+            echo "new version tag project: ${{ steps.get-version.outputs.version }}"
+            if [ "${{ steps.get-version.outputs.version-suffix }}" != "" ]; then
+              IS_PRE=true
             fi
+            IS_NEW=true
           fi
           echo "::set-output name=is-new::$IS_NEW"
           echo "::set-output name=is-prerelease::$IS_PRE"
