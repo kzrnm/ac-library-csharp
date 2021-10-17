@@ -2,6 +2,7 @@
 using System.Composition;
 using System.Linq;
 using System.Threading.Tasks;
+using AtCoderAnalyzer.CreateOperators;
 using AtCoderAnalyzer.Diagnostics;
 using AtCoderAnalyzer.Helpers;
 using Microsoft.CodeAnalysis;
@@ -141,87 +142,30 @@ namespace AtCoderAnalyzer
             ImmutableHashSet<string> usings)
         {
             bool hasMethod = false;
-            var structDeclarationSyntax = SyntaxFactory.StructDeclaration(operatorTypeName);
-
             var simplifyTypeSyntax = new SimplifyTypeSyntaxRewriter(usings);
-
-            var baseTypes = ImmutableArray.CreateBuilder<BaseTypeSyntax>(constraints.Length);
             var members = ImmutableList.CreateBuilder<MemberDeclarationSyntax>();
+            var added = ImmutableHashSet.CreateBuilder<ITypeSymbol>(SymbolEqualityComparer.Default);
 
-            var added = ImmutableHashSet.CreateBuilder<INamedTypeSymbol>(SymbolEqualityComparer.Default);
-
-            foreach (var constraint in constraints)
+            foreach (var constaint in constraints)
             {
-                if (constraint is not INamedTypeSymbol namedType)
-                    continue;
-                baseTypes.Add(CreateBaseTypeSyntax(namedType));
-
-                foreach (var baseType in namedType.AllInterfaces.Append(namedType))
+                foreach (var baseType in constaint.AllInterfaces.Append(constaint))
                 {
                     if (!added.Add(baseType))
                         continue;
 
-                    foreach (var member in baseType.GetMembers())
+                    foreach (var (member, isMethod) in EnumerateMember.Create(baseType).EnumerateMemberSyntax())
                     {
-                        if (!member.IsAbstract)
-                            continue;
-                        if (member is IPropertySymbol property)
-                        {
-                            members.Add(CreatePropertySyntax(property));
-                        }
-                        else if (member is IMethodSymbol method && method.MethodKind == MethodKind.Ordinary)
-                        {
-                            members.Add(CreateMethodSyntax(method));
-                            hasMethod = true;
-                        }
+                        members.Add(member);
+                        hasMethod |= isMethod;
                     }
                 }
             }
-            var dec = structDeclarationSyntax.AddBaseListTypes(baseTypes.ToArray()).AddMembers(members.Distinct(MemberDeclarationEqualityComparer.Default).ToArray());
+
+            var dec = SyntaxFactory.StructDeclaration(operatorTypeName)
+                .WithBaseList(SyntaxFactory.BaseList(
+                    constraints.Select(c => (BaseTypeSyntax)SyntaxFactory.SimpleBaseType(c.ToTypeSyntax())).ToSeparatedSyntaxList()))
+                .WithMembers(SyntaxFactory.List(members.Distinct(MemberDeclarationEqualityComparer.Default)));
             return ((StructDeclarationSyntax)simplifyTypeSyntax.Visit(dec), hasMethod);
-        }
-
-        private static BaseTypeSyntax CreateBaseTypeSyntax(INamedTypeSymbol symbol)
-            => SyntaxFactory.SimpleBaseType(symbol.ToTypeSyntax());
-
-        private static PropertyDeclarationSyntax CreatePropertySyntax(IPropertySymbol symbol)
-        {
-            var dec = SyntaxFactory.PropertyDeclaration(symbol.Type.ToTypeSyntax(), symbol.Name)
-                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword));
-
-
-            if (symbol.SetMethod == null)
-                return dec
-                    .WithExpressionBody(SyntaxHelpers.ArrowDefault)
-                    .WithSemicolonToken(SyntaxHelpers.SemicolonToken);
-            else if (symbol.GetMethod == null)
-                return dec.AddAccessorListAccessors(new AccessorDeclarationSyntax[]
-                {
-                    SyntaxFactory.AccessorDeclaration(SyntaxKind.SetAccessorDeclaration)
-                        .WithSemicolonToken(SyntaxHelpers.SemicolonToken),
-                });
-
-            return dec.AddAccessorListAccessors(new AccessorDeclarationSyntax[]
-            {
-                SyntaxFactory.AccessorDeclaration(SyntaxKind.SetAccessorDeclaration)
-                    .WithSemicolonToken(SyntaxHelpers.SemicolonToken),
-                SyntaxFactory.AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
-                    .WithSemicolonToken(SyntaxHelpers.SemicolonToken)
-            });
-        }
-
-        private static MethodDeclarationSyntax CreateMethodSyntax(IMethodSymbol symbol)
-        {
-
-            var dec = SyntaxFactory.MethodDeclaration(symbol.ReturnType.ToTypeSyntax(), symbol.Name)
-                    .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
-                    .AddAttributeLists(SyntaxHelpers.AggressiveInliningAttributeList)
-                    .WithParameterList(symbol.ToParameterListSyntax());
-            if (symbol.ReturnsVoid)
-                return dec.WithBody(SyntaxFactory.Block());
-            else
-                return dec.WithExpressionBody(SyntaxHelpers.ArrowDefault)
-                    .WithSemicolonToken(SyntaxHelpers.SemicolonToken);
         }
     }
 }
