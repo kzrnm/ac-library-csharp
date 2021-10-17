@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace AtCoderAnalyzer.Helpers
 {
@@ -29,19 +30,19 @@ namespace AtCoderAnalyzer.Helpers
         }
 
         public static TypeSyntax ToTypeSyntax(this ITypeSymbol symbol)
-            => SyntaxFactory.ParseTypeName(symbol.ToDisplayString());
+            => ParseTypeName(symbol.ToDisplayString());
 
         public static ParameterSyntax ToParameterSyntax(this IParameterSymbol symbol)
         {
             var modifiers = symbol switch
             {
-                { IsParams: true } => SyntaxFactory.TokenList(SyntaxFactory.Token(SyntaxKind.ParamsKeyword)),
-                { RefKind: RefKind.Out } => SyntaxFactory.TokenList(SyntaxFactory.Token(SyntaxKind.OutKeyword)),
-                { RefKind: RefKind.Ref } => SyntaxFactory.TokenList(SyntaxFactory.Token(SyntaxKind.RefKeyword)),
-                { RefKind: RefKind.In } => SyntaxFactory.TokenList(SyntaxFactory.Token(SyntaxKind.InKeyword)),
-                _ => SyntaxFactory.TokenList(),
+                { IsParams: true } => TokenList(Token(SyntaxKind.ParamsKeyword)),
+                { RefKind: RefKind.Out } => TokenList(Token(SyntaxKind.OutKeyword)),
+                { RefKind: RefKind.Ref } => TokenList(Token(SyntaxKind.RefKeyword)),
+                { RefKind: RefKind.In } => TokenList(Token(SyntaxKind.InKeyword)),
+                _ => TokenList(),
             };
-            return SyntaxFactory.Parameter(SyntaxFactory.Identifier(symbol.Name))
+            return Parameter(Identifier(symbol.Name))
                 .WithModifiers(modifiers)
                 .WithType(symbol.Type.ToTypeSyntax());
         }
@@ -49,9 +50,9 @@ namespace AtCoderAnalyzer.Helpers
         public static ParameterListSyntax ToParameterListSyntax(this IMethodSymbol symbol)
         {
             if (symbol.Parameters.Length == 0)
-                return SyntaxFactory.ParameterList();
+                return ParameterList();
 
-            return SyntaxFactory.ParameterList(SyntaxFactory.SeparatedList(
+            return ParameterList(SeparatedList(
                 symbol.Parameters.Select(ToParameterSyntax)));
         }
     }
