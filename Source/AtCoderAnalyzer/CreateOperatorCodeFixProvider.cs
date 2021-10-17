@@ -96,7 +96,9 @@ namespace AtCoderAnalyzer
             foreach (var p in constraintDicBuilder)
             {
                 constraintArrayDic[p.Key]
-                    = p.Value.Select(sy => SymbolHelpers.ReplaceGenericType(sy, genericDic)).ToImmutableArray();
+                    = p.Value.Select(sy => SymbolHelpers.ReplaceGenericType(sy, genericDic))
+                    .OrderBy(sy => sy.ToDisplayString())
+                    .ToImmutableArray();
             }
 
 
