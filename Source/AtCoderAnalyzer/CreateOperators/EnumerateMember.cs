@@ -19,6 +19,7 @@ namespace AtCoderAnalyzer.CreateOperators
             return typeSymbol.OriginalDefinition.ToDisplayString() switch
             {
                 "AtCoder.Operators.IAdditionOperator<T>" => new AdditionEnumerateMember(typeSymbol),
+                "AtCoder.Operators.ISubtractOperator<T>" => new SubtractEnumerateMember(typeSymbol),
                 "AtCoder.Operators.IMultiplicationOperator<T>" => new MultiplicationEnumerateMember(typeSymbol),
                 "AtCoder.Operators.IDivisionOperator<T>" => new DivisionEnumerateMember(typeSymbol),
                 "AtCoder.Operators.IUnaryNumOperator<T>" => new UnaryNumEnumerateMember(typeSymbol),
