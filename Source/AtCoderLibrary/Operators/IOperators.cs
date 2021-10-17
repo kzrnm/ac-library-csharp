@@ -13,6 +13,14 @@ namespace AtCoder.Operators
         /// </summary>
         /// <returns><paramref name="x"/> + <paramref name="y"/></returns>
         T Add(T x, T y);
+    }
+
+    /// <summary>
+    /// <typeparamref name="T"/> についての減法演算を定義します。
+    /// </summary>
+    [IsOperator]
+    public interface ISubtractOperator<T>
+    {
         /// <summary>
         /// Subtraction operator -
         /// </summary>
@@ -82,7 +90,7 @@ namespace AtCoder.Operators
     /// <typeparamref name="T"/> についての四則演算を定義します。
     /// </summary>
     [IsOperator]
-    public interface IArithmeticOperator<T> : IAdditionOperator<T>, IMultiplicationOperator<T>, IDivisionOperator<T>, IUnaryNumOperator<T> { }
+    public interface IArithmeticOperator<T> : IAdditionOperator<T>, ISubtractOperator<T>, IMultiplicationOperator<T>, IDivisionOperator<T>, IUnaryNumOperator<T> { }
 
     [IsOperator]
     public interface ICompareOperator<T> : IComparer<T>

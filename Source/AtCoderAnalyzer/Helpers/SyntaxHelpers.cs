@@ -1,8 +1,10 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace AtCoderAnalyzer.Helpers
 {
@@ -14,38 +16,40 @@ namespace AtCoderAnalyzer.Helpers
                 .Select(sy => sy.Name.ToString().Trim())
                 .ToImmutableHashSet();
 
+        public static SeparatedSyntaxList<TNode> ToSeparatedSyntaxList<TNode>(this IEnumerable<TNode> nodes) where TNode : SyntaxNode
+            => SeparatedList(nodes);
         public static CompilationUnitSyntax AddSystem_Runtime_CompilerServicesSyntax(CompilationUnitSyntax root)
         {
             return root.AddUsings(
-                SyntaxFactory.UsingDirective(
-                    SyntaxFactory.QualifiedName(
-                        SyntaxFactory.QualifiedName(
-                            SyntaxFactory.IdentifierName("System"),
-                            SyntaxFactory.IdentifierName("Runtime")
+                UsingDirective(
+                    QualifiedName(
+                        QualifiedName(
+                            IdentifierName("System"),
+                            IdentifierName("Runtime")
                         ),
-                        SyntaxFactory.IdentifierName("CompilerServices")
+                        IdentifierName("CompilerServices")
                     )));
         }
 
         public static readonly AttributeSyntax AggressiveInliningAttribute
-            = SyntaxFactory.Attribute(SyntaxFactory.ParseName("MethodImpl"))
+            = Attribute(ParseName("MethodImpl"))
                     .AddArgumentListArguments(
-                        SyntaxFactory.AttributeArgument(
-                            SyntaxFactory.MemberAccessExpression(
+                        AttributeArgument(
+                            MemberAccessExpression(
                                 SyntaxKind.SimpleMemberAccessExpression,
-                                SyntaxFactory.IdentifierName("MethodImplOptions"),
-                                SyntaxFactory.IdentifierName("AggressiveInlining")
+                                IdentifierName("MethodImplOptions"),
+                                IdentifierName("AggressiveInlining")
                         )));
 
         public static readonly AttributeListSyntax AggressiveInliningAttributeList
-            = SyntaxFactory.AttributeList(
-                SyntaxFactory.SeparatedList(new[] { AggressiveInliningAttribute }));
+            = AttributeList(
+                SeparatedList(new[] { AggressiveInliningAttribute }));
 
         public static readonly ArrowExpressionClauseSyntax ArrowDefault
-            = SyntaxFactory.ArrowExpressionClause(
-                SyntaxFactory.LiteralExpression(SyntaxKind.DefaultLiteralExpression));
+            = ArrowExpressionClause(
+                LiteralExpression(SyntaxKind.DefaultLiteralExpression));
 
         public static readonly SyntaxToken SemicolonToken
-            = SyntaxFactory.Token(SyntaxKind.SemicolonToken);
+            = Token(SyntaxKind.SemicolonToken);
     }
 }

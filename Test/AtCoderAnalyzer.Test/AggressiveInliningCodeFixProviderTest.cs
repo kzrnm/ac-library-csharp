@@ -26,7 +26,7 @@ struct IntComparer : IComparer<int>
         public async Task NumOperator()
         {
             var source = @"
-using AtCoder;
+using AtCoder.Operators;
 using System;
 using System.Runtime.CompilerServices;
 struct BoolOp : INumOperator<bool>
@@ -58,7 +58,7 @@ struct BoolOp : INumOperator<bool>
 ";
 
             var fixedSource = @"
-using AtCoder;
+using AtCoder.Operators;
 using System;
 using System.Runtime.CompilerServices;
 struct BoolOp : INumOperator<bool>

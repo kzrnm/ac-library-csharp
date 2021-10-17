@@ -98,87 +98,6 @@ struct Op : AtCoder.IStaticMod
         }
         #endregion StaticModInt
 
-        #region DynamicModInt
-        [Fact]
-        public async Task DynamicModInt_Using()
-        {
-            var source = @"
-using AtCoder;
-class Program
-{
-    DynamicModInt<Op> notDefined;
-    DynamicModInt<ModID0> defined;
-}
-";
-            var fixedSource = @"
-using AtCoder;
-class Program
-{
-    DynamicModInt<Op> notDefined;
-    DynamicModInt<ModID0> defined;
-}
-
-struct Op : IDynamicModID
-{
-}";
-            await VerifyCS.VerifyCodeFixAsync(source,
-                VerifyCS.Diagnostic("AC0008").WithSpan(5, 5, 5, 22).WithArguments("Op"),
-                fixedSource);
-        }
-
-        [Fact]
-        public async Task DynamicModInt_Qualified_Using()
-        {
-            var source = @"
-using AtCoder;
-class Program
-{
-    AtCoder.DynamicModInt<Op> notDefined;
-    AtCoder.DynamicModInt<ModID0> defined;
-}
-";
-            var fixedSource = @"
-using AtCoder;
-class Program
-{
-    AtCoder.DynamicModInt<Op> notDefined;
-    AtCoder.DynamicModInt<ModID0> defined;
-}
-
-struct Op : IDynamicModID
-{
-}";
-            await VerifyCS.VerifyCodeFixAsync(source,
-                VerifyCS.Diagnostic("AC0008").WithSpan(5, 13, 5, 30).WithArguments("Op"),
-                fixedSource);
-        }
-
-        [Fact]
-        public async Task DynamicModInt_Qualified()
-        {
-            var source = @"
-class Program
-{
-    AtCoder.DynamicModInt<Op> notDefined;
-    AtCoder.DynamicModInt<AtCoder.ModID0> defined;
-}
-";
-            var fixedSource = @"
-class Program
-{
-    AtCoder.DynamicModInt<Op> notDefined;
-    AtCoder.DynamicModInt<AtCoder.ModID0> defined;
-}
-
-struct Op : AtCoder.IDynamicModID
-{
-}";
-            await VerifyCS.VerifyCodeFixAsync(source,
-                VerifyCS.Diagnostic("AC0008").WithSpan(4, 13, 4, 30).WithArguments("Op"),
-                fixedSource);
-        }
-        #endregion DynamicModInt
-
         #region Segtree
         [Fact]
         public async Task Segtree_Using()
@@ -433,7 +352,7 @@ struct OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c)>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public (int v, int size) Mapping((int b, int c) f, (int v, int size) x) => default;
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public (int b, int c) Composition((int b, int c) f, (int b, int c) g) => default;
+    public (int b, int c) Composition((int b, int c) nf, (int b, int c) cf) => default;
 
     public (int v, int size) Identity => default;
 
@@ -494,7 +413,7 @@ struct OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c)>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public (int v, int size) Mapping((int b, int c) f, (int v, int size) x) => default;
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public (int b, int c) Composition((int b, int c) f, (int b, int c) g) => default;
+    public (int b, int c) Composition((int b, int c) nf, (int b, int c) cf) => default;
 
     public (int v, int size) Identity => default;
 
@@ -552,7 +471,7 @@ struct OpSeg : AtCoder.ILazySegtreeOperator<(int v, int size), (int b, int c)>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public (int v, int size) Mapping((int b, int c) f, (int v, int size) x) => default;
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public (int b, int c) Composition((int b, int c) f, (int b, int c) g) => default;
+    public (int b, int c) Composition((int b, int c) nf, (int b, int c) cf) => default;
 
     public (int v, int size) Identity => default;
 
@@ -613,7 +532,7 @@ struct OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c)>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public (int v, int size) Mapping((int b, int c) f, (int v, int size) x) => default;
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public (int b, int c) Composition((int b, int c) f, (int b, int c) g) => default;
+    public (int b, int c) Composition((int b, int c) nf, (int b, int c) cf) => default;
 
     public (int v, int size) Identity => default;
 
@@ -651,7 +570,7 @@ class Program
 struct Op : System.Collections.Generic.IComparer<short>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int Compare(short x, short y) => default;
+    public int Compare(short x, short y) => x.CompareTo(y);
 }";
             await VerifyCS.VerifyCodeFixAsync(source,
                 VerifyCS.Diagnostic("AC0008").WithSpan(6, 5, 6, 23).WithArguments("Op"),
@@ -863,6 +782,115 @@ struct ModOp : IAny<StaticModInt<Mod1000000007>>
 }";
             await VerifyCS.VerifyCodeFixAsync(source,
                 VerifyCS.Diagnostic("AC0008").WithSpan(14, 9, 14, 46).WithArguments("ModOp"),
+                fixedSource);
+        }
+
+        [Fact]
+        public async Task NumOperatorAndShiftOperator()
+        {
+            var source = @"
+using AtCoder.Operators;
+class Program
+{
+    void M<T>() where T : INumOperator<int>, IShiftOperator<int>, INumOperator<float>, ICastOperator<short, char> { }
+    public void Main()
+    {
+        M<Op>();
+    }
+}
+";
+            var fixedSource = @"
+using AtCoder.Operators;
+using System.Runtime.CompilerServices;
+
+class Program
+{
+    void M<T>() where T : INumOperator<int>, IShiftOperator<int>, INumOperator<float>, ICastOperator<short, char> { }
+    public void Main()
+    {
+        M<Op>();
+    }
+}
+
+struct Op : ICastOperator<short, char>, INumOperator<float>, INumOperator<int>, IShiftOperator<int>
+{
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public char Cast(short y) => (char)y;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public float Add(float x, float y) => x + y;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public float Subtract(float x, float y) => x - y;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public float Divide(float x, float y) => x / y;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public float Modulo(float x, float y) => x % y;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public float Multiply(float x, float y) => x * y;
+
+    public float MultiplyIdentity => 1;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public float Minus(float x) => -x;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public float Increment(float x) => ++x;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public float Decrement(float x) => --x;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool GreaterThan(float x, float y) => x > y;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool GreaterThanOrEqual(float x, float y) => x >= y;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool LessThan(float x, float y) => x < y;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool LessThanOrEqual(float x, float y) => x <= y;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int Compare(float x, float y) => x.CompareTo(y);
+
+    public float MinValue => float.MinValue;
+
+    public float MaxValue => float.MaxValue;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int Add(int x, int y) => x + y;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int Subtract(int x, int y) => x - y;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int Divide(int x, int y) => x / y;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int Modulo(int x, int y) => x % y;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int Multiply(int x, int y) => x * y;
+
+    public int MultiplyIdentity => 1;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int Minus(int x) => -x;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int Increment(int x) => ++x;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int Decrement(int x) => --x;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool GreaterThan(int x, int y) => x > y;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool GreaterThanOrEqual(int x, int y) => x >= y;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool LessThan(int x, int y) => x < y;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool LessThanOrEqual(int x, int y) => x <= y;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int Compare(int x, int y) => x.CompareTo(y);
+
+    public int MinValue => int.MinValue;
+
+    public int MaxValue => int.MaxValue;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int LeftShift(int x, int y) => x << y;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int RightShift(int x, int y) => x >> y;
+}";
+            await VerifyCS.VerifyCodeFixAsync(source,
+                VerifyCS.Diagnostic("AC0008").WithSpan(8, 9, 8, 14).WithArguments("Op"),
                 fixedSource);
         }
     }
