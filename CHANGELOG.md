@@ -39,7 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove EditorBrowsableState.Never from Contract.
 - Hide Deque<T>.Add
 - **Breaking** Rename namespace of STL classes to AtCoder.Stl
-- **Breaking** Raname PriorityQueue<T>.Add to PriorityQueue<T>.Enqueue  (thx @fairy-lettuce) https://github.com/naminodarie/ac-library-csharp/issues/53
+- **Breaking** Raname PriorityQueue<T>.Add to PriorityQueue<T>.Enqueue  (thx @fairy-lettuce) https://github.com/kzrnm/ac-library-csharp/issues/53
 
 ## [1.5.6] - 2021-06-04
 ### Added
@@ -56,27 +56,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.5.3]
 ### Changed
-- Relax type constraint of DynamicModInt<T> https://github.com/naminodarie/ac-library-csharp/pull/51
-- Rename ModID* to DynamicModID* https://github.com/naminodarie/ac-library-csharp/pull/51
+- Relax type constraint of DynamicModInt<T> https://github.com/kzrnm/ac-library-csharp/pull/51
+- Rename ModID* to DynamicModID* https://github.com/kzrnm/ac-library-csharp/pull/51
 
 ## [1.5.2] - 2021-04-11
 ### Added
-- Add debug method to PriorityQueue https://github.com/naminodarie/ac-library-csharp/pull/50
+- Add debug method to PriorityQueue https://github.com/kzrnm/ac-library-csharp/pull/50
 
 ## [1.5.1] - 2021-04-08
 ### Added
-- Add SuffixArray that takes Span parameter https://github.com/naminodarie/ac-library-csharp/pull/48
+- Add SuffixArray that takes Span parameter https://github.com/kzrnm/ac-library-csharp/pull/48
 
 ## [1.5.0] - 2021-04-08
 ### Added
-- Add unsigned constructor to modint https://github.com/naminodarie/ac-library-csharp/pull/45
-- Add span overloads to convolution https://github.com/naminodarie/ac-library-csharp/pull/45
+- Add unsigned constructor to modint https://github.com/kzrnm/ac-library-csharp/pull/45
+- Add span overloads to convolution https://github.com/kzrnm/ac-library-csharp/pull/45
 ### Changed
 - AtCoderAnalyzer can run parallel
-- Improve FloorSum https://github.com/naminodarie/ac-library-csharp/pull/42
-- Optimize FenwickTree https://github.com/naminodarie/ac-library-csharp/pull/47
-- Optimize Convolution https://github.com/naminodarie/ac-library-csharp/pull/47
-- Optimize SuffixArray https://github.com/naminodarie/ac-library-csharp/pull/47
+- Improve FloorSum https://github.com/kzrnm/ac-library-csharp/pull/42
+- Optimize FenwickTree https://github.com/kzrnm/ac-library-csharp/pull/47
+- Optimize Convolution https://github.com/kzrnm/ac-library-csharp/pull/47
+- Optimize SuffixArray https://github.com/kzrnm/ac-library-csharp/pull/47
 
 ## [1.4.4] - 2021-03-05
 ### Changed
