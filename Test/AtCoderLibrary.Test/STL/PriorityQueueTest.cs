@@ -210,5 +210,58 @@ namespace AtCoder
                 pq.Count.Should().Be(0);
             }
         }
+
+        [Fact]
+        public void EnqueueDequeue()
+        {
+            var pq1 = new PriorityQueue<int>();
+            var pq2 = new PriorityQueue<int>();
+            for (int i = 10; i > 0; i--)
+            {
+                pq1.Enqueue(i);
+                pq2.Enqueue(i);
+            }
+            var mt = MTRandom.Create();
+
+            for (int i = -1; i < 20; i++)
+            {
+                EnqueueDequeue(i);
+                EnqueueDequeue(mt.Next());
+            }
+
+            void EnqueueDequeue(int value)
+            {
+                pq2.Enqueue(value);
+                pq1.EnqueueDequeue(value).Should().Be(pq2.Dequeue());
+                pq1.Unorderd().ToArray().Should().BeEquivalentTo(pq2.Unorderd().ToArray());
+            }
+        }
+
+        [Fact]
+        public void EnqueueDequeueKV()
+        {
+            var pq1 = new PriorityQueueDictionary<int, string>();
+            var pq2 = new PriorityQueueDictionary<int, string>();
+            for (int i = 10; i > 0; i--)
+            {
+                pq1.Enqueue(i, i.ToString());
+                pq2.Enqueue(i, i.ToString());
+            }
+            var mt = MTRandom.Create();
+
+            for (int i = -1; i < 20; i++)
+            {
+                EnqueueDequeue(i);
+                EnqueueDequeue(mt.Next());
+            }
+
+            void EnqueueDequeue(int value)
+            {
+                pq2.Enqueue(value, value.ToString());
+                pq1.EnqueueDequeue(value, value.ToString()).Should().Be(pq2.Dequeue());
+                pq1.UnorderdKeys().ToArray().Should().BeEquivalentTo(pq2.UnorderdKeys().ToArray());
+                pq1.UnorderdValues().ToArray().Should().BeEquivalentTo(pq2.UnorderdValues().ToArray());
+            }
+        }
     }
 }

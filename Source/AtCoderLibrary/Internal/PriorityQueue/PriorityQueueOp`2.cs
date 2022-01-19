@@ -81,6 +81,22 @@ namespace AtCoder.Internal
             UpdateDown(0);
             return res;
         }
+        /// <summary>
+        /// enqueue してすぐ dequeue
+        /// </summary>
+        [MethodImpl(AggressiveInlining)]
+        public KeyValuePair<TKey, TValue> EnqueueDequeue(TKey key, TValue value)
+        {
+            var res = KeyValuePair.Create(keys[0], values[0]);
+            if (_comparer.Compare(key, keys[0]) <= 0)
+            {
+                return KeyValuePair.Create(key, value);
+            }
+            keys[0] = key;
+            values[0] = value;
+            UpdateDown(0);
+            return res;
+        }
         [MethodImpl(AggressiveInlining)]
         protected internal void UpdateUp(int i)
         {

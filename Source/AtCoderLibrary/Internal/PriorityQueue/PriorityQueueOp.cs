@@ -60,6 +60,21 @@ namespace AtCoder.Internal
             UpdateDown(0);
             return res;
         }
+        /// <summary>
+        /// enqueue してすぐ dequeue
+        /// </summary>
+        [MethodImpl(AggressiveInlining)]
+        public T EnqueueDequeue(T value)
+        {
+            var res = data[0];
+            if (_comparer.Compare(value, res) <= 0)
+            {
+                return value;
+            }
+            data[0] = value;
+            UpdateDown(0);
+            return res;
+        }
         [MethodImpl(AggressiveInlining)]
         protected internal void UpdateUp(int i)
         {
