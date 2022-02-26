@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 
 namespace AtCoder.Internal
 {
-    using static MethodImplOptions;
+    using static EditorBrowsableState;
     [DebuggerTypeProxy(typeof(PriorityQueueOp<,,>.DebugView))]
     [DebuggerDisplay(nameof(Count) + " = {" + nameof(Count) + "}")]
     public class PriorityQueueOp<TKey, TValue, TKOp> : IPriorityQueueOp<KeyValuePair<TKey, TValue>>
@@ -28,20 +28,20 @@ namespace AtCoder.Internal
             values = new TValue[size];
             _comparer = comparer;
         }
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(0)]
         public int Count { get; private set; } = 0;
 
         public KeyValuePair<TKey, TValue> Peek => KeyValuePair.Create(keys[0], values[0]);
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         internal void Resize()
         {
             Array.Resize(ref keys, keys.Length << 1);
             Array.Resize(ref values, values.Length << 1);
         }
-        [MethodImpl(AggressiveInlining)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        [MethodImpl(256)]
+        [EditorBrowsable(Never)]
         public void Enqueue(KeyValuePair<TKey, TValue> pair) => Enqueue(pair.Key, pair.Value);
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public void Enqueue(TKey key, TValue value)
         {
             if (Count >= keys.Length) Resize();
@@ -49,7 +49,7 @@ namespace AtCoder.Internal
             values[Count++] = value;
             UpdateUp(Count - 1);
         }
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public bool TryDequeue(out TKey key, out TValue value)
         {
             if (Count == 0)
@@ -61,7 +61,7 @@ namespace AtCoder.Internal
             (key, value) = Dequeue();
             return true;
         }
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public bool TryDequeue(out KeyValuePair<TKey, TValue> result)
         {
             if (Count == 0)
@@ -72,7 +72,7 @@ namespace AtCoder.Internal
             result = Dequeue();
             return true;
         }
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public KeyValuePair<TKey, TValue> Dequeue()
         {
             var res = KeyValuePair.Create(keys[0], values[0]);
@@ -84,7 +84,7 @@ namespace AtCoder.Internal
         /// <summary>
         /// enqueue してすぐ dequeue
         /// </summary>
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public KeyValuePair<TKey, TValue> EnqueueDequeue(TKey key, TValue value)
         {
             var res = KeyValuePair.Create(keys[0], values[0]);
@@ -97,7 +97,7 @@ namespace AtCoder.Internal
             UpdateDown(0);
             return res;
         }
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         protected internal void UpdateUp(int i)
         {
             var tar = keys[i];
@@ -114,7 +114,7 @@ namespace AtCoder.Internal
             keys[i] = tar;
             values[i] = tarVal;
         }
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         protected internal void UpdateDown(int i)
         {
             var tar = keys[i];
@@ -136,9 +136,9 @@ namespace AtCoder.Internal
         }
         public void Clear() => Count = 0;
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        [EditorBrowsable(Never)]
         public ReadOnlySpan<TKey> UnorderdKeys() => keys.AsSpan(0, Count);
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        [EditorBrowsable(Never)]
         public ReadOnlySpan<TValue> UnorderdValues() => values.AsSpan(0, Count);
         private class DebugView
         {

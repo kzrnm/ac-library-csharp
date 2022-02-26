@@ -17,9 +17,7 @@ namespace AtCoder
                 Current = null;
             }
 
-#pragma warning disable CA1819 // Properties should not return arrays
             public T[] Current { get; private set; }
-#pragma warning restore CA1819 // Properties should not return arrays
 
             public bool MoveNext()
             {

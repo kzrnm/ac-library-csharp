@@ -15,7 +15,7 @@ namespace AtCoder.Internal
         {
             Comparer = comparer;
         }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(256)]
         public int Compare(T x, T y) => Comparer?.Compare(x, y) ?? x.CompareTo(y);
 
         #region Equatable

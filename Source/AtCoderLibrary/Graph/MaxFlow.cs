@@ -425,7 +425,7 @@ namespace AtCoder
                 Rev = rev;
                 Cap = cap;
             }
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            [MethodImpl(256)]
             public void Deconstruct(out int to, out int rev, out TValue cap)
             {
                 to = To;

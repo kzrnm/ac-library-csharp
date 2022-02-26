@@ -32,6 +32,7 @@ AC0006 | Type Define | Error | Not defined ILazySegtreeOperator<T, F>
 ## Release 1.10.0
 
 ### Changed Rules
+
 Rule ID | Category | Severity | Notes
---------|----------|----------|-------
+--------|----------|----------|--------------------
 AC0007 | Type Define | Info | Operator method doesn't have `MethodImpl(AggressiveInlining)` attribute

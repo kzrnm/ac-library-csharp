@@ -6,7 +6,6 @@ using System.Runtime.Intrinsics.X86;
 
 namespace AtCoder.Internal
 {
-    using static MethodImplOptions;
     public static class InternalBit
     {
 
@@ -16,7 +15,7 @@ namespace AtCoder.Internal
         /// </summary>
         /// <param name="n"></param>
         /// <returns><paramref name="n"/> &amp; -<paramref name="n"/></returns>
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public static uint ExtractLowestSetBit(int n)
         {
 #if NETCOREAPP3_0_OR_GREATER
@@ -35,7 +34,7 @@ namespace AtCoder.Internal
         /// <para>BSF: Bit Scan Forward</para>
         /// <para>制約: 1 ≤ <paramref name="n"/></para>
         /// </remarks>
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public static int BSF(uint n)
         {
             Contract.Assert(n > 0, reason: $"{nameof(n)} must positive");
@@ -48,7 +47,7 @@ namespace AtCoder.Internal
         /// <remarks>
         /// <para>制約: 0≤<paramref name="n"/></para>
         /// </remarks>
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public static int CeilPow2(int n)
         {
             var un = (uint)n;
