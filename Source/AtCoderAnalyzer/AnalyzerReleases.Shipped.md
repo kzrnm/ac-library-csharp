@@ -29,9 +29,9 @@ AC0004 | Type Define | Error | Not defined IDynamicModID
 AC0005 | Type Define | Error | Not defined ISegtreeOperator<T>
 AC0006 | Type Define | Error | Not defined ILazySegtreeOperator<T, F>
 
-## Release 1.10.1
+## Release 1.10.0
 
 ### Changed Rules
 Rule ID | Category | Severity | Notes
 --------|----------|----------|-------
-AC0007 | Type Define | Info | Operator method don't have `MethodImpl(AggressiveInlining)` attribute
+AC0007 | Type Define | Info | Operator method doesn't have `MethodImpl(AggressiveInlining)` attribute
