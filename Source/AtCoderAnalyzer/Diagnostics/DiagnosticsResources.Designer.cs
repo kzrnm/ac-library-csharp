@@ -19,7 +19,7 @@ namespace AtCoderAnalyzer.Diagnostics {
     // または Visual Studio のようなツールを使用して自動生成されました。
     // メンバーを追加または削除するには、.ResX ファイルを編集して、/str オプションと共に
     // ResGen を実行し直すか、または VS プロジェクトをビルドし直します。
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class DiagnosticsResources {
@@ -160,7 +160,7 @@ namespace AtCoderAnalyzer.Diagnostics {
         }
         
         /// <summary>
-        ///   Operator methods &apos;{0}&apos; doesn&apos;t have MethodImpl attribute に類似しているローカライズされた文字列を検索します。
+        ///   Operator method &apos;{0}&apos; doesn&apos;t have MethodImpl attribute に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string AC0007_MessageFormat {
             get {
@@ -169,7 +169,7 @@ namespace AtCoderAnalyzer.Diagnostics {
         }
         
         /// <summary>
-        ///   Some operator methods don&apos;t have MethodImpl attribute に類似しているローカライズされた文字列を検索します。
+        ///   Operator method doesn&apos;t have MethodImpl attribute に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string AC0007_Title {
             get {

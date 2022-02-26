@@ -1,10 +1,12 @@
-﻿using System.Collections.Immutable;
+﻿using System;
+using System.Collections.Immutable;
 using System.Linq;
 using AtCoderAnalyzer.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
 using static AtCoderAnalyzer.Helpers.Constants;
+using MethodImplOptions = System.Runtime.CompilerServices.MethodImplOptions;
 
 namespace AtCoderAnalyzer
 {
@@ -82,39 +84,52 @@ namespace AtCoderAnalyzer
                     goto HasIsOperator;
             }
             return;
-        HasIsOperator: { }
+        HasIsOperator:
 
-            bool DoesNotHaveMethodImpl(IMethodSymbol m)
+            bool DoesNotHaveMethodImplInlining(IMethodSymbol m)
             {
-                return m.MethodKind switch
-                {
-                    MethodKind.ExplicitInterfaceImplementation or MethodKind.Ordinary
-                    => !m.GetAttributes().Select(at => at.AttributeClass)
-                        .Contains(types.MethodImplAttribute, SymbolEqualityComparer.Default),
-                    _ => false,
-                };
+                if (m.MethodKind is
+                     not (MethodKind.ExplicitInterfaceImplementation or MethodKind.Ordinary))
+                    return false;
+
+                if (m.GetAttributes()
+                       .FirstOrDefault(at => SymbolEqualityComparer.Default.Equals(at.AttributeClass, types.MethodImplAttribute)) is not { } attr
+                   || attr.ConstructorArguments.Length == 0)
+                    return true;
+
+                var arg = attr.ConstructorArguments[0];
+                if (arg.Kind is TypedConstantKind.Primitive or TypedConstantKind.Enum)
+                    try
+                    {
+                        return !((MethodImplOptions)Convert.ToInt32(arg.Value)).HasFlag(MethodImplOptions.AggressiveInlining);
+                    }
+                    catch
+                    {
+                        return true;
+                    }
+                return true;
             }
 
-            string[] notMethodImplMethods;
+            string[] notMethodImplInliningMethods;
             if (concurrentBuild)
-                notMethodImplMethods = symbol.GetMembers()
+                notMethodImplInliningMethods = symbol.GetMembers()
                     .AsParallel(context.CancellationToken)
                     .OfType<IMethodSymbol>()
-                    .Where(DoesNotHaveMethodImpl)
+                    .Where(DoesNotHaveMethodImplInlining)
                     .Select(m => m.Name)
                     .ToArray();
             else
-                notMethodImplMethods = symbol.GetMembers()
+                notMethodImplInliningMethods = symbol.GetMembers()
                     .Do(_ => context.CancellationToken.ThrowIfCancellationRequested())
                     .OfType<IMethodSymbol>()
-                    .Where(DoesNotHaveMethodImpl)
+                    .Where(DoesNotHaveMethodImplInlining)
                     .Select(m => m.Name)
                     .ToArray();
-            if (notMethodImplMethods.Length == 0)
+            if (notMethodImplInliningMethods.Length == 0)
                 return;
 
             var diagnostic = DiagnosticDescriptors.AC0007_AgressiveInlining(
-                context.Node.GetLocation(), notMethodImplMethods);
+                context.Node.GetLocation(), notMethodImplInliningMethods);
             context.ReportDiagnostic(diagnostic);
         }
     }

@@ -272,6 +272,154 @@ struct Op : ILazySegtreeOperator<long, int>
             await VerifyCS.VerifyAnalyzerAsync(source);
         }
 
+        [Fact]
+        public async Task LazySegtreeOperator_Without_AggressiveInlining()
+        {
+            var source = @"
+using AtCoder;
+using System.Runtime.CompilerServices;
+struct Op : ILazySegtreeOperator<long, int>
+{
+    public long Identity => 0L;
+    public int FIdentity => 0;
+    [MethodImpl(MethodImplOptions.NoOptimization)]
+    public int Composition(int f, int g) => 0;
+    [MethodImpl(0b1010000)]
+    public long Mapping(int f, long x) => 0L;
+    [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.NoOptimization)]
+    public long Operate(long x, long y) => 0L;
+}
+";
+            var fixedSource = @"
+using AtCoder;
+using System.Runtime.CompilerServices;
+struct Op : ILazySegtreeOperator<long, int>
+{
+    public long Identity => 0L;
+    public int FIdentity => 0;
+
+    [MethodImpl(MethodImplOptions.NoOptimization | MethodImplOptions.AggressiveInlining)]
+    public int Composition(int f, int g) => 0;
+    [MethodImpl(0b1010000 | 256)]
+    public long Mapping(int f, long x) => 0L;
+    [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.NoOptimization)]
+    public long Operate(long x, long y) => 0L;
+}
+";
+            await VerifyCS.VerifyCodeFixAsync(source, new DiagnosticResult[]
+            {
+VerifyCS.Diagnostic().WithSpan(4, 1, 14, 2).WithArguments("Composition, Mapping"),
+            }, fixedSource);
+        }
+
+        [Fact]
+        public async Task LazySegtreeOperator_Without_AggressiveInlining_Equal_Colon()
+        {
+            var source = @"
+using AtCoder;
+using System.Runtime.CompilerServices;
+struct Op : ILazySegtreeOperator<long, int>
+{
+    public long Identity => 0L;
+    public int FIdentity => 0;
+    [MethodImpl(methodImplOptions: MethodImplOptions.NoOptimization)]
+    public int Composition(int f, int g) => 0;
+    [MethodImpl(value: 0b1010000)]
+    public long Mapping(int f, long x) => 0L;
+    [MethodImpl(MethodImplOptions.NoOptimization, MethodCodeType = MethodCodeType.IL)]
+    public long Operate(long x, long y) => 0L;
+}
+";
+            var fixedSource = @"
+using AtCoder;
+using System.Runtime.CompilerServices;
+struct Op : ILazySegtreeOperator<long, int>
+{
+    public long Identity => 0L;
+    public int FIdentity => 0;
+
+    [MethodImpl(methodImplOptions: MethodImplOptions.NoOptimization | MethodImplOptions.AggressiveInlining)]
+    public int Composition(int f, int g) => 0;
+    [MethodImpl(value: 0b1010000 | 256)]
+    public long Mapping(int f, long x) => 0L;
+    [MethodImpl(MethodImplOptions.NoOptimization | MethodImplOptions.AggressiveInlining, MethodCodeType = MethodCodeType.IL)]
+    public long Operate(long x, long y) => 0L;
+}
+";
+            await VerifyCS.VerifyCodeFixAsync(source, new DiagnosticResult[]
+            {
+VerifyCS.Diagnostic().WithSpan(4, 1, 14, 2).WithArguments("Composition, Mapping, Operate"),
+            }, fixedSource);
+        }
+
+        [Fact]
+        public async Task LazySegtreeOperator_With_ArgumentList()
+        {
+            var source = @"
+using System;
+using AtCoder;
+using System.Runtime.CompilerServices;
+struct Op : ILazySegtreeOperator<long, int>
+{
+    public long Identity => 0L;
+    public int FIdentity => 0;
+    [MethodImpl]
+    public int Composition(int f, int g) => 0;
+    [My, MethodImpl, My]
+    public long Mapping(int f, long x) => 0L;
+    [My]
+    [My, MethodImpl(256|4)]
+    public long Operate(long x, long y) => 0L;
+}
+[AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
+sealed class MyAttribute : Attribute{}
+";
+            var fixedSource = @"
+using System;
+using AtCoder;
+using System.Runtime.CompilerServices;
+struct Op : ILazySegtreeOperator<long, int>
+{
+    public long Identity => 0L;
+    public int FIdentity => 0;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int Composition(int f, int g) => 0;
+    [My, MethodImpl(MethodImplOptions.AggressiveInlining), My]
+    public long Mapping(int f, long x) => 0L;
+    [My]
+    [My, MethodImpl(256|4)]
+    public long Operate(long x, long y) => 0L;
+}
+[AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
+sealed class MyAttribute : Attribute{}
+";
+            await VerifyCS.VerifyCodeFixAsync(source, new DiagnosticResult[]
+            {
+VerifyCS.Diagnostic().WithSpan(5, 1, 16, 2).WithArguments("Composition, Mapping"),
+            }, fixedSource);
+        }
+
+        [Fact]
+        public async Task LazySegtreeOperator_With_Alias_AggressiveInlining()
+        {
+            var source = @"
+using AtCoder;
+using MI = System.Runtime.CompilerServices.MethodImplAttribute;
+struct Op : ILazySegtreeOperator<long, int>
+{
+    public long Identity => 0L;
+    public int FIdentity => 0;
+    [MI(256)]
+    public int Composition(int f, int g) => 0;
+    [MI(256)]
+    public long Mapping(int f, long x) => 0L;
+    [MI(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+    public long Operate(long x, long y) => 0L;
+}
+";
+            await VerifyCS.VerifyAnalyzerAsync(source);
+        }
 
 
         [Fact]
