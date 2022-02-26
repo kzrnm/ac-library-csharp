@@ -3,10 +3,9 @@ using System.Runtime.CompilerServices;
 
 namespace AtCoder.Internal
 {
-    using static MethodImplOptions;
     public static class BitOperations
     {
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public static int PopCount(uint value)
         {
             value -= (value >> 1) & 0x_55555555u;
@@ -15,7 +14,7 @@ namespace AtCoder.Internal
             return (int)value;
         }
 
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public static int TrailingZeroCount(uint value)
         {
             value |= value << 1;
@@ -25,7 +24,7 @@ namespace AtCoder.Internal
             value |= value << 16;
             return 32 - PopCount(value);
         }
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public static int Log2(uint value)
         {
             value |= value >> 1;

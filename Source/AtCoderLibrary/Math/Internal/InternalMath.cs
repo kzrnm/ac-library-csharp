@@ -112,7 +112,7 @@ namespace AtCoder.Internal
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(256)]
         public static long SafeMod(long x, long m)
         {
             x %= m;

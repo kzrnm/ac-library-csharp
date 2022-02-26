@@ -72,12 +72,12 @@ namespace AtCoder
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(256)]
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void Update(int k) => d[k] = op.Operate(d[2 * k], d[2 * k + 1]);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(256)]
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void AllApply(int k, F f)
@@ -85,7 +85,7 @@ namespace AtCoder
             d[k] = op.Mapping(f, d[k]);
             if (k < size) lz[k] = op.Composition(f, lz[k]);
         }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(256)]
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void Push(int k)
@@ -105,7 +105,7 @@ namespace AtCoder
         /// <returns></returns>
         public TValue this[int p]
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            [MethodImpl(256)]
             set
             {
                 Contract.Assert((uint)p < (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(p)} && {nameof(p)} < Length");
@@ -114,7 +114,7 @@ namespace AtCoder
                 d[p] = value;
                 for (int i = 1; i <= log; i++) Update(p >> i);
             }
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            [MethodImpl(256)]
             get
             {
                 Contract.Assert((uint)p < (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(p)} && {nameof(p)} < Length");
@@ -124,7 +124,7 @@ namespace AtCoder
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(256)]
         public TValue Slice(int l, int len) => Prod(l, l + len);
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace AtCoder
         /// <para>計算量: O(log n)</para>
         /// </remarks>
         /// <returns><see cref="TOp.Operate"/>(a[<paramref name="l"/>], ..., a[<paramref name="r"/> - 1])</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(256)]
         public TValue Prod(int l, int r)
         {
             Contract.Assert(0U <= (uint)l && (uint)l <= (uint)r && (uint)r <= (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(l)} && {nameof(l)} <= {nameof(r)} && {nameof(r)} <= Length");
@@ -360,7 +360,7 @@ namespace AtCoder
                 this.value = value;
                 this.lazy = lazy;
             }
-            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            [DebuggerBrowsable(0)]
             private readonly string key;
             private readonly TValue value;
             private readonly F lazy;

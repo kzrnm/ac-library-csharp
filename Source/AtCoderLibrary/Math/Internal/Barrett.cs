@@ -23,7 +23,7 @@ namespace AtCoder.Internal
         /// <summary>
         /// <paramref name="a"/> * <paramref name="b"/> mod m
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(256)]
         public uint Mul(uint a, uint b)
         {
             var z = (ulong)a * b;

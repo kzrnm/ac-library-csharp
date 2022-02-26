@@ -10,13 +10,13 @@ namespace AtCoder.Operators
 
     public struct SameTypeCastOperator<T> : ICastOperator<T, T>
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(256)]
         public T Cast(T y) => y;
     }
 
     public struct IntToLongCastOperator : ICastOperator<int, long>
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(256)]
         public long Cast(int y) => y;
     }
 }

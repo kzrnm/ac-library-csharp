@@ -41,7 +41,7 @@ namespace AtCoder.Internal
 
         public ref T this[int index]
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            [MethodImpl(256)]
             get
             {
                 if ((uint)index >= (uint)Count)

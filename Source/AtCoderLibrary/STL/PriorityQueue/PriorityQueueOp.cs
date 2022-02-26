@@ -6,7 +6,6 @@ using System.Runtime.CompilerServices;
 
 namespace AtCoder.Internal
 {
-    using static MethodImplOptions;
     [DebuggerTypeProxy(typeof(PriorityQueueOp<,>.DebugView))]
     [DebuggerDisplay(nameof(Count) + " = {" + nameof(Count) + "}")]
     public class PriorityQueueOp<T, TOp> : IPriorityQueueOp<T>
@@ -25,23 +24,23 @@ namespace AtCoder.Internal
             data = new T[Math.Max(capacity, DefaultCapacity)];
             _comparer = comparer;
         }
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(0)]
         public int Count { get; private set; } = 0;
 
         public T Peek => data[0];
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         internal void Resize()
         {
             Array.Resize(ref data, data.Length << 1);
         }
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public void Enqueue(T value)
         {
             if (Count >= data.Length) Resize();
             data[Count++] = value;
             UpdateUp(Count - 1);
         }
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public bool TryDequeue(out T result)
         {
             if (Count == 0)
@@ -52,7 +51,7 @@ namespace AtCoder.Internal
             result = Dequeue();
             return true;
         }
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public T Dequeue()
         {
             var res = data[0];
@@ -63,7 +62,7 @@ namespace AtCoder.Internal
         /// <summary>
         /// enqueue してすぐ dequeue
         /// </summary>
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public T EnqueueDequeue(T value)
         {
             var res = data[0];
@@ -75,7 +74,7 @@ namespace AtCoder.Internal
             UpdateDown(0);
             return res;
         }
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         protected internal void UpdateUp(int i)
         {
             var tar = data[i];
@@ -89,7 +88,7 @@ namespace AtCoder.Internal
             }
             data[i] = tar;
         }
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         protected internal void UpdateDown(int i)
         {
             var tar = data[i];

@@ -8,7 +8,6 @@ using AtCoder.Internal;
 
 namespace AtCoder
 {
-    using static MethodImplOptions;
 
     [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
@@ -43,7 +42,7 @@ namespace AtCoder
         public T Last => data[(tail - 1) & mask];
         private static void ThrowDequeIsEmpty() => throw new InvalidOperationException("deque is empty");
 
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public T PopFirst()
         {
             if (head == tail) ThrowDequeIsEmpty();
@@ -51,19 +50,19 @@ namespace AtCoder
             head = (head + 1) & mask;
             return item;
         }
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public T PopLast()
         {
             if (head == tail) ThrowDequeIsEmpty();
             return data[tail = (tail - 1) & mask];
         }
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public void AddFirst(T item)
         {
             data[head = (head - 1) & mask] = item;
             if (head == tail) Resize();
         }
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public void AddLast(T item)
         {
             data[tail] = item;

@@ -5,7 +5,6 @@ using AtCoder.Operators;
 
 namespace AtCoder
 {
-    using static MethodImplOptions;
     /// <summary>
     /// コンパイル時に決定する mod を表します。
     /// </summary>
@@ -47,21 +46,21 @@ namespace AtCoder
         where T : struct, IStaticMod
     {
         public StaticModInt<T> MultiplyIdentity => StaticModInt<T>.Raw(1);
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public StaticModInt<T> Add(StaticModInt<T> x, StaticModInt<T> y) => x + y;
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public StaticModInt<T> Subtract(StaticModInt<T> x, StaticModInt<T> y) => x - y;
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public StaticModInt<T> Multiply(StaticModInt<T> x, StaticModInt<T> y) => x * y;
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public StaticModInt<T> Divide(StaticModInt<T> x, StaticModInt<T> y) => x / y;
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         StaticModInt<T> IDivisionOperator<StaticModInt<T>>.Modulo(StaticModInt<T> x, StaticModInt<T> y) => throw new NotSupportedException();
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public StaticModInt<T> Minus(StaticModInt<T> x) => -x;
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public StaticModInt<T> Increment(StaticModInt<T> x) => ++x;
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public StaticModInt<T> Decrement(StaticModInt<T> x) => --x;
     }
 
@@ -103,7 +102,7 @@ namespace AtCoder
         /// <para>定数倍高速化のための関数です。 <paramref name="v"/> に 0 未満または mod 以上の値を入れた場合の挙動は未定義です。</para>
         /// <para>制約: 0≤|<paramref name="v"/>|&lt;mod</para>
         /// </remarks>
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public static StaticModInt<T> Raw(int v)
         {
             var u = unchecked((uint)v);
@@ -117,7 +116,7 @@ namespace AtCoder
         /// <remarks>
         /// <paramref name="v"/>が 0 未満、もしくは mod 以上の場合、自動で mod を取ります。
         /// </remarks>
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public StaticModInt(long v) : this(Round(v)) { }
 
         /// <summary>
@@ -126,13 +125,13 @@ namespace AtCoder
         /// <remarks>
         /// <paramref name="v"/>が mod 以上の場合、自動で mod を取ります。
         /// </remarks>
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public StaticModInt(ulong v) : this((uint)(v % op.Mod)) { }
 
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         private StaticModInt(uint v) => _v = v;
 
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         private static uint Round(long v)
         {
             var x = v % op.Mod;
@@ -143,7 +142,7 @@ namespace AtCoder
             return (uint)x;
         }
 
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public static StaticModInt<T> operator ++(StaticModInt<T> value)
         {
             var v = value._v + 1;
@@ -154,7 +153,7 @@ namespace AtCoder
             return new StaticModInt<T>(v);
         }
 
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public static StaticModInt<T> operator --(StaticModInt<T> value)
         {
             var v = value._v;
@@ -165,7 +164,7 @@ namespace AtCoder
             return new StaticModInt<T>(v - 1);
         }
 
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public static StaticModInt<T> operator +(StaticModInt<T> lhs, StaticModInt<T> rhs)
         {
             var v = lhs._v + rhs._v;
@@ -176,7 +175,7 @@ namespace AtCoder
             return new StaticModInt<T>(v);
         }
 
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public static StaticModInt<T> operator -(StaticModInt<T> lhs, StaticModInt<T> rhs)
         {
             unchecked
@@ -190,7 +189,7 @@ namespace AtCoder
             }
         }
 
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public static StaticModInt<T> operator *(StaticModInt<T> lhs, StaticModInt<T> rhs) => new StaticModInt<T>((uint)((ulong)lhs._v * rhs._v % op.Mod));
         /// <summary>
         /// 除算を行います。
@@ -199,19 +198,19 @@ namespace AtCoder
         /// <para>- 制約: <paramref name="rhs"/> に乗法の逆元が存在する。（gcd(<paramref name="rhs"/>, mod) = 1）</para>
         /// <para>- 計算量: O(log(mod))</para>
         /// </remarks>
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public static StaticModInt<T> operator /(StaticModInt<T> lhs, StaticModInt<T> rhs) => lhs * rhs.Inv();
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public static StaticModInt<T> operator +(StaticModInt<T> value) => value;
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public static StaticModInt<T> operator -(StaticModInt<T> value) => new StaticModInt<T>(op.Mod - value._v);
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public static bool operator ==(StaticModInt<T> lhs, StaticModInt<T> rhs) => lhs._v == rhs._v;
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public static bool operator !=(StaticModInt<T> lhs, StaticModInt<T> rhs) => lhs._v != rhs._v;
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public static implicit operator StaticModInt<T>(int value) => new StaticModInt<T>(value);
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public static implicit operator StaticModInt<T>(long value) => new StaticModInt<T>(value);
 
         /// <summary>
@@ -246,7 +245,7 @@ namespace AtCoder
         /// <remarks>
         /// <para>制約: gcd(x, mod) = 1</para>
         /// </remarks>
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(256)]
         public StaticModInt<T> Inv()
         {
             if (op.IsPrime)
