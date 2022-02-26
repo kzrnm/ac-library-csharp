@@ -26,7 +26,7 @@ namespace AtCoder
     {
         private static readonly TOp op = default;
 
-        [EditorBrowsable(0)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public readonly TValue[] data;
 
         public int Length { get; }

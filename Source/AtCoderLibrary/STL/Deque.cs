@@ -8,22 +8,23 @@ using AtCoder.Internal;
 
 namespace AtCoder
 {
+    using static EditorBrowsableState;
 
     [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public class Deque<T> : IEnumerable<T>, IReadOnlyCollection<T>, ICollection<T>
     {
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        [EditorBrowsable(Never)]
         public T[] data;
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        [EditorBrowsable(Never)]
         public int mask;
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        [EditorBrowsable(Never)]
         public int head;
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        [EditorBrowsable(Never)]
         public int tail;
 
         public Deque() : this(8) { }
@@ -70,7 +71,7 @@ namespace AtCoder
             if (head == tail) Resize();
         }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        [EditorBrowsable(Never)]
         public void Resize()
         {
             var oldSize = data.Length;
@@ -86,7 +87,7 @@ namespace AtCoder
         }
         public void Clear() => head = tail = 0;
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        [EditorBrowsable(Never)]
         public void Add(T item) => AddLast(item);
         bool ICollection<T>.Contains(T item)
         {

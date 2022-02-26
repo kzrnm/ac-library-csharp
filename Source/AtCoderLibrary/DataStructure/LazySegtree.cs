@@ -6,7 +6,8 @@ using AtCoder.Internal;
 
 namespace AtCoder
 {
-    /// <summary>
+    using static EditorBrowsableState;
+    /// <summary>    
     /// 長さ N の配列に対し、
     /// <list type="bullet">
     /// <item>
@@ -30,9 +31,9 @@ namespace AtCoder
 
         internal readonly int log;
         internal readonly int size;
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        [EditorBrowsable(Never)]
         public readonly TValue[] d;
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        [EditorBrowsable(Never)]
         public readonly F[] lz;
 
 
@@ -74,12 +75,12 @@ namespace AtCoder
 
         [MethodImpl(256)]
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        [EditorBrowsable(Never)]
         public void Update(int k) => d[k] = op.Operate(d[2 * k], d[2 * k + 1]);
 
         [MethodImpl(256)]
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        [EditorBrowsable(Never)]
         public void AllApply(int k, F f)
         {
             d[k] = op.Mapping(f, d[k]);
@@ -87,7 +88,7 @@ namespace AtCoder
         }
         [MethodImpl(256)]
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        [EditorBrowsable(Never)]
         public void Push(int k)
         {
             AllApply(2 * k, lz[k]);

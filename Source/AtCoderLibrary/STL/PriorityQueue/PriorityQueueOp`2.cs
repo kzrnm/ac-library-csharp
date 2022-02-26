@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 
 namespace AtCoder.Internal
 {
+    using static EditorBrowsableState;
     [DebuggerTypeProxy(typeof(PriorityQueueOp<,,>.DebugView))]
     [DebuggerDisplay(nameof(Count) + " = {" + nameof(Count) + "}")]
     public class PriorityQueueOp<TKey, TValue, TKOp> : IPriorityQueueOp<KeyValuePair<TKey, TValue>>
@@ -38,7 +39,7 @@ namespace AtCoder.Internal
             Array.Resize(ref values, values.Length << 1);
         }
         [MethodImpl(256)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        [EditorBrowsable(Never)]
         public void Enqueue(KeyValuePair<TKey, TValue> pair) => Enqueue(pair.Key, pair.Value);
         [MethodImpl(256)]
         public void Enqueue(TKey key, TValue value)
@@ -135,9 +136,9 @@ namespace AtCoder.Internal
         }
         public void Clear() => Count = 0;
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        [EditorBrowsable(Never)]
         public ReadOnlySpan<TKey> UnorderdKeys() => keys.AsSpan(0, Count);
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        [EditorBrowsable(Never)]
         public ReadOnlySpan<TValue> UnorderdValues() => values.AsSpan(0, Count);
         private class DebugView
         {
