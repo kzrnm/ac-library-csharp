@@ -272,6 +272,26 @@ struct Op : ILazySegtreeOperator<long, int>
             await VerifyCS.VerifyAnalyzerAsync(source);
         }
 
+        [Fact]
+        public async Task LazySegtreeOperator_With_Alias_AggressiveInlining()
+        {
+            var source = @"
+using AtCoder;
+using MI = System.Runtime.CompilerServices.MethodImplAttribute;
+struct Op : ILazySegtreeOperator<long, int>
+{
+    public long Identity => 0L;
+    public int FIdentity => 0;
+    [MI(256)]
+    public int Composition(int f, int g) => 0;
+    [MI(256)]
+    public long Mapping(int f, long x) => 0L;
+    [MI(256)]
+    public long Operate(long x, long y) => 0L;
+}
+";
+            await VerifyCS.VerifyAnalyzerAsync(source);
+        }
 
 
         [Fact]
