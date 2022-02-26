@@ -31,19 +31,23 @@ namespace AtCoderAnalyzer.Helpers
                     )));
         }
 
+        public static MemberAccessExpressionSyntax AggressiveInliningMember
+            = MemberAccessExpression(
+                SyntaxKind.SimpleMemberAccessExpression,
+                IdentifierName("MethodImplOptions"),
+                IdentifierName("AggressiveInlining"));
+
+        public static readonly AttributeArgumentSyntax AggressiveInliningArgument
+            = AttributeArgument(AggressiveInliningMember);
+
+
         public static readonly AttributeSyntax AggressiveInliningAttribute
             = Attribute(ParseName("MethodImpl"))
-                    .AddArgumentListArguments(
-                        AttributeArgument(
-                            MemberAccessExpression(
-                                SyntaxKind.SimpleMemberAccessExpression,
-                                IdentifierName("MethodImplOptions"),
-                                IdentifierName("AggressiveInlining")
-                        )));
+                    .AddArgumentListArguments(AggressiveInliningArgument);
 
         public static readonly AttributeListSyntax AggressiveInliningAttributeList
             = AttributeList(
-                SeparatedList(new[] { AggressiveInliningAttribute }));
+                SingletonSeparatedList(AggressiveInliningAttribute));
 
         public static readonly ArrowExpressionClauseSyntax ArrowDefault
             = ArrowExpressionClause(

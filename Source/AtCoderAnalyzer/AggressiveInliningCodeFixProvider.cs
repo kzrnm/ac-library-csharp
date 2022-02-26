@@ -1,4 +1,6 @@
-﻿using System.Collections.Immutable;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Composition;
 using System.Linq;
 using System.Threading;
@@ -11,6 +13,8 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static AtCoderAnalyzer.Helpers.Constants;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using MethodImplOptions = System.Runtime.CompilerServices.MethodImplOptions;
 
 namespace AtCoderAnalyzer
 {
@@ -59,31 +63,99 @@ namespace AtCoderAnalyzer
         private class AddAggressiveInliningRewriter : CSharpSyntaxRewriter
         {
             private readonly SemanticModel semanticModel;
-            private readonly INamedTypeSymbol methodImpl;
+            private readonly INamedTypeSymbol methodImplAttribute;
+            private readonly INamedTypeSymbol methodImplOptions;
             public AddAggressiveInliningRewriter(SemanticModel semanticModel) : base(false)
             {
                 this.semanticModel = semanticModel;
-                methodImpl = semanticModel.Compilation.GetTypeByMetadataName(
+                methodImplAttribute = semanticModel.Compilation.GetTypeByMetadataName(
                     System_Runtime_CompilerServices_MethodImplAttribute);
+                methodImplOptions = semanticModel.Compilation.GetTypeByMetadataName(
+                    System_Runtime_CompilerServices_MethodImplOptions);
             }
             public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node)
             {
-                if (methodImpl is null)
+                if (methodImplAttribute is null)
+                    return node;
+                if (methodImplOptions is null)
                     return node;
                 if (semanticModel.GetDeclaredSymbol(node) is not IMethodSymbol m)
                     return node;
 
-                if (m.MethodKind == MethodKind.Ordinary
-                    || m.MethodKind == MethodKind.ExplicitInterfaceImplementation)
-                {
-                    if (m.GetAttributes()
-                        .Select(at => at.AttributeClass)
-                        .Contains(methodImpl, SymbolEqualityComparer.Default))
-                        return node;
+                if (m.MethodKind is
+                     not (MethodKind.ExplicitInterfaceImplementation or MethodKind.Ordinary))
+                    return node;
 
+                if (m.GetAttributes()
+                       .FirstOrDefault(at => SymbolEqualityComparer.Default.Equals(at.AttributeClass, methodImplAttribute)) is not { } attr
+                    || attr.ApplicationSyntaxReference?.GetSyntax() is not AttributeSyntax syntax)
                     return node.AddAttributeLists(SyntaxHelpers.AggressiveInliningAttributeList);
+
+                if (attr.ConstructorArguments.Length > 0)
+                {
+                    var arg = attr.ConstructorArguments[0];
+                    if (arg.Kind is TypedConstantKind.Primitive or TypedConstantKind.Enum)
+                        try
+                        {
+                            if (((MethodImplOptions)Convert.ToInt32(arg.Value)).HasFlag(MethodImplOptions.AggressiveInlining))
+                                return node;
+                        }
+                        catch
+                        {
+                        }
                 }
-                return node;
+
+                var list = new List<AttributeListSyntax>(node.AttributeLists.Count);
+                foreach (var attributeList in node.AttributeLists)
+                {
+                    if (attributeList.Attributes.Contains(syntax))
+                    {
+                        var replaced = attributeList.Attributes.Replace(syntax, AddAggressiveInlining(syntax, attr));
+                        list.Add(AttributeList(replaced));
+                    }
+                    else
+                        list.Add(attributeList);
+                }
+                return node.WithAttributeLists(new SyntaxList<AttributeListSyntax>(list));
+            }
+
+
+            private AttributeSyntax AddAggressiveInlining(AttributeSyntax syntax, AttributeData attributeData)
+            {
+                if (attributeData.ConstructorArguments.Length == 0)
+                {
+                    return SyntaxHelpers.AggressiveInliningAttribute;
+                }
+                else
+                {
+                    var argConst = attributeData.ConstructorArguments[0];
+                    var argSyntax = syntax.ArgumentList.Arguments[0];
+
+                    if (argSyntax.NameEquals == null)
+                    {
+                        AttributeArgumentSyntax arg;
+                        if (argConst.Type.SpecialType is SpecialType.System_Int16)
+                            arg = argSyntax.WithExpression(
+                                BinaryExpression(
+                                    SyntaxKind.BitwiseOrExpression, argSyntax.Expression, LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal(256))));
+                        else if (SymbolEqualityComparer.Default.Equals(argConst.Type, methodImplOptions))
+                            arg = argSyntax.WithExpression(
+                                BinaryExpression(
+                                    SyntaxKind.BitwiseOrExpression, argSyntax.Expression, SyntaxHelpers.AggressiveInliningMember));
+                        else
+                            throw new InvalidProgramException("invalid MethodImplAttribute argument");
+
+                        return syntax.WithArgumentList(
+                            AttributeArgumentList(
+                                syntax.ArgumentList.Arguments.Replace(syntax.ArgumentList.Arguments[0], arg)));
+                    }
+                    else
+                    {
+                        return syntax.WithArgumentList(
+                            AttributeArgumentList(
+                                syntax.ArgumentList.Arguments.Insert(0, SyntaxHelpers.AggressiveInliningArgument)));
+                    }
+                }
             }
         }
     }
