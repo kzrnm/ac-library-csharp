@@ -8,16 +8,18 @@ namespace AtCoder.Embedding
 {
     public class SourceExpanderTest
     {
+#if NETCOREAPP3_0
+        const bool useIntrinsics = false;
+        const string languageVersion = "7.3";
+#else
+        const bool useIntrinsics = true;
+        const string languageVersion = "8.0";
+#endif
+
+
         [Fact]
         public async Task Symbol()
         {
-            bool expected =
-#if NETCOREAPP3_0
-                          false
-#else
-                          true
-#endif
-                ;
             var embedded = await EmbeddedData.LoadFromAssembly(typeof(Mod1000000007));
             embedded.AssemblyMetadatas.Should().ContainKey("SourceExpander.EmbeddedSourceCode.GZipBase32768");
             embedded.SourceFiles.Select(s => s.FileName)
@@ -28,23 +30,16 @@ namespace AtCoder.Embedding
             embedded.SourceFiles.SelectMany(s => s.Usings)
                 .Contains("using System.Runtime.Intrinsics.X86;")
                 .Should()
-                .Be(expected);
+                .Be(useIntrinsics);
         }
 
         [Fact]
         public async Task LanguageVersion()
         {
-            const string VERSION =
-#if NETCOREAPP3_0
-                          "7.3"
-#else
-                          "8.0"
-#endif
-                ;
             var embedded = await EmbeddedData.LoadFromAssembly(typeof(Mod1000000007));
             embedded.AssemblyMetadatas
                 .Should().ContainKey("SourceExpander.EmbeddedLanguageVersion")
-                .WhoseValue.Should().Be(VERSION);
+                .WhoseValue.Should().Be(languageVersion);
         }
 
         [Fact]
@@ -62,6 +57,19 @@ namespace AtCoder.Embedding
                 .Contain(
                 "AtCoder.Operators.IArithmeticOperator<T>",
                 "AtCoder.Segtree<TValue, TOp>");
+        }
+
+        [Fact]
+        public async Task EmbeddedNamespaces()
+        {
+            var embedded = await EmbeddedData.LoadFromAssembly(typeof(Mod1000000007));
+            embedded.AssemblyMetadatas.Should().ContainKey("SourceExpander.EmbeddedNamespaces");
+            embedded.EmbeddedNamespaces.Should()
+                .Equal(
+                "AtCoder",
+                "AtCoder.Extension",
+                "AtCoder.Internal",
+                "AtCoder.Operators");
         }
 
 
