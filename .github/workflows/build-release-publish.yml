@@ -6,67 +6,25 @@ on:
       - master
     tags:
       - "v[0-9]+.[0-9]+.[0-9]+*"
+
 env:
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_NOLOGO: true
   NUGET_XMLDOC_MODE: skip
-  NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
-  WORKFLOW_VERSION_PROJ: Directory.Build.props
   WORKFLOW_BUILD_SLN: AtCoderLibrary.sln
 
 jobs:
   get-version:
-    runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.get-version.outputs.version }}
-      is-new: ${{ steps.is-new-version.outputs.is-new }}
-      is-prerelease: ${{ steps.is-new-version.outputs.is-prerelease }}
-    steps:
-      - uses: actions/checkout@v2
-      - name: Get version
-        uses: kzrnm/get-net-sdk-project-versions-action@v1
-        id: get-version
-        with:
-          proj-path: ${{ env.WORKFLOW_VERSION_PROJ }}
-      - name: Check tag
-        uses: mukunku/tag-exists-action@v1.0.0
-        id: check-tag
-        with:
-          tag: v${{ steps.get-version.outputs.version }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: is new version?
-        id: is-new-version
-        run: |
-          IS_PRE=false
-          IS_NEW=false
-          if [ "${{ steps.get-version.outputs.version }}" = "${GITHUB_REF#refs/tags/v}" ]; then
-            echo "create version tag event: $GITHUB_REF"
-            if [ "${{ steps.get-version.outputs.version-suffix }}" != "" ]; then
-              IS_PRE=true
-            fi
-            IS_NEW=true
-          elif [ "${{ steps.check-tag.outputs.exists }}" = "false" ]; then
-            echo "new version tag project: ${{ steps.get-version.outputs.version }}"
-            if [ "${{ steps.get-version.outputs.version-suffix }}" != "" ]; then
-              IS_PRE=true
-            fi
-            IS_NEW=true
-          fi
-          echo "::set-output name=is-new::$IS_NEW"
-          echo "::set-output name=is-prerelease::$IS_PRE"
+    uses: kzrnm/dotnet-actions/.github/workflows/get-version.yml@v1
+    with:
+      project-path: Directory.Build.props
 
   format:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Setup .NET Core SDK 6.0
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 6.0.x
-      - name: Format
-        run: dotnet format ${{ env.WORKFLOW_BUILD_SLN }} --verify-no-changes
+    uses: kzrnm/dotnet-actions/.github/workflows/format.yml@v1
+    with:
+      target: AtCoderLibrary.sln
+      dotnet-version: 6.0.x
 
   library-checker:
     runs-on: ubuntu-latest
@@ -82,8 +40,9 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: |
+            3.0.x
             3.1.x
-            5.0.x
+            6.0.x
       - name: Set up Python
         uses: actions/setup-python@v1
         with:
@@ -99,10 +58,8 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install --user -r requirements.txt
-      - name: Install dependencies
-        run: dotnet restore ${{ env.WORKFLOW_BUILD_SLN }}
       - name: Build
-        run: dotnet build ${{ env.WORKFLOW_BUILD_SLN }} --no-restore
+        run: dotnet build ${{ env.WORKFLOW_BUILD_SLN }}
       - name: Run
         run: |
           ulimit -s unlimited
@@ -117,67 +74,32 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: |
+            3.0.x
             3.1.x
-            5.0.x
+            6.0.x
       - uses: actions/cache@v2
         with:
           path: ${{ github.workspace }}/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
-      - name: Install dependencies
-        run: dotnet restore ${{ env.WORKFLOW_BUILD_SLN }}
       - name: Build
-        run: dotnet build ${{ env.WORKFLOW_BUILD_SLN }} --no-restore -c Release
+        run: dotnet build ${{ env.WORKFLOW_BUILD_SLN }} -c Release
       - name: Test
-        run: dotnet test ${{ env.WORKFLOW_BUILD_SLN }} --no-restore --verbosity normal -c Release --logger GitHubActions
+        run: dotnet test ${{ env.WORKFLOW_BUILD_SLN }} --no-build --logger GitHubActions -c Release
       - uses: actions/upload-artifact@v1
         if: ${{ needs.get-version.outputs.is-new == 'true' }}
         with:
           name: dist
           path: bin/Packages/Release
 
-  new-version-only:
-    runs-on: ubuntu-latest
-    needs: [get-version, library-checker, build, format]
-    if: ${{ needs.get-version.outputs.is-new == 'true' }}
-    steps:
-      - run: echo "new-version"
-
-  release:
-    runs-on: ubuntu-latest
-    needs: [get-version, new-version-only]
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: dist
-          path: dist
-      - name: Push tag
-        id: tag-version
-        uses: mathieudutour/github-tag-action@v5
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          custom_tag: ${{ needs.get-version.outputs.version }}
-          tag_prefix: "v"
-      - name: Create release
-        uses: ncipollo/release-action@v1
-        id: create-release
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ steps.tag-version.outputs.new_tag }}
-          name: Version ${{ needs.get-version.outputs.version }}
-          body: https://github.com/${{ github.repository }}/blob/${{ steps.tag-version.outputs.new_tag }}/CHANGELOG.md
-          artifacts: "./dist/*.nupkg,./dist/*.snupkg"
-          prerelease: ${{ needs.get-version.outputs.is-prerelease }}
   publish:
-    runs-on: ubuntu-latest
-    needs: [new-version-only]
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: dist
-          path: dist
-      - name: Upload nuget
-        run: dotnet nuget push "./dist/*.nupkg" --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_KEY }}
+    needs: [get-version, build, format, library-checker]
+    if: ${{ needs.get-version.outputs.is-new == 'true' }}
+    uses: kzrnm/dotnet-actions/.github/workflows/publish.yml@v1
+    with:
+      artifact-name: dist
+      version: ${{ needs.get-version.outputs.version }}
+      is-prerelease: ${{ needs.get-version.outputs.is-prerelease == 'true' }}
+    secrets:
+      NUGET_KEY: ${{ secrets.NUGET_KEY }}

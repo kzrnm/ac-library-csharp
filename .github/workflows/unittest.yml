@@ -9,78 +9,21 @@ env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_NOLOGO: true
   NUGET_XMLDOC_MODE: skip
-  NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
   WORKFLOW_BUILD_SLN: AtCoderLibrary.sln
 
 jobs:
   format:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Setup .NET Core SDK 6.0
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 6.0.x
-      - name: Format
-        run: dotnet format ${{ env.WORKFLOW_BUILD_SLN }} --verify-no-changes
-  library-checker:
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@v2
-      - name: checkout library-checker-problems
-        uses: actions/checkout@v2
-        with:
-          repository: yosupo06/library-checker-problems
-          path: library-checker-problems
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: |
-            3.1.x
-            5.0.x
-      - name: Set up Python
-        uses: actions/setup-python@v1
-        with:
-          python-version: 3.7
-      - uses: actions/cache@v2
-        with:
-          path: ${{ github.workspace }}/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-      - name: Install python dependencies
-        working-directory: library-checker-problems
-        run: |
-          python -m pip install --upgrade pip
-          pip install --user -r requirements.txt
-      - name: Install dependencies
-        run: dotnet restore ${{ env.WORKFLOW_BUILD_SLN }}
-      - name: Build
-        run: dotnet build ${{ env.WORKFLOW_BUILD_SLN }} --no-restore
-      - name: Run
-        run: |
-          ulimit -s unlimited
-          dotnet run --project Test/AtCoderLibrary.LibraryChecker/AtCoderLibrary.LibraryChecker.csproj ${{ github.workspace }}/library-checker-problems
+    uses: kzrnm/dotnet-actions/.github/workflows/format.yml@v1
+    with:
+      target: AtCoderLibrary.sln
+      dotnet-version: 6.0.x
   test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: |
-            3.1.x
-            5.0.x
-      - uses: actions/cache@v2
-        with:
-          path: ${{ github.workspace }}/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-      - name: Install dependencies
-        run: dotnet restore ${{ env.WORKFLOW_BUILD_SLN }}
-      - name: Build
-        run: dotnet build ${{ env.WORKFLOW_BUILD_SLN }} --no-restore
-      - name: Test
-        run: dotnet test ${{ env.WORKFLOW_BUILD_SLN }} --no-restore --verbosity normal --logger GitHubActions
+    uses: kzrnm/dotnet-actions/.github/workflows/unittest.yml@v1
+    with:
+      target: AtCoderLibrary.sln
+      os: windows-latest
+      dotnet-version: |
+        3.0.x
+        3.1.x
+        6.0.x
+      test-logger: GitHubActions
