@@ -48,11 +48,19 @@ jobs:
         with:
           python-version: 3.7
       - uses: actions/cache@v2
+        name: NuGet cache
         with:
-          path: ${{ github.workspace }}/.nuget/packages
+          path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
+      - uses: actions/cache@v2
+        name: pip cache
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
       - name: Install python dependencies
         working-directory: library-checker-problems
         run: |
