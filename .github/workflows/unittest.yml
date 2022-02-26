@@ -21,7 +21,7 @@ jobs:
     uses: kzrnm/dotnet-actions/.github/workflows/unittest.yml@v1
     with:
       target: AtCoderLibrary.sln
-      os: windows-latest
+      os: ubuntu-latest
       dotnet-version: |
         3.0.x
         3.1.x
