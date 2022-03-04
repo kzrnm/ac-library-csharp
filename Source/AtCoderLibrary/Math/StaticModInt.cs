@@ -220,6 +220,7 @@ namespace AtCoder
         /// <para>制約: 0≤|<paramref name="n"/>|</para>
         /// <para>計算量: O(log(<paramref name="n"/>))</para>
         /// </remarks>
+        [MethodImpl(256)]
         public StaticModInt<T> Pow(long n)
         {
             Contract.Assert(0 <= n, $"{nameof(n)} must be positive.");
@@ -263,7 +264,7 @@ namespace AtCoder
 
         public override string ToString() => _v.ToString();
         public override bool Equals(object obj) => obj is StaticModInt<T> m && Equals(m);
-        public bool Equals(StaticModInt<T> other) => _v == other._v;
+        [MethodImpl(256)] public bool Equals(StaticModInt<T> other) => _v == other._v;
         public override int GetHashCode() => _v.GetHashCode();
     }
 }

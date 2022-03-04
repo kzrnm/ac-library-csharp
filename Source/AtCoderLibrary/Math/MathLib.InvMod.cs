@@ -1,4 +1,5 @@
-﻿using AtCoder.Internal;
+﻿using System.Runtime.CompilerServices;
+using AtCoder.Internal;
 
 namespace AtCoder
 {
@@ -11,6 +12,7 @@ namespace AtCoder
         /// <para>制約: gcd(<paramref name="x"/>,<paramref name="m"/>)=1, 1≤<paramref name="m"/></para>
         /// <para>計算量: O(log<paramref name="m"/>)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public static long InvMod(long x, long m)
         {
             Contract.Assert(1 <= m, reason: $"1 <= {nameof(m)}");

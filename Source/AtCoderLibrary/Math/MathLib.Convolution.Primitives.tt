@@ -17,6 +17,7 @@
 // DO NOT CHANGE THIS FILE.
 // </auto-generated>
 using System;
+using System.Runtime.CompilerServices;
 
 namespace AtCoder
 {
@@ -34,7 +35,7 @@ namespace AtCoder
         /// <para>- 2^c | (<paramref name="m"/> - 1) かつ |<paramref name="a"/>| + |<paramref name="b"/>| - 1 ≤ 2^c なる c が存在する</para>
         /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|) + log<paramref name="m"/>)</para>
         /// </remarks>
-        public static <#= t.Name #>[] Convolution(<#= t.Name #>[] a, <#= t.Name #>[] b) => Convolution<Mod998244353>(a, b);
+        [MethodImpl(256)] public static <#= t.Name #>[] Convolution(<#= t.Name #>[] a, <#= t.Name #>[] b) => Convolution<Mod998244353>(a, b);
 
         /// <summary>
         /// 畳み込みを mod <typeparamref name="TMod"/> で計算します。
@@ -47,6 +48,7 @@ namespace AtCoder
         /// <para>- 2^c | (<typeparamref name="TMod"/> - 1) かつ |<paramref name="a"/>| + |<paramref name="b"/>| - 1 ≤ 2^c なる c が存在する</para>
         /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|) + log<typeparamref name="TMod"/>)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public static <#= t.Name #>[] Convolution<TMod>(<#= t.Name #>[] a, <#= t.Name #>[] b) where TMod : struct, IStaticMod
             => Convolution<TMod>(a.AsSpan(), b.AsSpan());
         /// <summary>
@@ -60,6 +62,7 @@ namespace AtCoder
         /// <para>- 2^c | (<typeparamref name="TMod"/> - 1) かつ |<paramref name="a"/>| + |<paramref name="b"/>| - 1 ≤ 2^c なる c が存在する</para>
         /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|) + log<typeparamref name="TMod"/>)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public static <#= t.Name #>[] Convolution<TMod>(ReadOnlySpan<<#= t.Name #>> a, ReadOnlySpan<<#= t.Name #>> b) where TMod : struct, IStaticMod
         {
             var n = a.Length;

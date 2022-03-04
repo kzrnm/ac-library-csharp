@@ -85,7 +85,7 @@ namespace AtCoder
             head = 0;
             tail = oldSize;
         }
-        public void Clear() => head = tail = 0;
+        [MethodImpl(256)] public void Clear() => head = tail = 0;
 
         [EditorBrowsable(Never)]
         public void Add(T item) => AddLast(item);
@@ -121,8 +121,8 @@ namespace AtCoder
                 Array.Copy(data, 0, array, arrayIndex + hsize, tail);
             }
         }
-        public Enumerator Reversed() => new Enumerator(this, true);
-        public Enumerator GetEnumerator() => new Enumerator(this, false);
+        [MethodImpl(256)] public Enumerator Reversed() => new Enumerator(this, true);
+        [MethodImpl(256)] public Enumerator GetEnumerator() => new Enumerator(this, false);
 
         bool ICollection<T>.IsReadOnly => false;
         bool ICollection<T>.Remove(T item) { throw new NotSupportedException(); }
@@ -151,6 +151,7 @@ namespace AtCoder
                 }
             }
             object IEnumerator.Current => Current;
+            [MethodImpl(256)]
             public bool MoveNext()
             {
                 if (index == last) return false;
@@ -159,7 +160,7 @@ namespace AtCoder
                 return true;
             }
             public void Reset() { throw new NotSupportedException(); }
-            public Enumerator GetEnumerator() => this;
+            [MethodImpl(256)] public Enumerator GetEnumerator() => this;
             IEnumerator<T> IEnumerable<T>.GetEnumerator() => this;
             IEnumerator IEnumerable.GetEnumerator() => this;
             public void Dispose() { }

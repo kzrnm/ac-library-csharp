@@ -105,7 +105,7 @@ namespace AtCoder.Internal
             }
             data[i] = tar;
         }
-        public void Clear() => Count = 0;
+        [MethodImpl(256)] public void Clear() => Count = 0;
 
 
         [EditorBrowsable(EditorBrowsableState.Never)]

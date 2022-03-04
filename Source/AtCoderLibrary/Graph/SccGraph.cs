@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using AtCoder.Internal;
 
 namespace AtCoder
@@ -38,6 +39,7 @@ namespace AtCoder
         /// <para>制約: 0≤<paramref name="from"/>, <paramref name="to"/>&lt;n</para>
         /// <para>計算量: ならしO(1)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public void AddEdge(int from, int to)
         {
             Contract.Assert((uint)from < (uint)VerticesNumbers, reason: $"IndexOutOfRange: 0 <= {nameof(from)} && {nameof(from)} < _n");
@@ -53,6 +55,7 @@ namespace AtCoder
         /// <para>強連結成分の ID はトポロジカルソートされています。異なる強連結成分の頂点 u, v について、u から v に到達できる時、u の ID は v の ID よりも小さくなります。</para>
         /// <para>計算量: 追加された辺の本数を m として O(n+m)</para>
         /// </remarks>
+        [MethodImpl(256)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public (int groupNum, int[] ids) SCCIDs()
         {
@@ -184,6 +187,7 @@ namespace AtCoder
         /// <para>- リストはトポロジカルソートされています。異なる強連結成分の頂点 u, v について、u から v に到達できる時、u の属するリストは v の属するリストよりも前です。</para>
         /// <para>計算量: 追加された辺の本数を m として O(n+m)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public int[][] SCC()
         {
             var (groupNum, ids) = SCCIDs();

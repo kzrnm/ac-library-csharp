@@ -36,8 +36,8 @@ namespace AtCoder.Internal
             }
         }
 
-        public Memory<T> AsMemory() => new Memory<T>(data, 0, Count);
-        public Span<T> AsSpan() => new Span<T>(data, 0, Count);
+        [MethodImpl(256)] public Memory<T> AsMemory() => new Memory<T>(data, 0, Count);
+        [MethodImpl(256)] public Span<T> AsSpan() => new Span<T>(data, 0, Count);
 
         public ref T this[int index]
         {
@@ -50,47 +50,54 @@ namespace AtCoder.Internal
             }
         }
         public int Count { get; private set; }
+        [MethodImpl(256)]
         public void Add(T item)
         {
             if ((uint)Count >= (uint)data.Length)
                 Array.Resize(ref data, data.Length << 1);
             data[Count++] = item;
         }
+        [MethodImpl(256)]
         public void RemoveLast()
         {
             if (--Count < 0)
                 ThrowIndexOutOfRangeException();
         }
+        [MethodImpl(256)]
         public SimpleList<T> Reverse()
         {
             Array.Reverse(data, 0, Count);
             return this;
         }
+        [MethodImpl(256)]
         public SimpleList<T> Reverse(int index, int count)
         {
             Array.Reverse(data, index, count);
             return this;
         }
+        [MethodImpl(256)]
         public SimpleList<T> Sort()
         {
             Array.Sort(data, 0, Count);
             return this;
         }
+        [MethodImpl(256)]
         public SimpleList<T> Sort(IComparer<T> comparer)
         {
             Array.Sort(data, 0, Count, comparer);
             return this;
         }
+        [MethodImpl(256)]
         public SimpleList<T> Sort(int index, int count, IComparer<T> comparer)
         {
             Array.Sort(data, index, count, comparer);
             return this;
         }
-        public void Clear() => Count = 0;
-        public bool Contains(T item) => IndexOf(item) >= 0;
-        public int IndexOf(T item) => Array.IndexOf(data, item, 0, Count);
-        public void CopyTo(T[] array, int arrayIndex) => Array.Copy(data, 0, array, arrayIndex, Count);
-        public T[] ToArray() => AsSpan().ToArray();
+        [MethodImpl(256)] public void Clear() => Count = 0;
+        [MethodImpl(256)] public bool Contains(T item) => IndexOf(item) >= 0;
+        [MethodImpl(256)] public int IndexOf(T item) => Array.IndexOf(data, item, 0, Count);
+        [MethodImpl(256)] public void CopyTo(T[] array, int arrayIndex) => Array.Copy(data, 0, array, arrayIndex, Count);
+        [MethodImpl(256)] public T[] ToArray() => AsSpan().ToArray();
         #region Interface
         bool ICollection<T>.IsReadOnly => false;
         T IList<T>.this[int index] { get => data[index]; set => data[index] = value; }
@@ -107,7 +114,7 @@ namespace AtCoder.Internal
         }
         #endregion Interface
 
-        public Span<T>.Enumerator GetEnumerator() => AsSpan().GetEnumerator();
+        [MethodImpl(256)] public Span<T>.Enumerator GetEnumerator() => AsSpan().GetEnumerator();
         private static void ThrowIndexOutOfRangeException() => throw new IndexOutOfRangeException();
     }
 }

@@ -134,7 +134,7 @@ namespace AtCoder.Internal
             keys[i] = tar;
             values[i] = tarVal;
         }
-        public void Clear() => Count = 0;
+        [MethodImpl(256)] public void Clear() => Count = 0;
 
         [EditorBrowsable(Never)]
         public ReadOnlySpan<TKey> UnorderdKeys() => keys.AsSpan(0, Count);

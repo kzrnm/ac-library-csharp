@@ -52,6 +52,7 @@ namespace AtCoder
         /// <para>制約: 0≤<paramref name="p"/>&lt;n</para>
         /// <para>計算量: O(log n)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public void Add(int p, TValue x)
         {
             Contract.Assert((uint)p < (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(p)} && {nameof(p)} < Length");

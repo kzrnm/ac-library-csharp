@@ -79,7 +79,9 @@ namespace AtCoder
         /// </summary>
         public static int Mod
         {
+            [MethodImpl(256)]
             get => (int)bt.Mod;
+            [MethodImpl(256)]
             set
             {
                 Contract.Assert(1 <= value, reason: $"{nameof(Mod)} must be positive.");
@@ -222,6 +224,7 @@ namespace AtCoder
         /// <para>制約: 0≤|<paramref name="n"/>|</para>
         /// <para>計算量: O(log(<paramref name="n"/>))</para>
         /// </remarks>
+        [MethodImpl(256)]
         public DynamicModInt<T> Pow(long n)
         {
             Contract.Assert(0 <= n, $"{nameof(n)} must be positive.");
@@ -257,7 +260,7 @@ namespace AtCoder
 
         public override string ToString() => _v.ToString();
         public override bool Equals(object obj) => obj is DynamicModInt<T> m && Equals(m);
-        public bool Equals(DynamicModInt<T> other) => Value == other.Value;
+        [MethodImpl(256)] public bool Equals(DynamicModInt<T> other) => Value == other.Value;
         public override int GetHashCode() => _v.GetHashCode();
     }
 }

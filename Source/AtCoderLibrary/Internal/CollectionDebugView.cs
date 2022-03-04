@@ -16,8 +16,6 @@ namespace AtCoder.Internal
             this.collection = collection ?? throw new ArgumentNullException(nameof(collection));
         }
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-#pragma warning disable CA1819 // Properties should not return arrays
         public T[] Items => collection.ToArray();
-#pragma warning restore CA1819 // Properties should not return arrays
     }
 }

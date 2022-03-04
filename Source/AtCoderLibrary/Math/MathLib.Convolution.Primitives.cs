@@ -2,6 +2,7 @@
 // DO NOT CHANGE THIS FILE.
 // </auto-generated>
 using System;
+using System.Runtime.CompilerServices;
 
 namespace AtCoder
 {
@@ -18,7 +19,7 @@ namespace AtCoder
         /// <para>- 2^c | (<paramref name="m"/> - 1) かつ |<paramref name="a"/>| + |<paramref name="b"/>| - 1 ≤ 2^c なる c が存在する</para>
         /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|) + log<paramref name="m"/>)</para>
         /// </remarks>
-        public static Int32[] Convolution(Int32[] a, Int32[] b) => Convolution<Mod998244353>(a, b);
+        [MethodImpl(256)] public static Int32[] Convolution(Int32[] a, Int32[] b) => Convolution<Mod998244353>(a, b);
 
         /// <summary>
         /// 畳み込みを mod <typeparamref name="TMod"/> で計算します。
@@ -31,6 +32,7 @@ namespace AtCoder
         /// <para>- 2^c | (<typeparamref name="TMod"/> - 1) かつ |<paramref name="a"/>| + |<paramref name="b"/>| - 1 ≤ 2^c なる c が存在する</para>
         /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|) + log<typeparamref name="TMod"/>)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public static Int32[] Convolution<TMod>(Int32[] a, Int32[] b) where TMod : struct, IStaticMod
             => Convolution<TMod>(a.AsSpan(), b.AsSpan());
         /// <summary>
@@ -44,6 +46,7 @@ namespace AtCoder
         /// <para>- 2^c | (<typeparamref name="TMod"/> - 1) かつ |<paramref name="a"/>| + |<paramref name="b"/>| - 1 ≤ 2^c なる c が存在する</para>
         /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|) + log<typeparamref name="TMod"/>)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public static Int32[] Convolution<TMod>(ReadOnlySpan<Int32> a, ReadOnlySpan<Int32> b) where TMod : struct, IStaticMod
         {
             var n = a.Length;
@@ -83,7 +86,7 @@ namespace AtCoder
         /// <para>- 2^c | (<paramref name="m"/> - 1) かつ |<paramref name="a"/>| + |<paramref name="b"/>| - 1 ≤ 2^c なる c が存在する</para>
         /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|) + log<paramref name="m"/>)</para>
         /// </remarks>
-        public static UInt32[] Convolution(UInt32[] a, UInt32[] b) => Convolution<Mod998244353>(a, b);
+        [MethodImpl(256)] public static UInt32[] Convolution(UInt32[] a, UInt32[] b) => Convolution<Mod998244353>(a, b);
 
         /// <summary>
         /// 畳み込みを mod <typeparamref name="TMod"/> で計算します。
@@ -96,6 +99,7 @@ namespace AtCoder
         /// <para>- 2^c | (<typeparamref name="TMod"/> - 1) かつ |<paramref name="a"/>| + |<paramref name="b"/>| - 1 ≤ 2^c なる c が存在する</para>
         /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|) + log<typeparamref name="TMod"/>)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public static UInt32[] Convolution<TMod>(UInt32[] a, UInt32[] b) where TMod : struct, IStaticMod
             => Convolution<TMod>(a.AsSpan(), b.AsSpan());
         /// <summary>
@@ -109,6 +113,7 @@ namespace AtCoder
         /// <para>- 2^c | (<typeparamref name="TMod"/> - 1) かつ |<paramref name="a"/>| + |<paramref name="b"/>| - 1 ≤ 2^c なる c が存在する</para>
         /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|) + log<typeparamref name="TMod"/>)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public static UInt32[] Convolution<TMod>(ReadOnlySpan<UInt32> a, ReadOnlySpan<UInt32> b) where TMod : struct, IStaticMod
         {
             var n = a.Length;
@@ -148,7 +153,7 @@ namespace AtCoder
         /// <para>- 2^c | (<paramref name="m"/> - 1) かつ |<paramref name="a"/>| + |<paramref name="b"/>| - 1 ≤ 2^c なる c が存在する</para>
         /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|) + log<paramref name="m"/>)</para>
         /// </remarks>
-        public static Int64[] Convolution(Int64[] a, Int64[] b) => Convolution<Mod998244353>(a, b);
+        [MethodImpl(256)] public static Int64[] Convolution(Int64[] a, Int64[] b) => Convolution<Mod998244353>(a, b);
 
         /// <summary>
         /// 畳み込みを mod <typeparamref name="TMod"/> で計算します。
@@ -161,6 +166,7 @@ namespace AtCoder
         /// <para>- 2^c | (<typeparamref name="TMod"/> - 1) かつ |<paramref name="a"/>| + |<paramref name="b"/>| - 1 ≤ 2^c なる c が存在する</para>
         /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|) + log<typeparamref name="TMod"/>)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public static Int64[] Convolution<TMod>(Int64[] a, Int64[] b) where TMod : struct, IStaticMod
             => Convolution<TMod>(a.AsSpan(), b.AsSpan());
         /// <summary>
@@ -174,6 +180,7 @@ namespace AtCoder
         /// <para>- 2^c | (<typeparamref name="TMod"/> - 1) かつ |<paramref name="a"/>| + |<paramref name="b"/>| - 1 ≤ 2^c なる c が存在する</para>
         /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|) + log<typeparamref name="TMod"/>)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public static Int64[] Convolution<TMod>(ReadOnlySpan<Int64> a, ReadOnlySpan<Int64> b) where TMod : struct, IStaticMod
         {
             var n = a.Length;
@@ -213,7 +220,7 @@ namespace AtCoder
         /// <para>- 2^c | (<paramref name="m"/> - 1) かつ |<paramref name="a"/>| + |<paramref name="b"/>| - 1 ≤ 2^c なる c が存在する</para>
         /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|) + log<paramref name="m"/>)</para>
         /// </remarks>
-        public static UInt64[] Convolution(UInt64[] a, UInt64[] b) => Convolution<Mod998244353>(a, b);
+        [MethodImpl(256)] public static UInt64[] Convolution(UInt64[] a, UInt64[] b) => Convolution<Mod998244353>(a, b);
 
         /// <summary>
         /// 畳み込みを mod <typeparamref name="TMod"/> で計算します。
@@ -226,6 +233,7 @@ namespace AtCoder
         /// <para>- 2^c | (<typeparamref name="TMod"/> - 1) かつ |<paramref name="a"/>| + |<paramref name="b"/>| - 1 ≤ 2^c なる c が存在する</para>
         /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|) + log<typeparamref name="TMod"/>)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public static UInt64[] Convolution<TMod>(UInt64[] a, UInt64[] b) where TMod : struct, IStaticMod
             => Convolution<TMod>(a.AsSpan(), b.AsSpan());
         /// <summary>
@@ -239,6 +247,7 @@ namespace AtCoder
         /// <para>- 2^c | (<typeparamref name="TMod"/> - 1) かつ |<paramref name="a"/>| + |<paramref name="b"/>| - 1 ≤ 2^c なる c が存在する</para>
         /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|) + log<typeparamref name="TMod"/>)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public static UInt64[] Convolution<TMod>(ReadOnlySpan<UInt64> a, ReadOnlySpan<UInt64> b) where TMod : struct, IStaticMod
         {
             var n = a.Length;

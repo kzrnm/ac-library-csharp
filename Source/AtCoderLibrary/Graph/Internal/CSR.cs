@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace AtCoder.Internal
 {
@@ -62,12 +63,13 @@ namespace AtCoder.Internal
                 index = -1;
                 start = 0;
             }
-            private CSR<TEdge> _g;
+            private readonly CSR<TEdge> _g;
             private int index;
             private int start;
             public (int from, TEdge edge) Current => (start, _g.EList[index]);
             object IEnumerator.Current => Current;
 
+            [MethodImpl(256)]
             public bool MoveNext()
             {
                 if (++index < _g.Start[start + 1])

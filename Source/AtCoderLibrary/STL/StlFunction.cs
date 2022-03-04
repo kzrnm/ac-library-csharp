@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace AtCoder
 {
@@ -19,6 +20,7 @@ namespace AtCoder
 
             public T[] Current { get; private set; }
 
+            [MethodImpl(256)]
             public bool MoveNext()
             {
                 if (Current == null)
@@ -31,7 +33,7 @@ namespace AtCoder
             public void Reset() => Current = null;
             object IEnumerator.Current => Current;
             void IDisposable.Dispose() { }
-            public NextPermutationEnumerator<T> GetEnumerator() => this;
+            [MethodImpl(256)] public NextPermutationEnumerator<T> GetEnumerator() => this;
             IEnumerator<T[]> IEnumerable<T[]>.GetEnumerator() => this;
             IEnumerator IEnumerable.GetEnumerator() => this;
         }
@@ -39,11 +41,12 @@ namespace AtCoder
         /// 順列を辞書順によるその次の順列に更新します。
         /// </summary>
         /// <returns>更新に成功したら <see langword="true"/>。順列の最後ならば <see langword="false"/> </returns>
-        public static bool NextPermutation<T>(T[] array) where T : IComparable<T> => NextPermutation(array.AsSpan());
+        [MethodImpl(256)] public static bool NextPermutation<T>(T[] array) where T : IComparable<T> => NextPermutation(array.AsSpan());
         /// <summary>
         /// 順列を辞書順によるその次の順列に更新します。
         /// </summary>
         /// <returns>更新に成功したら <see langword="true"/>。順列の最後ならば <see langword="false"/> </returns>
+        [MethodImpl(256)]
         public static bool NextPermutation<T>(Span<T> span) where T : IComparable<T>
         {
             int i;
@@ -64,6 +67,7 @@ namespace AtCoder
         /// <summary>
         /// 辞書順による順列を生成します。返すインスタンスは共通です。
         /// </summary>
+        [MethodImpl(256)]
         public static NextPermutationEnumerator<T> Permutations<T>(IEnumerable<T> orig) where T : IComparable<T>
             => new NextPermutationEnumerator<T>(orig);
         #endregion NextPermutation
@@ -71,6 +75,7 @@ namespace AtCoder
         #region BinarySerch
         private struct DefaultComparer<T> : IComparer<T> where T : IComparable<T>
         {
+            [MethodImpl(256)]
             public int Compare(T x, T y) => x.CompareTo(y);
         }
 
@@ -81,6 +86,7 @@ namespace AtCoder
         /// <para>制約: <paramref name="Ok"/>(<paramref name="ok"/>) &amp;&amp; !<paramref name="Ok"/>(<paramref name="ng"/>)</para>
         /// <para>計算量: O(log |<paramref name="ok"/> - <paramref name="ng"/>|)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public static int BinarySearch(int ok, int ng, Predicate<int> Ok)
         {
             while (Math.Abs(ok - ng) > 1)
@@ -99,6 +105,7 @@ namespace AtCoder
         /// <para>制約: <paramref name="Ok"/>(<paramref name="ok"/>) &amp;&amp; !<paramref name="Ok"/>(<paramref name="ng"/>)</para>
         /// <para>計算量: O(log |<paramref name="ok"/> - <paramref name="ng"/>|)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public static long BinarySearch(long ok, long ng, Predicate<long> Ok)
         {
             while (Math.Abs(ok - ng) > 1)

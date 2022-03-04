@@ -164,6 +164,7 @@ namespace AtCoder
         /// </list>
         /// <para>計算量: O(log n)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public int MaxRight(int l, Predicate<TValue> f)
         {
             Contract.Assert((uint)l <= (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(l)} && {nameof(l)} <= Length");
@@ -220,6 +221,7 @@ namespace AtCoder
         /// </list>
         /// <para>計算量: O(log n)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public int MinLeft(int r, Predicate<TValue> f)
         {
             Contract.Assert((uint)r <= (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(r)} && {nameof(r)} <= Length");

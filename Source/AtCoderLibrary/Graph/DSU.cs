@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using AtCoder.Internal;
 
 namespace AtCoder
@@ -32,6 +33,7 @@ namespace AtCoder
         /// <para>制約: 0≤<paramref name="a"/>, <paramref name="b"/>&lt;n</para>
         /// <para>計算量: ならしO(a(n))</para>
         /// </remarks>
+        [MethodImpl(256)]
         public int Merge(int a, int b)
         {
             Contract.Assert(0 <= a && a < _n, reason: $"IndexOutOfRange: 0 <= {nameof(a)} && {nameof(a)} < _n");
@@ -51,6 +53,7 @@ namespace AtCoder
         /// <para>制約: 0≤<paramref name="a"/>, <paramref name="b"/>&lt;n</para>
         /// <para>計算量: ならしO(a(n))</para>
         /// </remarks>
+        [MethodImpl(256)]
         public bool Same(int a, int b)
         {
             Contract.Assert(0 <= a && a < _n, reason: $"IndexOutOfRange: 0 <= {nameof(a)} && {nameof(a)} < _n");
@@ -65,6 +68,7 @@ namespace AtCoder
         /// <para>制約: 0≤<paramref name="a"/>&lt;n</para>
         /// <para>計算量: ならしO(a(n))</para>
         /// </remarks>
+        [MethodImpl(256)]
         public int Leader(int a)
         {
             Contract.Assert(0 <= a && a < _n, reason: $"IndexOutOfRange: 0 <= {nameof(a)} && {nameof(a)} < _n");
@@ -84,6 +88,7 @@ namespace AtCoder
         /// <para>制約: 0≤<paramref name="a"/>&lt;n</para>
         /// <para>計算量: ならしO(a(n))</para>
         /// </remarks>
+        [MethodImpl(256)]
         public int Size(int a)
         {
             Contract.Assert(0 <= a && a < _n, reason: $"IndexOutOfRange: 0 <= {nameof(a)} && {nameof(a)} < _n");
@@ -95,6 +100,7 @@ namespace AtCoder
         /// </summary>
         /// <para>計算量: O(n)</para>
         /// <returns>「一つの連結成分の頂点番号のリスト」のリスト。</returns>
+        [MethodImpl(256)]
         public int[][] Groups()
         {
             int[] leaderBuf = new int[_n];

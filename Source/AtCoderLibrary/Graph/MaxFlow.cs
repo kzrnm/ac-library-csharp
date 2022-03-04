@@ -59,6 +59,7 @@ namespace AtCoder
         /// </list>
         /// <para>計算量: ならしO(1)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public int AddEdge(int from, int to, TValue cap)
         {
             int m = _pos.Count;
@@ -84,6 +85,7 @@ namespace AtCoder
         /// <para>制約: m を追加された辺数として 0 ≤ i &lt; m</para>
         /// <para>計算量: O(1)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public Edge GetEdge(int i)
         {
             Contract.Assert((uint)i < (uint)_pos.Count, reason: $"IndexOutOfRange: 0 <= {nameof(i)} && {nameof(i)} < edgeCount");
@@ -100,6 +102,7 @@ namespace AtCoder
         /// <para>辺の順番はadd_edgeで追加された順番と同一。</para>
         /// <para>計算量: m を追加された辺数として O(m)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public Edge[] Edges()
         {
             var result = new Edge[_pos.Count];
@@ -121,6 +124,7 @@ namespace AtCoder
         /// <paramref name="newCap"/>, <paramref name="newFlow"/> へ変更します。
         /// </para>
         /// </remarks>
+        [MethodImpl(256)]
         public void ChangeEdge(int i, TValue newCap, TValue newFlow)
         {
             Contract.Assert((uint)i < (uint)_pos.Count, reason: $"IndexOutOfRange: 0 <= {nameof(i)} && {nameof(i)} < edgeCount");
@@ -173,6 +177,7 @@ namespace AtCoder
         /// </item>
         /// </list>
         /// </remarks>
+        [MethodImpl(256)]
         public TValue Flow(int s, int t)
         {
             return Flow(s, t, op.MaxValue);
@@ -220,6 +225,7 @@ namespace AtCoder
         /// </item>
         /// </list>
         /// </remarks>
+        [MethodImpl(256)]
         public TValue Flow(int s, int t, TValue flowLimit)
         {
             Contract.Assert((uint)s < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(s)} && {nameof(s)} < _n");
@@ -357,6 +363,7 @@ namespace AtCoder
         /// </item>
         /// </list>
         /// </remarks>
+        [MethodImpl(256)]
         public bool[] MinCut(int s)
         {
             var visited = new bool[_n];
@@ -400,9 +407,11 @@ namespace AtCoder
                 Flow = flow;
             }
 
+            [MethodImpl(256)]
             public override bool Equals(object obj)
                 => obj is Edge edge && Equals(edge);
 
+            [MethodImpl(256)]
             public bool Equals(Edge other)
                 => From == other.From &&
                        To == other.To &&
@@ -410,8 +419,8 @@ namespace AtCoder
                        EqualityComparer<TValue>.Default.Equals(Flow, other.Flow);
             public override int GetHashCode()
                 => HashCode.Combine(From, To, Cap, Flow);
-            public static bool operator ==(Edge left, Edge right) => left.Equals(right);
-            public static bool operator !=(Edge left, Edge right) => !left.Equals(right);
+            [MethodImpl(256)] public static bool operator ==(Edge left, Edge right) => left.Equals(right);
+            [MethodImpl(256)] public static bool operator !=(Edge left, Edge right) => !left.Equals(right);
         }
 
         internal struct EdgeInternal

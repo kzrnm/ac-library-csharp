@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using AtCoder.Internal;
 
 namespace AtCoder
@@ -16,6 +17,7 @@ namespace AtCoder
         /// <para>制約: 0≤|<paramref name="s"/>|≤10^8, <paramref name="sa"/> は <paramref name="s"/> の Suffix Array</para>
         /// <para>計算量: O(|<paramref name="s"/>|)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public static int[] LCPArray<T>(ReadOnlySpan<T> s, int[] sa)
         {
             Contract.Assert(1 <= s.Length, reason: $"{nameof(s)} must contain any");
@@ -48,7 +50,7 @@ namespace AtCoder
         /// <para>制約: 0≤|<paramref name="s"/>|≤10^8, <paramref name="sa"/> は <paramref name="s"/> の Suffix Array</para>
         /// <para>計算量: O(|<paramref name="s"/>|)</para>
         /// </remarks>
-        public static int[] LCPArray(string s, int[] sa) => LCPArray(s.AsSpan(), sa);
+        [MethodImpl(256)] public static int[] LCPArray(string s, int[] sa) => LCPArray(s.AsSpan(), sa);
 
         /// <summary>
         /// 数列 <paramref name="s"/> の LCP Array として、長さ |<paramref name="s"/>| の配列を返す。
@@ -58,7 +60,7 @@ namespace AtCoder
         /// <para>制約: 0≤|<paramref name="s"/>|≤10^8, <paramref name="sa"/> は <paramref name="s"/> の Suffix Array</para>
         /// <para>計算量: O(|<paramref name="s"/>|)</para>
         /// </remarks>
-        public static int[] LCPArray<T>(T[] s, int[] sa) => LCPArray((ReadOnlySpan<T>)s, sa);
+        [MethodImpl(256)] public static int[] LCPArray<T>(T[] s, int[] sa) => LCPArray((ReadOnlySpan<T>)s, sa);
 
         /// <summary>
         /// 数列 <paramref name="s"/> の LCP Array として、長さ |<paramref name="s"/>| の配列を返す。
@@ -68,7 +70,7 @@ namespace AtCoder
         /// <para>制約: 0≤|<paramref name="s"/>|≤10^8, <paramref name="sa"/> は <paramref name="s"/> の Suffix Array</para>
         /// <para>計算量: O(|<paramref name="s"/>|)</para>
         /// </remarks>
-        public static int[] LCPArray<T>(Span<T> s, int[] sa) => LCPArray((ReadOnlySpan<T>)s, sa);
+        [MethodImpl(256)] public static int[] LCPArray<T>(Span<T> s, int[] sa) => LCPArray((ReadOnlySpan<T>)s, sa);
         #endregion LCPArray
 
         #region SuffixArray
@@ -80,7 +82,7 @@ namespace AtCoder
         /// <para>制約: 0≤|<paramref name="s"/>|&lt;10^8</para>
         /// <para>計算量: O(|<paramref name="s"/>|)</para>
         /// </remarks>
-        public static int[] SuffixArray(string s) => SuffixArray(s.AsSpan());
+        [MethodImpl(256)] public static int[] SuffixArray(string s) => SuffixArray(s.AsSpan());
 
         /// <summary>
         /// 数列 <paramref name="s"/> の Suffix Array として、長さ |<paramref name="s"/>| の配列を返す。
@@ -90,7 +92,7 @@ namespace AtCoder
         /// <para>制約: 0≤|<paramref name="s"/>|&lt;10^8</para>
         /// <para>計算量: 時間O(|<paramref name="s"/>|log|<paramref name="s"/>|), 空間O(|<paramref name="s"/>|)</para>
         /// </remarks>
-        public static int[] SuffixArray<T>(T[] s) => SuffixArray((ReadOnlySpan<T>)s);
+        [MethodImpl(256)] public static int[] SuffixArray<T>(T[] s) => SuffixArray((ReadOnlySpan<T>)s);
 
         /// <summary>
         /// 数列 <paramref name="s"/> の Suffix Array として、長さ |<paramref name="s"/>| の配列を返す。
@@ -100,7 +102,7 @@ namespace AtCoder
         /// <para>制約: 0≤|<paramref name="s"/>|&lt;10^8</para>
         /// <para>計算量: 時間O(|<paramref name="s"/>|log|<paramref name="s"/>|), 空間O(|<paramref name="s"/>|)</para>
         /// </remarks>
-        public static int[] SuffixArray<T>(Span<T> s) => SuffixArray((ReadOnlySpan<T>)s);
+        [MethodImpl(256)] public static int[] SuffixArray<T>(Span<T> s) => SuffixArray((ReadOnlySpan<T>)s);
 
         /// <summary>
         /// 列 <paramref name="m"/> の Suffix Array として、長さ |<paramref name="m"/>| の配列を返す。
@@ -110,6 +112,7 @@ namespace AtCoder
         /// <para>制約: 0≤|<paramref name="m"/>|&lt;10^8</para>
         /// <para>計算量: 時間O(|<paramref name="m"/>|log|<paramref name="m"/>|), 空間O(|<paramref name="m"/>|)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public static int[] SuffixArray<T>(ReadOnlySpan<T> s)
         {
             var idx = CreateIdx(s);
@@ -128,6 +131,7 @@ namespace AtCoder
 
             return InternalString.SAIS(s2, now);
         }
+        [MethodImpl(256)]
         static int[] CreateIdx<T>(ReadOnlySpan<T> m)
         {
             var idx = Enumerable.Range(0, m.Length).ToArray();
@@ -143,6 +147,7 @@ namespace AtCoder
         /// <para>制約: 0≤|<paramref name="s"/>|&lt;10^8, <paramref name="s"/> のすべての要素 x について 0≤x≤<paramref name="upper"/></para>
         /// <para>計算量: O(|<paramref name="s"/>|+<paramref name="upper"/>)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public static int[] SuffixArray(int[] s, int upper)
         {
             Contract.Assert(0U <= (uint)upper, reason: $"{nameof(upper)} must be positive.");
@@ -159,6 +164,7 @@ namespace AtCoder
         /// <para>制約: 0≤|<paramref name="s"/>|≤10^8</para>
         /// <para>計算量: O(|<paramref name="s"/>|)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public static int[] ZAlgorithm<T>(ReadOnlySpan<T> s)
         {
             int n = s.Length;
@@ -183,7 +189,7 @@ namespace AtCoder
         /// <para>制約: 0≤|<paramref name="s"/>|≤10^8</para>
         /// <para>計算量: O(|<paramref name="s"/>|)</para>
         /// </remarks>
-        public static int[] ZAlgorithm(string s) => ZAlgorithm(s.AsSpan());
+        [MethodImpl(256)] public static int[] ZAlgorithm(string s) => ZAlgorithm(s.AsSpan());
 
         /// <summary>
         /// i 番目の要素は s[0..|<paramref name="s"/>|) と s[i..|<paramref name="s"/>|) の LCP(Longest Common Prefix) の長さであるような、長さ |<paramref name="s"/>| の配列を返す。
@@ -192,7 +198,7 @@ namespace AtCoder
         /// <para>制約: 0≤|<paramref name="s"/>|≤10^8</para>
         /// <para>計算量: O(|<paramref name="s"/>|)</para>
         /// </remarks>
-        public static int[] ZAlgorithm<T>(T[] s) => ZAlgorithm((ReadOnlySpan<T>)s);
+        [MethodImpl(256)] public static int[] ZAlgorithm<T>(T[] s) => ZAlgorithm((ReadOnlySpan<T>)s);
         #endregion ZAlgorithm
     }
     namespace Internal
@@ -238,6 +244,7 @@ namespace AtCoder
             /// <para>制約: 0≤|<paramref name="sm"/>|&lt;10^8</para>
             /// <para>計算量: 時間O(|<paramref name="sm"/>|(log|<paramref name="sm"/>|)^2), 空間O(|<paramref name="sm"/>|)</para>
             /// </remarks>
+            [MethodImpl(256)]
             internal static int[] SADoubling(ReadOnlySpan<int> s)
             {
                 var sa = Enumerable.Range(0, s.Length).ToArray();
@@ -280,7 +287,7 @@ namespace AtCoder
             /// <para>制約: 0≤|<paramref name="sm"/>|&lt;10^8</para>
             /// <para>計算量: O(|<paramref name="sm"/>|)</para>
             /// </remarks>
-            public static int[] SAIS(ReadOnlySpan<int> sm, int upper) => SAIS(sm, upper, 10, 40);
+            [MethodImpl(256)] public static int[] SAIS(ReadOnlySpan<int> sm, int upper) => SAIS(sm, upper, 10, 40);
 
             /// <summary>
             /// 数列 <paramref name="sm"/> の Suffix Array を SA-IS 等により求め、長さ |<paramref name="sm"/>| の配列を返す。
@@ -290,6 +297,7 @@ namespace AtCoder
             /// <para>制約: 0≤|<paramref name="sm"/>|&lt;10^8</para>
             /// <para>計算量: O(|<paramref name="sm"/>|)</para>
             /// </remarks>
+            [MethodImpl(256)]
             public static int[] SAIS(ReadOnlySpan<int> s, int upper, int thresholdNaive, int thresholdDouling)
             {
                 var n = s.Length;
@@ -445,6 +453,7 @@ namespace AtCoder
 
                 return sa;
             }
+            [MethodImpl(256)]
             static void Induce(SimpleList<int> lms, ReadOnlySpan<int> s, int[] sa, bool[] ls, int[] sumS, int[] sumL)
             {
                 var n = s.Length;

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using AtCoder.Internal;
 
 namespace AtCoder
@@ -36,6 +37,7 @@ namespace AtCoder
         /// <para>制約: 0≤<paramref name="i"/>&lt;n, 0≤<paramref name="j"/>&lt;n</para>
         /// <para>計算量: ならし O(1)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public void AddClause(int i, bool f, int j, bool g)
         {
             Contract.Assert((uint)i < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(i)} && {nameof(i)} < _n");
@@ -52,6 +54,7 @@ namespace AtCoder
         /// <para>計算量: 足した制約の個数を m として O(n+m)</para>
         /// </remarks>
         /// <returns>割当が存在するならば <c>true</c>、そうでないなら <c>false</c>。</returns>
+        [MethodImpl(256)]
         public bool Satisfiable()
         {
             var sccs = scc.SCC();
@@ -88,6 +91,6 @@ namespace AtCoder
         /// <para>計算量: O(n)</para>
         /// </remarks>
         /// <returns>最後に呼んだ <see cref="Satisfiable"/> の、クローズを満たす割当の配列。</returns>
-        public bool[] Answer() => _answer;
+        [MethodImpl(256)] public bool[] Answer() => _answer;
     }
 }

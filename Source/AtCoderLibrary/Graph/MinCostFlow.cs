@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using AtCoder.Internal;
 using AtCoder.Operators;
 
@@ -57,6 +58,7 @@ namespace AtCoder
         /// </list>
         /// <para>計算量: ならしO(1)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public int AddEdge(int from, int to, TCap cap, TCost cost)
         {
             Contract.Assert((uint)from < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(from)} && {nameof(from)} < _n");
@@ -77,6 +79,7 @@ namespace AtCoder
         /// <para>制約: m を追加された辺数として 0 ≤ i &lt; m</para>
         /// <para>計算量: O(1)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public Edge GetEdge(int i)
         {
             Contract.Assert((uint)i < (uint)_edges.Count, reason: $"IndexOutOfRange: 0 <= {nameof(i)} && {nameof(i)} < edgeCount");
@@ -90,7 +93,7 @@ namespace AtCoder
         /// <para>辺の順番はadd_edgeで追加された順番と同一。</para>
         /// <para>計算量: m を追加された辺数として O(m)</para>
         /// </remarks>
-        public Span<Edge> Edges() => _edges.AsSpan();
+        [MethodImpl(256)] public Span<Edge> Edges() => _edges.AsSpan();
 
         /// <summary>
         /// 頂点 <paramref name="s"/> から <paramref name="t"/> へ流せる限り流し、
@@ -100,6 +103,7 @@ namespace AtCoder
         /// <para>制約: Slope関数と同じ</para>
         /// <para>計算量: Slope関数と同じ</para>
         /// </remarks>
+        [MethodImpl(256)]
         public (TCap cap, TCost cost) Flow(int s, int t)
         {
             return Flow(s, t, capOp.MaxValue);
@@ -114,6 +118,7 @@ namespace AtCoder
         /// <para>制約: Slope関数と同じ</para>
         /// <para>計算量: Slope関数と同じ</para>
         /// </remarks>
+        [MethodImpl(256)]
         public (TCap cap, TCost cost) Flow(int s, int t, TCap flowLimit)
         {
             return Slope(s, t, flowLimit).Last();
@@ -166,6 +171,7 @@ namespace AtCoder
         /// 計算量: F を流量、m を追加した辺の本数として 
         /// O(F(n + m) log (n + m))
         /// </remarks>
+        [MethodImpl(256)]
         public List<(TCap cap, TCost cost)> Slope(int s, int t)
         {
             return Slope(s, t, capOp.MaxValue);
@@ -220,6 +226,7 @@ namespace AtCoder
         /// 計算量: F を流量、m を追加した辺の本数として 
         /// O(F(n + m) log (n + m))
         /// </remarks>
+        [MethodImpl(256)]
         public List<(TCap cap, TCost cost)> Slope(int s, int t, TCap flowLimit)
         {
             Contract.Assert((uint)s < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(s)} && {nameof(s)} < _n");
@@ -272,6 +279,7 @@ namespace AtCoder
             public int[] prevE;
             public int s, t, _n;
 
+            [MethodImpl(256)]
             public bool DualRef()
             {
                 dist.AsSpan().Fill(costOp.MaxValue);
@@ -337,6 +345,7 @@ namespace AtCoder
                 return true;
             }
         }
+        [MethodImpl(256)]
         private List<(TCap cap, TCost cost)> Slope(CSR<EdgeInternal> g, int s, int t, TCap flowLimit)
         {
             // variants (C = maxcost):
@@ -417,6 +426,7 @@ namespace AtCoder
             }
 
             public override bool Equals(object obj) => obj is Edge edge && Equals(edge);
+            [MethodImpl(256)]
             public bool Equals(Edge other) => From == other.From &&
                        To == other.To &&
                        EqualityComparer<TCap>.Default.Equals(Cap, other.Cap) &&

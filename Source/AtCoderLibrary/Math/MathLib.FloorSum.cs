@@ -1,4 +1,5 @@
-﻿using AtCoder.Internal;
+﻿using System.Runtime.CompilerServices;
+using AtCoder.Internal;
 
 namespace AtCoder
 {
@@ -14,6 +15,7 @@ namespace AtCoder
         /// <para>計算量: O(log(m))</para>
         /// </remarks>
         /// <returns></returns>
+        [MethodImpl(256)]
         public static long FloorSum(long n, long m, long a, long b)
         {
             Contract.Assert(0 <= n && n < (1L << 32));

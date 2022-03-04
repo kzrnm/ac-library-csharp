@@ -1,4 +1,5 @@
-﻿using AtCoder.Internal;
+﻿using System.Runtime.CompilerServices;
+using AtCoder.Internal;
 
 namespace AtCoder
 {
@@ -12,6 +13,7 @@ namespace AtCoder
         /// <para>計算量: O(nloglcm(<paramref name="m"/>))</para>
         /// </remarks>
         /// <returns>答えは(存在するならば) y,z(0≤y&lt;z=lcm(<paramref name="m"/>[i])) を用いて x≡y(mod z) の形で書ける。答えがない場合は(0,0)、n=0 の時は(0,1)、それ以外の場合は(y,z)。</returns>
+        [MethodImpl(256)]
         public static (long y, long m) CRT(long[] r, long[] m)
         {
             Contract.Assert(r.Length == m.Length, reason: $"Length of {nameof(r)} and {nameof(m)} must be same.");

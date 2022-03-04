@@ -6,7 +6,6 @@ using AtCoder.Internal;
 
 namespace AtCoder
 {
-    using static EditorBrowsableState;
     /// <summary>    
     /// 長さ N の配列に対し、
     /// <list type="bullet">
@@ -31,9 +30,9 @@ namespace AtCoder
 
         internal readonly int log;
         internal readonly int size;
-        [EditorBrowsable(Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public readonly TValue[] d;
-        [EditorBrowsable(Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public readonly F[] lz;
 
 
@@ -74,21 +73,18 @@ namespace AtCoder
         }
 
         [MethodImpl(256)]
-
-        [EditorBrowsable(Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public void Update(int k) => d[k] = op.Operate(d[2 * k], d[2 * k + 1]);
 
         [MethodImpl(256)]
-
-        [EditorBrowsable(Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public void AllApply(int k, F f)
         {
             d[k] = op.Mapping(f, d[k]);
             if (k < size) lz[k] = op.Composition(f, lz[k]);
         }
         [MethodImpl(256)]
-
-        [EditorBrowsable(Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public void Push(int k)
         {
             AllApply(2 * k, lz[k]);
@@ -179,6 +175,7 @@ namespace AtCoder
         /// <para>制約: 0≤<paramref name="p"/>≤n</para>
         /// <para>計算量: O(log n)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public void Apply(int p, F f)
         {
             Contract.Assert((uint)p < (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(p)} && {nameof(p)} < Length");
@@ -195,6 +192,7 @@ namespace AtCoder
         /// <para>制約: 0≤<paramref name="l"/>≤<paramref name="r"/>≤n</para>
         /// <para>計算量: O(log n)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public void Apply(int l, int r, F f)
         {
             Contract.Assert(0U <= (uint)l && (uint)l <= (uint)r && (uint)r <= (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(l)} && {nameof(l)} <= {nameof(r)} && {nameof(r)} <= Length");
@@ -258,6 +256,7 @@ namespace AtCoder
         /// </list>
         /// <para>計算量: O(log n)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public int MaxRight(int l, Predicate<TValue> g)
         {
             Contract.Assert((uint)l <= (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(l)} && {nameof(l)} <= Length");
@@ -317,6 +316,7 @@ namespace AtCoder
         /// </list>
         /// <para>計算量: O(log n)</para>
         /// </remarks>
+        [MethodImpl(256)]
         public int MinLeft(int r, Predicate<TValue> g)
         {
             Contract.Assert((uint)r <= (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(r)} && {nameof(r)} <= Length");

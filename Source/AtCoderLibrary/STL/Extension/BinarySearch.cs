@@ -8,6 +8,7 @@ namespace AtCoder.Extension
     {
         private struct DefaultComparer<T> : IComparer<T> where T : IComparable<T>
         {
+            [MethodImpl(256)]
             public int Compare(T x, T y) => x.CompareTo(y);
         }
 
@@ -167,6 +168,7 @@ namespace AtCoder.Extension
         /// </remarks>
         [MethodImpl(256)]
         public static int UpperBound<T>(this ReadOnlySpan<T> a, T v) where T : IComparable<T> => BinarySearch(a, v, default(DefaultComparer<T>), false);
+        [MethodImpl(256)]
         private static int BinarySearch<T, TOp>(this IList<T> a, T v, TOp cmp, bool isLowerBound)
             where TOp : IComparer<T>
         {
@@ -181,6 +183,7 @@ namespace AtCoder.Extension
             }
             return ok;
         }
+        [MethodImpl(256)]
         private static int BinarySearch<T, TOp>(this ReadOnlySpan<T> a, T v, TOp cmp, bool isLowerBound)
             where TOp : IComparer<T>
         {

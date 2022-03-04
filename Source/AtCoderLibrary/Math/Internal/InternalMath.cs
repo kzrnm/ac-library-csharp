@@ -21,6 +21,7 @@ namespace AtCoder.Internal
         /// <remarks>
         /// 制約: <typeparamref name="TMod"/> は素数
         /// </remarks>
+        [MethodImpl(256)]
         public static int PrimitiveRoot<TMod>() where TMod : struct, IStaticMod
         {
             uint m = default(TMod).Mod;
@@ -81,6 +82,7 @@ namespace AtCoder.Internal
         /// <remarks>
         /// <para>制約: 1≤<paramref name="b"/></para>
         /// </remarks>
+        [MethodImpl(256)]
         public static (long, long) InvGCD(long a, long b)
         {
             a = SafeMod(a, b);
@@ -123,6 +125,7 @@ namespace AtCoder.Internal
         /// <summary>
         /// <paramref name="n"/> が素数かを返します。
         /// </summary>
+        [MethodImpl(256)]
         public static bool IsPrime(int n)
         {
             Contract.Assert(0 <= n);
@@ -150,6 +153,7 @@ namespace AtCoder.Internal
             return true;
         }
 
+        [MethodImpl(256)]
         public static ulong FloorSumUnsigned(ulong n, ulong m, ulong a, ulong b)
         {
             ulong ans = 0;
