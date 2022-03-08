@@ -139,7 +139,7 @@ namespace AtCoder.Internal
             foreach (long a in bases)
             {
                 long t = d;
-                long y = MathLib.PowMod(a, t, n);
+                long y = PowMod(a, t, n);
                 while (t != n - 1 && y != 1 && y != n - 1)
                 {
                     y = y * y % n;
@@ -151,6 +151,24 @@ namespace AtCoder.Internal
                 }
             }
             return true;
+        }
+        /// <summary>
+        /// Same as <see cref="MathLib.PowMod(long, long, int)"/>
+        /// </summary>
+        [MethodImpl(256)]
+        private static long PowMod(long x, long n, int m)
+        {
+            Contract.Assert(0 <= n && 1 <= m, reason: $"0 <= {nameof(n)} && 1 <= {nameof(m)}");
+            if (m == 1) return 0;
+            Barrett barrett = new Barrett((uint)m);
+            uint r = 1, y = (uint)SafeMod(x, m);
+            while (0 < n)
+            {
+                if ((n & 1) != 0) r = barrett.Mul(r, y);
+                y = barrett.Mul(y, y);
+                n >>= 1;
+            }
+            return r;
         }
 
         [MethodImpl(256)]
