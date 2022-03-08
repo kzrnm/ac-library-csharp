@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace AtCoder.Internal
 {
-    public static partial class InternalMath
+    public static class InternalMath
     {
         private static readonly Dictionary<uint, int> primitiveRootsCache = new Dictionary<uint, int>()
         {
@@ -135,7 +135,7 @@ namespace AtCoder.Internal
             if (n % 2 == 0) return false;
             long d = n - 1;
             while (d % 2 == 0) d /= 2;
-            ReadOnlySpan<long> bases = stackalloc long[3] { 2, 7, 61 };
+            ReadOnlySpan<byte> bases = stackalloc byte[3] { 2, 7, 61 };
             foreach (long a in bases)
             {
                 long t = d;
