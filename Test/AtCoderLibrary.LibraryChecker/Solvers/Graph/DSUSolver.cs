@@ -1,13 +1,12 @@
-﻿using Kzrnm.Competitive;
-using Kzrnm.Competitive.IO;
+﻿using Kzrnm.Competitive.IO;
 
 namespace AtCoder.Solvers.Graph
 {
-    public class DSUSolver : ISolver
+    public class DSUSolver : Solver
     {
-        public string Name => "unionfind";
-
-        public void Solve(ConsoleReader cr, ConsoleWriter cw)
+        public override string Name => "unionfind";
+        public override double TimeoutSecond => 5;
+        public override void Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int n = cr;
             int q = cr;

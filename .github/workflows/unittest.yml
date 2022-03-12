@@ -27,3 +27,14 @@ jobs:
         3.1.x
         6.0.x
       test-logger: GitHubActions
+
+  library-checker:
+    uses: kzrnm/Competitive.LibraryChecker/.github/workflows/competitive-library-checker.yml@v1.1.0
+    with:
+      target: AtCoderLibrary.sln
+      dll-name: AtCoderLibrary.LibraryChecker.dll
+      dotnet-version: |
+        3.0.x
+        3.1.x
+        6.0.x
+      timeout-coefficient: 1.2

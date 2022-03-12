@@ -1,13 +1,12 @@
-﻿using Kzrnm.Competitive;
-using Kzrnm.Competitive.IO;
+﻿using Kzrnm.Competitive.IO;
 
 namespace AtCoder.Solvers.MathN
 {
-    public class ConvolutionSolver : ISolver
+    public class ConvolutionSolver : Solver
     {
-        public string Name => "convolution_mod";
-
-        public void Solve(ConsoleReader cr, ConsoleWriter cw)
+        public override string Name => "convolution_mod";
+        public override double TimeoutSecond => 5;
+        public override void Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int n = cr;
             int m = cr;

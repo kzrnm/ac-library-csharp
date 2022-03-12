@@ -14,6 +14,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Competitive.IO" Version="0.7.0" />
+		<PackageReference Include="Kzrnm.Competitive.LibraryChecker" Version="1.1.0" />
 		<PackageReference Include="ProcessX" Version="1.5.4" />
 	</ItemGroup>
 

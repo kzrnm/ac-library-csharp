@@ -1,13 +1,12 @@
-﻿using Kzrnm.Competitive;
-using Kzrnm.Competitive.IO;
+﻿using Kzrnm.Competitive.IO;
 
 namespace AtCoder.Solvers.String
 {
-    public class LcpArraySolver : ISolver
+    public class LcpArraySolver : Solver
     {
-        public string Name => "number_of_substrings";
-
-        public void Solve(ConsoleReader cr, ConsoleWriter cw)
+        public override string Name => "number_of_substrings";
+        public override double TimeoutSecond => 5;
+        public override void Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             string s = cr;
             var sa = StringLib.SuffixArray(s);

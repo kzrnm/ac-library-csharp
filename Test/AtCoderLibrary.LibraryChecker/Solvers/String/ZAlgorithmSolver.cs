@@ -1,13 +1,12 @@
-﻿using Kzrnm.Competitive;
-using Kzrnm.Competitive.IO;
+﻿using Kzrnm.Competitive.IO;
 
 namespace AtCoder.Solvers.String
 {
-    public class ZAlgorithmSolver : ISolver
+    public class ZAlgorithmSolver : Solver
     {
-        public string Name => "zalgorithm";
-
-        public void Solve(ConsoleReader cr, ConsoleWriter cw)
+        public override string Name => "zalgorithm";
+        public override double TimeoutSecond => 5;
+        public override void Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             string s = cr;
             cw.WriteLineJoin(StringLib.ZAlgorithm(s));

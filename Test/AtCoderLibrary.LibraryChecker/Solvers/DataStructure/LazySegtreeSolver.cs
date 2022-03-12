@@ -1,13 +1,12 @@
-﻿using Kzrnm.Competitive;
-using Kzrnm.Competitive.IO;
+﻿using Kzrnm.Competitive.IO;
 
 namespace AtCoder.Solvers.DataStructure
 {
-    public class LazySegtreeSolver : ISolver
+    public class LazySegtreeSolver : Solver
     {
-        public string Name => "range_affine_range_sum";
-
-        public void Solve(ConsoleReader cr, ConsoleWriter cw)
+        public override string Name => "range_affine_range_sum";
+        public override double TimeoutSecond => 5;
+        public override void Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int N = cr;
             int Q = cr;
