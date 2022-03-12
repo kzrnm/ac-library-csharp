@@ -1,7 +1,7 @@
-﻿using Kzrnm.Competitive.IO;
-using Kzrnm.Competitive.LibraryChecker;
-using System.IO;
+﻿using System.IO;
 using System.Text;
+using Kzrnm.Competitive.IO;
+using Kzrnm.Competitive.LibraryChecker;
 
 namespace AtCoder.Solvers
 {
