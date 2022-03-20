@@ -27,15 +27,26 @@ jobs:
       dotnet-version: 6.0.x
 
   library-checker:
-    uses: kzrnm/Competitive.LibraryChecker/.github/workflows/competitive-library-checker.yml@v1
-    with:
-      target: Test/AtCoderLibrary.LibraryChecker/AtCoderLibrary.LibraryChecker.csproj
-      dll-name: AtCoderLibrary.LibraryChecker.dll
-      dotnet-version: |
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: |
             3.0.x
             3.1.x
             6.0.x
-      timeout-coefficient: 1.2
+      - uses: actions/cache@v2
+        with:
+          path: ${{ github.workspace }}/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+      - run: dotnet tool install -g SourceExpander.Console
+      - uses: actions/setup-python@v1
+      - run: pip3 install git+https://github.com/kzrnm/verification-helper
+      - name: Run tests
+        run: oj-verify run
 
   build:
     runs-on: ubuntu-latest
