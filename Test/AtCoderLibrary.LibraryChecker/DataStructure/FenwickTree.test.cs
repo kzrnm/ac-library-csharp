@@ -2,7 +2,7 @@
 
 namespace AtCoder.Solvers.DataStructure
 {
-    public class FenwickTreeSolver
+    public class FenwickTreeTest
     {
         static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/point_add_range_sum

@@ -3,7 +3,7 @@ using Kzrnm.Competitive.IO;
 
 namespace AtCoder.Solvers
 {
-    public class TwoSatSolver
+    public class TwoSatTest
     {
         static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/two_sat

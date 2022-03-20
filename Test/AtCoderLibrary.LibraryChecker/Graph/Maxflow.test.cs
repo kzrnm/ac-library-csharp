@@ -2,7 +2,7 @@
 
 namespace AtCoder.Solvers.Graph
 {
-    public class MaxflowSolver
+    public class MaxflowTest
     {
         static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/bipartitematching

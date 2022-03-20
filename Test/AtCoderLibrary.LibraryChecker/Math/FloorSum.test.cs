@@ -2,7 +2,7 @@
 
 namespace AtCoder.Solvers.MathN
 {
-    public class FloorSumSolver
+    public class FloorSumTest
     {
         static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/sum_of_floor_of_linear

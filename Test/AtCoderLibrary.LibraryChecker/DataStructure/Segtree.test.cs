@@ -2,7 +2,7 @@
 
 namespace AtCoder.Solvers.DataStructure
 {
-    public class SegtreeSolver
+    public class SegtreeTest
     {
         static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/point_set_range_composite

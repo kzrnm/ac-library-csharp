@@ -2,7 +2,7 @@
 
 namespace AtCoder.Solvers.DataStructure
 {
-    public class LazySegtreeSolver
+    public class LazySegtreeTest
     {
         static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/range_affine_range_sum

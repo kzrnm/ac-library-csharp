@@ -2,7 +2,7 @@
 
 namespace AtCoder.Solvers.String
 {
-    public class LcpArraySolver
+    public class LcpArrayTest
     {
         static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/number_of_substrings
