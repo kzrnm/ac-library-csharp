@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<OutputType>Exe</OutputType>
+		<OutputType>Library</OutputType>
 		<TargetFramework>netcoreapp3.1</TargetFramework>
 		<RootNamespace>AtCoder</RootNamespace>
 
@@ -13,8 +13,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Competitive.IO" Version="0.7.0" />
-		<PackageReference Include="Kzrnm.Competitive.LibraryChecker" Version="1.1.0" />
+		<PackageReference Include="Competitive.IO" Version="0.9.1" />
 		<PackageReference Include="ProcessX" Version="1.5.4" />
 	</ItemGroup>
 
