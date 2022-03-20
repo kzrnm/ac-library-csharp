@@ -2,11 +2,11 @@
 
 namespace AtCoder.Solvers.DataStructure
 {
-    public class FenwickTreeSolver : Solver
+    public class FenwickTreeSolver
     {
-        public override string Name => "point_add_range_sum";
-        public override double TimeoutSecond => 5;
-        public override void Solve(ConsoleReader cr, ConsoleWriter cw)
+        static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
+        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/point_add_range_sum
+        static void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
             int Q = cr;

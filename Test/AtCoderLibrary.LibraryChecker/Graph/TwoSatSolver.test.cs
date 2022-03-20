@@ -3,11 +3,11 @@ using Kzrnm.Competitive.IO;
 
 namespace AtCoder.Solvers
 {
-    public class TwoSatSolver : Solver
+    public class TwoSatSolver
     {
-        public override string Name => "two_sat";
-        public override double TimeoutSecond => 5;
-        public override void Solve(ConsoleReader cr, ConsoleWriter cw)
+        static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
+        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/two_sat
+        static void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             _ = cr.Ascii();
             _ = cr.Ascii();
@@ -29,7 +29,7 @@ namespace AtCoder.Solvers
             if (twoSat.Satisfiable())
             {
                 cw.WriteLine("s SATISFIABLE");
-                cw.StreamWriter.Write("v ");
+                cw.Write("v ");
                 var res = new int[n + 1];
                 var answer = twoSat.Answer();
                 for (int i = 0; i < n; i++)

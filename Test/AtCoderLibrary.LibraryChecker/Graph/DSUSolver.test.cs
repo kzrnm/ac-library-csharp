@@ -2,11 +2,11 @@
 
 namespace AtCoder.Solvers.Graph
 {
-    public class DSUSolver : Solver
+    public class DSUSolver
     {
-        public override string Name => "unionfind";
-        public override double TimeoutSecond => 5;
-        public override void Solve(ConsoleReader cr, ConsoleWriter cw)
+        static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
+        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/unionfind
+        static void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int n = cr;
             int q = cr;

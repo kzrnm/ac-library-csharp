@@ -2,11 +2,11 @@
 
 namespace AtCoder.Solvers.Graph
 {
-    public class SccSolver : Solver
+    public class SccSolver
     {
-        public override string Name => "scc";
-        public override double TimeoutSecond => 5;
-        public override void Solve(ConsoleReader cr, ConsoleWriter cw)
+        static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
+        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/scc
+        static void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int n = cr;
             int m = cr;
@@ -25,8 +25,8 @@ namespace AtCoder.Solvers.Graph
             cw.WriteLine(scc.Length);
             foreach (var v in scc)
             {
-                cw.StreamWriter.Write(v.Length);
-                cw.StreamWriter.Write(' ');
+                cw.Write(v.Length);
+                cw.Write(' ');
                 cw.WriteLineJoin(v);
             }
         }

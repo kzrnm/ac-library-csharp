@@ -2,11 +2,11 @@
 
 namespace AtCoder.Solvers.String
 {
-    public class LcpArraySolver : Solver
+    public class LcpArraySolver
     {
-        public override string Name => "number_of_substrings";
-        public override double TimeoutSecond => 5;
-        public override void Solve(ConsoleReader cr, ConsoleWriter cw)
+        static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
+        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/number_of_substrings
+        static void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             string s = cr;
             var sa = StringLib.SuffixArray(s);

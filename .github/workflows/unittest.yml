@@ -30,12 +30,31 @@ jobs:
       test-logger: GitHubActions
 
   library-checker:
-    uses: kzrnm/Competitive.LibraryChecker/.github/workflows/competitive-library-checker.yml@v1.1.0
-    with:
-      target: AtCoderLibrary.sln
-      dll-name: AtCoderLibrary.LibraryChecker.dll
-      dotnet-version: |
-        3.0.x
-        3.1.x
-        6.0.x
-      timeout-coefficient: 1.2
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: |
+            3.0.x
+            3.1.x
+            6.0.x
+      - uses: actions/cache@v2
+        name: Cache NuGet
+        with:
+          path: ${{ github.workspace }}/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+      - uses: actions/cache@v2
+        name: Cache pip
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+      - run: dotnet tool install -g SourceExpander.Console
+      - uses: actions/setup-python@v1
+      - run: pip3 install git+https://github.com/kzrnm/verification-helper
+      - name: Run tests
+        run: oj-verify run
