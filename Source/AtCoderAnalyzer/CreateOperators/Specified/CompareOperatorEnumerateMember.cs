@@ -1,7 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
-namespace AtCoderAnalyzer.CreateOperators
+namespace AtCoderAnalyzer.CreateOperators.Specified
 {
     internal class CompareOperatorEnumerateMember : OperatorEnumerateMember
     {

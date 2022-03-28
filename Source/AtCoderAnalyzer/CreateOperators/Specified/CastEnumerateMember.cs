@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace AtCoderAnalyzer.CreateOperators
+namespace AtCoderAnalyzer.CreateOperators.Specified
 {
     internal class CastEnumerateMember : EnumerateMember
     {

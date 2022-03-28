@@ -1,17 +1,17 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
-namespace AtCoderAnalyzer.CreateOperators
+namespace AtCoderAnalyzer.CreateOperators.Specified
 {
-    internal class SubtractEnumerateMember : OperatorEnumerateMember
+    internal class AdditionEnumerateMember : OperatorEnumerateMember
     {
-        internal SubtractEnumerateMember(ITypeSymbol typeSymbol) : base(typeSymbol) { }
+        internal AdditionEnumerateMember(ITypeSymbol typeSymbol) : base(typeSymbol) { }
 
         protected override SyntaxKind? GetSyntaxKind(IMethodSymbol symbol)
             => symbol switch
             {
                 { Parameters: { Length: not 2 } } => null,
-                { Name: "Subtract" } => SyntaxKind.SubtractExpression,
+                { Name: "Add" } => SyntaxKind.AddExpression,
                 _ => null,
             };
     }

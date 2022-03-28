@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using AtCoderAnalyzer.CreateOperators.Specified;
 using AtCoderAnalyzer.Helpers;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -14,23 +15,20 @@ namespace AtCoderAnalyzer.CreateOperators
         {
             TypeSymbol = typeSymbol;
         }
-        public static EnumerateMember Create(ITypeSymbol typeSymbol)
+        public static EnumerateMember Create(ITypeSymbol typeSymbol) => typeSymbol.OriginalDefinition.ToDisplayString() switch
         {
-            return typeSymbol.OriginalDefinition.ToDisplayString() switch
-            {
-                "AtCoder.Operators.IAdditionOperator<T>" => new AdditionEnumerateMember(typeSymbol),
-                "AtCoder.Operators.ISubtractOperator<T>" => new SubtractEnumerateMember(typeSymbol),
-                "AtCoder.Operators.IMultiplicationOperator<T>" => new MultiplicationEnumerateMember(typeSymbol),
-                "AtCoder.Operators.IDivisionOperator<T>" => new DivisionEnumerateMember(typeSymbol),
-                "AtCoder.Operators.IUnaryNumOperator<T>" => new UnaryNumEnumerateMember(typeSymbol),
-                "AtCoder.Operators.ICompareOperator<T>" => new CompareOperatorEnumerateMember(typeSymbol),
-                "AtCoder.Operators.IMinMaxValue<T>" => new MinMaxValueEnumerateMember(typeSymbol),
-                "AtCoder.Operators.IShiftOperator<T>" => new ShiftEnumerateMember(typeSymbol),
-                "AtCoder.Operators.ICastOperator<TFrom, TTo>" => new CastEnumerateMember(typeSymbol),
-                "System.Collections.Generic.IComparer<T>" => new ComparerEnumerateMember(typeSymbol),
-                _ => new EnumerateMember(typeSymbol),
-            };
-        }
+            "AtCoder.Operators.IAdditionOperator<T>" => new AdditionEnumerateMember(typeSymbol),
+            "AtCoder.Operators.ISubtractOperator<T>" => new SubtractEnumerateMember(typeSymbol),
+            "AtCoder.Operators.IMultiplicationOperator<T>" => new MultiplicationEnumerateMember(typeSymbol),
+            "AtCoder.Operators.IDivisionOperator<T>" => new DivisionEnumerateMember(typeSymbol),
+            "AtCoder.Operators.IUnaryNumOperator<T>" => new UnaryNumEnumerateMember(typeSymbol),
+            "AtCoder.Operators.ICompareOperator<T>" => new CompareOperatorEnumerateMember(typeSymbol),
+            "AtCoder.Operators.IMinMaxValue<T>" => new MinMaxValueEnumerateMember(typeSymbol),
+            "AtCoder.Operators.IShiftOperator<T>" => new ShiftEnumerateMember(typeSymbol),
+            "AtCoder.Operators.ICastOperator<TFrom, TTo>" => new CastEnumerateMember(typeSymbol),
+            "System.Collections.Generic.IComparer<T>" => new ComparerEnumerateMember(typeSymbol),
+            _ => new EnumerateMember(typeSymbol),
+        };
 
         public IEnumerable<(MemberDeclarationSyntax Syntax, bool IsMethod)> EnumerateMemberSyntax()
         {
