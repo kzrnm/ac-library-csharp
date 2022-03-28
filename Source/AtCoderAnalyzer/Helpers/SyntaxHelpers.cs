@@ -31,29 +31,23 @@ namespace AtCoderAnalyzer.Helpers
                     )));
         }
 
-        public static MemberAccessExpressionSyntax AggressiveInliningMember
-            = MemberAccessExpression(
+        public static MemberAccessExpressionSyntax AggressiveInliningMember(string methodImplOptions)
+            => MemberAccessExpression(
                 SyntaxKind.SimpleMemberAccessExpression,
-                IdentifierName("MethodImplOptions"),
-                IdentifierName("AggressiveInlining"));
-
-        public static readonly AttributeArgumentSyntax AggressiveInliningArgument
-            = AttributeArgument(AggressiveInliningMember);
-
-
-        public static readonly AttributeSyntax AggressiveInliningAttribute
-            = Attribute(ParseName("MethodImpl"))
-                    .AddArgumentListArguments(AggressiveInliningArgument);
-
-        public static readonly AttributeListSyntax AggressiveInliningAttributeList
-            = AttributeList(
-                SingletonSeparatedList(AggressiveInliningAttribute));
+                ParseExpression(methodImplOptions), IdentifierName("AggressiveInlining"));
+        public static AttributeSyntax AggressiveInliningAttribute(string methodImplAttribute, string methodImplOptions)
+            => Attribute(
+                ParseName(methodImplAttribute.EndsWith("Attribute")
+                    ? methodImplAttribute.Substring(0, methodImplAttribute.Length - "Attribute".Length)
+                    : methodImplAttribute)
+            ).AddArgumentListArguments(AttributeArgument(AggressiveInliningMember(methodImplOptions)));
+        public static AttributeListSyntax AggressiveInliningAttributeList(string methodImplAttribute, string methodImplOptions)
+            => AttributeList(SingletonSeparatedList(AggressiveInliningAttribute(methodImplAttribute, methodImplOptions)));
 
         public static readonly ArrowExpressionClauseSyntax ArrowDefault
             = ArrowExpressionClause(
                 LiteralExpression(SyntaxKind.DefaultLiteralExpression));
 
-        public static readonly SyntaxToken SemicolonToken
-            = Token(SyntaxKind.SemicolonToken);
+        public static readonly SyntaxToken SemicolonToken = Token(SyntaxKind.SemicolonToken);
     }
 }

@@ -210,18 +210,16 @@ struct Op : ILazySegtreeOperator<long, int>
 ";
             var fixedSource = @"
 using AtCoder;
-using System.Runtime.CompilerServices;
-
 struct Op : ILazySegtreeOperator<long, int>
 {
     public long Identity => 0L;
     public int FIdentity => 0;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public int Composition(int f, int g) => 0;
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public long Mapping(int f, long x) => 0L;
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public long Operate(long x, long y) => 0L;
 }
 ";
@@ -442,18 +440,16 @@ struct Def<T> : IAny<T> {
 ";
             var fixedSource = @"
 using AtCoder;
-using System.Runtime.CompilerServices;
-
 [IsOperator]
 public interface IAny<T> {
     T Fun1();
     string Fun2(T v);
 }
 struct Def<T> : IAny<T> {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public T Fun1() => default;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public string Fun2(T v)
     {
         return v.ToString();
@@ -464,5 +460,27 @@ struct Def<T> : IAny<T> {
                 VerifyCS.Diagnostic().WithSpan(8, 1, 14, 2).WithArguments("Fun1, Fun2"),
                 fixedSource);
         }
+
+        [Fact]
+        public async Task UsingAlias()
+        {
+            var source = @"
+using AtCoder;
+using System.Runtime.CompilerServices;
+struct Op : ILazySegtreeOperator<long, int>
+{
+    public long Identity => 0L;
+    public int FIdentity => 0;
+    [MethodImpl(256)]
+    public int Composition(int f, int g) => 0;
+    [MethodImpl(256)]
+    public long Mapping(int f, long x) => 0L;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public long Operate(long x, long y) => 0L;
+}
+";
+            await VerifyCS.VerifyAnalyzerAsync(source);
+        }
+
     }
 }

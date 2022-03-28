@@ -10,7 +10,6 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using static AtCoderAnalyzer.Helpers.Constants;
 
 namespace AtCoderAnalyzer
 {
@@ -102,11 +101,11 @@ namespace AtCoderAnalyzer
                     .ToImmutableArray();
             }
 
-
             var action = CodeAction.Create(title: title,
                createChangedDocument: c => AddOperatorType(
                    context.Document,
                    root,
+                   semanticModel,
                    constraintArrayDic.ToImmutable()),
                equivalenceKey: title);
             context.RegisterCodeFix(action, diagnostic);
@@ -115,57 +114,62 @@ namespace AtCoderAnalyzer
         private async Task<Document> AddOperatorType(
             Document document,
             CompilationUnitSyntax root,
+            SemanticModel semanticModel,
             ImmutableDictionary<string, ImmutableArray<ITypeSymbol>> constraintDic)
         {
             bool hasMethod = false;
-
             var usings = root.Usings.ToNamespaceHashSet();
+            var builder = new OperatorTypeSyntaxBuilder(semanticModel);
 
             MemberDeclarationSyntax[] newMembers = new MemberDeclarationSyntax[constraintDic.Count];
             foreach (var (p, i) in constraintDic.Select((p, i) => (p, i)))
             {
                 bool m;
-                (newMembers[i], m) = CreateOperatorTypeSyntax(p.Key, p.Value, usings);
+                (newMembers[i], m) = builder.Build(p.Key, p.Value);
                 hasMethod |= m;
             }
 
             root = root.AddMembers(newMembers);
-            if (hasMethod && !usings.Contains(System_Runtime_CompilerServices))
-                root = SyntaxHelpers.AddSystem_Runtime_CompilerServicesSyntax(root);
-
             return document.WithSyntaxRoot(root);
         }
 
-        private static (StructDeclarationSyntax syntax, bool hasMethod) CreateOperatorTypeSyntax(
-            string operatorTypeName,
-            ImmutableArray<ITypeSymbol> constraints,
-            ImmutableHashSet<string> usings)
+        private class OperatorTypeSyntaxBuilder
         {
-            bool hasMethod = false;
-            var simplifyTypeSyntax = new SimplifyTypeSyntaxRewriter(usings);
-            var members = ImmutableList.CreateBuilder<MemberDeclarationSyntax>();
-            var added = ImmutableHashSet.CreateBuilder<ITypeSymbol>(SymbolEqualityComparer.Default);
-
-            foreach (var constaint in constraints)
+            private readonly SemanticModel semanticModel;
+            private readonly int origPosition;
+            public OperatorTypeSyntaxBuilder(SemanticModel semanticModel)
             {
-                foreach (var baseType in constaint.AllInterfaces.Append(constaint))
-                {
-                    if (!added.Add(baseType))
-                        continue;
-
-                    foreach (var (member, isMethod) in EnumerateMember.Create(baseType).EnumerateMemberSyntax())
-                    {
-                        members.Add(member);
-                        hasMethod |= isMethod;
-                    }
-                }
+                this.semanticModel = semanticModel;
+                origPosition = semanticModel.SyntaxTree.Length;
             }
 
-            var dec = SyntaxFactory.StructDeclaration(operatorTypeName)
-                .WithBaseList(SyntaxFactory.BaseList(
-                    constraints.Select(c => (BaseTypeSyntax)SyntaxFactory.SimpleBaseType(c.ToTypeSyntax())).ToSeparatedSyntaxList()))
-                .WithMembers(SyntaxFactory.List(members.Distinct(MemberDeclarationEqualityComparer.Default)));
-            return ((StructDeclarationSyntax)simplifyTypeSyntax.Visit(dec), hasMethod);
+            public (StructDeclarationSyntax syntax, bool hasMethod) Build(string operatorTypeName, ImmutableArray<ITypeSymbol> constraints)
+            {
+                bool hasMethod = false;
+                var members = ImmutableList.CreateBuilder<MemberDeclarationSyntax>();
+                var added = ImmutableHashSet.CreateBuilder<ITypeSymbol>(SymbolEqualityComparer.Default);
+
+                foreach (var constraint in constraints)
+                {
+                    foreach (var baseType in constraint.AllInterfaces.Append(constraint))
+                    {
+                        if (!added.Add(baseType))
+                            continue;
+
+                        foreach (var (member, isMethod) in EnumerateMember.Create(semanticModel, baseType).EnumerateMemberSyntax())
+                        {
+                            members.Add(member);
+                            hasMethod |= isMethod;
+                        }
+                    }
+                }
+
+                var dec = SyntaxFactory.StructDeclaration(operatorTypeName)
+                    .WithBaseList(SyntaxFactory.BaseList(
+                        constraints.Select(c => (BaseTypeSyntax)SyntaxFactory.SimpleBaseType(c.ToTypeSyntax(semanticModel, origPosition))).ToSeparatedSyntaxList()))
+                    .WithMembers(SyntaxFactory.List(members.Distinct(MemberDeclarationEqualityComparer.Default)));
+                return (dec, hasMethod);
+            }
         }
     }
 }

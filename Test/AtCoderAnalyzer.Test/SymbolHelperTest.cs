@@ -154,13 +154,13 @@ namespace AtCoderAnalyzer.Test
 
             var tests = new (TypeSyntax got, TypeSyntax expected)[]
             {
-                (declaredTypeSymbols[0].ToTypeSyntax(),
+                (declaredTypeSymbols[0].ToTypeSyntax(semanticModel, 0),
                     SyntaxFactory.QualifiedName(ns, (SimpleNameSyntax)SyntaxFactory.ParseName("Foo"))),
 
-                (declaredTypeSymbols[1].ToTypeSyntax(),
+                (declaredTypeSymbols[1].ToTypeSyntax(semanticModel, 0),
                     SyntaxFactory.QualifiedName(ns, (SimpleNameSyntax)SyntaxFactory.ParseName("Bar"))),
 
-                (declaredTypeSymbols[4].ToTypeSyntax(),
+                (declaredTypeSymbols[4].ToTypeSyntax(semanticModel, 0),
                     SyntaxFactory.QualifiedName(ns,
                         SyntaxFactory.GenericName("NestGenerics").AddTypeArgumentListArguments(
                             SyntaxFactory.ParseName("R"),SyntaxFactory.ParseName("S"),SyntaxFactory.ParseName("Op")))),

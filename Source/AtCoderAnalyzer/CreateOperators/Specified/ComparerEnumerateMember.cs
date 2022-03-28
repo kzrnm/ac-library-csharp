@@ -9,7 +9,7 @@ namespace AtCoderAnalyzer.CreateOperators.Specified
 {
     internal class ComparerEnumerateMember : EnumerateMember
     {
-        internal ComparerEnumerateMember(ITypeSymbol typeSymbol) : base(typeSymbol) { }
+        internal ComparerEnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol) : base(semanticModel, typeSymbol) { }
         protected override MethodDeclarationSyntax CreateMethodSyntax(IMethodSymbol symbol)
         {
             if (symbol is
@@ -23,7 +23,9 @@ namespace AtCoderAnalyzer.CreateOperators.Specified
                     IdentifierName(nameof(IComparable<int>.CompareTo)));
                 var args = ArgumentList(SingletonSeparatedList(Argument(IdentifierName(symbol.Parameters[1].Name))));
                 var invocation = InvocationExpression(caller, args);
-                return CreateMethodSyntax(symbol, ArrowExpressionClause(invocation));
+                return CreateMethodSyntax(
+                    SemanticModel, SemanticModel.SyntaxTree.Length - 1,
+                    symbol, ArrowExpressionClause(invocation));
             }
             return base.CreateMethodSyntax(symbol);
         }

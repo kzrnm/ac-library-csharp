@@ -7,7 +7,7 @@ namespace AtCoderAnalyzer.CreateOperators
 {
     internal abstract class OperatorEnumerateMember : EnumerateMember
     {
-        protected OperatorEnumerateMember(ITypeSymbol typeSymbol) : base(typeSymbol) { }
+        protected OperatorEnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol) : base(semanticModel, typeSymbol) { }
         protected abstract SyntaxKind? GetSyntaxKind(IMethodSymbol symbol);
 
         protected override MethodDeclarationSyntax CreateMethodSyntax(IMethodSymbol symbol)
@@ -18,7 +18,9 @@ namespace AtCoderAnalyzer.CreateOperators
                     kind,
                     IdentifierName(symbol.Parameters[0].Name),
                     IdentifierName(symbol.Parameters[1].Name));
-                return CreateMethodSyntax(symbol, ArrowExpressionClause(operatorCall));
+                return CreateMethodSyntax(
+                    SemanticModel, SemanticModel.SyntaxTree.Length - 1,
+                    symbol, ArrowExpressionClause(operatorCall));
             }
             return base.CreateMethodSyntax(symbol);
         }

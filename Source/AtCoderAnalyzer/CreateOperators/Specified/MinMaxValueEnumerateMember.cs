@@ -8,12 +8,12 @@ namespace AtCoderAnalyzer.CreateOperators.Specified
 {
     internal class MinMaxValueEnumerateMember : EnumerateMember
     {
-        internal MinMaxValueEnumerateMember(ITypeSymbol typeSymbol) : base(typeSymbol) { }
+        internal MinMaxValueEnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol) : base(semanticModel, typeSymbol) { }
         protected override PropertyDeclarationSyntax CreatePropertySyntax(IPropertySymbol symbol)
         {
             if (symbol is { Name: "MaxValue" or "MinValue" })
             {
-                var returnType = symbol.Type.ToTypeSyntax();
+                var returnType = symbol.Type.ToTypeSyntax(SemanticModel, SemanticModel.SyntaxTree.Length - 1);
                 var property = MemberAccessExpression(
                     SyntaxKind.SimpleMemberAccessExpression,
                     returnType,

@@ -8,7 +8,7 @@ namespace AtCoderAnalyzer.CreateOperators.Specified
 {
     internal class MultiplicationEnumerateMember : OperatorEnumerateMember
     {
-        internal MultiplicationEnumerateMember(ITypeSymbol typeSymbol) : base(typeSymbol) { }
+        internal MultiplicationEnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol) : base(semanticModel, typeSymbol) { }
 
         protected override SyntaxKind? GetSyntaxKind(IMethodSymbol symbol)
             => symbol switch
@@ -21,7 +21,7 @@ namespace AtCoderAnalyzer.CreateOperators.Specified
         protected override PropertyDeclarationSyntax CreatePropertySyntax(IPropertySymbol symbol)
         {
             if (symbol.Name == "MultiplyIdentity")
-                return PropertyDeclaration(symbol.Type.ToTypeSyntax(), symbol.Name)
+                return PropertyDeclaration(symbol.Type.ToTypeSyntax(SemanticModel, SemanticModel.SyntaxTree.Length - 1), symbol.Name)
                     .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword)))
                     .WithExpressionBody(ArrowExpressionClause(
                         LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal(1)))

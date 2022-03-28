@@ -5,7 +5,7 @@ namespace AtCoderAnalyzer.CreateOperators.Specified
 {
     internal class CompareOperatorEnumerateMember : OperatorEnumerateMember
     {
-        internal CompareOperatorEnumerateMember(ITypeSymbol typeSymbol) : base(typeSymbol) { }
+        internal CompareOperatorEnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol) : base(semanticModel, typeSymbol) { }
 
         protected override SyntaxKind? GetSyntaxKind(IMethodSymbol symbol)
             => symbol switch

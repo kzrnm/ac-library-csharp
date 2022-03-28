@@ -102,8 +102,8 @@ struct Op : AtCoder.IStaticMod
         [Fact]
         public async Task Segtree_Using()
         {
-            var source = @"
-using AtCoder;
+            var source = @"using AtCoder;
+using System.Runtime.CompilerServices;
 class Program
 {
     Segtree<int, MinOp> defined;
@@ -119,10 +119,8 @@ struct MinOp : ISegtreeOperator<int>
     }
 }
 ";
-            var fixedSource = @"
-using AtCoder;
+            var fixedSource = @"using AtCoder;
 using System.Runtime.CompilerServices;
-
 class Program
 {
     Segtree<int, MinOp> defined;
@@ -153,8 +151,8 @@ struct OpSeg : ISegtreeOperator<int>
         [Fact]
         public async Task Segtree_Qualified_Using()
         {
-            var source = @"
-using AtCoder;
+            var source = @"using AtCoder;
+using System.Runtime.CompilerServices;
 class Program
 {
     AtCoder.Segtree<int, MinOp> defined;
@@ -170,10 +168,8 @@ struct MinOp : ISegtreeOperator<int>
     }
 }
 ";
-            var fixedSource = @"
-using AtCoder;
+            var fixedSource = @"using AtCoder;
 using System.Runtime.CompilerServices;
-
 class Program
 {
     AtCoder.Segtree<int, MinOp> defined;
@@ -220,8 +216,7 @@ struct MinOp : AtCoder.ISegtreeOperator<int>
     }
 }
 ";
-            var fixedSource = @"using System.Runtime.CompilerServices;
-
+            var fixedSource = @"
 class Program
 {
     AtCoder.Segtree<int, MinOp> defined;
@@ -239,7 +234,7 @@ struct MinOp : AtCoder.ISegtreeOperator<int>
 
 struct OpSeg : AtCoder.ISegtreeOperator<int>
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public int Operate(int x, int y) => default;
 
     public int Identity => default;
@@ -305,8 +300,8 @@ struct OpSeg : ISegtreeOperator<int>
         [Fact]
         public async Task LazySegtree_Using()
         {
-            var source = @"
-using AtCoder;
+            var source = @"using AtCoder;
+using System.Runtime.CompilerServices;
 class Program
 {
     LazySegtree<long, int, Op> defined;
@@ -324,10 +319,8 @@ struct Op : ILazySegtreeOperator<long, int>
     public long Operate(long x, long y) => 0L;
 }
 ";
-            var fixedSource = @"
-using AtCoder;
+            var fixedSource = @"using AtCoder;
 using System.Runtime.CompilerServices;
-
 class Program
 {
     LazySegtree<long, int, Op> defined;
@@ -366,8 +359,8 @@ struct OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c)>
         [Fact]
         public async Task LazySegtree_Qualified_Using()
         {
-            var source = @"
-using AtCoder;
+            var source = @"using AtCoder;
+using System.Runtime.CompilerServices;
 class Program
 {
     AtCoder.LazySegtree<long, int, Op> defined;
@@ -385,10 +378,8 @@ struct Op : AtCoder.ILazySegtreeOperator<long, int>
     public long Operate(long x, long y) => 0L;
 }
 ";
-            var fixedSource = @"
-using AtCoder;
+            var fixedSource = @"using AtCoder;
 using System.Runtime.CompilerServices;
-
 class Program
 {
     AtCoder.LazySegtree<long, int, Op> defined;
@@ -427,7 +418,8 @@ struct OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c)>
         [Fact]
         public async Task LazySegtree_Qualified()
         {
-            var source = @"
+            var source = @"using System.Runtime.CompilerServices;
+
 class Program
 {
     AtCoder.LazySegtree<long, int, Op> defined;
@@ -478,7 +470,7 @@ struct OpSeg : AtCoder.ILazySegtreeOperator<(int v, int size), (int b, int c)>
     public (int b, int c) FIdentity => default;
 }";
             await VerifyCS.VerifyCodeFixAsync(source,
-                VerifyCS.Diagnostic("AC0008").WithSpan(5, 13, 5, 66).WithArguments("OpSeg"),
+                VerifyCS.Diagnostic("AC0008").WithSpan(6, 13, 6, 66).WithArguments("OpSeg"),
                 fixedSource);
         }
 
@@ -544,6 +536,7 @@ struct OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c)>
         }
         #endregion LazySegtree
 
+        #region Others
         [Fact]
         public async Task ICompare()
         {
@@ -558,8 +551,6 @@ class Program
 ";
             var fixedSource = @"using System;
 using AtCoder;
-using System.Runtime.CompilerServices;
-
 public class Generic<T, TOp> where TOp : System.Collections.Generic.IComparer<T> { }
 class Program
 {
@@ -569,7 +560,7 @@ class Program
 
 struct Op : System.Collections.Generic.IComparer<short>
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public int Compare(short x, short y) => x.CompareTo(y);
 }";
             await VerifyCS.VerifyCodeFixAsync(source,
@@ -578,10 +569,12 @@ struct Op : System.Collections.Generic.IComparer<short>
         }
 
         [Fact]
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public async Task AnyDefinedType()
         {
             var source = @"
 using AtCoder;
+using System.Runtime.CompilerServices;
 [IsOperator]
 public interface IAny<T> {
     void Init(ref T val, out bool success, params int[] nums);
@@ -604,7 +597,6 @@ struct Def<T> : IAny<T> {
             var fixedSource = @"
 using AtCoder;
 using System.Runtime.CompilerServices;
-
 [IsOperator]
 public interface IAny<T> {
     void Init(ref T val, out bool success, params int[] nums);
@@ -635,15 +627,17 @@ struct Op : IAny<(int, long)>
     public (int, long) Prop2 { set; get; }
 }";
             await VerifyCS.VerifyCodeFixAsync(source,
-                VerifyCS.Diagnostic("AC0008").WithSpan(12, 5, 12, 29).WithArguments("Op"),
+                VerifyCS.Diagnostic("AC0008").WithSpan(13, 5, 13, 29).WithArguments("Op"),
                fixedSource);
         }
 
         [Fact]
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public async Task AnyDefinedMethod()
         {
             var source = @"
 using AtCoder;
+using System.Runtime.CompilerServices;
 [IsOperator]
 public interface IAny<T> {
     void Init();
@@ -662,7 +656,6 @@ class Program
             var fixedSource = @"
 using AtCoder;
 using System.Runtime.CompilerServices;
-
 [IsOperator]
 public interface IAny<T> {
     void Init();
@@ -689,7 +682,7 @@ struct Op : IAny<(int n, long m)>
     public (int n, long m) Prop2 { set; get; }
 }";
             await VerifyCS.VerifyCodeFixAsync(source,
-                VerifyCS.Diagnostic("AC0008").WithSpan(14, 9, 14, 31).WithArguments("Op"),
+                VerifyCS.Diagnostic("AC0008").WithSpan(15, 9, 15, 31).WithArguments("Op"),
                fixedSource);
         }
 
@@ -790,6 +783,7 @@ struct ModOp : IAny<StaticModInt<Mod1000000007>>
         {
             var source = @"
 using AtCoder.Operators;
+using System.Runtime.CompilerServices;
 class Program
 {
     void M<T>() where T : INumOperator<int>, IShiftOperator<int>, INumOperator<float>, ICastOperator<short, char> { }
@@ -802,7 +796,6 @@ class Program
             var fixedSource = @"
 using AtCoder.Operators;
 using System.Runtime.CompilerServices;
-
 class Program
 {
     void M<T>() where T : INumOperator<int>, IShiftOperator<int>, INumOperator<float>, ICastOperator<short, char> { }
@@ -890,8 +883,60 @@ struct Op : ICastOperator<short, char>, INumOperator<float>, INumOperator<int>, 
     public int RightShift(int x, int y) => x >> y;
 }";
             await VerifyCS.VerifyCodeFixAsync(source,
-                VerifyCS.Diagnostic("AC0008").WithSpan(8, 9, 8, 14).WithArguments("Op"),
+                VerifyCS.Diagnostic("AC0008").WithSpan(9, 9, 9, 14).WithArguments("Op"),
                 fixedSource);
         }
+
+        [Fact]
+        public async Task UsingAlias()
+        {
+            var source = @"using AtCoder;
+using System.Runtime.CompilerServices;
+using ModInt = StaticModInt<Mod1000000007>;
+class Program
+{
+    Segtree<int, MinOp> defined;
+    Segtree<ModInt, OpSeg> notDefined;
+}
+struct MinOp : ISegtreeOperator<int>
+{
+    public int Identity => 0;
+
+    public int Operate(int x, int y)
+    {
+        return System.Math.Min(x, y);
+    }
+}
+";
+            var fixedSource = @"using AtCoder;
+using System.Runtime.CompilerServices;
+using ModInt = StaticModInt<Mod1000000007>;
+class Program
+{
+    Segtree<int, MinOp> defined;
+    Segtree<ModInt, OpSeg> notDefined;
+}
+struct MinOp : ISegtreeOperator<int>
+{
+    public int Identity => 0;
+
+    public int Operate(int x, int y)
+    {
+        return System.Math.Min(x, y);
+    }
+}
+
+struct OpSeg : ISegtreeOperator<ModInt>
+{
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ModInt Operate(ModInt x, ModInt y) => default;
+
+    public ModInt Identity => default;
+}";
+            await VerifyCS.VerifyCodeFixAsync(source,
+                VerifyCS.Diagnostic("AC0008").WithSpan(7, 5, 7, 27).WithArguments("OpSeg"),
+                fixedSource);
+        }
+        #endregion Others
     }
 }
