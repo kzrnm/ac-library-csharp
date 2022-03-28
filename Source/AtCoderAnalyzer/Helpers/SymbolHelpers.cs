@@ -29,10 +29,10 @@ namespace AtCoderAnalyzer.Helpers
             return named.ConstructedFrom.Construct(newTypeArguments);
         }
 
-        public static TypeSyntax ToTypeSyntax(this ITypeSymbol symbol)
-            => ParseTypeName(symbol.ToDisplayString());
+        public static TypeSyntax ToTypeSyntax(this ITypeSymbol symbol, SemanticModel model, int position)
+            => ParseTypeName(symbol.ToMinimalDisplayString(model, position));
 
-        public static ParameterSyntax ToParameterSyntax(this IParameterSymbol symbol)
+        public static ParameterSyntax ToParameterSyntax(this IParameterSymbol symbol, SemanticModel model, int position)
         {
             var modifiers = symbol switch
             {
@@ -44,16 +44,16 @@ namespace AtCoderAnalyzer.Helpers
             };
             return Parameter(Identifier(symbol.Name))
                 .WithModifiers(modifiers)
-                .WithType(symbol.Type.ToTypeSyntax());
+                .WithType(symbol.Type.ToTypeSyntax(model, position));
         }
 
-        public static ParameterListSyntax ToParameterListSyntax(this IMethodSymbol symbol)
+        public static ParameterListSyntax ToParameterListSyntax(this IMethodSymbol symbol, SemanticModel model, int position)
         {
             if (symbol.Parameters.Length == 0)
                 return ParameterList();
 
             return ParameterList(SeparatedList(
-                symbol.Parameters.Select(ToParameterSyntax)));
+                symbol.Parameters.Select(p => p.ToParameterSyntax(model, position))));
         }
     }
 }

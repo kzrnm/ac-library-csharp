@@ -3,11 +3,11 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace AtCoderAnalyzer.CreateOperators
+namespace AtCoderAnalyzer.CreateOperators.Specified
 {
     internal class CastEnumerateMember : EnumerateMember
     {
-        internal CastEnumerateMember(ITypeSymbol typeSymbol) : base(typeSymbol) { }
+        internal CastEnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol) : base(semanticModel, typeSymbol) { }
         protected override MethodDeclarationSyntax CreateMethodSyntax(IMethodSymbol symbol)
         {
             if (symbol is
@@ -17,8 +17,9 @@ namespace AtCoderAnalyzer.CreateOperators
                 })
             {
                 return CreateMethodSyntax(
+                    SemanticModel, SemanticModel.SyntaxTree.Length - 1,
                     symbol,
-                    ArrowExpressionClause(CastExpression(symbol.ReturnType.ToTypeSyntax(), IdentifierName(symbol.Parameters[0].Name))));
+                    ArrowExpressionClause(CastExpression(symbol.ReturnType.ToTypeSyntax(SemanticModel, SemanticModel.SyntaxTree.Length - 1), IdentifierName(symbol.Parameters[0].Name))));
             }
             return base.CreateMethodSyntax(symbol);
         }

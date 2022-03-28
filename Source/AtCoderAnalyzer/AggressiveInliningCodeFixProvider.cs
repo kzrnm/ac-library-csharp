@@ -42,20 +42,19 @@ namespace AtCoderAnalyzer
                 return;
 
             var action = CodeAction.Create(title: title,
-               createChangedDocument: c => AddAggressiveInlining(context.Document, root, typeDeclarationSyntax, c),
+               createChangedDocument: c => AddAggressiveInlining(context.Document, root, diagnosticSpan.Start, typeDeclarationSyntax, c),
                equivalenceKey: title);
             context.RegisterCodeFix(action, diagnostic);
         }
 
         private async Task<Document> AddAggressiveInlining(
             Document document, CompilationUnitSyntax root,
+            int postion,
             TypeDeclarationSyntax typeDeclarationSyntax, CancellationToken cancellationToken)
         {
             root = root.ReplaceNode(typeDeclarationSyntax,
-                            new AddAggressiveInliningRewriter(await document.GetSemanticModelAsync(cancellationToken)).Visit(typeDeclarationSyntax));
-
-            if (!root.Usings.ToNamespaceHashSet().Contains(System_Runtime_CompilerServices))
-                root = SyntaxHelpers.AddSystem_Runtime_CompilerServicesSyntax(root);
+                            new AddAggressiveInliningRewriter(await document.GetSemanticModelAsync(cancellationToken), postion)
+                            .Visit(typeDeclarationSyntax));
 
             return document.WithSyntaxRoot(root);
         }
@@ -63,16 +62,21 @@ namespace AtCoderAnalyzer
         private class AddAggressiveInliningRewriter : CSharpSyntaxRewriter
         {
             private readonly SemanticModel semanticModel;
+            private readonly int position;
             private readonly INamedTypeSymbol methodImplAttribute;
             private readonly INamedTypeSymbol methodImplOptions;
-            public AddAggressiveInliningRewriter(SemanticModel semanticModel) : base(false)
+            private readonly AttributeSyntax aggressiveInliningAttribute;
+            public AddAggressiveInliningRewriter(SemanticModel semanticModel, int position) : base(false)
             {
                 this.semanticModel = semanticModel;
+                this.position = position;
                 methodImplAttribute = semanticModel.Compilation.GetTypeByMetadataName(
                     System_Runtime_CompilerServices_MethodImplAttribute);
                 methodImplOptions = semanticModel.Compilation.GetTypeByMetadataName(
                     System_Runtime_CompilerServices_MethodImplOptions);
+                aggressiveInliningAttribute = SyntaxHelpers.AggressiveInliningAttribute(methodImplAttribute.ToMinimalDisplayString(semanticModel, position), methodImplOptions.ToMinimalDisplayString(semanticModel, position));
             }
+
             public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node)
             {
                 if (methodImplAttribute is null)
@@ -89,7 +93,7 @@ namespace AtCoderAnalyzer
                 if (m.GetAttributes()
                        .FirstOrDefault(at => SymbolEqualityComparer.Default.Equals(at.AttributeClass, methodImplAttribute)) is not { } attr
                     || attr.ApplicationSyntaxReference?.GetSyntax() is not AttributeSyntax syntax)
-                    return node.AddAttributeLists(SyntaxHelpers.AggressiveInliningAttributeList);
+                    return node.AddAttributeLists(AttributeList(SingletonSeparatedList(aggressiveInliningAttribute)));
 
                 if (attr.ConstructorArguments.Length > 0)
                 {
@@ -124,7 +128,7 @@ namespace AtCoderAnalyzer
             {
                 if (attributeData.ConstructorArguments.Length == 0)
                 {
-                    return SyntaxHelpers.AggressiveInliningAttribute;
+                    return aggressiveInliningAttribute;
                 }
                 else
                 {
@@ -141,7 +145,7 @@ namespace AtCoderAnalyzer
                         else if (SymbolEqualityComparer.Default.Equals(argConst.Type, methodImplOptions))
                             arg = argSyntax.WithExpression(
                                 BinaryExpression(
-                                    SyntaxKind.BitwiseOrExpression, argSyntax.Expression, SyntaxHelpers.AggressiveInliningMember));
+                                    SyntaxKind.BitwiseOrExpression, argSyntax.Expression, SyntaxHelpers.AggressiveInliningMember(methodImplOptions.ToMinimalDisplayString(semanticModel, position))));
                         else
                             throw new InvalidProgramException("invalid MethodImplAttribute argument");
 
@@ -153,7 +157,7 @@ namespace AtCoderAnalyzer
                     {
                         return syntax.WithArgumentList(
                             AttributeArgumentList(
-                                syntax.ArgumentList.Arguments.Insert(0, SyntaxHelpers.AggressiveInliningArgument)));
+                                syntax.ArgumentList.Arguments.Insert(0, AttributeArgument(SyntaxHelpers.AggressiveInliningMember(methodImplOptions.ToMinimalDisplayString(semanticModel, position))))));
                     }
                 }
             }

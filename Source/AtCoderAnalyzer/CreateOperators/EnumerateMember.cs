@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using AtCoderAnalyzer.CreateOperators.Specified;
 using AtCoderAnalyzer.Helpers;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -9,28 +10,33 @@ namespace AtCoderAnalyzer.CreateOperators
 {
     internal class EnumerateMember
     {
+        protected SemanticModel SemanticModel { get; }
         protected ITypeSymbol TypeSymbol { get; }
-        protected EnumerateMember(ITypeSymbol typeSymbol)
+        private readonly INamedTypeSymbol methodImplAttribute;
+        private readonly INamedTypeSymbol methodImplOptions;
+        protected EnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol)
         {
+            SemanticModel = semanticModel;
             TypeSymbol = typeSymbol;
+            methodImplAttribute = semanticModel.Compilation.GetTypeByMetadataName(
+                    Constants.System_Runtime_CompilerServices_MethodImplAttribute);
+            methodImplOptions = semanticModel.Compilation.GetTypeByMetadataName(
+                Constants.System_Runtime_CompilerServices_MethodImplOptions);
         }
-        public static EnumerateMember Create(ITypeSymbol typeSymbol)
+        public static EnumerateMember Create(SemanticModel semanticModel, ITypeSymbol typeSymbol) => typeSymbol.OriginalDefinition.ToDisplayString() switch
         {
-            return typeSymbol.OriginalDefinition.ToDisplayString() switch
-            {
-                "AtCoder.Operators.IAdditionOperator<T>" => new AdditionEnumerateMember(typeSymbol),
-                "AtCoder.Operators.ISubtractOperator<T>" => new SubtractEnumerateMember(typeSymbol),
-                "AtCoder.Operators.IMultiplicationOperator<T>" => new MultiplicationEnumerateMember(typeSymbol),
-                "AtCoder.Operators.IDivisionOperator<T>" => new DivisionEnumerateMember(typeSymbol),
-                "AtCoder.Operators.IUnaryNumOperator<T>" => new UnaryNumEnumerateMember(typeSymbol),
-                "AtCoder.Operators.ICompareOperator<T>" => new CompareOperatorEnumerateMember(typeSymbol),
-                "AtCoder.Operators.IMinMaxValue<T>" => new MinMaxValueEnumerateMember(typeSymbol),
-                "AtCoder.Operators.IShiftOperator<T>" => new ShiftEnumerateMember(typeSymbol),
-                "AtCoder.Operators.ICastOperator<TFrom, TTo>" => new CastEnumerateMember(typeSymbol),
-                "System.Collections.Generic.IComparer<T>" => new ComparerEnumerateMember(typeSymbol),
-                _ => new EnumerateMember(typeSymbol),
-            };
-        }
+            "AtCoder.Operators.IAdditionOperator<T>" => new AdditionEnumerateMember(semanticModel, typeSymbol),
+            "AtCoder.Operators.ISubtractOperator<T>" => new SubtractEnumerateMember(semanticModel, typeSymbol),
+            "AtCoder.Operators.IMultiplicationOperator<T>" => new MultiplicationEnumerateMember(semanticModel, typeSymbol),
+            "AtCoder.Operators.IDivisionOperator<T>" => new DivisionEnumerateMember(semanticModel, typeSymbol),
+            "AtCoder.Operators.IUnaryNumOperator<T>" => new UnaryNumEnumerateMember(semanticModel, typeSymbol),
+            "AtCoder.Operators.ICompareOperator<T>" => new CompareOperatorEnumerateMember(semanticModel, typeSymbol),
+            "AtCoder.Operators.IMinMaxValue<T>" => new MinMaxValueEnumerateMember(semanticModel, typeSymbol),
+            "AtCoder.Operators.IShiftOperator<T>" => new ShiftEnumerateMember(semanticModel, typeSymbol),
+            "AtCoder.Operators.ICastOperator<TFrom, TTo>" => new CastEnumerateMember(semanticModel, typeSymbol),
+            "System.Collections.Generic.IComparer<T>" => new ComparerEnumerateMember(semanticModel, typeSymbol),
+            _ => new EnumerateMember(semanticModel, typeSymbol),
+        };
 
         public IEnumerable<(MemberDeclarationSyntax Syntax, bool IsMethod)> EnumerateMemberSyntax()
         {
@@ -39,19 +45,15 @@ namespace AtCoderAnalyzer.CreateOperators
                 if (!member.IsAbstract)
                     continue;
                 if (member is IPropertySymbol property)
-                {
                     yield return (CreatePropertySyntax(property), false);
-                }
                 else if (member is IMethodSymbol method && method.MethodKind == MethodKind.Ordinary)
-                {
                     yield return (CreateMethodSyntax(method), true);
-                }
             }
         }
 
         protected virtual PropertyDeclarationSyntax CreatePropertySyntax(IPropertySymbol symbol)
         {
-            var dec = PropertyDeclaration(symbol.Type.ToTypeSyntax(), symbol.Name)
+            var dec = PropertyDeclaration(symbol.Type.ToTypeSyntax(SemanticModel, SemanticModel.SyntaxTree.Length - 1), symbol.Name)
                     .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword)));
 
             if (symbol.SetMethod == null)
@@ -76,24 +78,29 @@ namespace AtCoderAnalyzer.CreateOperators
         protected virtual MethodDeclarationSyntax CreateMethodSyntax(IMethodSymbol symbol)
         {
             if (symbol.ReturnsVoid)
-                return CreateMethodSyntax(symbol, Block());
+                return CreateMethodSyntax(SemanticModel, SemanticModel.SyntaxTree.Length - 1, symbol, Block());
             else
-                return CreateMethodSyntax(symbol, SyntaxHelpers.ArrowDefault);
+                return CreateMethodSyntax(SemanticModel, SemanticModel.SyntaxTree.Length - 1, symbol, SyntaxHelpers.ArrowDefault);
         }
 
-        private static MethodDeclarationSyntax CommonMethodDeclaration(IMethodSymbol symbol)
-            => MethodDeclaration(symbol.ReturnType.ToTypeSyntax(), symbol.Name)
+        private MethodDeclarationSyntax CommonMethodDeclaration(IMethodSymbol symbol, SemanticModel semanticModel, int position)
+            => MethodDeclaration(symbol.ReturnType.ToTypeSyntax(semanticModel, semanticModel.SyntaxTree.Length), symbol.Name)
                     .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword)))
-                    .WithAttributeLists(SingletonList(SyntaxHelpers.AggressiveInliningAttributeList))
-                    .WithParameterList(symbol.ToParameterListSyntax());
-        protected static MethodDeclarationSyntax CreateMethodSyntax(IMethodSymbol symbol, BlockSyntax block)
+                    .WithAttributeLists(SingletonList(
+                        AttributeList(
+                                SingletonSeparatedList(
+                                    SyntaxHelpers.AggressiveInliningAttribute(
+                                        methodImplAttribute.ToMinimalDisplayString(semanticModel, position),
+                                        methodImplOptions.ToMinimalDisplayString(semanticModel, position))))))
+                    .WithParameterList(symbol.ToParameterListSyntax(semanticModel, semanticModel.SyntaxTree.Length));
+        protected MethodDeclarationSyntax CreateMethodSyntax(SemanticModel semanticModel, int position, IMethodSymbol symbol, BlockSyntax block)
         {
-            return CommonMethodDeclaration(symbol)
+            return CommonMethodDeclaration(symbol, semanticModel, position)
                 .WithBody(block);
         }
-        protected static MethodDeclarationSyntax CreateMethodSyntax(IMethodSymbol symbol, ArrowExpressionClauseSyntax arrowExpressionClause)
+        protected MethodDeclarationSyntax CreateMethodSyntax(SemanticModel semanticModel, int position, IMethodSymbol symbol, ArrowExpressionClauseSyntax arrowExpressionClause)
         {
-            return CommonMethodDeclaration(symbol)
+            return CommonMethodDeclaration(symbol, semanticModel, position)
                 .WithExpressionBody(arrowExpressionClause)
                 .WithSemicolonToken(SyntaxHelpers.SemicolonToken);
         }

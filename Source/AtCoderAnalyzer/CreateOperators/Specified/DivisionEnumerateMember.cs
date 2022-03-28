@@ -1,11 +1,11 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
-namespace AtCoderAnalyzer.CreateOperators
+namespace AtCoderAnalyzer.CreateOperators.Specified
 {
     internal class DivisionEnumerateMember : OperatorEnumerateMember
     {
-        internal DivisionEnumerateMember(ITypeSymbol typeSymbol) : base(typeSymbol) { }
+        internal DivisionEnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol) : base(semanticModel, typeSymbol) { }
 
         protected override SyntaxKind? GetSyntaxKind(IMethodSymbol symbol)
             => symbol switch

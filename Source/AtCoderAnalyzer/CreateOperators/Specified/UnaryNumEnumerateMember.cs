@@ -3,11 +3,11 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace AtCoderAnalyzer.CreateOperators
+namespace AtCoderAnalyzer.CreateOperators.Specified
 {
     internal class UnaryNumEnumerateMember : EnumerateMember
     {
-        internal UnaryNumEnumerateMember(ITypeSymbol typeSymbol) : base(typeSymbol) { }
+        internal UnaryNumEnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol) : base(semanticModel, typeSymbol) { }
 
         protected override MethodDeclarationSyntax CreateMethodSyntax(IMethodSymbol symbol)
         {
@@ -23,7 +23,9 @@ namespace AtCoderAnalyzer.CreateOperators
                 var operatorCall = PrefixUnaryExpression(
                     kind,
                     IdentifierName(symbol.Parameters[0].Name));
-                return CreateMethodSyntax(symbol, ArrowExpressionClause(operatorCall));
+                return CreateMethodSyntax(
+                    SemanticModel, SemanticModel.SyntaxTree.Length - 1,
+                    symbol, ArrowExpressionClause(operatorCall));
             }
             return base.CreateMethodSyntax(symbol);
         }
