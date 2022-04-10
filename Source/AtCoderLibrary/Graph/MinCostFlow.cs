@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using AtCoder.Internal;
 using AtCoder.Operators;
@@ -164,8 +163,11 @@ namespace AtCoder
         /// O(F(n + m) log (n + m))
         /// </remarks>
         [MethodImpl(256)]
-        public (TCap cap, TCost cost) Flow(int s, int t, TCap flowLimit) => Slope(s, t, flowLimit).Last();
-        
+        public (TCap cap, TCost cost) Flow(int s, int t, TCap flowLimit)
+        {
+            var slope = SlopeImpl(s, t, flowLimit, false);
+            return slope[slope.Count - 1];
+        }
 
         /// <summary>
         /// 返り値に流量とコストの関係の折れ線が入ります。
@@ -267,51 +269,111 @@ namespace AtCoder
         /// 計算量: F を流量、m を追加した辺の本数として
         /// O(F(n + m) log (n + m))
         /// </remarks>
+        public List<(TCap cap, TCost cost)> Slope(int s, int t, TCap flowLimit) => SlopeImpl(s, t, flowLimit, true);
+
+        /// <summary>
+        /// 返り値に流量とコストの関係の折れ線が入ります。
+        /// 全ての x について、流量 x の時の最小コストを g(x) とすると、
+        /// (x, g(x)) は返り値を折れ線として見たものに含まれます。
+        /// Slope と異なり 3 点が同一線上にある場合も削除しません。
+        /// </summary>
+        /// <remarks>
+        /// <list type="bullet">
+        /// <item>
+        /// <description>返り値の最初の要素は (0, 0)。</description>
+        /// </item>
+        /// <item>
+        /// <description>返り値の .first、.second は共に狭義単調増加。</description>
+        /// </item>
+        /// <item>
+        /// <description>3点が同一線上にある場合もある。</description>
+        /// </item>
+        /// <item>
+        /// <description>返り値の最後の要素は最大流量 x として (x, g(x))。</description>
+        /// </item>
+        /// </list>
+        /// 制約: 辺のコストの最大を x として
+        /// <list type="bullet">
+        /// <item>
+        /// <description><paramref name="s"/> ≠ <paramref name="t"/></description>
+        /// </item>
+        /// <item>
+        /// <description>Flow や Slope 関数を合わせて複数回呼んだときの挙動は未定義。</description>
+        /// </item>
+        /// <item>
+        /// <description>
+        /// <paramref name="s"/> から <paramref name="t"/> へ流したフローの
+        /// 流量が cap に収まる。
+        /// </description>
+        /// </item>
+        /// <item>
+        /// <description>流したコストの総和が cost に収まる。</description>
+        /// </item>
+        /// <item>
+        /// <description>(Cost: int) 0 ≤ nx ≤ 2 * 10^9 + 1000 </description>
+        /// </item>
+        /// <item>
+        /// <description>(Cost: long) 0 ≤ nx ≤ 8 * 10^18 + 1000 </description>
+        /// </item>
+        /// </list>
+        /// 計算量: F を流量、m を追加した辺の本数として
+        /// O(F(n + m) log (n + m))
+        /// </remarks>
         [MethodImpl(256)]
-        public List<(TCap cap, TCost cost)> Slope(int s, int t, TCap flowLimit)
-        {
-            Contract.Assert((uint)s < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(s)} && {nameof(s)} < _n");
-            Contract.Assert((uint)t < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(t)} && {nameof(t)} < _n");
-            Contract.Assert(s != t, reason: $"{nameof(s)} and {nameof(t)} must be different.");
+        public List<(TCap cap, TCost cost)> Slope2(int s, int t) => Slope2(s, t, capOp.MaxValue);
 
-            int m = _edges.Count;
-            var edgeIdx = new int[m];
 
-            CSR<EdgeInternal> g;
-            {
-                var degree = new int[_n];
-                var redgeIdx = new int[m];
-                var elist = new SimpleList<(int from, EdgeInternal edge)>(2 * m);
-
-                for (int i = 0; i < m; i++)
-                {
-                    var e = _edges[i];
-                    edgeIdx[i] = degree[e.From]++;
-                    redgeIdx[i] = degree[e.To]++;
-                    elist.Add((e.From, new EdgeInternal(e.To, -1, capOp.Subtract(e.Cap, e.Flow), e.Cost)));
-                    elist.Add((e.To, new EdgeInternal(e.From, -1, e.Flow, costOp.Minus(e.Cost))));
-                }
-                g = new CSR<EdgeInternal>(_n, elist);
-                for (int i = 0; i < m; i++)
-                {
-                    var e = _edges[i];
-                    edgeIdx[i] += g.Start[e.From];
-                    redgeIdx[i] += g.Start[e.To];
-                    g.EList[edgeIdx[i]].Rev = redgeIdx[i];
-                    g.EList[redgeIdx[i]].Rev = edgeIdx[i];
-                }
-            }
-
-            var result = Slope(g, s, t, flowLimit);
-
-            for (int i = 0; i < m; i++)
-            {
-                var e = g.EList[edgeIdx[i]];
-                _edges[i].Flow = capOp.Subtract(_edges[i].Cap, e.Cap);
-            }
-
-            return result;
-        }
+        /// <summary>
+        /// 返り値に流量とコストの関係の折れ線が入ります。
+        /// 全ての x について、流量 x の時の最小コストを g(x) とすると、
+        /// (x, g(x)) は返り値を折れ線として見たものに含まれます。
+        /// Slope と異なり 3 点が同一線上にある場合も削除しません。
+        /// </summary>
+        /// <remarks>
+        /// <list type="bullet">
+        /// <item>
+        /// <description>返り値の最初の要素は (0, 0)。</description>
+        /// </item>
+        /// <item>
+        /// <description>返り値の .first、.second は共に狭義単調増加。</description>
+        /// </item>
+        /// <item>
+        /// <description>3点が同一線上にある場合もある。</description>
+        /// </item>
+        /// <item>
+        /// <description>
+        /// 返り値の最後の要素は
+        /// y = min(x, <paramref name="flowLimit"/>) として (y, g(y))。</description>
+        /// </item>
+        /// </list>
+        /// 制約: 辺のコストの最大を x として
+        /// <list type="bullet">
+        /// <item>
+        /// <description><paramref name="s"/> ≠ <paramref name="t"/></description>
+        /// </item>
+        /// <item>
+        /// <description>Flow や Slope 関数を合わせて複数回呼んだときの挙動は未定義。</description>
+        /// </item>
+        /// <item>
+        /// <description>
+        /// <paramref name="s"/> から <paramref name="t"/> へ流したフローの
+        /// 流量が cap に収まる。
+        /// </description>
+        /// </item>
+        /// <item>
+        /// <description>流したコストの総和が cost に収まる。</description>
+        /// </item>
+        /// <item>
+        /// <description>(Cost: int) 0 ≤ nx ≤ 2 * 10^9 + 1000 </description>
+        /// </item>
+        /// <item>
+        /// <description>(Cost: long) 0 ≤ nx ≤ 8 * 10^18 + 1000 </description>
+        /// </item>
+        /// </list>
+        /// 計算量: F を流量、m を追加した辺の本数として
+        /// O(F(n + m) log (n + m))
+        /// </remarks>
+        public List<(TCap cap, TCost cost)> Slope2(int s, int t, TCap flowLimit) => SlopeImpl(s, t, flowLimit, false);
 
         struct SlopeDualRef
         {
@@ -387,8 +449,62 @@ namespace AtCoder
             }
         }
 
-        [MethodImpl(256)]
-        private List<(TCap cap, TCost cost)> Slope(CSR<EdgeInternal> g, int s, int t, TCap flowLimit)
+
+        private List<(TCap cap, TCost cost)> SlopeImpl(int s, int t, TCap flowLimit, bool removeLine)
+        {
+            Contract.Assert((uint)s < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(s)} && {nameof(s)} < _n");
+            Contract.Assert((uint)t < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(t)} && {nameof(t)} < _n");
+            Contract.Assert(s != t, reason: $"{nameof(s)} and {nameof(t)} must be different.");
+
+            int m = _edges.Count;
+            var edgeIdx = new int[m];
+
+            CSR<EdgeInternal> g;
+            {
+                var degree = new int[_n];
+                var redgeIdx = new int[m];
+                var elist = new SimpleList<(int from, EdgeInternal edge)>(2 * m);
+
+                for (int i = 0; i < m; i++)
+                {
+                    var e = _edges[i];
+                    edgeIdx[i] = degree[e.From]++;
+                    redgeIdx[i] = degree[e.To]++;
+                    elist.Add((e.From, new EdgeInternal(e.To, -1, capOp.Subtract(e.Cap, e.Flow), e.Cost)));
+                    elist.Add((e.To, new EdgeInternal(e.From, -1, e.Flow, costOp.Minus(e.Cost))));
+                }
+                g = new CSR<EdgeInternal>(_n, elist);
+                for (int i = 0; i < m; i++)
+                {
+                    var e = _edges[i];
+                    edgeIdx[i] += g.Start[e.From];
+                    redgeIdx[i] += g.Start[e.To];
+                    g.EList[edgeIdx[i]].Rev = redgeIdx[i];
+                    g.EList[redgeIdx[i]].Rev = edgeIdx[i];
+                }
+            }
+
+            var result = SlopeImpl(g, s, t, flowLimit, removeLine);
+
+            for (int i = 0; i < m; i++)
+            {
+                var e = g.EList[edgeIdx[i]];
+                _edges[i].Flow = capOp.Subtract(_edges[i].Cap, e.Cap);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Slope の内部実装
+        /// </summary>
+        /// <param name="g">辺のリスト</param>
+        /// <param name="s">開始ノード</param>
+        /// <param name="t">終了ノード</param>
+        /// <param name="flowLimit">最大のフロー</param>
+        /// <param name="removeLine">直線になるときには間を削除する</param>
+        /// <returns></returns>
+        private List<(TCap cap, TCost cost)> SlopeImpl(CSR<EdgeInternal> g, int s, int t, TCap flowLimit, bool removeLine)
         {
             // variants (C = maxcost):
             // -(n-1)C <= dual[s] <= dual[i] <= dual[t] = 0
@@ -433,7 +549,7 @@ namespace AtCoder
                 var d = costOp.Minus(dual[s]);
                 flow = capOp.Add(flow, c);
                 cost = costOp.Add(cost, costOp.Multiply(cast.Cast(c), d));
-                if (EqualityComparer<TCost>.Default.Equals(prevCostPerFlow, d))
+                if (removeLine && EqualityComparer<TCost>.Default.Equals(prevCostPerFlow, d))
                 {
                     result.RemoveAt(result.Count - 1);
                 }
