@@ -47,7 +47,7 @@ namespace AtCoder
         /// 何番目に追加された辺かを返します。
         /// </summary>
         /// <remarks>
-        /// 制約: 
+        /// 制約:
         /// <list type="bullet">
         /// <item>
         /// <description>0 ≤ <paramref name="from"/>, <paramref name="to"/> &lt; n</description>
@@ -100,14 +100,35 @@ namespace AtCoder
         /// その流量とコストを返します。
         /// </summary>
         /// <remarks>
-        /// <para>制約: Slope関数と同じ</para>
-        /// <para>計算量: Slope関数と同じ</para>
+        /// 制約: 辺のコストの最大を x として
+        /// <list type="bullet">
+        /// <item>
+        /// <description><paramref name="s"/> ≠ <paramref name="t"/></description>
+        /// </item>
+        /// <item>
+        /// <description>Flow や Slope 関数を合わせて複数回呼んだときの挙動は未定義。</description>
+        /// </item>
+        /// <item>
+        /// <description>
+        /// <paramref name="s"/> から <paramref name="t"/> へ流したフローの
+        /// 流量が cap に収まる。
+        /// </description>
+        /// </item>
+        /// <item>
+        /// <description>流したコストの総和が cost に収まる。</description>
+        /// </item>
+        /// <item>
+        /// <description>(Cost: int) 0 ≤ nx ≤ 2 * 10^9 + 1000 </description>
+        /// </item>
+        /// <item>
+        /// <description>(Cost: long) 0 ≤ nx ≤ 8 * 10^18 + 1000 </description>
+        /// </item>
+        /// </list>
+        /// 計算量: F を流量、m を追加した辺の本数として
+        /// O(F(n + m) log (n + m))
         /// </remarks>
         [MethodImpl(256)]
-        public (TCap cap, TCost cost) Flow(int s, int t)
-        {
-            return Flow(s, t, capOp.MaxValue);
-        }
+        public (TCap cap, TCost cost) Flow(int s, int t) => Flow(s, t, capOp.MaxValue);
 
         /// <summary>
         /// 頂点 <paramref name="s"/> から <paramref name="t"/> へ
@@ -115,14 +136,36 @@ namespace AtCoder
         /// その流量とコストを返します。
         /// </summary>
         /// <remarks>
-        /// <para>制約: Slope関数と同じ</para>
-        /// <para>計算量: Slope関数と同じ</para>
+        /// 制約: 辺のコストの最大を x として
+        /// <list type="bullet">
+        /// <item>
+        /// <description><paramref name="s"/> ≠ <paramref name="t"/></description>
+        /// </item>
+        /// <item>
+        /// <description>Flow や Slope 関数を合わせて複数回呼んだときの挙動は未定義。</description>
+        /// </item>
+        /// <item>
+        /// <description>
+        /// <paramref name="s"/> から <paramref name="t"/> へ流したフローの
+        /// 流量が cap に収まる。
+        /// </description>
+        /// </item>
+        /// <item>
+        /// <description>流したコストの総和が cost に収まる。</description>
+        /// </item>
+        /// <item>
+        /// <description>(Cost: int) 0 ≤ nx ≤ 2 * 10^9 + 1000 </description>
+        /// </item>
+        /// <item>
+        /// <description>(Cost: long) 0 ≤ nx ≤ 8 * 10^18 + 1000 </description>
+        /// </item>
+        /// </list>
+        /// 計算量: F を流量、m を追加した辺の本数として
+        /// O(F(n + m) log (n + m))
         /// </remarks>
         [MethodImpl(256)]
-        public (TCap cap, TCost cost) Flow(int s, int t, TCap flowLimit)
-        {
-            return Slope(s, t, flowLimit).Last();
-        }
+        public (TCap cap, TCost cost) Flow(int s, int t, TCap flowLimit) => Slope(s, t, flowLimit).Last();
+        
 
         /// <summary>
         /// 返り値に流量とコストの関係の折れ線が入ります。
@@ -168,14 +211,12 @@ namespace AtCoder
         /// <description>(Cost: long) 0 ≤ nx ≤ 8 * 10^18 + 1000 </description>
         /// </item>
         /// </list>
-        /// 計算量: F を流量、m を追加した辺の本数として 
+        /// 計算量: F を流量、m を追加した辺の本数として
         /// O(F(n + m) log (n + m))
         /// </remarks>
         [MethodImpl(256)]
-        public List<(TCap cap, TCost cost)> Slope(int s, int t)
-        {
-            return Slope(s, t, capOp.MaxValue);
-        }
+        public List<(TCap cap, TCost cost)> Slope(int s, int t) => Slope(s, t, capOp.MaxValue);
+
 
         /// <summary>
         /// 返り値に流量とコストの関係の折れ線が入ります。
@@ -223,7 +264,7 @@ namespace AtCoder
         /// <description>(Cost: long) 0 ≤ nx ≤ 8 * 10^18 + 1000 </description>
         /// </item>
         /// </list>
-        /// 計算量: F を流量、m を追加した辺の本数として 
+        /// 計算量: F を流量、m を追加した辺の本数として
         /// O(F(n + m) log (n + m))
         /// </remarks>
         [MethodImpl(256)]
@@ -345,6 +386,7 @@ namespace AtCoder
                 return true;
             }
         }
+
         [MethodImpl(256)]
         private List<(TCap cap, TCost cost)> Slope(CSR<EdgeInternal> g, int s, int t, TCap flowLimit)
         {
