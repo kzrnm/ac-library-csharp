@@ -153,8 +153,8 @@ namespace AtCoder.Extension
             public int CompareTo(T other) => cmp.Compare(v, other);
         }
         private interface IOk { bool Ok(int c); }
-        private struct L : IOk {[MethodImpl(256)] public bool Ok(int c) => c <= 0; }
-        private struct U : IOk {[MethodImpl(256)] public bool Ok(int c) => c < 0; }
+        private struct L : IOk { [MethodImpl(256)] public bool Ok(int c) => c <= 0; }
+        private struct U : IOk { [MethodImpl(256)] public bool Ok(int c) => c < 0; }
         [MethodImpl(256)]
         private static int BinarySearch<T, TCv, TOk>(this ReadOnlySpan<T> a, TCv v)
             where TCv : IComparable<T>
