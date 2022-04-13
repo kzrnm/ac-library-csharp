@@ -203,7 +203,7 @@ namespace AtCoder
         [MethodImpl(256)]
         public static StaticModInt<T> operator +(StaticModInt<T> value) => value;
         [MethodImpl(256)]
-        public static StaticModInt<T> operator -(StaticModInt<T> value) => new StaticModInt<T>(op.Mod - value._v);
+        public static StaticModInt<T> operator -(StaticModInt<T> value) => new StaticModInt<T>(value._v == 0 ? 0 : op.Mod - value._v);
         [MethodImpl(256)]
         public static bool operator ==(StaticModInt<T> lhs, StaticModInt<T> rhs) => lhs._v == rhs._v;
         [MethodImpl(256)]

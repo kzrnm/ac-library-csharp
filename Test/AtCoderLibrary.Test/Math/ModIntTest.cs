@@ -16,7 +16,7 @@ namespace AtCoder
         }
 
 
-        private struct DynamicBorderID : IDynamicModID { }
+        private struct DynamicBorderID { }
         [Fact]
         public void DynamicBorder()
         {
@@ -45,7 +45,7 @@ namespace AtCoder
             }
         }
 
-        private struct Mod1ID : IStaticMod, IDynamicModID
+        private struct Mod1ID : IStaticMod
         {
             public uint Mod => 1;
             public bool IsPrime => false;
@@ -81,27 +81,27 @@ namespace AtCoder
             (new StaticModInt<Mod1ID>(0).Inv()).Value.Should().Be(0);
         }
 
-        private struct InvID11 : IStaticMod, IDynamicModID
+        private struct ModID11 : IStaticMod
         {
             public uint Mod => 11;
             public bool IsPrime => true;
         }
-        private struct InvID12 : IStaticMod, IDynamicModID
+        private struct ModID12 : IStaticMod
         {
             public uint Mod => 12;
             public bool IsPrime => false;
         }
-        private struct InvID1000000007 : IStaticMod, IDynamicModID
+        private struct ModID1000000007 : IStaticMod
         {
             public uint Mod => 1000000007;
             public bool IsPrime => false;
         }
-        private struct InvID1000000008 : IStaticMod, IDynamicModID
+        private struct ModID1000000008 : IStaticMod
         {
             public uint Mod => 1000000008;
             public bool IsPrime => false;
         }
-        private struct InvID998244353 : IStaticMod, IDynamicModID
+        private struct ModID998244353 : IStaticMod
         {
             public uint Mod => 998244353;
             public bool IsPrime => true;
@@ -109,59 +109,44 @@ namespace AtCoder
         [Fact]
         public void Inv()
         {
-            for (int i = 1; i < 10; i++)
+            RunStatic<ModID11>();
+            RunStatic<ModID12>();
+            RunStatic<ModID1000000007>();
+            RunStatic<ModID1000000008>();
+            RunStatic<ModID998244353>();
+
+            DynamicModInt<ModID998244353>.Mod = 998244353;
+            RunDynamic<ModID998244353>();
+
+            DynamicModInt<ModID1000000008>.Mod = 1000000008;
+            RunDynamic<ModID1000000008>();
+
+            void RunStatic<T>() where T : struct, IStaticMod
             {
-                int x = new StaticModInt<InvID11>(i).Inv().Value;
-                ((long)x * i % 11).Should().Be(1);
+                var mod = (int)new T().Mod;
+                var max = System.Math.Min(100000, mod);
+                for (int i = 1; i < max; i++)
+                {
+                    if (!new T().IsPrime && Gcd(i, mod) != 1) continue;
+                    int x = new StaticModInt<T>(i).Inv().Value;
+                    ((long)x * i % mod).Should().Be(1);
+                }
             }
 
-
-            for (int i = 1; i < 12; i++)
+            void RunDynamic<T>() where T : struct
             {
-                if (Gcd(i, 12) != 1) continue;
-                int x = new StaticModInt<InvID12>(i).Inv().Value;
-                ((long)x * i % 12).Should().Be(1);
-            }
-
-            for (int i = 1; i < 100000; i++)
-            {
-                int x = new StaticModInt<InvID1000000007>(i).Inv().Value;
-                ((long)x * i % 1000000007).Should().Be(1);
-            }
-
-            for (int i = 1; i < 100000; i++)
-            {
-                if (Gcd(i, 1000000008) != 1) continue;
-                int x = new StaticModInt<InvID1000000008>(i).Inv().Value;
-                ((long)x * i % 1000000008).Should().Be(1);
-            }
-
-            for (int i = 1; i < 100000; i++)
-            {
-                int x = new StaticModInt<InvID998244353>(i).Inv().Value;
-                ((long)x * i % 998244353).Should().Be(1);
-            }
-
-            DynamicModInt<InvID998244353>.Mod = 998244353;
-            for (int i = 1; i < 100000; i++)
-            {
-                int x = new DynamicModInt<InvID998244353>(i).Inv().Value;
-                x.Should().BeGreaterOrEqualTo(0);
-                x.Should().BeLessOrEqualTo(998244353 - 1);
-                ((long)x * i % 998244353).Should().Be(1);
-            }
-
-
-            DynamicModInt<InvID1000000008>.Mod = 1000000008;
-            for (int i = 1; i < 100000; i++)
-            {
-                if (Gcd(i, 1000000008) != 1) continue;
-                int x = new DynamicModInt<InvID1000000008>(i).Inv().Value;
-                ((long)x * i % 1000000008).Should().Be(1);
+                var mod = DynamicModInt<T>.Mod;
+                var max = System.Math.Min(100000, mod);
+                for (int i = 1; i < max; i++)
+                {
+                    if (!InternalMath.IsPrime(mod) && Gcd(i, mod) != 1) continue;
+                    int x = new DynamicModInt<T>(i).Inv().Value;
+                    ((long)x * i % mod).Should().Be(1);
+                }
             }
         }
 
-        private struct IncrementID : IStaticMod, IDynamicModID
+        private struct IncrementID : IStaticMod
         {
             public uint Mod => 11;
             public bool IsPrime => true;
@@ -223,7 +208,7 @@ namespace AtCoder
         }
 
 
-        private struct DynamicUsageID : IDynamicModID { }
+        private struct DynamicUsageID { }
         [Fact]
         public void DynamicUsage()
         {
@@ -253,7 +238,7 @@ namespace AtCoder
             new DynamicModInt<DynamicUsageID>(3).Invoking(m => m.Pow(-1)).Should().ThrowContractAssert();
         }
 
-        private struct ConstructorID : IStaticMod, IDynamicModID
+        private struct ConstructorID : IStaticMod
         {
             public uint Mod => 11;
             public bool IsPrime => true;
@@ -275,7 +260,7 @@ namespace AtCoder
             (1 + new StaticModInt<ConstructorID>(1)).Value.Should().Be(2);
         }
 
-        private struct MemoryID : IStaticMod, IDynamicModID
+        private struct MemoryID : IStaticMod
         {
             public uint Mod => 101;
             public bool IsPrime => true;
@@ -320,6 +305,42 @@ namespace AtCoder
             }
         }
 
+        [Fact]
+        public void Minus()
+        {
+            RunStatic<ModID11>();
+            RunStatic<ModID12>();
+            RunStatic<ModID1000000007>();
+            RunStatic<ModID1000000008>();
+            RunStatic<ModID998244353>();
 
+            DynamicModInt<ModID998244353>.Mod = 998244353;
+            RunDynamic<ModID998244353>();
+
+            DynamicModInt<ModID1000000008>.Mod = 1000000008;
+            RunDynamic<ModID1000000008>();
+
+            void RunStatic<T>() where T : struct, IStaticMod
+            {
+                var mod = (int)new T().Mod;
+                var max = System.Math.Min(100000, mod);
+                for (int i = 0; i < max; i++)
+                {
+                    int x = (-new StaticModInt<T>(i)).Value;
+                    x.Should().Be((mod - i) % mod);
+                }
+            }
+
+            void RunDynamic<T>() where T : struct
+            {
+                var mod = DynamicModInt<T>.Mod;
+                var max = System.Math.Min(100000, mod);
+                for (int i = 0; i < max; i++)
+                {
+                    int x = (-new DynamicModInt<T>(i)).Value;
+                    x.Should().Be((mod - i) % mod);
+                }
+            }
+        }
     }
 }

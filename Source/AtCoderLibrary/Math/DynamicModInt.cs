@@ -207,7 +207,7 @@ namespace AtCoder
         [MethodImpl(256)]
         public static DynamicModInt<T> operator +(DynamicModInt<T> value) => value;
         [MethodImpl(256)]
-        public static DynamicModInt<T> operator -(DynamicModInt<T> value) => new DynamicModInt<T>(Mod - value.Value);
+        public static DynamicModInt<T> operator -(DynamicModInt<T> value) => new DynamicModInt<T>(value._v == 0 ? 0 : Mod - value.Value);
         [MethodImpl(256)]
         public static bool operator ==(DynamicModInt<T> lhs, DynamicModInt<T> rhs) => lhs._v == rhs._v;
         [MethodImpl(256)]
