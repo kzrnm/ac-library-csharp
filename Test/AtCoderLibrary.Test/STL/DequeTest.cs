@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AtCoder.Internal;
 using FluentAssertions;
 using Xunit;
@@ -59,6 +60,25 @@ namespace AtCoder
             deque.Invoking(deque => deque.PopFirst()).Should().Throw<InvalidOperationException>();
         }
 
+        static int NativeSize(int capacity)
+        {
+            if (capacity <= 8)
+                return 8;
+            ++capacity;
+            var v = 1;
+            while (v < capacity) v <<= 1;
+            return v;
+        }
+
+        public static IEnumerable<object[]> Capacity_Data = Enumerable.Range(0, 40).Select(i => new object[] { i });
+        [Theory]
+        [MemberData(nameof(Capacity_Data))]
+        public void Capacity(int size)
+        {
+            var deque = new Deque<int>(size);
+            deque.data.Should().HaveCount(NativeSize(size));
+        }
+
         [Fact]
         public void Contains()
         {
@@ -90,17 +110,17 @@ namespace AtCoder
             dist.AsSpan().Fill(-1);
             var deque = new Deque<int>();
 
-            ((ICollection<int>)deque).CopyTo(dist, 0);
+            deque.CopyTo(dist, 0);
             dist.Should().Equal(new[] { -1, -1, -1, -1, -1, -1, -1, -1 });
 
             deque.AddLast(1);
             deque.AddLast(2);
-            ((ICollection<int>)deque).CopyTo(dist, 0);
+            deque.CopyTo(dist, 0);
             dist.Should().Equal(new[] { 1, 2, -1, -1, -1, -1, -1, -1 });
 
             deque.AddFirst(3);
             deque.AddFirst(4);
-            ((ICollection<int>)deque).CopyTo(dist, 0);
+            deque.CopyTo(dist, 0);
             dist.Should().Equal(new[] { 4, 3, 1, 2, -1, -1, -1, -1 });
         }
 

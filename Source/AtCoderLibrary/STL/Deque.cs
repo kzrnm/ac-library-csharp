@@ -31,7 +31,7 @@ namespace AtCoder
         public Deque(int capacity)
         {
             if (capacity <= 8) capacity = 8;
-            else capacity = 1 << (InternalBit.CeilPow2(capacity));
+            else capacity = 1 << (InternalBit.CeilPow2(capacity + 1));
             data = new T[capacity];
             mask = capacity - 1;
         }
@@ -108,7 +108,7 @@ namespace AtCoder
 
         }
 
-        void ICollection<T>.CopyTo(T[] array, int arrayIndex)
+        public void CopyTo(T[] array, int arrayIndex)
         {
             if (head <= tail)
             {
