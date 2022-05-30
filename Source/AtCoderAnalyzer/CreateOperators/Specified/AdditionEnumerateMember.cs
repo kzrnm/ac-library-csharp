@@ -5,7 +5,7 @@ namespace AtCoderAnalyzer.CreateOperators.Specified
 {
     internal class AdditionEnumerateMember : OperatorEnumerateMember
     {
-        internal AdditionEnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol) : base(semanticModel, typeSymbol) { }
+        internal AdditionEnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol, AtCoderAnalyzerConfig config) : base(semanticModel, typeSymbol, config) { }
 
         protected override SyntaxKind? GetSyntaxKind(IMethodSymbol symbol)
             => symbol switch

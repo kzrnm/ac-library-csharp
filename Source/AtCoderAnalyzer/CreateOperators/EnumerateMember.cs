@@ -14,7 +14,8 @@ namespace AtCoderAnalyzer.CreateOperators
         protected ITypeSymbol TypeSymbol { get; }
         private readonly INamedTypeSymbol methodImplAttribute;
         private readonly INamedTypeSymbol methodImplOptions;
-        protected EnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol)
+        private readonly AtCoderAnalyzerConfig config;
+        protected EnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol, AtCoderAnalyzerConfig config)
         {
             SemanticModel = semanticModel;
             TypeSymbol = typeSymbol;
@@ -22,20 +23,21 @@ namespace AtCoderAnalyzer.CreateOperators
                     Constants.System_Runtime_CompilerServices_MethodImplAttribute);
             methodImplOptions = semanticModel.Compilation.GetTypeByMetadataName(
                 Constants.System_Runtime_CompilerServices_MethodImplOptions);
+            this.config = config;
         }
-        public static EnumerateMember Create(SemanticModel semanticModel, ITypeSymbol typeSymbol) => typeSymbol.OriginalDefinition.ToDisplayString() switch
+        public static EnumerateMember Create(SemanticModel semanticModel, ITypeSymbol typeSymbol, AtCoderAnalyzerConfig config) => typeSymbol.OriginalDefinition.ToDisplayString() switch
         {
-            "AtCoder.Operators.IAdditionOperator<T>" => new AdditionEnumerateMember(semanticModel, typeSymbol),
-            "AtCoder.Operators.ISubtractOperator<T>" => new SubtractEnumerateMember(semanticModel, typeSymbol),
-            "AtCoder.Operators.IMultiplicationOperator<T>" => new MultiplicationEnumerateMember(semanticModel, typeSymbol),
-            "AtCoder.Operators.IDivisionOperator<T>" => new DivisionEnumerateMember(semanticModel, typeSymbol),
-            "AtCoder.Operators.IUnaryNumOperator<T>" => new UnaryNumEnumerateMember(semanticModel, typeSymbol),
-            "AtCoder.Operators.ICompareOperator<T>" => new CompareOperatorEnumerateMember(semanticModel, typeSymbol),
-            "AtCoder.Operators.IMinMaxValue<T>" => new MinMaxValueEnumerateMember(semanticModel, typeSymbol),
-            "AtCoder.Operators.IShiftOperator<T>" => new ShiftEnumerateMember(semanticModel, typeSymbol),
-            "AtCoder.Operators.ICastOperator<TFrom, TTo>" => new CastEnumerateMember(semanticModel, typeSymbol),
-            "System.Collections.Generic.IComparer<T>" => new ComparerEnumerateMember(semanticModel, typeSymbol),
-            _ => new EnumerateMember(semanticModel, typeSymbol),
+            "AtCoder.Operators.IAdditionOperator<T>" => new AdditionEnumerateMember(semanticModel, typeSymbol, config),
+            "AtCoder.Operators.ISubtractOperator<T>" => new SubtractEnumerateMember(semanticModel, typeSymbol, config),
+            "AtCoder.Operators.IMultiplicationOperator<T>" => new MultiplicationEnumerateMember(semanticModel, typeSymbol, config),
+            "AtCoder.Operators.IDivisionOperator<T>" => new DivisionEnumerateMember(semanticModel, typeSymbol, config),
+            "AtCoder.Operators.IUnaryNumOperator<T>" => new UnaryNumEnumerateMember(semanticModel, typeSymbol, config),
+            "AtCoder.Operators.ICompareOperator<T>" => new CompareOperatorEnumerateMember(semanticModel, typeSymbol, config),
+            "AtCoder.Operators.IMinMaxValue<T>" => new MinMaxValueEnumerateMember(semanticModel, typeSymbol, config),
+            "AtCoder.Operators.IShiftOperator<T>" => new ShiftEnumerateMember(semanticModel, typeSymbol, config),
+            "AtCoder.Operators.ICastOperator<TFrom, TTo>" => new CastEnumerateMember(semanticModel, typeSymbol, config),
+            "System.Collections.Generic.IComparer<T>" => new ComparerEnumerateMember(semanticModel, typeSymbol, config),
+            _ => new EnumerateMember(semanticModel, typeSymbol, config),
         };
 
         public IEnumerable<(MemberDeclarationSyntax Syntax, bool IsMethod)> EnumerateMemberSyntax()
@@ -91,7 +93,8 @@ namespace AtCoderAnalyzer.CreateOperators
                                 SingletonSeparatedList(
                                     SyntaxHelpers.AggressiveInliningAttribute(
                                         methodImplAttribute.ToMinimalDisplayString(semanticModel, position),
-                                        methodImplOptions.ToMinimalDisplayString(semanticModel, position))))))
+                                        methodImplOptions.ToMinimalDisplayString(semanticModel, position),
+                                        config.UseMethodImplNumeric)))))
                     .WithParameterList(symbol.ToParameterListSyntax(semanticModel, semanticModel.SyntaxTree.Length));
         protected MethodDeclarationSyntax CreateMethodSyntax(SemanticModel semanticModel, int position, IMethodSymbol symbol, BlockSyntax block)
         {

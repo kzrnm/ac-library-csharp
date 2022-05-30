@@ -5,7 +5,7 @@ namespace AtCoderAnalyzer.CreateOperators.Specified
 {
     internal class ShiftEnumerateMember : OperatorEnumerateMember
     {
-        internal ShiftEnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol) : base(semanticModel, typeSymbol) { }
+        internal ShiftEnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol, AtCoderAnalyzerConfig config) : base(semanticModel, typeSymbol, config) { }
         protected override SyntaxKind? GetSyntaxKind(IMethodSymbol symbol)
             => symbol switch
             {

@@ -7,7 +7,7 @@ namespace AtCoderAnalyzer.CreateOperators
 {
     internal abstract class OperatorEnumerateMember : EnumerateMember
     {
-        protected OperatorEnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol) : base(semanticModel, typeSymbol) { }
+        protected OperatorEnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol, AtCoderAnalyzerConfig config) : base(semanticModel, typeSymbol, config) { }
         protected abstract SyntaxKind? GetSyntaxKind(IMethodSymbol symbol);
 
         protected override MethodDeclarationSyntax CreateMethodSyntax(IMethodSymbol symbol)

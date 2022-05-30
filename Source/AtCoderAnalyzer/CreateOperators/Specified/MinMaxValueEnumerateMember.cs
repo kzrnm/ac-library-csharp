@@ -8,7 +8,7 @@ namespace AtCoderAnalyzer.CreateOperators.Specified
 {
     internal class MinMaxValueEnumerateMember : EnumerateMember
     {
-        internal MinMaxValueEnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol) : base(semanticModel, typeSymbol) { }
+        internal MinMaxValueEnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol, AtCoderAnalyzerConfig config) : base(semanticModel, typeSymbol, config) { }
         protected override PropertyDeclarationSyntax CreatePropertySyntax(IPropertySymbol symbol)
         {
             if (symbol is { Name: "MaxValue" or "MinValue" })

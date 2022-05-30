@@ -34,6 +34,7 @@ namespace AtCoderAnalyzer
                 is not CompilationUnitSyntax root)
                 return;
 
+            var config = AtCoderAnalyzerConfig.Parse(context.Document.Project.AnalyzerOptions.AnalyzerConfigOptionsProvider.GlobalOptions);
             var diagnostic = context.Diagnostics[0];
             var diagnosticSpan = diagnostic.Location.SourceSpan;
 
@@ -42,7 +43,7 @@ namespace AtCoderAnalyzer
                 return;
 
             var action = CodeAction.Create(title: title,
-               createChangedDocument: c => AddAggressiveInlining(context.Document, root, diagnosticSpan.Start, typeDeclarationSyntax, c),
+               createChangedDocument: c => AddAggressiveInlining(context.Document, root, diagnosticSpan.Start, config, typeDeclarationSyntax, c),
                equivalenceKey: title);
             context.RegisterCodeFix(action, diagnostic);
         }
@@ -50,10 +51,11 @@ namespace AtCoderAnalyzer
         private async Task<Document> AddAggressiveInlining(
             Document document, CompilationUnitSyntax root,
             int postion,
+            AtCoderAnalyzerConfig config,
             TypeDeclarationSyntax typeDeclarationSyntax, CancellationToken cancellationToken)
         {
             root = root.ReplaceNode(typeDeclarationSyntax,
-                            new AddAggressiveInliningRewriter(await document.GetSemanticModelAsync(cancellationToken), postion)
+                            new AddAggressiveInliningRewriter(await document.GetSemanticModelAsync(cancellationToken), postion, config)
                             .Visit(typeDeclarationSyntax));
 
             return document.WithSyntaxRoot(root);
@@ -66,7 +68,7 @@ namespace AtCoderAnalyzer
             private readonly INamedTypeSymbol methodImplAttribute;
             private readonly INamedTypeSymbol methodImplOptions;
             private readonly AttributeSyntax aggressiveInliningAttribute;
-            public AddAggressiveInliningRewriter(SemanticModel semanticModel, int position) : base(false)
+            public AddAggressiveInliningRewriter(SemanticModel semanticModel, int position, AtCoderAnalyzerConfig config) : base(false)
             {
                 this.semanticModel = semanticModel;
                 this.position = position;
@@ -74,7 +76,9 @@ namespace AtCoderAnalyzer
                     System_Runtime_CompilerServices_MethodImplAttribute);
                 methodImplOptions = semanticModel.Compilation.GetTypeByMetadataName(
                     System_Runtime_CompilerServices_MethodImplOptions);
-                aggressiveInliningAttribute = SyntaxHelpers.AggressiveInliningAttribute(methodImplAttribute.ToMinimalDisplayString(semanticModel, position), methodImplOptions.ToMinimalDisplayString(semanticModel, position));
+                aggressiveInliningAttribute = SyntaxHelpers.AggressiveInliningAttribute(
+                    methodImplAttribute.ToMinimalDisplayString(semanticModel, position),
+                    methodImplOptions.ToMinimalDisplayString(semanticModel, position), config.UseMethodImplNumeric);
             }
 
             public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node)

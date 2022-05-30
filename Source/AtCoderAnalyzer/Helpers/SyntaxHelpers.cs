@@ -35,14 +35,14 @@ namespace AtCoderAnalyzer.Helpers
             => MemberAccessExpression(
                 SyntaxKind.SimpleMemberAccessExpression,
                 ParseExpression(methodImplOptions), IdentifierName("AggressiveInlining"));
-        public static AttributeSyntax AggressiveInliningAttribute(string methodImplAttribute, string methodImplOptions)
+        public static AttributeSyntax AggressiveInliningAttribute(string methodImplAttribute, string methodImplOptions, bool useNumeric)
             => Attribute(
                 ParseName(methodImplAttribute.EndsWith("Attribute")
                     ? methodImplAttribute.Substring(0, methodImplAttribute.Length - "Attribute".Length)
                     : methodImplAttribute)
-            ).AddArgumentListArguments(AttributeArgument(AggressiveInliningMember(methodImplOptions)));
-        public static AttributeListSyntax AggressiveInliningAttributeList(string methodImplAttribute, string methodImplOptions)
-            => AttributeList(SingletonSeparatedList(AggressiveInliningAttribute(methodImplAttribute, methodImplOptions)));
+            ).AddArgumentListArguments(AttributeArgument(
+                useNumeric ? LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal(256)) : AggressiveInliningMember(methodImplOptions)
+                ));
 
         public static readonly ArrowExpressionClauseSyntax ArrowDefault
             = ArrowExpressionClause(

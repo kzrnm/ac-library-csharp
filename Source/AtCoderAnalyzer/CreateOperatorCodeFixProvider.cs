@@ -28,6 +28,7 @@ namespace AtCoderAnalyzer
             if (await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false)
                 is not CompilationUnitSyntax root)
                 return;
+            var config = AtCoderAnalyzerConfig.Parse(context.Document.Project.AnalyzerOptions.AnalyzerConfigOptionsProvider.GlobalOptions);
             var diagnostic = context.Diagnostics[0];
             var diagnosticSpan = diagnostic.Location.SourceSpan;
 
@@ -102,48 +103,47 @@ namespace AtCoderAnalyzer
             }
 
             var action = CodeAction.Create(title: title,
-               createChangedDocument: c => AddOperatorType(
+               createChangedDocument: c => new OperatorTypeSyntaxBuilder(semanticModel, config).AddOperatorType(
                    context.Document,
                    root,
-                   semanticModel,
                    constraintArrayDic.ToImmutable()),
                equivalenceKey: title);
             context.RegisterCodeFix(action, diagnostic);
-        }
-
-        private async Task<Document> AddOperatorType(
-            Document document,
-            CompilationUnitSyntax root,
-            SemanticModel semanticModel,
-            ImmutableDictionary<string, ImmutableArray<ITypeSymbol>> constraintDic)
-        {
-            bool hasMethod = false;
-            var usings = root.Usings.ToNamespaceHashSet();
-            var builder = new OperatorTypeSyntaxBuilder(semanticModel);
-
-            MemberDeclarationSyntax[] newMembers = new MemberDeclarationSyntax[constraintDic.Count];
-            foreach (var (p, i) in constraintDic.Select((p, i) => (p, i)))
-            {
-                bool m;
-                (newMembers[i], m) = builder.Build(p.Key, p.Value);
-                hasMethod |= m;
-            }
-
-            root = root.AddMembers(newMembers);
-            return document.WithSyntaxRoot(root);
         }
 
         private class OperatorTypeSyntaxBuilder
         {
             private readonly SemanticModel semanticModel;
             private readonly int origPosition;
-            public OperatorTypeSyntaxBuilder(SemanticModel semanticModel)
+            private AtCoderAnalyzerConfig config;
+            public OperatorTypeSyntaxBuilder(SemanticModel semanticModel, AtCoderAnalyzerConfig config)
             {
                 this.semanticModel = semanticModel;
                 origPosition = semanticModel.SyntaxTree.Length;
+                this.config = config;
             }
 
-            public (StructDeclarationSyntax syntax, bool hasMethod) Build(string operatorTypeName, ImmutableArray<ITypeSymbol> constraints)
+            public async Task<Document> AddOperatorType(
+                Document document,
+                CompilationUnitSyntax root,
+                ImmutableDictionary<string, ImmutableArray<ITypeSymbol>> constraintDic)
+            {
+                bool hasMethod = false;
+                var usings = root.Usings.ToNamespaceHashSet();
+
+                MemberDeclarationSyntax[] newMembers = new MemberDeclarationSyntax[constraintDic.Count];
+                foreach (var (p, i) in constraintDic.Select((p, i) => (p, i)))
+                {
+                    bool m;
+                    (newMembers[i], m) = Build(p.Key, p.Value);
+                    hasMethod |= m;
+                }
+
+                return document.WithSyntaxRoot(root.AddMembers(newMembers));
+
+            }
+
+            private (StructDeclarationSyntax syntax, bool hasMethod) Build(string operatorTypeName, ImmutableArray<ITypeSymbol> constraints)
             {
                 bool hasMethod = false;
                 var members = ImmutableList.CreateBuilder<MemberDeclarationSyntax>();
@@ -156,7 +156,7 @@ namespace AtCoderAnalyzer
                         if (!added.Add(baseType))
                             continue;
 
-                        foreach (var (member, isMethod) in EnumerateMember.Create(semanticModel, baseType).EnumerateMemberSyntax())
+                        foreach (var (member, isMethod) in EnumerateMember.Create(semanticModel, baseType, config).EnumerateMemberSyntax())
                         {
                             members.Add(member);
                             hasMethod |= isMethod;

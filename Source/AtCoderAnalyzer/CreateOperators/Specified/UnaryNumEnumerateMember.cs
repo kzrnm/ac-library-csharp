@@ -7,7 +7,7 @@ namespace AtCoderAnalyzer.CreateOperators.Specified
 {
     internal class UnaryNumEnumerateMember : EnumerateMember
     {
-        internal UnaryNumEnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol) : base(semanticModel, typeSymbol) { }
+        internal UnaryNumEnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol, AtCoderAnalyzerConfig config) : base(semanticModel, typeSymbol, config) { }
 
         protected override MethodDeclarationSyntax CreateMethodSyntax(IMethodSymbol symbol)
         {

@@ -9,7 +9,7 @@ namespace AtCoderAnalyzer.CreateOperators.Specified
 {
     internal class ComparerEnumerateMember : EnumerateMember
     {
-        internal ComparerEnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol) : base(semanticModel, typeSymbol) { }
+        internal ComparerEnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol, AtCoderAnalyzerConfig config) : base(semanticModel, typeSymbol, config) { }
         protected override MethodDeclarationSyntax CreateMethodSyntax(IMethodSymbol symbol)
         {
             if (symbol is

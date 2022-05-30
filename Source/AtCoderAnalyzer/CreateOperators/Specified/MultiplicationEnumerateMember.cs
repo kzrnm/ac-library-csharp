@@ -8,7 +8,7 @@ namespace AtCoderAnalyzer.CreateOperators.Specified
 {
     internal class MultiplicationEnumerateMember : OperatorEnumerateMember
     {
-        internal MultiplicationEnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol) : base(semanticModel, typeSymbol) { }
+        internal MultiplicationEnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol, AtCoderAnalyzerConfig config) : base(semanticModel, typeSymbol, config) { }
 
         protected override SyntaxKind? GetSyntaxKind(IMethodSymbol symbol)
             => symbol switch

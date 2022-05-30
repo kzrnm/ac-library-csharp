@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Testing;
 using Xunit;
 using VerifyCS = AtCoderAnalyzer.Test.CSharpCodeFixVerifier<
@@ -467,20 +468,88 @@ struct Def<T> : IAny<T> {
             var source = @"
 using AtCoder;
 using System.Runtime.CompilerServices;
+using MI = System.Runtime.CompilerServices.MethodImplAttribute;
 struct Op : ILazySegtreeOperator<long, int>
 {
     public long Identity => 0L;
     public int FIdentity => 0;
-    [MethodImpl(256)]
     public int Composition(int f, int g) => 0;
-    [MethodImpl(256)]
     public long Mapping(int f, long x) => 0L;
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public long Operate(long x, long y) => 0L;
 }
 ";
-            await VerifyCS.VerifyAnalyzerAsync(source);
+            var fixedSource = @"
+using AtCoder;
+using System.Runtime.CompilerServices;
+using MI = System.Runtime.CompilerServices.MethodImplAttribute;
+struct Op : ILazySegtreeOperator<long, int>
+{
+    public long Identity => 0L;
+    public int FIdentity => 0;
+
+    [MI(MethodImplOptions.AggressiveInlining)]
+    public int Composition(int f, int g) => 0;
+    [MI(MethodImplOptions.AggressiveInlining)]
+    public long Mapping(int f, long x) => 0L;
+    [MI(MethodImplOptions.AggressiveInlining)]
+    public long Operate(long x, long y) => 0L;
+}
+";
+            await VerifyCS.VerifyCodeFixAsync(source,
+                VerifyCS.Diagnostic().WithSpan(5, 1, 12, 2).WithArguments("Composition, Mapping, Operate"),
+                fixedSource);
         }
 
+        [Fact]
+        public async Task MethodImpl256()
+        {
+            var source = @"
+using AtCoder;
+using System.Runtime.CompilerServices;
+using MI = System.Runtime.CompilerServices.MethodImplAttribute;
+struct Op : ILazySegtreeOperator<long, int>
+{
+    public long Identity => 0L;
+    public int FIdentity => 0;
+    public int Composition(int f, int g) => 0;
+    public long Mapping(int f, long x) => 0L;
+    public long Operate(long x, long y) => 0L;
+}
+";
+            var fixedSource = @"
+using AtCoder;
+using System.Runtime.CompilerServices;
+using MI = System.Runtime.CompilerServices.MethodImplAttribute;
+struct Op : ILazySegtreeOperator<long, int>
+{
+    public long Identity => 0L;
+    public int FIdentity => 0;
+
+    [MI(256)]
+    public int Composition(int f, int g) => 0;
+    [MI(256)]
+    public long Mapping(int f, long x) => 0L;
+    [MI(256)]
+    public long Operate(long x, long y) => 0L;
+}
+";
+            var test = new VerifyCS.Test
+            {
+                TestCode = source,
+                FixedCode = fixedSource,
+                TestState =
+                {
+                    AnalyzerConfigFiles =
+                    {
+                        ("/.editorconfig", @"
+is_global = true
+build_property.AtCoderAnalyzer_UseMethodImplNumeric = true
+"),
+                    },
+                },
+            };
+            test.ExpectedDiagnostics.Add(VerifyCS.Diagnostic().WithSpan(5, 1, 12, 2).WithArguments("Composition, Mapping, Operate"));
+            await test.RunAsync(CancellationToken.None);
+        }
     }
 }

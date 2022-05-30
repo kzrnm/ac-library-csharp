@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Xunit;
 using VerifyCS = AtCoderAnalyzer.Test.CSharpCodeFixVerifier<
     AtCoderAnalyzer.CreateOperatorAnalyzer,
@@ -569,7 +570,6 @@ struct Op : System.Collections.Generic.IComparer<short>
         }
 
         [Fact]
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public async Task AnyDefinedType()
         {
             var source = @"
@@ -632,7 +632,6 @@ struct Op : IAny<(int, long)>
         }
 
         [Fact]
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public async Task AnyDefinedMethod()
         {
             var source = @"
@@ -936,6 +935,126 @@ struct OpSeg : ISegtreeOperator<ModInt>
             await VerifyCS.VerifyCodeFixAsync(source,
                 VerifyCS.Diagnostic("AC0008").WithSpan(7, 5, 7, 27).WithArguments("OpSeg"),
                 fixedSource);
+        }
+
+        [Fact]
+        public async Task MethodImplAlias()
+        {
+            var source = @"using AtCoder;
+using System.Runtime.CompilerServices;
+using MI = System.Runtime.CompilerServices.MethodImplAttribute;
+class Program
+{
+    Segtree<int, MinOp> defined;
+    Segtree<long, OpSeg> notDefined;
+}
+struct MinOp : ISegtreeOperator<int>
+{
+    public int Identity => 0;
+
+    public int Operate(int x, int y)
+    {
+        return System.Math.Min(x, y);
+    }
+}
+";
+            var fixedSource = @"using AtCoder;
+using System.Runtime.CompilerServices;
+using MI = System.Runtime.CompilerServices.MethodImplAttribute;
+class Program
+{
+    Segtree<int, MinOp> defined;
+    Segtree<long, OpSeg> notDefined;
+}
+struct MinOp : ISegtreeOperator<int>
+{
+    public int Identity => 0;
+
+    public int Operate(int x, int y)
+    {
+        return System.Math.Min(x, y);
+    }
+}
+
+struct OpSeg : ISegtreeOperator<long>
+{
+    [MI(MethodImplOptions.AggressiveInlining)]
+    public long Operate(long x, long y) => default;
+
+    public long Identity => default;
+}";
+
+            var test = new VerifyCS.Test
+            {
+                TestCode = source,
+                FixedCode = fixedSource,
+            };
+            test.ExpectedDiagnostics.Add(VerifyCS.Diagnostic("AC0008").WithSpan(7, 5, 7, 25).WithArguments("OpSeg"));
+            await test.RunAsync(CancellationToken.None);
+        }
+
+        [Fact]
+        public async Task MethodImpl256()
+        {
+            var source = @"using AtCoder;
+using System.Runtime.CompilerServices;
+class Program
+{
+    Segtree<int, MinOp> defined;
+    Segtree<long, OpSeg> notDefined;
+}
+struct MinOp : ISegtreeOperator<int>
+{
+    public int Identity => 0;
+
+    public int Operate(int x, int y)
+    {
+        return System.Math.Min(x, y);
+    }
+}
+";
+            var fixedSource = @"using AtCoder;
+using System.Runtime.CompilerServices;
+class Program
+{
+    Segtree<int, MinOp> defined;
+    Segtree<long, OpSeg> notDefined;
+}
+struct MinOp : ISegtreeOperator<int>
+{
+    public int Identity => 0;
+
+    public int Operate(int x, int y)
+    {
+        return System.Math.Min(x, y);
+    }
+}
+
+struct OpSeg : ISegtreeOperator<long>
+{
+    [MethodImpl(256)]
+    public long Operate(long x, long y) => default;
+
+    public long Identity => default;
+}";
+
+            var test = new VerifyCS.Test
+            {
+                TestCode = source,
+                FixedCode = fixedSource,
+                TestState =
+                {
+                    AnalyzerConfigFiles =
+                    {
+                        ("/.editorconfig", @"
+is_global = true
+build_property.AtCoderAnalyzer_UseMethodImplNumeric = true
+")
+                    },
+                },
+            };
+            test.ExpectedDiagnostics.Add(VerifyCS.Diagnostic("AC0008").WithSpan(6, 5, 6, 25).WithArguments("OpSeg"));
+            await test.RunAsync(CancellationToken.None);
         }
         #endregion Others
     }

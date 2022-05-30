@@ -7,7 +7,7 @@ namespace AtCoderAnalyzer.CreateOperators.Specified
 {
     internal class CastEnumerateMember : EnumerateMember
     {
-        internal CastEnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol) : base(semanticModel, typeSymbol) { }
+        internal CastEnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol, AtCoderAnalyzerConfig config) : base(semanticModel, typeSymbol, config) { }
         protected override MethodDeclarationSyntax CreateMethodSyntax(IMethodSymbol symbol)
         {
             if (symbol is
