@@ -1,36 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using AtCoder.Internal;
-using AtCoder.Operators;
 
 namespace AtCoder
 {
     /// <summary>
     /// Minimum-cost flow problem を扱うライブラリです。
     /// </summary>
-    /// <typeparam name="TCap">容量の型</typeparam>
-    /// <typeparam name="TCapOp"><typeparamref name="TCap"/> に対応する演算を提供する型</typeparam>
-    /// <typeparam name="TCost">コストの型</typeparam>
-    /// <typeparam name="TCostOp"><typeparamref name="TCost"/> に対応する演算を提供する型</typeparam>
-    /// <typeparam name="TCast">
-    /// <typeparamref name="TCap"/> から <typeparamref name="TCost"/> への型変換を提供する型
-    /// </typeparam>
-    /// <remarks>
-    /// <para>制約: <typeparamref name="TCap"/>, <typeparamref name="TCost"/> は int, long。</para>
-    /// </remarks>
-#if GENERIC_MATH
-    [Obsolete("Use generic math")]
-#endif
-    public class McfGraph<TCap, TCapOp, TCost, TCostOp, TCast>
-            where TCapOp : struct, INumOperator<TCap>
-            where TCostOp : struct, INumOperator<TCost>
-            where TCast : ICastOperator<TCap, TCost>
+    /// <typeparam name="TValue">容量とコストの型</typeparam>
+    public class McfGraph<TValue> : McfGraph<TValue, TValue>
+            where TValue : INumber<TValue>, ISignedNumber<TValue>, IMinMaxValue<TValue>
     {
-        static readonly TCapOp capOp = default;
-        static readonly TCostOp costOp = default;
-        static readonly TCast cast = default;
-
+        /// <summary>
+        /// <paramref name="n"/> 頂点 0 辺のグラフを作ります。
+        /// </summary>
+        /// <remarks>
+        /// <para>制約: 0 ≤ <paramref name="n"/> ≤ 10^8</para>
+        /// <para>計算量: O(<paramref name="n"/>)</para>
+        /// </remarks>
+        public McfGraph(int n) : base(n) { }
+    }
+    /// <summary>
+    /// Minimum-cost flow problem を扱うライブラリです。
+    /// </summary>
+    /// <typeparam name="TCap">容量の型</typeparam>
+    /// <typeparam name="TCost">コストの型</typeparam>
+    public class McfGraph<TCap, TCost>
+            where TCap : INumber<TCap>, IMinMaxValue<TCap>
+            where TCost : INumber<TCost>, ISignedNumber<TCost>, IMinMaxValue<TCost>
+    {
         /// <summary>
         /// <paramref name="n"/> 頂点 0 辺のグラフを作ります。
         /// </summary>
@@ -65,8 +65,8 @@ namespace AtCoder
         {
             Contract.Assert((uint)from < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(from)} && {nameof(from)} < _n");
             Contract.Assert((uint)to < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(to)} && {nameof(to)} < _n");
-            Contract.Assert(capOp.LessThanOrEqual(default, cap), reason: $"IndexOutOfRange: 0 <= {nameof(cap)}");
-            Contract.Assert(costOp.LessThanOrEqual(default, cost), reason: $"IndexOutOfRange: 0 <= {nameof(cost)}");
+            Contract.Assert(TCap.IsPositive(cap), reason: $"IndexOutOfRange: 0 <= {nameof(cap)}");
+            Contract.Assert(TCost.IsPositive(cost), reason: $"IndexOutOfRange: 0 <= {nameof(cost)}");
 
             int m = _edges.Count;
             _edges.Add(new Edge(from, to, cap, default, cost));
@@ -130,7 +130,7 @@ namespace AtCoder
         /// O(F(n + m) log (n + m))
         /// </remarks>
         [MethodImpl(256)]
-        public (TCap cap, TCost cost) Flow(int s, int t) => Flow(s, t, capOp.MaxValue);
+        public (TCap cap, TCost cost) Flow(int s, int t) => Flow(s, t, TCap.MaxValue);
 
         /// <summary>
         /// 頂点 <paramref name="s"/> から <paramref name="t"/> へ
@@ -220,7 +220,7 @@ namespace AtCoder
         /// O(F(n + m) log (n + m))
         /// </remarks>
         [MethodImpl(256)]
-        public List<(TCap cap, TCost cost)> Slope(int s, int t) => Slope(s, t, capOp.MaxValue);
+        public List<(TCap cap, TCost cost)> Slope(int s, int t) => Slope(s, t, TCap.MaxValue);
 
 
         /// <summary>
@@ -323,7 +323,7 @@ namespace AtCoder
         /// O(F(n + m) log (n + m))
         /// </remarks>
         [MethodImpl(256)]
-        public List<(TCap cap, TCost cost)> Slope2(int s, int t) => Slope2(s, t, capOp.MaxValue);
+        public List<(TCap cap, TCost cost)> Slope2(int s, int t) => Slope2(s, t, TCap.MaxValue);
 
 
         /// <summary>
@@ -388,11 +388,11 @@ namespace AtCoder
             [MethodImpl(256)]
             public bool DualRef()
             {
-                dist.AsSpan().Fill(costOp.MaxValue);
+                dist.AsSpan().Fill(TCost.MaxValue);
                 var vis = new bool[_n];
 
                 var queMin = new Stack<int>();
-                var que = new PriorityQueueOp<TCost, int, TCostOp>();
+                var que = new PriorityQueueDictionary<TCost, int>();
 
                 dist[s] = default;
                 queMin.Push(s);
@@ -420,10 +420,10 @@ namespace AtCoder
                         if (EqualityComparer<TCap>.Default.Equals(e.Cap, default)) continue;
                         // |-dual[e.To] + dual[v]| <= (n-1)C
                         // cost <= C - -(n-1)C + 0 = nC
-                        var cost = costOp.Add(costOp.Subtract(e.Cost, dual[e.To]), dualV);
-                        if (costOp.GreaterThan(costOp.Subtract(dist[e.To], distV), cost))
+                        var cost = e.Cost - dual[e.To] + dualV;
+                        if (dist[e.To] - distV > cost)
                         {
-                            var distTo = costOp.Add(distV, cost);
+                            var distTo = distV + cost;
                             dist[e.To] = distTo;
                             prevE[e.To] = e.Rev;
                             if (EqualityComparer<TCost>.Default.Equals(distTo, distV))
@@ -446,7 +446,7 @@ namespace AtCoder
                     //         (shortest(s, v) + dual[s] - dual[v]) = - shortest(s,
                     //         t) + dual[t] + shortest(s, v) = shortest(s, v) -
                     //         shortest(s, t) >= 0 - (n-1)C
-                    dual[v] = costOp.Subtract(dual[v], costOp.Subtract(dist[t], dist[v]));
+                    dual[v] -= (dist[t] - dist[v]);
                 }
                 return true;
             }
@@ -473,8 +473,8 @@ namespace AtCoder
                     var e = _edges[i];
                     edgeIdx[i] = degree[e.From]++;
                     redgeIdx[i] = degree[e.To]++;
-                    elist.Add((e.From, new EdgeInternal(e.To, -1, capOp.Subtract(e.Cap, e.Flow), e.Cost)));
-                    elist.Add((e.To, new EdgeInternal(e.From, -1, e.Flow, costOp.Minus(e.Cost))));
+                    elist.Add((e.From, new EdgeInternal(e.To, -1, e.Cap - e.Flow, e.Cost)));
+                    elist.Add((e.To, new EdgeInternal(e.From, -1, e.Flow, -e.Cost)));
                 }
                 g = new CSR<EdgeInternal>(_n, elist);
                 for (int i = 0; i < m; i++)
@@ -492,7 +492,7 @@ namespace AtCoder
             for (int i = 0; i < m; i++)
             {
                 var e = g.EList[edgeIdx[i]];
-                _edges[i].Flow = capOp.Subtract(_edges[i].Cap, e.Cap);
+                _edges[i].Flow = _edges[i].Cap - e.Cap;
             }
 
             return result;
@@ -529,29 +529,25 @@ namespace AtCoder
 
             TCap flow = default;
             TCost cost = default;
-            TCost prevCostPerFlow = costOp.Decrement(default);
+            TCost prevCostPerFlow = TCost.NegativeOne;
             var result = new List<(TCap cap, TCost cost)> { (flow, cost) };
-            while (capOp.LessThan(flow, flowLimit))
+            while (flow < flowLimit)
             {
                 if (!slopeDR.DualRef()) break;
-                var c = capOp.Subtract(flowLimit, flow);
+                var c = flowLimit - flow;
                 for (int v = t; v != s; v = g.EList[prevE[v]].To)
                 {
-                    var c2 = g.EList[g.EList[prevE[v]].Rev].Cap;
-                    if (capOp.LessThan(c2, c))
-                    {
-                        c = c2;
-                    }
+                    c = TCap.Min(c, g.EList[g.EList[prevE[v]].Rev].Cap);
                 }
                 for (int v = t; v != s; v = g.EList[prevE[v]].To)
                 {
                     var e = g.EList[prevE[v]];
-                    g.EList[prevE[v]].Cap = capOp.Add(e.Cap, c);
-                    g.EList[e.Rev].Cap = capOp.Subtract(g.EList[e.Rev].Cap, c);
+                    g.EList[prevE[v]].Cap = e.Cap + c;
+                    g.EList[e.Rev].Cap -= c;
                 }
-                var d = costOp.Minus(dual[s]);
-                flow = capOp.Add(flow, c);
-                cost = costOp.Add(cost, costOp.Multiply(cast.Cast(c), d));
+                var d = -dual[s];
+                flow += c;
+                cost += TCost.CreateChecked(c) * d;
                 if (removeLine && EqualityComparer<TCost>.Default.Equals(prevCostPerFlow, d))
                 {
                     result.RemoveAt(result.Count - 1);
