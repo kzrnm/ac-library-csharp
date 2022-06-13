@@ -5,10 +5,7 @@ using Xunit;
 
 namespace AtCoder
 {
-#if GENERIC_MATH
-    [System.Obsolete("Use generic math")]
-#endif
-    public class FenwickTreeTest
+    public class FenwickTreeGenericMathTest
     {
         private readonly struct ModID0 : IDynamicModID { }
         private readonly struct ModID1 : IDynamicModID { }
@@ -22,12 +19,12 @@ namespace AtCoder
         [Fact]
         public void Zero()
         {
-            var fwLong = new LongFenwickTree(0);
+            var fwLong = new FenwickTree<long>(0);
             fwLong.Sum(0, 0).Should().Be(0L);
             fwLong[0..0].Should().Be(0L);
 
             default(ModID0).SetMod(2);
-            var fwMod = new DynamicModIntFenwickTree<ModID0>(0);
+            var fwMod = new FenwickTree<DynamicModInt<ModID0>>(0);
             fwMod.Sum(0, 0)
                 .Should()
                 .Be(fwMod[0..0])
@@ -38,7 +35,7 @@ namespace AtCoder
         [Fact]
         public void OverFlowULong()
         {
-            var fw = new ULongFenwickTree(10);
+            var fw = new FenwickTree<ulong>(10);
 
             for (int i = 0; i < 10; i++)
             {
@@ -67,7 +64,7 @@ namespace AtCoder
         {
             for (int n = 0; n <= 50; n++)
             {
-                var fw = new LongFenwickTree(n);
+                var fw = new FenwickTree<long>(n);
                 for (int i = 0; i < n; i++)
                 {
                     fw.Add(i, i * i);
@@ -92,7 +89,7 @@ namespace AtCoder
         {
             for (int n = 0; n <= 50; n++)
             {
-                var fw = new StaticModIntFenwickTree<Mod11>(n);
+                var fw = new FenwickTree<StaticModInt<Mod11>>(n);
                 for (int i = 0; i < n; i++)
                 {
                     fw.Add(i, i * i);
@@ -118,7 +115,7 @@ namespace AtCoder
             default(ModID1).SetMod(11);
             for (int n = 0; n <= 50; n++)
             {
-                var fw = new DynamicModIntFenwickTree<ModID1>(n);
+                var fw = new FenwickTree<DynamicModInt<ModID1>>(n);
                 for (int i = 0; i < n; i++)
                 {
                     fw.Add(i, i * i);
@@ -141,7 +138,7 @@ namespace AtCoder
         [Fact]
         public void Invalid()
         {
-            var s = new IntFenwickTree(10);
+            var s = new FenwickTree<int>(10);
             s.Invoking(s => s.Add(-1, 0)).Should().ThrowContractAssert();
             s.Invoking(s => s.Add(10, 0)).Should().ThrowContractAssert();
             s.Invoking(s => s.Add(0, 0)).Should().NotThrow();
@@ -163,7 +160,7 @@ namespace AtCoder
         [Fact]
         public void Bound()
         {
-            var fw = new IntFenwickTree(10);
+            var fw = new FenwickTree<int>(10);
             fw.Add(3, int.MaxValue);
             fw.Add(5, int.MinValue);
 
@@ -176,7 +173,7 @@ namespace AtCoder
         [Fact]
         public void BoundLong()
         {
-            var fw = new LongFenwickTree(10);
+            var fw = new FenwickTree<long>(10);
             fw.Add(3, long.MaxValue);
             fw.Add(5, long.MinValue);
 
@@ -189,7 +186,7 @@ namespace AtCoder
         [Fact]
         public void OverFlow()
         {
-            var fw = new IntFenwickTree(20);
+            var fw = new FenwickTree<int>(20);
             var a = new long[20];
 
             for (int i = 0; i < 10; i++)
@@ -250,7 +247,7 @@ namespace AtCoder
             int[] nq = reader.ReadLine().Split().Select(int.Parse).ToArray();
             (int n, int q) = (nq[0], nq[1]);
 
-            var fw = new LongFenwickTree(n);
+            var fw = new FenwickTree<long>(n);
             int[] a = reader.ReadLine().Split().Select(int.Parse).ToArray();
             for (int i = 0; i < a.Length; i++)
             {

@@ -12,5 +12,8 @@
     /// </list>
     /// <para>を O(log⁡N) で求めることが出来るデータ構造です。</para>
     /// </summary>
+#if GENERIC_MATH
+    [System.Obsolete("Use generic math")]
+#endif
     public class DynamicModIntFenwickTree<T> : FenwickTree<DynamicModInt<T>, DynamicModIntOperator<T>> where T : struct, IDynamicModID { public DynamicModIntFenwickTree(int n) : base(n) { } }
 }
