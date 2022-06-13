@@ -6,6 +6,9 @@ namespace AtCoder.Operators
     /// <typeparamref name="T"/> についての加法演算を定義します。
     /// </summary>
     [IsOperator]
+#if GENERIC_MATH
+    [System.Obsolete("Use generic math")]
+#endif
     public interface IAdditionOperator<T>
     {
         /// <summary>
@@ -19,6 +22,9 @@ namespace AtCoder.Operators
     /// <typeparamref name="T"/> についての減法演算を定義します。
     /// </summary>
     [IsOperator]
+#if GENERIC_MATH
+    [System.Obsolete("Use generic math")]
+#endif
     public interface ISubtractOperator<T>
     {
         /// <summary>
@@ -32,6 +38,9 @@ namespace AtCoder.Operators
     /// <typeparamref name="T"/> についての乗法演算を定義します。
     /// </summary>
     [IsOperator]
+#if GENERIC_MATH
+    [System.Obsolete("Use generic math")]
+#endif
     public interface IMultiplicationOperator<T>
     {
         /// <summary>
@@ -49,6 +58,9 @@ namespace AtCoder.Operators
     /// <typeparamref name="T"/> についての除法演算を定義します。
     /// </summary>
     [IsOperator]
+#if GENERIC_MATH
+    [System.Obsolete("Use generic math")]
+#endif
     public interface IDivisionOperator<T> : IMultiplicationOperator<T>
     {
         /// <summary>
@@ -67,6 +79,9 @@ namespace AtCoder.Operators
     /// <typeparamref name="T"/> についての加法演算を定義します。
     /// </summary>
     [IsOperator]
+#if GENERIC_MATH
+    [System.Obsolete("Use generic math")]
+#endif
     public interface IUnaryNumOperator<T>
     {
         /// <summary>
@@ -90,9 +105,15 @@ namespace AtCoder.Operators
     /// <typeparamref name="T"/> についての四則演算を定義します。
     /// </summary>
     [IsOperator]
+#if GENERIC_MATH
+    [System.Obsolete("Use generic math")]
+#endif
     public interface IArithmeticOperator<T> : IAdditionOperator<T>, ISubtractOperator<T>, IMultiplicationOperator<T>, IDivisionOperator<T>, IUnaryNumOperator<T> { }
 
     [IsOperator]
+#if GENERIC_MATH
+    [System.Obsolete("Use generic math")]
+#endif
     public interface ICompareOperator<T> : IComparer<T>
     {
         /// <summary>
@@ -118,6 +139,9 @@ namespace AtCoder.Operators
     }
 
     [IsOperator]
+#if GENERIC_MATH
+    [System.Obsolete("Use generic math")]
+#endif
     public interface IMinMaxValue<T>
     {
         /// <summary>
@@ -131,6 +155,9 @@ namespace AtCoder.Operators
     }
 
     [IsOperator]
+#if GENERIC_MATH
+    [System.Obsolete("Use generic math")]
+#endif
     public interface INumOperator<T> : IArithmeticOperator<T>, ICompareOperator<T>, IMinMaxValue<T>
     {
     }
@@ -139,6 +166,9 @@ namespace AtCoder.Operators
     /// <typeparamref name="T"/> についてのシフト演算を定義します。
     /// </summary>
     [IsOperator]
+#if GENERIC_MATH
+    [System.Obsolete("Use generic math")]
+#endif
     public interface IShiftOperator<T>
     {
         /// <summary>

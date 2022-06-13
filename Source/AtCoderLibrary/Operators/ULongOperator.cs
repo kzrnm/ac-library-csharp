@@ -4,6 +4,9 @@ using AtCoder.Operators;
 
 namespace AtCoder
 {
+#if GENERIC_MATH
+    [Obsolete("Use generic math")]
+#endif
     public readonly struct ULongOperator : INumOperator<ulong>, IShiftOperator<ulong>
     {
         public ulong MinValue => ulong.MinValue;
