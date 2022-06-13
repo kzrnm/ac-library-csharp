@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using AtCoder.Internal;
-using AtCoder.Operators;
 
 namespace AtCoder
 {
@@ -10,7 +10,6 @@ namespace AtCoder
     /// 最大フロー問題 を解くライブラリです。
     /// </summary>
     /// <typeparam name="TValue">容量の型</typeparam>
-    /// <typeparam name="TOp"><typeparamref name="TValue"/>に対応する演算を提要する型</typeparam>
     /// <remarks>
     /// <para>制約: <typeparamref name="TValue"/> は int, long。</para>
     /// <para>
@@ -19,15 +18,11 @@ namespace AtCoder
     /// また頂点 v について g(v, f) = (Σ_in(v) f_e) - (Σ_out(v) f_e) とします。
     /// </para>
     /// </remarks>
-#if GENERIC_MATH
-    [Obsolete("Use generic math")]
-#endif
-    public class MfGraph<TValue, TOp>
-        where TValue : struct
-        where TOp : struct, INumOperator<TValue>
+    public class MfGraph<TValue>
+        where TValue
+        : INumber<TValue>
+        , IMinMaxValue<TValue>
     {
-        static readonly TOp op = default;
-
         /// <summary>
         /// <paramref name="n"/> 頂点 0 辺のグラフを作ります。
         /// </summary>
@@ -68,7 +63,7 @@ namespace AtCoder
             int m = _pos.Count;
             Contract.Assert((uint)from < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(from)} && {nameof(from)} < _n");
             Contract.Assert((uint)to < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(to)} && {nameof(to)} < _n");
-            Contract.Assert(op.LessThanOrEqual(default, cap), reason: $"IndexOutOfRange: 0 <= {nameof(cap)}");
+            Contract.Assert(TValue.IsPositive(cap), reason: $"IndexOutOfRange: 0 <= {nameof(cap)}");
             _pos.Add((from, _g[from].Count));
             int fromId = _g[from].Count;
             int toId = _g[to].Count;
@@ -95,7 +90,7 @@ namespace AtCoder
             var (first, second) = _pos[i];
             var (to, rev, cap) = _g[first][second];
             var _reCap = _g[to][rev].Cap;
-            return new Edge(first, to, op.Add(cap, _reCap), _reCap);
+            return new Edge(first, to, cap + _reCap, _reCap);
         }
 
         /// <summary>
@@ -131,11 +126,11 @@ namespace AtCoder
         public void ChangeEdge(int i, TValue newCap, TValue newFlow)
         {
             Contract.Assert((uint)i < (uint)_pos.Count, reason: $"IndexOutOfRange: 0 <= {nameof(i)} && {nameof(i)} < edgeCount");
-            Contract.Assert(op.LessThanOrEqual(default, newFlow) && op.LessThanOrEqual(newFlow, newCap), reason: $"IndexOutOfRange: 0 <= {nameof(newFlow)} && {nameof(newFlow)} <= {nameof(newCap)}");
+            Contract.Assert(TValue.IsPositive(newFlow) && newFlow <= newCap, reason: $"IndexOutOfRange: 0 <= {nameof(newFlow)} && {nameof(newFlow)} <= {nameof(newCap)}");
             var (first, second) = _pos[i];
             var (to, rev, _) = _g[first][second];
             //var _re = _g[_e.To][_e.Rev];
-            _g[first][second].Cap = op.Subtract(newCap, newFlow);
+            _g[first][second].Cap = newCap - newFlow;
             _g[to][rev].Cap = newFlow;
         }
 
@@ -183,7 +178,7 @@ namespace AtCoder
         [MethodImpl(256)]
         public TValue Flow(int s, int t)
         {
-            return Flow(s, t, op.MaxValue);
+            return Flow(s, t, TValue.MaxValue);
         }
 
         /// <summary>
@@ -303,20 +298,18 @@ namespace AtCoder
                             if (level[v] <= level[to] || EqualityComparer<TValue>.Default.Equals(_g[to][rev].Cap, default))
                                 continue;
 
-                            var up1 = op.Subtract(up, res);
-                            var up2 = _g[to][rev].Cap;
                             stack.Push((v, up, res, false));
-                            stack.Push((to, op.LessThan(up1, up2) ? up1 : up2, default, true));
+                            stack.Push((to, TValue.Min(up - res, _g[to][rev].Cap), default, true));
                             goto DFS;
                         }
                         else
                         {
                             var d = lastRes;
-                            if (op.GreaterThan(d, default))
+                            if (TValue.AdditiveIdentity < d)
                             {
-                                _g[v][itrv].Cap = op.Add(cap, d);
-                                _g[to][rev].Cap = op.Subtract(_g[to][rev].Cap, d);
-                                res = op.Add(res, d);
+                                _g[v][itrv].Cap = cap + d;
+                                _g[to][rev].Cap -= d;
+                                res += d;
 
                                 if (EqualityComparer<TValue>.Default.Equals(res, up))
                                 {
@@ -334,14 +327,14 @@ namespace AtCoder
             }
 
             TValue flow = default;
-            while (op.LessThan(flow, flowLimit))
+            while (flow < flowLimit)
             {
                 Bfs();
                 if (level[t] == -1) break;
                 iter = new int[_n];
-                var f = Dfs(t, op.Subtract(flowLimit, flow));
+                var f = Dfs(t, flowLimit - flow);
                 if (EqualityComparer<TValue>.Default.Equals(f, default)) break;
-                flow = op.Add(flow, f);
+                flow += f;
             }
             return flow;
         }
