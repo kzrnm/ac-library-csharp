@@ -21,6 +21,11 @@ jobs:
     needs: [get-version]
     steps:
       - uses: actions/checkout@v3
+      - uses: Elskom/setup-latest-dotnet@main
+        with:
+          VERSION_MAJOR: "7"
+          VERSION_MINOR: "0"
+          VERSION_BAND: "1xx"
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
@@ -45,7 +50,7 @@ jobs:
           path: bin/Packages/Release
 
   publish:
-    needs: [get-version, build, format, library-checker]
+    needs: [get-version, build]
     if: ${{ needs.get-version.outputs.is-new == 'true' }}
     uses: kzrnm/dotnet-actions/.github/workflows/publish.yml@v1
     with:
