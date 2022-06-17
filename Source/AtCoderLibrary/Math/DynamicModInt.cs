@@ -196,7 +196,11 @@ namespace AtCoder
         [MethodImpl(256)]
         public static implicit operator DynamicModInt<T>(int value) => new DynamicModInt<T>(value);
         [MethodImpl(256)]
+        public static implicit operator DynamicModInt<T>(uint value) => new DynamicModInt<T>((long)value);
+        [MethodImpl(256)]
         public static implicit operator DynamicModInt<T>(long value) => new DynamicModInt<T>(value);
+        [MethodImpl(256)]
+        public static implicit operator DynamicModInt<T>(ulong value) => new DynamicModInt<T>(value);
 
         /// <summary>
         /// 自身を x として、x^<paramref name="n"/> を返します。

@@ -7,8 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- Add Zero and One to StaticModInt<T>, DynamicModInt<T>
-- StaticModInt<T>, DynamicModInt<T> implements IFormattable
+- StaticModInt<T>, DynamicModInt<T>
+  - add Zero and One to StaticModInt<T>, DynamicModInt<T>
+  - implements IFormattable
+  - implicit cast to ulong
 
 ## [1.19.0] - 2022-05-31
 ### Added

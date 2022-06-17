@@ -190,7 +190,11 @@ namespace AtCoder
         [MethodImpl(256)]
         public static implicit operator StaticModInt<T>(int value) => new StaticModInt<T>(value);
         [MethodImpl(256)]
+        public static implicit operator StaticModInt<T>(uint value) => new StaticModInt<T>((long)value);
+        [MethodImpl(256)]
         public static implicit operator StaticModInt<T>(long value) => new StaticModInt<T>(value);
+        [MethodImpl(256)]
+        public static implicit operator StaticModInt<T>(ulong value) => new StaticModInt<T>(value);
 
         /// <summary>
         /// 自身を x として、x^<paramref name="n"/> を返します。
