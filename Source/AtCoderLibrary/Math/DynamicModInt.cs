@@ -257,29 +257,27 @@ namespace AtCoder
         public override int GetHashCode() => _v.GetHashCode();
 
 #if GENERIC_MATH
-        static DynamicModInt<T> INumberBase<DynamicModInt<T>>.One => new DynamicModInt<T>(1u);
         static int INumberBase<DynamicModInt<T>>.Radix => 2;
-        static DynamicModInt<T> INumberBase<DynamicModInt<T>>.Zero => default;
         static DynamicModInt<T> IAdditiveIdentity<DynamicModInt<T>, DynamicModInt<T>>.AdditiveIdentity => default;
         static DynamicModInt<T> IMultiplicativeIdentity<DynamicModInt<T>, DynamicModInt<T>>.MultiplicativeIdentity => new DynamicModInt<T>(1u);
-        static DynamicModInt<T> INumberBase<DynamicModInt<T>>.Abs(DynamicModInt<T> value) => value;
-        static bool INumberBase<DynamicModInt<T>>.IsCanonical(DynamicModInt<T> value) => true;
-        static bool INumberBase<DynamicModInt<T>>.IsComplexNumber(DynamicModInt<T> value) => false;
-        static bool INumberBase<DynamicModInt<T>>.IsRealNumber(DynamicModInt<T> value) => true;
-        static bool INumberBase<DynamicModInt<T>>.IsImaginaryNumber(DynamicModInt<T> value) => false;
-        static bool INumberBase<DynamicModInt<T>>.IsEvenInteger(DynamicModInt<T> value) => uint.IsEvenInteger(value._v);
-        static bool INumberBase<DynamicModInt<T>>.IsOddInteger(DynamicModInt<T> value) => uint.IsOddInteger(value._v);
-        static bool INumberBase<DynamicModInt<T>>.IsFinite(DynamicModInt<T> value) => true;
-        static bool INumberBase<DynamicModInt<T>>.IsInfinity(DynamicModInt<T> value) => false;
-        static bool INumberBase<DynamicModInt<T>>.IsInteger(DynamicModInt<T> value) => true;
-        static bool INumberBase<DynamicModInt<T>>.IsPositive(DynamicModInt<T> value) => true;
-        static bool INumberBase<DynamicModInt<T>>.IsNegative(DynamicModInt<T> value) => false;
-        static bool INumberBase<DynamicModInt<T>>.IsPositiveInfinity(DynamicModInt<T> value) => false;
-        static bool INumberBase<DynamicModInt<T>>.IsNegativeInfinity(DynamicModInt<T> value) => false;
-        static bool INumberBase<DynamicModInt<T>>.IsNormal(DynamicModInt<T> value) => value._v != 0;
-        static bool INumberBase<DynamicModInt<T>>.IsSubnormal(DynamicModInt<T> value) => false;
-        static bool INumberBase<DynamicModInt<T>>.IsZero(DynamicModInt<T> value) => value._v == 0;
-        static bool INumberBase<DynamicModInt<T>>.IsNaN(DynamicModInt<T> value) => false;
+        static DynamicModInt<T> INumberBase<DynamicModInt<T>>.Abs(DynamicModInt<T> v) => v;
+        static bool INumberBase<DynamicModInt<T>>.IsCanonical(DynamicModInt<T> v) => true;
+        static bool INumberBase<DynamicModInt<T>>.IsComplexNumber(DynamicModInt<T> v) => false;
+        static bool INumberBase<DynamicModInt<T>>.IsRealNumber(DynamicModInt<T> v) => true;
+        static bool INumberBase<DynamicModInt<T>>.IsImaginaryNumber(DynamicModInt<T> v) => false;
+        static bool INumberBase<DynamicModInt<T>>.IsEvenInteger(DynamicModInt<T> v) => uint.IsEvenInteger(v._v);
+        static bool INumberBase<DynamicModInt<T>>.IsOddInteger(DynamicModInt<T> v) => uint.IsOddInteger(v._v);
+        static bool INumberBase<DynamicModInt<T>>.IsFinite(DynamicModInt<T> v) => true;
+        static bool INumberBase<DynamicModInt<T>>.IsInfinity(DynamicModInt<T> v) => false;
+        static bool INumberBase<DynamicModInt<T>>.IsInteger(DynamicModInt<T> v) => true;
+        static bool INumberBase<DynamicModInt<T>>.IsPositive(DynamicModInt<T> v) => true;
+        static bool INumberBase<DynamicModInt<T>>.IsNegative(DynamicModInt<T> v) => false;
+        static bool INumberBase<DynamicModInt<T>>.IsPositiveInfinity(DynamicModInt<T> v) => false;
+        static bool INumberBase<DynamicModInt<T>>.IsNegativeInfinity(DynamicModInt<T> v) => false;
+        static bool INumberBase<DynamicModInt<T>>.IsNormal(DynamicModInt<T> v) => v._v != 0;
+        static bool INumberBase<DynamicModInt<T>>.IsSubnormal(DynamicModInt<T> v) => false;
+        static bool INumberBase<DynamicModInt<T>>.IsZero(DynamicModInt<T> v) => v._v == 0;
+        static bool INumberBase<DynamicModInt<T>>.IsNaN(DynamicModInt<T> v) => false;
         static DynamicModInt<T> INumberBase<DynamicModInt<T>>.MaxMagnitude(DynamicModInt<T> x, DynamicModInt<T> y) => new DynamicModInt<T>(uint.Max(x._v, y._v));
         static DynamicModInt<T> INumberBase<DynamicModInt<T>>.MaxMagnitudeNumber(DynamicModInt<T> x, DynamicModInt<T> y) => new DynamicModInt<T>(uint.Max(x._v, y._v));
         static DynamicModInt<T> INumberBase<DynamicModInt<T>>.MinMagnitude(DynamicModInt<T> x, DynamicModInt<T> y) => new DynamicModInt<T>(uint.Min(x._v, y._v));
@@ -305,72 +303,70 @@ namespace AtCoder
         bool ISpanFormattable.TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider provider) => _v.TryFormat(destination, out charsWritten, format, provider);
 
 
-        static bool INumberBase<DynamicModInt<T>>.TryConvertFromChecked<TOther>(TOther value, out DynamicModInt<T> result) => TryConvertFrom(value, out result);
-        static bool INumberBase<DynamicModInt<T>>.TryConvertFromSaturating<TOther>(TOther value, out DynamicModInt<T> result) => TryConvertFrom(value, out result);
-        static bool INumberBase<DynamicModInt<T>>.TryConvertFromTruncating<TOther>(TOther value, out DynamicModInt<T> result) => TryConvertFrom(value, out result);
-        static bool INumberBase<DynamicModInt<T>>.TryConvertToChecked<TOther>(DynamicModInt<T> value, out TOther result) where TOther : default => TryConvertTo(value, out result);
-        static bool INumberBase<DynamicModInt<T>>.TryConvertToSaturating<TOther>(DynamicModInt<T> value, out TOther result) where TOther : default => TryConvertTo(value, out result);
-        static bool INumberBase<DynamicModInt<T>>.TryConvertToTruncating<TOther>(DynamicModInt<T> value, out TOther result) where TOther : default => TryConvertTo(value, out result);
-        private static bool TryConvertFrom<TOther>(TOther v, out DynamicModInt<T> r)
+        static bool INumberBase<DynamicModInt<T>>.TryConvertFromChecked<TOther>(TOther v, out DynamicModInt<T> r)
         {
-            if (typeof(TOther) == typeof(int))
+            if (WrapChecked(v, out long l))
             {
-                r = (uint)(object)v;
+                r = l;
                 return true;
             }
-            else if (typeof(TOther) == typeof(long))
+            if (WrapChecked(v, out ulong u))
             {
-                r = (long)(object)v;
+                r = u;
                 return true;
             }
-            else if (typeof(TOther) == typeof(uint))
-            {
-                r = (uint)(object)v;
-                return true;
-            }
-            else if (typeof(TOther) == typeof(ulong))
-            {
-                r = (uint)(((ulong)(object)v) % (uint)Mod);
-                return true;
-            }
-            else
-            {
-                r = default;
-                return false;
-            }
+            r = default;
+            return false;
         }
-        private static bool TryConvertTo<TOther>(DynamicModInt<T> v, out TOther r)
+        static bool INumberBase<DynamicModInt<T>>.TryConvertFromSaturating<TOther>(TOther v, out DynamicModInt<T> r)
         {
-            if (typeof(TOther) == typeof(int))
+            if (WrapSaturating(v, out long l))
             {
-                int rr = (int)v._v;
-                r = (TOther)(object)rr;
+                r = l;
                 return true;
             }
-            else if (typeof(TOther) == typeof(long))
+            if (WrapSaturating(v, out ulong u))
             {
-                long rr = (int)v._v;
-                r = (TOther)(object)rr;
+                r = u;
                 return true;
             }
-            else if (typeof(TOther) == typeof(uint))
-            {
-                uint rr = v._v;
-                r = (TOther)(object)rr;
-                return true;
-            }
-            else if (typeof(TOther) == typeof(ulong))
-            {
-                ulong rr = v._v;
-                r = (TOther)(object)rr;
-                return true;
-            }
-            else
-            {
-                r = default;
-                return false;
-            }
+            r = default;
+            return false;
         }
+        static bool INumberBase<DynamicModInt<T>>.TryConvertFromTruncating<TOther>(TOther v, out DynamicModInt<T> r)
+        {
+            if (WrapTruncating(v, out long l))
+            {
+                r = l;
+                return true;
+            }
+            if (WrapTruncating(v, out ulong u))
+            {
+                r = u;
+                return true;
+            }
+            r = default;
+            return false;
+        }
+        static bool INumberBase<DynamicModInt<T>>.TryConvertToChecked<TOther>(DynamicModInt<T> v, out TOther r) where TOther : default => WrapChecked(v._v, out r);
+        static bool INumberBase<DynamicModInt<T>>.TryConvertToSaturating<TOther>(DynamicModInt<T> v, out TOther r) where TOther : default => WrapSaturating(v._v, out r);
+        static bool INumberBase<DynamicModInt<T>>.TryConvertToTruncating<TOther>(DynamicModInt<T> v, out TOther r) where TOther : default => WrapTruncating(v._v, out r);
+
+        [MethodImpl(256)]
+        static bool WrapChecked<TFrom, TTo>(TFrom v, out TTo r) where TFrom : INumberBase<TFrom> where TTo : INumberBase<TTo>
+            => typeof(TFrom) == typeof(TTo)
+            ? (r = (TTo)(object)v) is { }
+            : TTo.TryConvertFromChecked(v, out r) || TFrom.TryConvertToChecked(v, out r);
+        [MethodImpl(256)]
+        static bool WrapSaturating<TFrom, TTo>(TFrom v, out TTo r) where TFrom : INumberBase<TFrom> where TTo : INumberBase<TTo>
+            => typeof(TFrom) == typeof(TTo)
+            ? (r = (TTo)(object)v) is { }
+            : TTo.TryConvertFromSaturating(v, out r) || TFrom.TryConvertToSaturating(v, out r);
+        [MethodImpl(256)]
+        static bool WrapTruncating<TFrom, TTo>(TFrom v, out TTo r) where TFrom : INumberBase<TFrom> where TTo : INumberBase<TTo>
+            => typeof(TFrom) == typeof(TTo)
+            ? (r = (TTo)(object)v) is { }
+            : TTo.TryConvertFromTruncating(v, out r) || TFrom.TryConvertToTruncating(v, out r);
 #endif
     }
 }

@@ -259,29 +259,27 @@ namespace AtCoder
         public override int GetHashCode() => _v.GetHashCode();
 
 #if GENERIC_MATH
-        static StaticModInt<T> INumberBase<StaticModInt<T>>.One => new StaticModInt<T>(1u);
         static int INumberBase<StaticModInt<T>>.Radix => 2;
-        static StaticModInt<T> INumberBase<StaticModInt<T>>.Zero => default;
         static StaticModInt<T> IAdditiveIdentity<StaticModInt<T>, StaticModInt<T>>.AdditiveIdentity => default;
         static StaticModInt<T> IMultiplicativeIdentity<StaticModInt<T>, StaticModInt<T>>.MultiplicativeIdentity => new StaticModInt<T>(1u);
-        static StaticModInt<T> INumberBase<StaticModInt<T>>.Abs(StaticModInt<T> value) => value;
-        static bool INumberBase<StaticModInt<T>>.IsCanonical(StaticModInt<T> value) => true;
-        static bool INumberBase<StaticModInt<T>>.IsComplexNumber(StaticModInt<T> value) => false;
-        static bool INumberBase<StaticModInt<T>>.IsRealNumber(StaticModInt<T> value) => true;
-        static bool INumberBase<StaticModInt<T>>.IsImaginaryNumber(StaticModInt<T> value) => false;
-        static bool INumberBase<StaticModInt<T>>.IsEvenInteger(StaticModInt<T> value) => uint.IsEvenInteger(value._v);
-        static bool INumberBase<StaticModInt<T>>.IsOddInteger(StaticModInt<T> value) => uint.IsOddInteger(value._v);
-        static bool INumberBase<StaticModInt<T>>.IsFinite(StaticModInt<T> value) => true;
-        static bool INumberBase<StaticModInt<T>>.IsInfinity(StaticModInt<T> value) => false;
-        static bool INumberBase<StaticModInt<T>>.IsInteger(StaticModInt<T> value) => true;
-        static bool INumberBase<StaticModInt<T>>.IsPositive(StaticModInt<T> value) => true;
-        static bool INumberBase<StaticModInt<T>>.IsNegative(StaticModInt<T> value) => false;
-        static bool INumberBase<StaticModInt<T>>.IsPositiveInfinity(StaticModInt<T> value) => false;
-        static bool INumberBase<StaticModInt<T>>.IsNegativeInfinity(StaticModInt<T> value) => false;
-        static bool INumberBase<StaticModInt<T>>.IsNormal(StaticModInt<T> value) => value._v != 0;
-        static bool INumberBase<StaticModInt<T>>.IsSubnormal(StaticModInt<T> value) => false;
-        static bool INumberBase<StaticModInt<T>>.IsZero(StaticModInt<T> value) => value._v == 0;
-        static bool INumberBase<StaticModInt<T>>.IsNaN(StaticModInt<T> value) => false;
+        static StaticModInt<T> INumberBase<StaticModInt<T>>.Abs(StaticModInt<T> v) => v;
+        static bool INumberBase<StaticModInt<T>>.IsCanonical(StaticModInt<T> v) => true;
+        static bool INumberBase<StaticModInt<T>>.IsComplexNumber(StaticModInt<T> v) => false;
+        static bool INumberBase<StaticModInt<T>>.IsRealNumber(StaticModInt<T> v) => true;
+        static bool INumberBase<StaticModInt<T>>.IsImaginaryNumber(StaticModInt<T> v) => false;
+        static bool INumberBase<StaticModInt<T>>.IsEvenInteger(StaticModInt<T> v) => uint.IsEvenInteger(v._v);
+        static bool INumberBase<StaticModInt<T>>.IsOddInteger(StaticModInt<T> v) => uint.IsOddInteger(v._v);
+        static bool INumberBase<StaticModInt<T>>.IsFinite(StaticModInt<T> v) => true;
+        static bool INumberBase<StaticModInt<T>>.IsInfinity(StaticModInt<T> v) => false;
+        static bool INumberBase<StaticModInt<T>>.IsInteger(StaticModInt<T> v) => true;
+        static bool INumberBase<StaticModInt<T>>.IsPositive(StaticModInt<T> v) => true;
+        static bool INumberBase<StaticModInt<T>>.IsNegative(StaticModInt<T> v) => false;
+        static bool INumberBase<StaticModInt<T>>.IsPositiveInfinity(StaticModInt<T> v) => false;
+        static bool INumberBase<StaticModInt<T>>.IsNegativeInfinity(StaticModInt<T> v) => false;
+        static bool INumberBase<StaticModInt<T>>.IsNormal(StaticModInt<T> v) => v._v != 0;
+        static bool INumberBase<StaticModInt<T>>.IsSubnormal(StaticModInt<T> v) => false;
+        static bool INumberBase<StaticModInt<T>>.IsZero(StaticModInt<T> v) => v._v == 0;
+        static bool INumberBase<StaticModInt<T>>.IsNaN(StaticModInt<T> v) => false;
         static StaticModInt<T> INumberBase<StaticModInt<T>>.MaxMagnitude(StaticModInt<T> x, StaticModInt<T> y) => new StaticModInt<T>(uint.Max(x._v, y._v));
         static StaticModInt<T> INumberBase<StaticModInt<T>>.MaxMagnitudeNumber(StaticModInt<T> x, StaticModInt<T> y) => new StaticModInt<T>(uint.Max(x._v, y._v));
         static StaticModInt<T> INumberBase<StaticModInt<T>>.MinMagnitude(StaticModInt<T> x, StaticModInt<T> y) => new StaticModInt<T>(uint.Min(x._v, y._v));
@@ -307,72 +305,70 @@ namespace AtCoder
         bool ISpanFormattable.TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider provider) => _v.TryFormat(destination, out charsWritten, format, provider);
 
 
-        static bool INumberBase<StaticModInt<T>>.TryConvertFromChecked<TOther>(TOther value, out StaticModInt<T> result) => TryConvertFrom(value, out result);
-        static bool INumberBase<StaticModInt<T>>.TryConvertFromSaturating<TOther>(TOther value, out StaticModInt<T> result) => TryConvertFrom(value, out result);
-        static bool INumberBase<StaticModInt<T>>.TryConvertFromTruncating<TOther>(TOther value, out StaticModInt<T> result) => TryConvertFrom(value, out result);
-        static bool INumberBase<StaticModInt<T>>.TryConvertToChecked<TOther>(StaticModInt<T> value, out TOther result) where TOther : default => TryConvertTo(value, out result);
-        static bool INumberBase<StaticModInt<T>>.TryConvertToSaturating<TOther>(StaticModInt<T> value, out TOther result) where TOther : default => TryConvertTo(value, out result);
-        static bool INumberBase<StaticModInt<T>>.TryConvertToTruncating<TOther>(StaticModInt<T> value, out TOther result) where TOther : default => TryConvertTo(value, out result);
-        private static bool TryConvertFrom<TOther>(TOther v, out StaticModInt<T> r)
+        static bool INumberBase<StaticModInt<T>>.TryConvertFromChecked<TOther>(TOther v, out StaticModInt<T> r)
         {
-            if (typeof(TOther) == typeof(int))
+            if (WrapChecked(v, out long l))
             {
-                r = (uint)(object)v;
+                r = l;
                 return true;
             }
-            else if (typeof(TOther) == typeof(long))
+            if (WrapChecked(v, out ulong u))
             {
-                r = (long)(object)v;
+                r = u;
                 return true;
             }
-            else if (typeof(TOther) == typeof(uint))
-            {
-                r = (uint)(object)v;
-                return true;
-            }
-            else if (typeof(TOther) == typeof(ulong))
-            {
-                r = (uint)(((ulong)(object)v) % (uint)Mod);
-                return true;
-            }
-            else
-            {
-                r = default;
-                return false;
-            }
+            r = default;
+            return false;
         }
-        private static bool TryConvertTo<TOther>(StaticModInt<T> v, out TOther r)
+        static bool INumberBase<StaticModInt<T>>.TryConvertFromSaturating<TOther>(TOther v, out StaticModInt<T> r)
         {
-            if (typeof(TOther) == typeof(int))
+            if (WrapSaturating(v, out long l))
             {
-                int rr = (int)v._v;
-                r = (TOther)(object)rr;
+                r = l;
                 return true;
             }
-            else if (typeof(TOther) == typeof(long))
+            if (WrapSaturating(v, out ulong u))
             {
-                long rr = (int)v._v;
-                r = (TOther)(object)rr;
+                r = u;
                 return true;
             }
-            else if (typeof(TOther) == typeof(uint))
-            {
-                uint rr = v._v;
-                r = (TOther)(object)rr;
-                return true;
-            }
-            else if (typeof(TOther) == typeof(ulong))
-            {
-                ulong rr = v._v;
-                r = (TOther)(object)rr;
-                return true;
-            }
-            else
-            {
-                r = default;
-                return false;
-            }
+            r = default;
+            return false;
         }
+        static bool INumberBase<StaticModInt<T>>.TryConvertFromTruncating<TOther>(TOther v, out StaticModInt<T> r)
+        {
+            if (WrapTruncating(v, out long l))
+            {
+                r = l;
+                return true;
+            }
+            if (WrapTruncating(v, out ulong u))
+            {
+                r = u;
+                return true;
+            }
+            r = default;
+            return false;
+        }
+        static bool INumberBase<StaticModInt<T>>.TryConvertToChecked<TOther>(StaticModInt<T> v, out TOther r) where TOther : default => WrapChecked(v._v, out r);
+        static bool INumberBase<StaticModInt<T>>.TryConvertToSaturating<TOther>(StaticModInt<T> v, out TOther r) where TOther : default => WrapSaturating(v._v, out r);
+        static bool INumberBase<StaticModInt<T>>.TryConvertToTruncating<TOther>(StaticModInt<T> v, out TOther r) where TOther : default => WrapTruncating(v._v, out r);
+
+        [MethodImpl(256)]
+        static bool WrapChecked<TFrom, TTo>(TFrom v, out TTo r) where TFrom : INumberBase<TFrom> where TTo : INumberBase<TTo>
+            => typeof(TFrom) == typeof(TTo)
+            ? (r = (TTo)(object)v) is { }
+            : TTo.TryConvertFromChecked(v, out r) || TFrom.TryConvertToChecked(v, out r);
+        [MethodImpl(256)]
+        static bool WrapSaturating<TFrom, TTo>(TFrom v, out TTo r) where TFrom : INumberBase<TFrom> where TTo : INumberBase<TTo>
+            => typeof(TFrom) == typeof(TTo)
+            ? (r = (TTo)(object)v) is { }
+            : TTo.TryConvertFromSaturating(v, out r) || TFrom.TryConvertToSaturating(v, out r);
+        [MethodImpl(256)]
+        static bool WrapTruncating<TFrom, TTo>(TFrom v, out TTo r) where TFrom : INumberBase<TFrom> where TTo : INumberBase<TTo>
+            => typeof(TFrom) == typeof(TTo)
+            ? (r = (TTo)(object)v) is { }
+            : TTo.TryConvertFromTruncating(v, out r) || TFrom.TryConvertToTruncating(v, out r);
 #endif
     }
 }
