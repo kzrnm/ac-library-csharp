@@ -57,7 +57,7 @@ namespace AtCoder
     /// }
     /// </code>
     /// </example>
-    public readonly struct StaticModInt<T> : IEquatable<StaticModInt<T>> where T : struct, IStaticMod
+    public readonly struct StaticModInt<T> : IEquatable<StaticModInt<T>>, IFormattable where T : struct, IStaticMod
     {
         internal readonly uint _v;
         private static readonly T op = default;
@@ -242,6 +242,7 @@ namespace AtCoder
         }
 
         public override string ToString() => _v.ToString();
+        public string ToString(string format, IFormatProvider formatProvider) => _v.ToString(format, formatProvider);
         public override bool Equals(object obj) => obj is StaticModInt<T> m && Equals(m);
         [MethodImpl(256)] public bool Equals(StaticModInt<T> other) => _v == other._v;
         public override int GetHashCode() => _v.GetHashCode();

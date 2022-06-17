@@ -42,7 +42,7 @@ namespace AtCoder
     /// }
     /// </code>
     /// </example>
-    public readonly struct DynamicModInt<T> : IEquatable<DynamicModInt<T>> where T : struct
+    public readonly struct DynamicModInt<T> : IEquatable<DynamicModInt<T>>, IFormattable where T : struct
     {
         internal readonly uint _v;
         internal static Barrett bt;
@@ -240,6 +240,7 @@ namespace AtCoder
         }
 
         public override string ToString() => _v.ToString();
+        public string ToString(string format, IFormatProvider formatProvider) => _v.ToString(format, formatProvider);
         public override bool Equals(object obj) => obj is DynamicModInt<T> m && Equals(m);
         [MethodImpl(256)] public bool Equals(DynamicModInt<T> other) => Value == other.Value;
         public override int GetHashCode() => _v.GetHashCode();
