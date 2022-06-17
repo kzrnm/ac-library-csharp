@@ -71,6 +71,8 @@ namespace AtCoder
         /// mod を返します。
         /// </summary>
         public static int Mod => (int)op.Mod;
+        public static StaticModInt<T> Zero => default;
+        public static StaticModInt<T> One => new StaticModInt<T>(1u);
 
         /// <summary>
         /// <paramref name="v"/> に対して mod を取らずに StaticModInt&lt;<typeparamref name="T"/>&gt; 型のインスタンスを生成します。

@@ -67,6 +67,9 @@ namespace AtCoder
             }
         }
 
+        public static DynamicModInt<T> Zero => default;
+        public static DynamicModInt<T> One => new DynamicModInt<T>(1u);
+
         /// <summary>
         /// <paramref name="v"/> に対して mod を取らずに DynamicModInt&lt;<typeparamref name="T"/>&gt; 型のインスタンスを生成します。
         /// </summary>
