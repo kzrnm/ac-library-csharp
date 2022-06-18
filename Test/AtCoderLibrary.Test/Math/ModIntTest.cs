@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using AtCoder.Internal;
 using FluentAssertions;
@@ -124,10 +125,11 @@ namespace AtCoder
             void RunStatic<T>() where T : struct, IStaticMod
             {
                 var mod = (int)new T().Mod;
-                var max = System.Math.Min(100000, mod);
-                for (int i = 1; i < max; i++)
+                var nums = Enumerable.Range(-100, 200).Concat(Enumerable.Range(mod - 100, 200));
+                foreach (var n in nums)
                 {
-                    if (!new T().IsPrime && Gcd(i, mod) != 1) continue;
+                    int i = (int)InternalMath.SafeMod(n, mod);
+                    if (i == 0 || !new T().IsPrime && Gcd(i, mod) != 1) continue;
                     int x = new StaticModInt<T>(i).Inv().Value;
                     ((long)x * i % mod).Should().Be(1);
                 }
@@ -136,10 +138,11 @@ namespace AtCoder
             void RunDynamic<T>() where T : struct
             {
                 var mod = DynamicModInt<T>.Mod;
-                var max = System.Math.Min(100000, mod);
-                for (int i = 1; i < max; i++)
+                var nums = Enumerable.Range(-100, 200).Concat(Enumerable.Range(mod - 100, 200));
+                foreach (var n in nums)
                 {
-                    if (!InternalMath.IsPrime(mod) && Gcd(i, mod) != 1) continue;
+                    int i = (int)InternalMath.SafeMod(n, mod);
+                    if (i == 0 || !InternalMath.IsPrime(mod) && Gcd(i, mod) != 1) continue;
                     int x = new DynamicModInt<T>(i).Inv().Value;
                     ((long)x * i % mod).Should().Be(1);
                 }
@@ -306,6 +309,46 @@ namespace AtCoder
         }
 
         [Fact]
+        public void Plus()
+        {
+            RunStatic<ModID11>();
+            RunStatic<ModID12>();
+            RunStatic<ModID1000000007>();
+            RunStatic<ModID1000000008>();
+            RunStatic<ModID998244353>();
+
+            DynamicModInt<ModID998244353>.Mod = 998244353;
+            RunDynamic<ModID998244353>();
+
+            DynamicModInt<ModID1000000008>.Mod = 1000000008;
+            RunDynamic<ModID1000000008>();
+
+            void RunStatic<T>() where T : struct, IStaticMod
+            {
+                var mod = (int)new T().Mod;
+                var nums = Enumerable.Range(-100, 200).Concat(Enumerable.Range(mod - 100, 200));
+                foreach (var n in nums)
+                {
+                    int i = (int)InternalMath.SafeMod(n, mod);
+                    int x = (+new StaticModInt<T>(i)).Value;
+                    x.Should().Be(i % mod);
+                }
+            }
+
+            void RunDynamic<T>() where T : struct
+            {
+                var mod = DynamicModInt<T>.Mod;
+                var nums = Enumerable.Range(-100, 200).Concat(Enumerable.Range(mod - 100, 200));
+                foreach (var n in nums)
+                {
+                    int i = (int)InternalMath.SafeMod(n, mod);
+                    int x = (+new DynamicModInt<T>(i)).Value;
+                    x.Should().Be(i % mod);
+                }
+            }
+        }
+
+        [Fact]
         public void Minus()
         {
             RunStatic<ModID11>();
@@ -323,9 +366,10 @@ namespace AtCoder
             void RunStatic<T>() where T : struct, IStaticMod
             {
                 var mod = (int)new T().Mod;
-                var max = System.Math.Min(100000, mod);
-                for (int i = 0; i < max; i++)
+                var nums = Enumerable.Range(-100, 200).Concat(Enumerable.Range(mod - 100, 200));
+                foreach (var n in nums)
                 {
+                    int i = (int)InternalMath.SafeMod(n, mod);
                     int x = (-new StaticModInt<T>(i)).Value;
                     x.Should().Be((mod - i) % mod);
                 }
@@ -334,12 +378,67 @@ namespace AtCoder
             void RunDynamic<T>() where T : struct
             {
                 var mod = DynamicModInt<T>.Mod;
-                var max = System.Math.Min(100000, mod);
-                for (int i = 0; i < max; i++)
+                var nums = Enumerable.Range(-100, 200).Concat(Enumerable.Range(mod - 100, 200));
+                foreach (var n in nums)
                 {
+                    int i = (int)InternalMath.SafeMod(n, mod);
                     int x = (-new DynamicModInt<T>(i)).Value;
                     x.Should().Be((mod - i) % mod);
                 }
+            }
+        }
+
+        [Fact]
+        public void Cast()
+        {
+            RunStatic<ModID11>();
+            RunStatic<ModID12>();
+            RunStatic<ModID1000000007>();
+            RunStatic<ModID1000000008>();
+            RunStatic<ModID998244353>();
+
+            DynamicModInt<ModID998244353>.Mod = 998244353;
+            RunDynamic<ModID998244353>();
+
+            DynamicModInt<ModID1000000008>.Mod = 1000000008;
+            RunDynamic<ModID1000000008>();
+
+            void RunStatic<T>() where T : struct, IStaticMod
+            {
+                var mod = (int)new T().Mod;
+                var nums = Enumerable.Range(-100, 200).Concat(Enumerable.Range(mod - 100, 200));
+                foreach (var n in nums)
+                {
+                    int i = (int)InternalMath.SafeMod(n, mod);
+                    ((StaticModInt<T>)i).Value.Should().Be(i % mod);
+                    ((StaticModInt<T>)(uint)i).Value.Should().Be(i % mod);
+                    ((StaticModInt<T>)(long)i).Value.Should().Be(i % mod);
+                    ((StaticModInt<T>)(ulong)i).Value.Should().Be(i % mod);
+                }
+
+                ((StaticModInt<T>)int.MaxValue).Value.Should().Be(int.MaxValue % mod);
+                ((StaticModInt<T>)uint.MaxValue).Value.Should().Be((int)(uint.MaxValue % mod));
+                ((StaticModInt<T>)long.MaxValue).Value.Should().Be((int)(long.MaxValue % mod));
+                ((StaticModInt<T>)ulong.MaxValue).Value.Should().Be((int)(ulong.MaxValue % (uint)mod));
+            }
+
+            void RunDynamic<T>() where T : struct
+            {
+                var mod = DynamicModInt<T>.Mod;
+                var nums = Enumerable.Range(-100, 200).Concat(Enumerable.Range(mod - 100, 200));
+                foreach (var n in nums)
+                {
+                    int i = (int)InternalMath.SafeMod(n, mod);
+                    ((DynamicModInt<T>)i).Value.Should().Be(i % mod);
+                    ((DynamicModInt<T>)(uint)i).Value.Should().Be(i % mod);
+                    ((DynamicModInt<T>)(long)i).Value.Should().Be(i % mod);
+                    ((DynamicModInt<T>)(ulong)i).Value.Should().Be(i % mod);
+                }
+
+                ((DynamicModInt<T>)int.MaxValue).Value.Should().Be(int.MaxValue % mod);
+                ((DynamicModInt<T>)uint.MaxValue).Value.Should().Be((int)(uint.MaxValue % mod));
+                ((DynamicModInt<T>)long.MaxValue).Value.Should().Be((int)(long.MaxValue % mod));
+                ((DynamicModInt<T>)ulong.MaxValue).Value.Should().Be((int)(ulong.MaxValue % (uint)mod));
             }
         }
     }
