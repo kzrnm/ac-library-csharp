@@ -122,25 +122,25 @@ namespace AtCoder
         }
 
         [MethodImpl(256)]
-        public static StaticModInt<T> operator ++(StaticModInt<T> value)
+        public static StaticModInt<T> operator ++(StaticModInt<T> v)
         {
-            var v = value._v + 1;
-            if (v == op.Mod)
+            var x = v._v + 1;
+            if (x == op.Mod)
             {
-                v = 0;
+                x = 0;
             }
-            return new StaticModInt<T>(v);
+            return new StaticModInt<T>(x);
         }
 
         [MethodImpl(256)]
-        public static StaticModInt<T> operator --(StaticModInt<T> value)
+        public static StaticModInt<T> operator --(StaticModInt<T> v)
         {
-            var v = value._v;
-            if (v == 0)
+            var x = v._v;
+            if (x == 0)
             {
-                v = op.Mod;
+                x = op.Mod;
             }
-            return new StaticModInt<T>(v - 1);
+            return new StaticModInt<T>(x - 1);
         }
 
         [MethodImpl(256)]
@@ -180,21 +180,21 @@ namespace AtCoder
         [MethodImpl(256)]
         public static StaticModInt<T> operator /(StaticModInt<T> lhs, StaticModInt<T> rhs) => lhs * rhs.Inv();
         [MethodImpl(256)]
-        public static StaticModInt<T> operator +(StaticModInt<T> value) => value;
+        public static StaticModInt<T> operator +(StaticModInt<T> v) => v;
         [MethodImpl(256)]
-        public static StaticModInt<T> operator -(StaticModInt<T> value) => new StaticModInt<T>(value._v == 0 ? 0 : op.Mod - value._v);
+        public static StaticModInt<T> operator -(StaticModInt<T> v) => new StaticModInt<T>(v._v == 0 ? 0 : op.Mod - v._v);
         [MethodImpl(256)]
         public static bool operator ==(StaticModInt<T> lhs, StaticModInt<T> rhs) => lhs._v == rhs._v;
         [MethodImpl(256)]
         public static bool operator !=(StaticModInt<T> lhs, StaticModInt<T> rhs) => lhs._v != rhs._v;
         [MethodImpl(256)]
-        public static implicit operator StaticModInt<T>(int value) => new StaticModInt<T>(value);
+        public static implicit operator StaticModInt<T>(int v) => new StaticModInt<T>(v);
         [MethodImpl(256)]
-        public static implicit operator StaticModInt<T>(uint value) => new StaticModInt<T>((long)value);
+        public static implicit operator StaticModInt<T>(uint v) => new StaticModInt<T>((long)v);
         [MethodImpl(256)]
-        public static implicit operator StaticModInt<T>(long value) => new StaticModInt<T>(value);
+        public static implicit operator StaticModInt<T>(long v) => new StaticModInt<T>(v);
         [MethodImpl(256)]
-        public static implicit operator StaticModInt<T>(ulong value) => new StaticModInt<T>(value);
+        public static implicit operator StaticModInt<T>(ulong v) => new StaticModInt<T>(v);
 
         /// <summary>
         /// 自身を x として、x^<paramref name="n"/> を返します。

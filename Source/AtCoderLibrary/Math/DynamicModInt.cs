@@ -122,25 +122,25 @@ namespace AtCoder
         }
 
         [MethodImpl(256)]
-        public static DynamicModInt<T> operator ++(DynamicModInt<T> value)
+        public static DynamicModInt<T> operator ++(DynamicModInt<T> v)
         {
-            var v = value._v + 1;
-            if (v == bt.Mod)
+            var x = v._v + 1;
+            if (x == bt.Mod)
             {
-                v = 0;
+                x = 0;
             }
-            return new DynamicModInt<T>(v);
+            return new DynamicModInt<T>(x);
         }
 
         [MethodImpl(256)]
-        public static DynamicModInt<T> operator --(DynamicModInt<T> value)
+        public static DynamicModInt<T> operator --(DynamicModInt<T> v)
         {
-            var v = value._v;
-            if (v == 0)
+            var x = v._v;
+            if (x == 0)
             {
-                v = bt.Mod;
+                x = bt.Mod;
             }
-            return new DynamicModInt<T>(v - 1);
+            return new DynamicModInt<T>(x - 1);
         }
 
         [MethodImpl(256)]
@@ -186,21 +186,21 @@ namespace AtCoder
         public static DynamicModInt<T> operator /(DynamicModInt<T> lhs, DynamicModInt<T> rhs) => lhs * rhs.Inv();
 
         [MethodImpl(256)]
-        public static DynamicModInt<T> operator +(DynamicModInt<T> value) => value;
+        public static DynamicModInt<T> operator +(DynamicModInt<T> v) => v;
         [MethodImpl(256)]
-        public static DynamicModInt<T> operator -(DynamicModInt<T> value) => new DynamicModInt<T>(value._v == 0 ? 0 : Mod - value.Value);
+        public static DynamicModInt<T> operator -(DynamicModInt<T> v) => new DynamicModInt<T>(v._v == 0 ? 0 : Mod - v.Value);
         [MethodImpl(256)]
         public static bool operator ==(DynamicModInt<T> lhs, DynamicModInt<T> rhs) => lhs._v == rhs._v;
         [MethodImpl(256)]
         public static bool operator !=(DynamicModInt<T> lhs, DynamicModInt<T> rhs) => lhs._v != rhs._v;
         [MethodImpl(256)]
-        public static implicit operator DynamicModInt<T>(int value) => new DynamicModInt<T>(value);
+        public static implicit operator DynamicModInt<T>(int v) => new DynamicModInt<T>(v);
         [MethodImpl(256)]
-        public static implicit operator DynamicModInt<T>(uint value) => new DynamicModInt<T>((long)value);
+        public static implicit operator DynamicModInt<T>(uint v) => new DynamicModInt<T>((long)v);
         [MethodImpl(256)]
-        public static implicit operator DynamicModInt<T>(long value) => new DynamicModInt<T>(value);
+        public static implicit operator DynamicModInt<T>(long v) => new DynamicModInt<T>(v);
         [MethodImpl(256)]
-        public static implicit operator DynamicModInt<T>(ulong value) => new DynamicModInt<T>(value);
+        public static implicit operator DynamicModInt<T>(ulong v) => new DynamicModInt<T>(v);
 
         /// <summary>
         /// 自身を x として、x^<paramref name="n"/> を返します。
