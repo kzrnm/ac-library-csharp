@@ -2,11 +2,10 @@
 
 namespace AtCoder.Solvers.Graph
 {
-    public class SccTest
+    internal class SccTest : BaseSover
     {
-        static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
-        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/scc
-        static void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        public override string Url => "https://judge.yosupo.jp/problem/scc";
+        public override void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int n = cr;
             int m = cr;

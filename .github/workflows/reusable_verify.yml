@@ -1,0 +1,78 @@
+name: test
+
+on:
+  workflow_call:
+    inputs:
+      upload-artifact:
+        required: false
+        type: boolean
+        default: false
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_NOLOGO: true
+  NUGET_XMLDOC_MODE: skip
+  WORKFLOW_BUILD_SLN: AtCoderLibrary.sln
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: |
+            3.0.x
+            3.1.x
+            7.0.x
+      - uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/Directory.Build.props') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+      - name: Set up competitive-verifier
+        uses: competitive-verifier/actions/setup@v1
+        with:
+          python-version: "3.9"
+          cache-pip: true
+
+      - name: Build
+        shell: bash
+        run: dotnet build $WORKFLOW_BUILD_SLN -c Release
+      - name: setup CompetitiveVerifierCsResolver
+        shell: bash
+        run: dotnet tool install -g CompetitiveVerifierCsResolver
+      # required only if you have unit test.
+      - name: Unit test
+        run: dotnet test $UNITTEST_CSPROJ --logger "CompetitiveVerifier;OutDirectory=${{runner.temp}}/VerifierCsUnitTestResult" --no-build  -c Release
+        env:
+          UNITTEST_CSPROJ: Test/AtCoderLibrary.Test/AtCoderLibrary.Test.csproj
+      - name: Resolve
+        run: dotnet run --project $VERIFY_CSPROJ --no-build -c Release | tee ${{runner.temp}}/problems.json
+        env:
+          VERIFY_CSPROJ: Test/AtCoderLibrary.LibraryChecker/AtCoderLibrary.LibraryChecker.csproj
+      - name: cs-resolve
+        uses: competitive-verifier/actions/cs-resolve@v1
+        with:
+          solution: ${{ env.WORKFLOW_BUILD_SLN }}
+          output-path: verify_files.json
+          include: Source/** Test/**
+          exclude: Test/AtCoderLibrary.LibraryChecker/BaseSover.cs
+          unittest-result: ${{runner.temp}}/VerifierCsUnitTestResult/*.csv
+          problems: ${{runner.temp}}/problems.json
+      - name: Verify
+        uses: competitive-verifier/actions/verify@v1
+        with:
+          verify-files: verify_files.json
+          write-summary: true
+          destination: ${{runner.temp}}/result.json
+          check: true
+      - name: Test
+        run: dotnet test $WORKFLOW_BUILD_SLN --logger GitHubActions
+      - uses: actions/upload-artifact@v3
+        if: inputs.upload-artifact
+        with:
+          name: dist
+          path: bin/Packages/Release

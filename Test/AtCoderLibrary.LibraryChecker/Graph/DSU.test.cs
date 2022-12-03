@@ -2,11 +2,10 @@
 
 namespace AtCoder.Solvers.Graph
 {
-    public class DSUTest
+    internal class DSUTest : BaseSover
     {
-        static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
-        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/unionfind
-        static void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        public override string Url => "https://judge.yosupo.jp/problem/unionfind";
+        public override void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int n = cr;
             int q = cr;
