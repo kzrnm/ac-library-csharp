@@ -52,8 +52,8 @@ jobs:
         with:
           solution: ${{ env.WORKFLOW_BUILD_SLN }}
           output-path: verify_files.json
-          include: Source/** Test/**
-          exclude: Test/AtCoderLibrary.LibraryChecker/BaseSover.cs
+          include: Source/AtCoderLibrary/** Test/AtCoderLibrary.LibraryChecker/** Test/AtCoderLibrary.Test
+          exclude: Test/AtCoderLibrary.LibraryChecker/BaseSover.cs **/obj/**
           unittest-result: ${{runner.temp}}/VerifierCsUnitTestResult/*.csv
           problems: ${{runner.temp}}/problems.json
       - name: Upload verify_files.json
