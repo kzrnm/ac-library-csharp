@@ -26,6 +26,16 @@ jobs:
       target: AtCoderLibrary.sln
       dotnet-version: 7.0.x
 
+  test:
+    uses: kzrnm/dotnet-actions/.github/workflows/unittest.yml@v1
+    with:
+      target: AtCoderLibrary.sln
+      test-logger: GitHubActions
+      dotnet-version: |
+        3.0.x
+        3.1.x
+        7.0.x
+
   build-verify:
     needs: get-version
     uses: ./.github/workflows/reusable_verify.yml
@@ -33,7 +43,7 @@ jobs:
       upload-artifact: fromJson(needs.get-version.outputs.is-new)
 
   publish:
-    needs: [get-version, build, format, library-checker]
+    needs: [get-version, test, format, build-verify]
     if: ${{ needs.get-version.outputs.is-new == 'true' }}
     uses: kzrnm/dotnet-actions/.github/workflows/publish.yml@v1
     with:

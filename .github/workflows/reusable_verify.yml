@@ -16,7 +16,7 @@ env:
   WORKFLOW_BUILD_SLN: AtCoderLibrary.sln
 
 jobs:
-  verify:
+  build-resolve:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -32,12 +32,6 @@ jobs:
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/Directory.Build.props') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
-      - name: Set up competitive-verifier
-        uses: competitive-verifier/actions/setup@v1
-        with:
-          python-version: "3.9"
-          cache-pip: true
-
       - name: Build
         shell: bash
         run: dotnet build $WORKFLOW_BUILD_SLN -c Release
@@ -62,17 +56,58 @@ jobs:
           exclude: Test/AtCoderLibrary.LibraryChecker/BaseSover.cs
           unittest-result: ${{runner.temp}}/VerifierCsUnitTestResult/*.csv
           problems: ${{runner.temp}}/problems.json
-      - name: Verify
-        uses: competitive-verifier/actions/verify@v1
+      - name: Upload verify_files.json
+        uses: competitive-verifier/actions/upload-verify-artifact@v1
         with:
-          verify-files: verify_files.json
-          write-summary: true
-          destination: ${{runner.temp}}/result.json
-          check: true
-      - name: Test
-        run: dotnet test $WORKFLOW_BUILD_SLN --logger GitHubActions
+          file: verify_files.json
       - uses: actions/upload-artifact@v3
         if: inputs.upload-artifact
         with:
           name: dist
           path: bin/Packages/Release
+
+  verify:
+    runs-on: ubuntu-latest
+    needs: [build-resolve]
+    env:
+      SPLIT_SIZE: 6
+    strategy:
+      matrix:
+        # prettier-ignore
+        index:
+          ["0", "1", "2", "3", "4", "5"]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up competitive-verifier
+        uses: competitive-verifier/actions/setup@v1
+        with:
+          python-version: "3.9"
+          cache-pip: true
+
+      - name: Download verify_files.json
+        uses: competitive-verifier/actions/download-verify-artifact@v1
+
+      - name: Set up competitive-verifier
+        uses: competitive-verifier/actions/setup@v1
+        with:
+          python-version: "3.9"
+          cache-pip: true
+
+      - uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: |
+            3.0.x
+            3.1.x
+            7.0.x
+      - name: Build
+        run: dotnet build $WORKFLOW_BUILD_SLN -c Release
+
+      - name: Verify
+        uses: competitive-verifier/actions/verify@v1
+        with:
+          destination: ${{runner.temp}}/result.json
+          split-size: ${{ env.SPLIT_SIZE }}
+          split-index: ${{ matrix.index }}
+          write-summary: true
+          check: true
