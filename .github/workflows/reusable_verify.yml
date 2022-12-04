@@ -32,6 +32,21 @@ jobs:
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/Directory.Build.props') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
+
+      - name: Set up competitive-verifier
+        uses: competitive-verifier/actions/setup@v1
+        with:
+          python-version: "3.9"
+          cache-pip: true
+
+      - name: Cache problems
+        uses: actions/cache@v3
+        with:
+          path: .competitive-verifier/cache/problems
+          key: ${{ runner.os }}-problems-${{ hashFiles('Test/AtCoderLibrary.LibraryChecker/**/*.cs') }}
+          restore-keys: |
+            ${{ runner.os }}-problems-
+
       - name: Build
         shell: bash
         run: dotnet build $WORKFLOW_BUILD_SLN -c Release
@@ -66,6 +81,11 @@ jobs:
           name: binary-${{github.sha}}
           path: Test/AtCoderLibrary.LibraryChecker/bin/Release
 
+      - name: Download problems
+        uses: competitive-verifier/actions/download-problems@v1
+        with:
+          verify-files: verify_files.json
+
       - name: Upload packages
         uses: actions/upload-artifact@v3
         if: inputs.upload-artifact
@@ -91,6 +111,14 @@ jobs:
         with:
           python-version: "3.9"
           cache-pip: true
+
+      - name: Cache problems
+        uses: actions/cache@v3
+        with:
+          path: .competitive-verifier/cache/problems
+          key: ${{ runner.os }}-problems-${{ hashFiles('Test/AtCoderLibrary.LibraryChecker/**/*.cs') }}
+          restore-keys: |
+            ${{ runner.os }}-problems-
 
       - name: Download verify_files.json
         uses: competitive-verifier/actions/download-verify-artifact@v1
