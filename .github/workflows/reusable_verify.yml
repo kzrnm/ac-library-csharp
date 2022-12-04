@@ -60,7 +60,14 @@ jobs:
         uses: competitive-verifier/actions/upload-verify-artifact@v1
         with:
           file: verify_files.json
-      - uses: actions/upload-artifact@v3
+      - name: Upload binaries
+        uses: actions/upload-artifact@v3
+        with:
+          name: binary-${{github.sha}}
+          path: Test/AtCoderLibrary.LibraryChecker/bin/Release
+
+      - name: Upload packages
+        uses: actions/upload-artifact@v3
         if: inputs.upload-artifact
         with:
           name: dist
@@ -100,8 +107,11 @@ jobs:
             3.0.x
             3.1.x
             7.0.x
-      - name: Build
-        run: dotnet build $WORKFLOW_BUILD_SLN -c Release
+      - name: Download binaries
+        uses: actions/download-artifact@v3
+        with:
+          name: binary-${{github.sha}}
+          path: Test/AtCoderLibrary.LibraryChecker/bin/Release
 
       - name: Verify
         uses: competitive-verifier/actions/verify@v1
