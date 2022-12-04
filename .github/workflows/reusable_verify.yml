@@ -95,12 +95,6 @@ jobs:
       - name: Download verify_files.json
         uses: competitive-verifier/actions/download-verify-artifact@v1
 
-      - name: Set up competitive-verifier
-        uses: competitive-verifier/actions/setup@v1
-        with:
-          python-version: "3.9"
-          cache-pip: true
-
       - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: |
