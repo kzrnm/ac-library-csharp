@@ -31,7 +31,7 @@ namespace AtCoder.Solvers.Graph
                 int ll = e.From;
                 int rr = e.To;
                 if (e.Flow == 1 && ll < l && rr < l + r)
-                    cw.WriteLineJoin(e.From, e.To - l);
+                    cw.WriteLineJoin(e.From-2, e.To - l);
             }
         }
     }
