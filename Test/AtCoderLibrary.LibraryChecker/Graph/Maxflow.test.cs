@@ -2,11 +2,10 @@
 
 namespace AtCoder.Solvers.Graph
 {
-    public class MaxflowTest
+    internal class MaxflowTest : BaseSover
     {
-        static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
-        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/bipartitematching
-        static void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        public override string Url => "https://judge.yosupo.jp/problem/bipartitematching";
+        public override void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int l = cr;
             int r = cr;

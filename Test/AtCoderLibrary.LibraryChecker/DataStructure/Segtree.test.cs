@@ -2,11 +2,10 @@
 
 namespace AtCoder.Solvers.DataStructure
 {
-    public class SegtreeTest
+    internal class SegtreeTest : BaseSover
     {
-        static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
-        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/point_set_range_composite
-        static void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        public override string Url => "https://judge.yosupo.jp/problem/point_set_range_composite";
+        public override void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int n = cr;
             int q = cr;

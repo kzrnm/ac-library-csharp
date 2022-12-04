@@ -2,11 +2,10 @@
 
 namespace AtCoder.Solvers.MathN
 {
-    public class ConvolutionTest
+    internal class ConvolutionTest : BaseSover
     {
-        static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
-        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/convolution_mod
-        static void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        public override string Url => "https://judge.yosupo.jp/problem/convolution_mod";
+        public override void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int n = cr;
             int m = cr;

@@ -3,11 +3,10 @@ using Kzrnm.Competitive.IO;
 
 namespace AtCoder.Solvers
 {
-    public class TwoSatTest
+    internal class TwoSatTest : BaseSover
     {
-        static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
-        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/two_sat
-        static void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        public override string Url => "https://judge.yosupo.jp/problem/two_sat";
+        public override void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             _ = cr.Ascii();
             _ = cr.Ascii();

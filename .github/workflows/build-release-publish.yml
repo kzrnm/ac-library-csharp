@@ -24,75 +24,31 @@ jobs:
     uses: kzrnm/dotnet-actions/.github/workflows/format.yml@v1
     with:
       target: AtCoderLibrary.sln
-      dotnet-version: 6.0.x
+      dotnet-version: 7.0.x
 
-  library-checker:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: |
-            3.0.x
-            3.1.x
-            6.0.x
-      - uses: actions/cache@v3
-        name: Cache NuGet
-        with:
-          path: ${{ github.workspace }}/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-      - uses: actions/cache@v3
-        name: Cache pip
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-      - run: dotnet tool install -g SourceExpander.Console
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-      - run: pip3 install git+https://github.com/kzrnm/verification-helper
-      - name: Run tests
-        run: oj-verify run
+  test:
+    uses: kzrnm/dotnet-actions/.github/workflows/unittest.yml@v1
+    with:
+      target: AtCoderLibrary.sln
+      test-logger: GitHubActions
+      dotnet-version: |
+        3.0.x
+        3.1.x
+        7.0.x
 
-  build:
-    runs-on: ubuntu-latest
-    needs: [get-version]
-    steps:
-      - uses: actions/checkout@v2
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: |
-            3.0.x
-            3.1.x
-            6.0.x
-      - uses: actions/cache@v3
-        with:
-          path: ${{ github.workspace }}/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-      - name: Build
-        run: dotnet build ${{ env.WORKFLOW_BUILD_SLN }} -c Release
-      - name: Test
-        run: dotnet test ${{ env.WORKFLOW_BUILD_SLN }} --no-build --logger GitHubActions -c Release
-      - uses: actions/upload-artifact@v3
-        if: ${{ needs.get-version.outputs.is-new == 'true' }}
-        with:
-          name: dist
-          path: bin/Packages/Release
+  build-verify:
+    needs: get-version
+    uses: ./.github/workflows/reusable_verify.yml
+    with:
+      upload-artifact: fromJson(needs.get-version.outputs.is-new)
 
   publish:
-    needs: [get-version, build, format, library-checker]
+    needs: [get-version, test, format, build-verify]
     if: ${{ needs.get-version.outputs.is-new == 'true' }}
     uses: kzrnm/dotnet-actions/.github/workflows/publish.yml@v1
     with:
       artifact-name: dist
       version: ${{ needs.get-version.outputs.version }}
-      is-prerelease: ${{ needs.get-version.outputs.is-prerelease == 'true' }}
+      is-prerelease: ${{ fromJson(needs.get-version.outputs.is-prerelease) }}
     secrets:
       NUGET_KEY: ${{ secrets.NUGET_KEY }}
