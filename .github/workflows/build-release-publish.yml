@@ -40,7 +40,7 @@ jobs:
     needs: get-version
     uses: ./.github/workflows/reusable_verify.yml
     with:
-      upload-artifact: fromJson(needs.get-version.outputs.is-new)
+      upload-artifact: ${{ fromJson(needs.get-version.outputs.is-new) }}
 
   publish:
     needs: [get-version, test, format, build-verify]
