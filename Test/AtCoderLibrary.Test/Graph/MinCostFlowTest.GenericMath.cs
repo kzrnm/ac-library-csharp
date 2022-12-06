@@ -1,19 +1,15 @@
-﻿using AtCoder.Operators;
-using FluentAssertions;
+﻿using FluentAssertions;
 using MersenneTwister;
 using Xunit;
 
 namespace AtCoder
 {
-#if GENERIC_MATH
-    [System.Obsolete("Use generic math")]
-#endif
-    public class MinCostFlowTest
+    public class MinCostFlowGenericMathTest
     {
         [Fact]
         public void Simple()
         {
-            var g = new McfGraphInt(4);
+            var g = new McfGraph<int>(4);
             g.AddEdge(0, 1, 1, 1);
             g.AddEdge(0, 2, 1, 1);
             g.AddEdge(1, 3, 1, 1);
@@ -21,45 +17,45 @@ namespace AtCoder
             g.AddEdge(1, 2, 1, 1);
             g.Slope(0, 3, 10).Should().Equal(new[] { (0, 0), (2, 4) });
 
-            McfGraphInt.Edge e;
+            McfGraph<int>.Edge e;
 
-            e = new McfGraphInt.Edge(0, 1, 1, 1, 1);
+            e = new McfGraph<int>.Edge(0, 1, 1, 1, 1);
             g.GetEdge(0).Should().Be(e);
-            e = new McfGraphInt.Edge(0, 2, 1, 1, 1);
+            e = new McfGraph<int>.Edge(0, 2, 1, 1, 1);
             g.GetEdge(1).Should().Be(e);
-            e = new McfGraphInt.Edge(1, 3, 1, 1, 1);
+            e = new McfGraph<int>.Edge(1, 3, 1, 1, 1);
             g.GetEdge(2).Should().Be(e);
-            e = new McfGraphInt.Edge(2, 3, 1, 1, 1);
+            e = new McfGraph<int>.Edge(2, 3, 1, 1, 1);
             g.GetEdge(3).Should().Be(e);
-            e = new McfGraphInt.Edge(1, 2, 1, 0, 1);
+            e = new McfGraph<int>.Edge(1, 2, 1, 0, 1);
             g.GetEdge(4).Should().Be(e);
         }
 
         [Fact]
         public void Cast()
         {
-            var g = new McfGraph<int, IntOperator, long, LongOperator, IntToLongCastOperator>(4);
+            var g = new McfGraph<int, long>(4);
             g.AddEdge(0, 1, 1 << 28, 1L << 33);
             g.AddEdge(0, 1, 1, 1);
             g.Slope(0, 1).Should().Equal(new[] { (0, 0L), (1, 1), ((1 << 28) + 1, (1L << 61) + 1) });
 
-            McfGraph<int, IntOperator, long, LongOperator, IntToLongCastOperator>.Edge e;
+            McfGraph<int, long>.Edge e;
 
-            e = new McfGraph<int, IntOperator, long, LongOperator, IntToLongCastOperator>.Edge(0, 1, 1 << 28, 1 << 28, 1L << 33);
+            e = new McfGraph<int, long>.Edge(0, 1, 1 << 28, 1 << 28, 1L << 33);
             g.GetEdge(0).Should().Be(e);
-            e = new McfGraph<int, IntOperator, long, LongOperator, IntToLongCastOperator>.Edge(0, 1, 1, 1, 1);
+            e = new McfGraph<int, long>.Edge(0, 1, 1, 1, 1);
             g.GetEdge(1).Should().Be(e);
         }
         [Fact]
         public void Usage()
         {
             {
-                var g = new McfGraphInt(2);
+                var g = new McfGraph<int>(2);
                 g.AddEdge(0, 1, 1, 2);
                 g.Flow(0, 1).Should().Be((1, 2));
             }
             {
-                var g = new McfGraphInt(2);
+                var g = new McfGraph<int>(2);
                 g.AddEdge(0, 1, 1, 2);
                 g.Slope(0, 1).Should().Equal(new[] { (0, 0), (1, 2) });
             }
@@ -67,7 +63,7 @@ namespace AtCoder
         [Fact]
         public void OutOfRange()
         {
-            var g = new McfGraphInt(2);
+            var g = new McfGraph<int>(2);
             g.Invoking(g => g.Slope(-1, 3)).Should().ThrowContractAssert();
             g.Invoking(g => g.Slope(3, 3)).Should().ThrowContractAssert();
 
@@ -96,17 +92,17 @@ namespace AtCoder
         [Fact]
         public void SelfLoop()
         {
-            var g = new McfGraphInt(3);
+            var g = new McfGraph<int>(3);
             g.AddEdge(0, 0, 100, 123).Should().Be(0);
 
-            McfGraphInt.Edge e = new McfGraphInt.Edge(0, 0, 100, 0, 123);
+            McfGraph<int>.Edge e = new McfGraph<int>.Edge(0, 0, 100, 0, 123);
             g.GetEdge(0).Should().Be(e);
         }
 
         [Fact]
         public void SameCostPaths()
         {
-            var g = new McfGraphInt(3);
+            var g = new McfGraph<int>(3);
             g.AddEdge(0, 1, 1, 1).Should().Be(0);
             g.AddEdge(1, 2, 1, 0).Should().Be(1);
             g.AddEdge(0, 2, 2, 1).Should().Be(2);
@@ -116,7 +112,7 @@ namespace AtCoder
         [Fact]
         public void Invalid()
         {
-            var g = new McfGraphInt(2);
+            var g = new McfGraph<int>(2);
             g.Invoking(g => g.AddEdge(0, 0, -1, 0)).Should().ThrowContractAssert();
             g.Invoking(g => g.AddEdge(0, 0, 0, -1)).Should().ThrowContractAssert();
         }
@@ -132,8 +128,8 @@ namespace AtCoder
                 var (s, t) = mt.NextPair(0, n);
                 if (mt.NextBool()) (s, t) = (t, s);
 
-                var gMf = new MfGraphInt(n);
-                var g = new McfGraphInt(n);
+                var gMf = new MfGraph<int>(n);
+                var g = new McfGraph<int>(n);
                 for (int i = 0; i < m; i++)
                 {
                     int u = mt.Next(0, n);

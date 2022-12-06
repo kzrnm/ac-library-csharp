@@ -11,9 +11,12 @@ namespace AtCoder.Embedding
 #if NETCOREAPP3_0
         const bool useIntrinsics = false;
         const string languageVersion = "7.3";
-#else
+#elif NETCOREAPP3_1
         const bool useIntrinsics = true;
         const string languageVersion = "8.0";
+#else
+        const bool useIntrinsics = true;
+        const string languageVersion = "11.0";
 #endif
 
 

@@ -1,15 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net7.0;netcoreapp3.1;netcoreapp3.0</TargetFrameworks>
     <IsPackable>false</IsPackable>
     <RootNamespace>AtCoder</RootNamespace>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <NoWarn>$(NoWarn);IDE0044;NETSDK1138</NoWarn>
+
+    <GenericMath Condition="'$(TargetFramework)'!='netcoreapp3.0' And '$(TargetFramework)'!='netcoreapp3.1'">true</GenericMath>
+    <EnablePreviewFeatures Condition="'$(GenericMath)'=='true'">true</EnablePreviewFeatures>
+    <DefineConstants Condition="'$(GenericMath)'=='true'">$(DefineConstants);GENERIC_MATH</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <NoWarn>$(NoWarn);IDE0044;NETSDK1138</NoWarn>
-  </PropertyGroup>
+  <ItemGroup Condition="'$(GenericMath)'!='true'">
+    <Compile Remove="**/*GenericMath.cs" />
+    <Compile Remove="**/*GenericMath/**/*.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Update="Internal\InternalMathTest.StaticMod.tt">

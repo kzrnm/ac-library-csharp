@@ -3,6 +3,9 @@ using AtCoder.Operators;
 
 namespace AtCoder
 {
+#if GENERIC_MATH
+    [System.Obsolete("Use generic math")]
+#endif
     public readonly struct DoubleOperator : INumOperator<double>
     {
         public double MinValue => double.MinValue;

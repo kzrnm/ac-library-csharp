@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using AtCoder.Internal;
 using FluentAssertions;
@@ -388,8 +389,9 @@ namespace AtCoder
             }
         }
 
+#if GENERIC_MATH
         [Fact]
-        public void Cast()
+        public void ConvertFrom()
         {
             RunStatic<ModID11>();
             RunStatic<ModID12>();
@@ -406,40 +408,115 @@ namespace AtCoder
             void RunStatic<T>() where T : struct, IStaticMod
             {
                 var mod = (int)new T().Mod;
-                var nums = Enumerable.Range(-100, 200).Concat(Enumerable.Range(mod - 100, 200));
-                foreach (var n in nums)
+                var max = System.Math.Min(100000, mod);
+                for (int i = 0; i < max; i++)
                 {
-                    int i = (int)InternalMath.SafeMod(n, mod);
-                    ((StaticModInt<T>)i).Value.Should().Be(i % mod);
-                    ((StaticModInt<T>)(uint)i).Value.Should().Be(i % mod);
-                    ((StaticModInt<T>)(long)i).Value.Should().Be(i % mod);
-                    ((StaticModInt<T>)(ulong)i).Value.Should().Be(i % mod);
-                }
+                    int x = ConvertFrom<StaticModInt<T>, int>(i).Value;
+                    x.Should().Be(i % mod);
 
-                ((StaticModInt<T>)int.MaxValue).Value.Should().Be(int.MaxValue % mod);
-                ((StaticModInt<T>)uint.MaxValue).Value.Should().Be((int)(uint.MaxValue % mod));
-                ((StaticModInt<T>)long.MaxValue).Value.Should().Be((int)(long.MaxValue % mod));
-                ((StaticModInt<T>)ulong.MaxValue).Value.Should().Be((int)(ulong.MaxValue % (uint)mod));
+                    x = ConvertFrom<StaticModInt<T>, long>(i).Value;
+                    x.Should().Be(i % mod);
+
+                    x = ConvertFrom<StaticModInt<T>, uint>((uint)i).Value;
+                    x.Should().Be(i % mod);
+
+                    x = ConvertFrom<StaticModInt<T>, ulong>((ulong)i).Value;
+                    x.Should().Be(i % mod);
+                }
             }
 
             void RunDynamic<T>() where T : struct
             {
                 var mod = DynamicModInt<T>.Mod;
-                var nums = Enumerable.Range(-100, 200).Concat(Enumerable.Range(mod - 100, 200));
-                foreach (var n in nums)
+                var max = System.Math.Min(100000, mod);
+                for (int i = 0; i < max; i++)
                 {
-                    int i = (int)InternalMath.SafeMod(n, mod);
-                    ((DynamicModInt<T>)i).Value.Should().Be(i % mod);
-                    ((DynamicModInt<T>)(uint)i).Value.Should().Be(i % mod);
-                    ((DynamicModInt<T>)(long)i).Value.Should().Be(i % mod);
-                    ((DynamicModInt<T>)(ulong)i).Value.Should().Be(i % mod);
-                }
+                    int x = ConvertFrom<DynamicModInt<T>, int>(i).Value;
+                    x.Should().Be(i % mod);
 
-                ((DynamicModInt<T>)int.MaxValue).Value.Should().Be(int.MaxValue % mod);
-                ((DynamicModInt<T>)uint.MaxValue).Value.Should().Be((int)(uint.MaxValue % mod));
-                ((DynamicModInt<T>)long.MaxValue).Value.Should().Be((int)(long.MaxValue % mod));
-                ((DynamicModInt<T>)ulong.MaxValue).Value.Should().Be((int)(ulong.MaxValue % (uint)mod));
+                    x = ConvertFrom<DynamicModInt<T>, long>(i).Value;
+                    x.Should().Be(i % mod);
+
+                    x = ConvertFrom<DynamicModInt<T>, uint>((uint)i).Value;
+                    x.Should().Be(i % mod);
+
+                    x = ConvertFrom<DynamicModInt<T>, ulong>((ulong)i).Value;
+                    x.Should().Be(i % mod);
+                }
             }
+
+            TModInt ConvertFrom<TModInt, TOther>(TOther v) where TModInt : INumberBase<TModInt> where TOther : INumberBase<TOther>
+                => TModInt.CreateChecked(v);
         }
+
+        [Fact]
+        public void ConvertTo()
+        {
+            RunStatic<ModID11>();
+            RunStatic<ModID12>();
+            RunStatic<ModID1000000007>();
+            RunStatic<ModID1000000008>();
+            RunStatic<ModID998244353>();
+
+            DynamicModInt<ModID998244353>.Mod = 998244353;
+            RunDynamic<ModID998244353>();
+
+            DynamicModInt<ModID1000000008>.Mod = 1000000008;
+            RunDynamic<ModID1000000008>();
+
+            void RunStatic<T>() where T : struct, IStaticMod
+            {
+                var mod = (int)new T().Mod;
+                var max = System.Math.Min(100000, mod);
+                for (int i = 0; i < max; i++)
+                {
+                    {
+                        var x = ConvertTo<StaticModInt<T>, int>(i);
+                        x.Should().Be((int)(i % mod));
+                    }
+                    {
+                        var x = ConvertTo<StaticModInt<T>, long>(i);
+                        x.Should().Be((long)(i % mod));
+                    }
+                    {
+                        var x = ConvertTo<StaticModInt<T>, uint>(i);
+                        x.Should().Be((uint)(i % mod));
+                    }
+                    {
+                        var x = ConvertTo<StaticModInt<T>, ulong>(i);
+                        x.Should().Be((ulong)(i % mod));
+                    }
+                }
+            }
+
+            void RunDynamic<T>() where T : struct
+            {
+                var mod = DynamicModInt<T>.Mod;
+                var max = System.Math.Min(100000, mod);
+                for (int i = 0; i < max; i++)
+                {
+                    {
+                        var x = ConvertTo<DynamicModInt<T>, int>(i);
+                        x.Should().Be((int)(i % mod));
+                    }
+                    {
+                        var x = ConvertTo<DynamicModInt<T>, long>(i);
+                        x.Should().Be((long)(i % mod));
+                    }
+                    {
+                        var x = ConvertTo<DynamicModInt<T>, uint>(i);
+                        x.Should().Be((uint)(i % mod));
+                    }
+                    {
+                        var x = ConvertTo<DynamicModInt<T>, ulong>(i);
+                        x.Should().Be((ulong)(i % mod));
+                    }
+                }
+            }
+
+            TOther ConvertTo<TModInt, TOther>(TModInt v) where TModInt : INumberBase<TModInt> where TOther : INumberBase<TOther>
+                => TOther.CreateChecked(v);
+        }
+#endif
     }
 }

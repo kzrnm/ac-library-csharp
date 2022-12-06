@@ -4,6 +4,9 @@ using AtCoder.Operators;
 
 namespace AtCoder
 {
+#if GENERIC_MATH
+    [Obsolete("Use generic math")]
+#endif
     public readonly struct DynamicModIntOperator<T> : IArithmeticOperator<DynamicModInt<T>> where T : struct
     {
         public DynamicModInt<T> MultiplyIdentity => DynamicModInt<T>.Raw(1);

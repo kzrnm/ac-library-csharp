@@ -4,6 +4,9 @@ using AtCoder.Operators;
 
 namespace AtCoder
 {
+#if GENERIC_MATH
+    [Obsolete("Use generic math")]
+#endif
     public readonly struct StaticModIntOperator<T> : IArithmeticOperator<StaticModInt<T>>
         where T : struct, IStaticMod
     {

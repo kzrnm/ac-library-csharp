@@ -6,6 +6,9 @@ namespace AtCoder
     /// <summary>
     /// Minimum-cost flow problem を扱うライブラリ(int版)です。
     /// </summary>
+#if GENERIC_MATH
+    [System.Obsolete("Use generic math")]
+#endif
     public class McfGraphInt
         : McfGraph<int, IntOperator, int, IntOperator, SameTypeCastOperator<int>>
     {
@@ -15,6 +18,9 @@ namespace AtCoder
     /// <summary>
     /// Minimum-cost flow problem を扱うライブラリ(long版)です。
     /// </summary>
+#if GENERIC_MATH
+    [System.Obsolete("Use generic math")]
+#endif
     public class McfGraphLong
        : McfGraph<long, LongOperator, long, LongOperator, SameTypeCastOperator<long>>
     {

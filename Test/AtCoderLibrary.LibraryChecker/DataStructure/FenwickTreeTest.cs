@@ -2,6 +2,7 @@
 
 namespace AtCoder.Solvers.DataStructure
 {
+
     internal class FenwickTreeTest : BaseSover
     {
         public override string Url => "https://judge.yosupo.jp/problem/point_add_range_sum";
@@ -10,7 +11,11 @@ namespace AtCoder.Solvers.DataStructure
             int N = cr;
             int Q = cr;
             int[] a = cr.Repeat(N);
+#if NET7_0_OR_GREATER
+            var fw = new FenwickTree<long>(N);
+#else
             var fw = new LongFenwickTree(N);
+#endif
             for (int i = 0; i < a.Length; i++)
             {
                 fw.Add(i, a[i]);

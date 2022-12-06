@@ -10,7 +10,11 @@ namespace AtCoder.Solvers.Graph
             int l = cr;
             int r = cr;
             int m = cr;
+#if NET7_0_OR_GREATER
+            var mf = new MfGraph<int>(l + r + 2);
+#else
             var mf = new MfGraphInt(l + r + 2);
+#endif
             for (int i = 0; i < m; i++)
             {
                 int a = cr;
