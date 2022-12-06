@@ -28,12 +28,21 @@ namespace AtCoder.Internal
             Contract.Assert(m >= 2, reason: $"{nameof(m)} must be greater or equal 2");
             Contract.Assert(default(TMod).IsPrime, reason: $"{nameof(m)} must be prime number");
 
+#if NET7_0_OR_GREATER
+            ref var result = ref System.Runtime.InteropServices.CollectionsMarshal.GetValueRefOrAddDefault(primitiveRootsCache, m, out var exists);
+            if (!exists)
+            {
+                result = PrimitiveRootCalculate<TMod>();
+            }
+            return result;
+#else
             if (primitiveRootsCache.TryGetValue(m, out var p))
             {
                 return p;
             }
 
             return primitiveRootsCache[m] = PrimitiveRootCalculate<TMod>();
+#endif
         }
         static int PrimitiveRootCalculate<TMod>() where TMod : struct, IStaticMod
         {

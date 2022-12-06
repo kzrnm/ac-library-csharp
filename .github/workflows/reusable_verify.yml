@@ -42,10 +42,18 @@ jobs:
         run: dotnet test $UNITTEST_CSPROJ --logger "CompetitiveVerifier;OutDirectory=${{runner.temp}}/VerifierCsUnitTestResult" --no-build  -c Release
         env:
           UNITTEST_CSPROJ: Test/AtCoderLibrary.Test/AtCoderLibrary.Test.csproj
-      - name: Resolve
-        run: dotnet run --project $VERIFY_CSPROJ --no-launch-profile --no-build -c Release | tee ${{runner.temp}}/problems.json
+
+      - name: Resolve netcoreapp3.1
+        run: dotnet run --project $VERIFY_CSPROJ --framework $FRAMEWORK --no-launch-profile --no-build -c Release | tee "${{runner.temp}}/problems-$FRAMEWORK.json"
         env:
           VERIFY_CSPROJ: Test/AtCoderLibrary.LibraryChecker/AtCoderLibrary.LibraryChecker.csproj
+          FRAMEWORK: netcoreapp3.1
+      - name: Resolve net7.0
+        run: dotnet run --project $VERIFY_CSPROJ --framework $FRAMEWORK --no-launch-profile --no-build -c Release | tee "${{runner.temp}}/problems-$FRAMEWORK.json"
+        env:
+          VERIFY_CSPROJ: Test/AtCoderLibrary.LibraryChecker/AtCoderLibrary.LibraryChecker.csproj
+          FRAMEWORK: net7.0
+
       - name: cs-resolve
         uses: competitive-verifier/actions/cs-resolve@v1
         with:
@@ -54,7 +62,7 @@ jobs:
           include: Source/AtCoderLibrary/** Test/AtCoderLibrary.LibraryChecker/** Test/AtCoderLibrary.Test
           exclude: Test/AtCoderLibrary.LibraryChecker/BaseSover.cs **/obj/**
           unittest-result: ${{runner.temp}}/VerifierCsUnitTestResult/*.csv
-          problems: ${{runner.temp}}/problems.json
+          problems: ${{runner.temp}}/problems-*.json
           msbuild-properties: Configuration=Release
       - name: Upload verify_files.json
         uses: competitive-verifier/actions/upload-verify-artifact@v1
