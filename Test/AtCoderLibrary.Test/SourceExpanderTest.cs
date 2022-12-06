@@ -16,7 +16,7 @@ namespace AtCoder.Embedding
         const string languageVersion = "8.0";
 #else
         const bool useIntrinsics = true;
-        const string languageVersion = "preview";
+        const string languageVersion = "11.0";
 #endif
 
 
