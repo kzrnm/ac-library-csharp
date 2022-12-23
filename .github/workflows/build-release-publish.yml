@@ -3,7 +3,7 @@ name: Build-Release-Publish
 on:
   push:
     branches:
-      - master
+      - main
     tags:
       - "v[0-9]+.[0-9]+.[0-9]+*"
 
