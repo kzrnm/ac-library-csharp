@@ -207,7 +207,7 @@ namespace AtCoder
             return groups;
         }
 
-        [DebuggerDisplay("To = {To}")]
+        [DebuggerDisplay("To={" + nameof(To) + "}")]
         private readonly struct Edge
         {
             public int To { get; }

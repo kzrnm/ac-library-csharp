@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using AtCoder.Internal;
 using AtCoder.Operators;
@@ -565,6 +566,13 @@ namespace AtCoder
         /// <summary>
         /// フローを流すグラフの各辺に対応した情報を持ちます。
         /// </summary>
+        [DebuggerDisplay(
+            "From={" + nameof(From)
+            + "} To={" + nameof(To)
+            + "} Cap={" + nameof(Cap)
+            + "} Flow={" + nameof(Flow)
+            + "} Cost={" + nameof(Cost)
+            + "}")]
         public struct Edge : IEquatable<Edge>
         {
             /// <summary>フローが流出する頂点。</summary>
@@ -598,6 +606,12 @@ namespace AtCoder
             public static bool operator !=(Edge left, Edge right) => !left.Equals(right);
         }
 
+        [DebuggerDisplay(
+            "To={" + nameof(To)
+            + "} Rev={" + nameof(Rev)
+            + "} Cap={" + nameof(Cap)
+            + "} Cost={" + nameof(Cost)
+            + "}")]
         private struct EdgeInternal
         {
             public int To;
