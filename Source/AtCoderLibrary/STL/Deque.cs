@@ -27,11 +27,15 @@ namespace AtCoder
         [EditorBrowsable(Never)]
         public int tail;
 
-        public Deque() : this(8) { }
+        public Deque() : this(1) { }
         public Deque(int capacity)
         {
-            if (capacity <= 8) capacity = 8;
-            else capacity = 1 << (InternalBit.CeilPow2(capacity + 1));
+            capacity =
+#if NET7_0_OR_GREATER
+                (int)System.Numerics.BitOperations.RoundUpToPowerOf2((uint)capacity + 1u);
+#else
+                1 << (InternalBit.CeilPow2(capacity + 1));
+#endif
             data = new T[capacity];
             mask = capacity - 1;
         }

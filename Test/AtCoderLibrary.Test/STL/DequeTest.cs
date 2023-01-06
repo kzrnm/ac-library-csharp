@@ -14,7 +14,7 @@ namespace AtCoder
         {
             var deque = new Deque<int>();
 
-            deque.data.Should().HaveCount(8);
+            deque.data.Should().HaveCount(2);
             deque.Should().HaveCount(0);
 
             deque.Invoking(deque => deque.PopLast()).Should().Throw<InvalidOperationException>();
@@ -24,7 +24,7 @@ namespace AtCoder
             {
                 deque.AddLast(i);
                 deque.Last.Should().Be(i);
-                deque.data.Should().HaveCount(8);
+                deque.data.Should().HaveCount(NativeSize(i));
                 deque.Should().HaveCount(i);
             }
             deque.Add(-1);
@@ -35,7 +35,7 @@ namespace AtCoder
                 deque.AddFirst(i);
                 deque.First.Should().Be(i);
                 deque.Last.Should().Be(-1);
-                deque.data.Should().HaveCount(1 << InternalBit.CeilPow2(i + 1));
+                deque.data.Should().HaveCount(NativeSize(i));
                 deque.Should().HaveCount(i);
             }
 
@@ -62,15 +62,13 @@ namespace AtCoder
 
         static int NativeSize(int capacity)
         {
-            if (capacity <= 8)
-                return 8;
             ++capacity;
             var v = 1;
             while (v < capacity) v <<= 1;
             return v;
         }
 
-        public static IEnumerable<object[]> Capacity_Data = Enumerable.Range(0, 40).Select(i => new object[] { i });
+        public static IEnumerable<object[]> Capacity_Data => Enumerable.Range(0, 40).Select(i => new object[] { i });
         [Theory]
         [MemberData(nameof(Capacity_Data))]
         public void Capacity(int size)
