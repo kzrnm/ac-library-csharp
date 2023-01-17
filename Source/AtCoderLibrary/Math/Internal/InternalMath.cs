@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+#if NETCOREAPP3_1_OR_GREATER
+using System.Numerics;
+#endif
 
 namespace AtCoder.Internal
 {
@@ -46,26 +49,22 @@ namespace AtCoder.Internal
         }
         static int PrimitiveRootCalculate<TMod>() where TMod : struct, IStaticMod
         {
-            int m = (int)default(TMod).Mod;
-            Span<int> divs = stackalloc int[20];
+            var m = default(TMod).Mod;
+            Span<uint> divs = stackalloc uint[20];
             divs[0] = 2;
             int cnt = 1;
-            int x = (m - 1) / 2;
+            var x = m - 1;
+            x >>= BitOperations.TrailingZeroCount(x);
 
-            while (x % 2 == 0)
-            {
-                x >>= 1;
-            }
-
-            for (int i = 3; (long)i * i <= x; i += 2)
+            for (uint i = 3; (long)i * i <= x; i += 2)
             {
                 if (x % i == 0)
                 {
                     divs[cnt++] = i;
-                    while (x % i == 0)
+                    do
                     {
                         x /= i;
-                    }
+                    } while (x % i == 0);
                 }
             }
 
@@ -81,7 +80,7 @@ namespace AtCoder.Internal
                     if (new StaticModInt<TMod>(g).Pow((m - 1) / d).Value == 1)
                         goto NEXT;
                 return g;
-            NEXT: { }
+            NEXT:;
             }
         }
 
