@@ -19,7 +19,7 @@
   </ItemGroup>
   
   <ItemGroup Condition="'$(UseLocalReference)' == 'true'">
-    <ProjectReference Include="..\..\Source\AtCoderLibrary\AtCoderLibrary.csproj" />
+    <ProjectReference Include="..\..\Source\ac-library-csharp\ac-library-csharp.csproj" />
     <ProjectReference Include="..\..\Source\AtCoderAnalyzer\AtCoderAnalyzer.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <OutputItemType>Analyzer</OutputItemType>

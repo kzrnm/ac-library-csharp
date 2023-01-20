@@ -12,7 +12,7 @@ env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_NOLOGO: true
   NUGET_XMLDOC_MODE: skip
-  WORKFLOW_BUILD_SLN: AtCoderLibrary.sln
+  WORKFLOW_BUILD_SLN: ac-library-csharp.sln
 
 jobs:
   get-version:
@@ -23,7 +23,7 @@ jobs:
   format:
     uses: kzrnm/dotnet-actions/.github/workflows/format.yml@v1
     with:
-      target: AtCoderLibrary.sln
+      target: ac-library-csharp.sln
       dotnet-version: |
         3.0.x
         3.1.x
@@ -31,7 +31,7 @@ jobs:
   test:
     uses: kzrnm/dotnet-actions/.github/workflows/unittest.yml@v1
     with:
-      target: AtCoderLibrary.sln
+      target: ac-library-csharp.sln
       test-logger: GitHubActions
       dotnet-version: |
         3.0.x

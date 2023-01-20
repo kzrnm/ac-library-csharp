@@ -2,7 +2,7 @@
   "profiles": {
     "AtCoderAnalyzer": {
       "commandName": "DebugRoslynComponent",
-      "targetProject": "..\\AtCoderLibrary\\AtCoderLibrary.csproj"
+      "targetProject": "..\\ac-library-csharp\\ac-library-csharp.csproj"
     }
   }
 }

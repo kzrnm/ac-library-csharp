@@ -206,5 +206,5 @@ namespace AtCoder.Internal { public class DebugAssertException : Exception { pub
 
 ## License
 
-The files in `Source/AtCoderLibrary` are licensed under CC0 license.
+The files in `Source/ac-library-csharp` are licensed under CC0 license.
 Another files are licensed under MIT license.
