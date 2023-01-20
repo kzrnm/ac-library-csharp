@@ -6,17 +6,16 @@ README languages: [English](README.md), [日本語](README.ja.md)
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**
 
-- [ac-library-csharp](#ac-library-csharp)
-  - [Packages](#packages)
-    - [ac-library-csharp](#ac-library-csharp-1)
-    - [AtCoderAnalyzer](#atcoderanalyzer)
-      - [利用例](#利用例)
-  - [Status](#status)
-  - [Getting started](#getting-started)
-    - [Installation](#installation)
-    - [Install analyzer(optional)](#install-analyzeroptional)
-    - [output combinded source code](#output-combinded-source-code)
-  - [License](#license)
+- [Packages](#packages)
+  - [ac-library-csharp](#ac-library-csharp)
+  - [AtCoderAnalyzer](#atcoderanalyzer)
+    - [利用例](#%E5%88%A9%E7%94%A8%E4%BE%8B)
+- [Status](#status)
+- [Getting started](#getting-started)
+  - [Installation](#installation)
+  - [Install analyzer(optional)](#install-analyzeroptional)
+  - [output combinded source code](#output-combinded-source-code)
+- [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
