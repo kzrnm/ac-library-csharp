@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30523.141
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleProject", "SampleProject\SampleProject.csproj", "{6077D1BD-7B49-4611-AF49-0E01E462C956}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AtCoderLibrary", "..\Source\AtCoderLibrary\AtCoderLibrary.csproj", "{75EDB69F-2582-4251-8709-E0BB934336C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ac-library-csharp", "..\Source\ac-library-csharp\ac-library-csharp.csproj", "{75EDB69F-2582-4251-8709-E0BB934336C4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AtCoderAnalyzer", "..\Source\AtCoderAnalyzer\AtCoderAnalyzer.csproj", "{4101D5BE-4FC7-467E-BCAD-0C6BD57B3485}"
 EndProject

@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Source\AtCoderLibrary\AtCoderLibrary.csproj" />
+    <ProjectReference Include="..\..\Source\ac-library-csharp\ac-library-csharp.csproj" />
   </ItemGroup>
 
 </Project>

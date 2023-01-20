@@ -19,17 +19,22 @@ namespace AtCoder.Embedding
         const string languageVersion = "11.0";
 #endif
 
+        [Fact]
+        public void AssemblyName()
+        {
+            typeof(Segtree<,>).Assembly.GetName().Name.Should().Be("ac-library-csharp");
+        }
 
         [Fact]
         public async Task Symbol()
         {
-            var embedded = await EmbeddedData.LoadFromAssembly(typeof(Mod1000000007));
+            var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
             embedded.AssemblyMetadatas.Should().ContainKey("SourceExpander.EmbeddedSourceCode.GZipBase32768");
             embedded.SourceFiles.Select(s => s.FileName)
                 .Should()
                 .HaveCountGreaterThan(2)
                 .And
-                .OnlyContain(name => name.StartsWith("AtCoderLibrary>"));
+                .OnlyContain(name => name.StartsWith("ac-library-csharp>"));
             embedded.SourceFiles.SelectMany(s => s.Usings)
                 .Contains("using System.Runtime.Intrinsics.X86;")
                 .Should()
@@ -39,7 +44,7 @@ namespace AtCoder.Embedding
         [Fact]
         public async Task LanguageVersion()
         {
-            var embedded = await EmbeddedData.LoadFromAssembly(typeof(Mod1000000007));
+            var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
             embedded.AssemblyMetadatas
                 .Should().ContainKey("SourceExpander.EmbeddedLanguageVersion")
                 .WhoseValue.Should().Be(languageVersion);
@@ -48,13 +53,13 @@ namespace AtCoder.Embedding
         [Fact]
         public async Task EmbeddedSource()
         {
-            var embedded = await EmbeddedData.LoadFromAssembly(typeof(Mod1000000007));
+            var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
             embedded.AssemblyMetadatas.Should().ContainKey("SourceExpander.EmbeddedSourceCode.GZipBase32768");
             embedded.SourceFiles.Select(s => s.FileName)
                 .Should()
                 .HaveCountGreaterThan(2)
                 .And
-                .OnlyContain(name => name.StartsWith("AtCoderLibrary>"));
+                .OnlyContain(name => name.StartsWith("ac-library-csharp>"));
             embedded.SourceFiles.SelectMany(s => s.TypeNames)
                 .Should()
                 .Contain(
@@ -65,7 +70,7 @@ namespace AtCoder.Embedding
         [Fact]
         public async Task EmbeddedNamespaces()
         {
-            var embedded = await EmbeddedData.LoadFromAssembly(typeof(Mod1000000007));
+            var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
             embedded.AssemblyMetadatas.Should().ContainKey("SourceExpander.EmbeddedNamespaces");
             embedded.EmbeddedNamespaces.Should()
                 .Equal(
@@ -79,7 +84,7 @@ namespace AtCoder.Embedding
         [Fact]
         public async Task RemoveContract()
         {
-            var embedded = await EmbeddedData.LoadFromAssembly(typeof(Mod1000000007));
+            var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
             var codes = embedded.SourceFiles.Select(s => s.CodeBody);
             codes.Should().NotContain(code => code.Contains("Contract.Assert"));
         }

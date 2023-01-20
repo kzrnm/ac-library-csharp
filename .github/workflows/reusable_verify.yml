@@ -13,7 +13,7 @@ env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_NOLOGO: true
   NUGET_XMLDOC_MODE: skip
-  WORKFLOW_BUILD_SLN: AtCoderLibrary.sln
+  WORKFLOW_BUILD_SLN: ac-library-csharp.sln
 
 jobs:
   build-resolve:
@@ -41,17 +41,17 @@ jobs:
       - name: Unit test
         run: dotnet test $UNITTEST_CSPROJ --logger "CompetitiveVerifier;OutDirectory=${{runner.temp}}/VerifierCsUnitTestResult" --no-build  -c Release
         env:
-          UNITTEST_CSPROJ: Test/AtCoderLibrary.Test/AtCoderLibrary.Test.csproj
+          UNITTEST_CSPROJ: Test/ac-library-csharp.Test/ac-library-csharp.Test.csproj
 
       - name: Resolve netcoreapp3.1
         run: dotnet run --project $VERIFY_CSPROJ --framework $FRAMEWORK --no-launch-profile --no-build -c Release | tee "${{runner.temp}}/problems-$FRAMEWORK.json"
         env:
-          VERIFY_CSPROJ: Test/AtCoderLibrary.LibraryChecker/AtCoderLibrary.LibraryChecker.csproj
+          VERIFY_CSPROJ: Test/ac-library-csharp.LibraryChecker/ac-library-csharp.LibraryChecker.csproj
           FRAMEWORK: netcoreapp3.1
       - name: Resolve net7.0
         run: dotnet run --project $VERIFY_CSPROJ --framework $FRAMEWORK --no-launch-profile --no-build -c Release | tee "${{runner.temp}}/problems-$FRAMEWORK.json"
         env:
-          VERIFY_CSPROJ: Test/AtCoderLibrary.LibraryChecker/AtCoderLibrary.LibraryChecker.csproj
+          VERIFY_CSPROJ: Test/ac-library-csharp.LibraryChecker/ac-library-csharp.LibraryChecker.csproj
           FRAMEWORK: net7.0
 
       - name: cs-resolve
@@ -59,8 +59,8 @@ jobs:
         with:
           solution: ${{ env.WORKFLOW_BUILD_SLN }}
           output-path: verify_files.json
-          include: Source/AtCoderLibrary/** Test/AtCoderLibrary.LibraryChecker/** Test/AtCoderLibrary.Test
-          exclude: Test/AtCoderLibrary.LibraryChecker/BaseSover.cs **/obj/**
+          include: Source/ac-library-csharp/** Test/ac-library-csharp.LibraryChecker/** Test/ac-library-csharp.Test
+          exclude: Test/ac-library-csharp.LibraryChecker/BaseSover.cs **/obj/**
           unittest-result: ${{runner.temp}}/VerifierCsUnitTestResult/*.csv
           problems: ${{runner.temp}}/problems-*.json
           msbuild-properties: Configuration=Release
@@ -72,7 +72,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: binary-${{github.sha}}
-          path: Test/AtCoderLibrary.LibraryChecker/bin/Release
+          path: Test/ac-library-csharp.LibraryChecker/bin/Release
 
       - name: Upload packages
         uses: actions/upload-artifact@v3
@@ -113,7 +113,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: binary-${{github.sha}}
-          path: Test/AtCoderLibrary.LibraryChecker/bin/Release
+          path: Test/ac-library-csharp.LibraryChecker/bin/Release
 
       - name: Verify
         uses: competitive-verifier/actions/verify@v1
