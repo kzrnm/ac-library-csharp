@@ -5,23 +5,23 @@ using AtCoder.Internal;
 
 namespace AtCoder
 {
-    public class DSU
+    /// <summary>
+    /// Disjoint set union
+    /// </summary>
+    public class Dsu
     {
-        internal readonly int _n;
-
         [EditorBrowsable(EditorBrowsableState.Never)]
         public readonly int[] _parentOrSize;
 
         /// <summary>
-        /// <see cref="DSU"/> クラスの新しいインスタンスを、<paramref name="n"/> 頂点 0 辺のグラフとして初期化します。
+        /// <see cref="Dsu"/> クラスの新しいインスタンスを、<paramref name="n"/> 頂点 0 辺のグラフとして初期化します。
         /// </summary>
         /// <remarks>
         /// <para>制約: 0≤<paramref name="n"/>≤10^8</para>
         /// <para>計算量: O(<paramref name="n"/>)</para>
         /// </remarks>
-        public DSU(int n)
+        public Dsu(int n)
         {
-            _n = n;
             _parentOrSize = new int[n];
             _parentOrSize.AsSpan().Fill(-1);
         }
@@ -36,8 +36,8 @@ namespace AtCoder
         [MethodImpl(256)]
         public int Merge(int a, int b)
         {
-            Contract.Assert((uint)a < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(a)} && {nameof(a)} < _n");
-            Contract.Assert((uint)b < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(b)} && {nameof(b)} < _n");
+            Contract.Assert((uint)a < (uint)_parentOrSize.Length, reason: $"IndexOutOfRange: 0 <= {nameof(a)} && {nameof(a)} < n");
+            Contract.Assert((uint)b < (uint)_parentOrSize.Length, reason: $"IndexOutOfRange: 0 <= {nameof(b)} && {nameof(b)} < n");
             int x = Leader(a), y = Leader(b);
             if (x == y) return x;
             if (-_parentOrSize[x] < -_parentOrSize[y]) (x, y) = (y, x);
@@ -56,8 +56,8 @@ namespace AtCoder
         [MethodImpl(256)]
         public bool Same(int a, int b)
         {
-            Contract.Assert((uint)a < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(a)} && {nameof(a)} < _n");
-            Contract.Assert((uint)b < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(b)} && {nameof(b)} < _n");
+            Contract.Assert((uint)a < (uint)_parentOrSize.Length, reason: $"IndexOutOfRange: 0 <= {nameof(a)} && {nameof(a)} < n");
+            Contract.Assert((uint)b < (uint)_parentOrSize.Length, reason: $"IndexOutOfRange: 0 <= {nameof(b)} && {nameof(b)} < n");
             return Leader(a) == Leader(b);
         }
 
@@ -71,7 +71,7 @@ namespace AtCoder
         [MethodImpl(256)]
         public int Leader(int a)
         {
-            Contract.Assert((uint)a < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(a)} && {nameof(a)} < _n");
+            Contract.Assert((uint)a < (uint)_parentOrSize.Length, reason: $"IndexOutOfRange: 0 <= {nameof(a)} && {nameof(a)} < n");
             if (_parentOrSize[a] < 0) return a;
             while (0 <= _parentOrSize[_parentOrSize[a]])
             {
@@ -91,7 +91,7 @@ namespace AtCoder
         [MethodImpl(256)]
         public int Size(int a)
         {
-            Contract.Assert((uint)a < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(a)} && {nameof(a)} < _n");
+            Contract.Assert(0 <= a && a < _parentOrSize.Length, reason: $"IndexOutOfRange: 0 <= {nameof(a)} && {nameof(a)} < _n");
             return -_parentOrSize[Leader(a)];
         }
 
@@ -103,9 +103,10 @@ namespace AtCoder
         [MethodImpl(256)]
         public int[][] Groups()
         {
-            int[] leaderBuf = new int[_n];
-            int[] id = new int[_n];
-            var resultList = new SimpleList<int[]>(_n);
+            int n = _parentOrSize.Length;
+            int[] leaderBuf = new int[n];
+            int[] id = new int[n];
+            var resultList = new SimpleList<int[]>(n);
             for (int i = 0; i < leaderBuf.Length; i++)
             {
                 leaderBuf[i] = Leader(i);

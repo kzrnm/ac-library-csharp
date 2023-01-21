@@ -57,10 +57,10 @@ namespace AtCoder
         /// </remarks>
         [MethodImpl(256)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public (int groupNum, int[] ids) SCCIDs()
+        public (int groupNum, int[] ids) SccIDs()
         {
             // R. Tarjan のアルゴリズム
-            var g = new CSR<Edge>(_n, edges);
+            var g = new Csr<Edge>(_n, edges);
             int nowOrd = 0;
             int groupNum = 0;
             var visited = new Stack<int>(_n);
@@ -188,9 +188,9 @@ namespace AtCoder
         /// <para>計算量: 追加された辺の本数を m として O(n+m)</para>
         /// </remarks>
         [MethodImpl(256)]
-        public int[][] SCC()
+        public int[][] Scc()
         {
-            var (groupNum, ids) = SCCIDs();
+            var (groupNum, ids) = SccIDs();
             var groups = new int[groupNum][];
             var counts = new int[groupNum];
             var seen = new int[groupNum];

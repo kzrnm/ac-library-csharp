@@ -60,7 +60,7 @@ namespace AtCoder
         /// <para>制約: 0≤|<paramref name="s"/>|≤10^8, <paramref name="sa"/> は <paramref name="s"/> の Suffix Array</para>
         /// <para>計算量: O(|<paramref name="s"/>|)</para>
         /// </remarks>
-        [MethodImpl(256)] public static int[] LCPArray<T>(T[] s, int[] sa) => LCPArray((ReadOnlySpan<T>)s, sa);
+        [MethodImpl(256)] public static int[] LcpArray<T>(T[] s, int[] sa) => LCPArray((ReadOnlySpan<T>)s, sa);
 
         /// <summary>
         /// 数列 <paramref name="s"/> の LCP Array として、長さ |<paramref name="s"/>| の配列を返す。
@@ -213,7 +213,7 @@ namespace AtCoder
             /// <para>制約: 0≤|<paramref name="sm"/>|&lt;10^8</para>
             /// <para>計算量: 時間O(|<paramref name="sm"/>|^2 log|<paramref name="sm"/>|), 空間O(|<paramref name="sm"/>|)</para>
             /// </remarks>
-            internal static int[] SANaive(int[] s)
+            internal static int[] SaNaive(int[] s)
             {
                 var sa = Enumerable.Range(0, s.Length).ToArray();
                 Array.Sort(sa, Compare);
@@ -245,7 +245,7 @@ namespace AtCoder
             /// <para>計算量: 時間O(|<paramref name="sm"/>|(log|<paramref name="sm"/>|)^2), 空間O(|<paramref name="sm"/>|)</para>
             /// </remarks>
             [MethodImpl(256)]
-            internal static int[] SADoubling(ReadOnlySpan<int> s)
+            internal static int[] SaDoubling(ReadOnlySpan<int> s)
             {
                 var sa = Enumerable.Range(0, s.Length).ToArray();
                 var rnk = new int[s.Length];
@@ -287,7 +287,7 @@ namespace AtCoder
             /// <para>制約: 0≤|<paramref name="sm"/>|&lt;10^8</para>
             /// <para>計算量: O(|<paramref name="sm"/>|)</para>
             /// </remarks>
-            [MethodImpl(256)] public static int[] SAIS(ReadOnlySpan<int> sm, int upper) => SAIS(sm, upper, 10, 40);
+            [MethodImpl(256)] public static int[] SAIS(ReadOnlySpan<int> sm, int upper) => SaIs(sm, upper, 10, 40);
 
             /// <summary>
             /// 数列 <paramref name="sm"/> の Suffix Array を SA-IS 等により求め、長さ |<paramref name="sm"/>| の配列を返す。
@@ -298,7 +298,7 @@ namespace AtCoder
             /// <para>計算量: O(|<paramref name="sm"/>|)</para>
             /// </remarks>
             [MethodImpl(256)]
-            public static int[] SAIS(ReadOnlySpan<int> s, int upper, int thresholdNaive, int thresholdDouling)
+            public static int[] SaIs(ReadOnlySpan<int> s, int upper, int thresholdNaive, int thresholdDouling)
             {
                 var n = s.Length;
 
@@ -323,11 +323,11 @@ namespace AtCoder
                 }
                 else if (n < thresholdNaive)
                 {
-                    return SANaive(s.ToArray());
+                    return SaNaive(s.ToArray());
                 }
                 else if (n < thresholdDouling)
                 {
-                    return SADoubling(s);
+                    return SaDoubling(s);
                 }
 
                 var sa = new int[n];
@@ -441,7 +441,7 @@ namespace AtCoder
                         recS[lmsMap[sortedLms[i]]] = recUpper;
                     }
 
-                    var recSA = SAIS(recS, recUpper, thresholdNaive, thresholdDouling);
+                    var recSA = SaIs(recS, recUpper, thresholdNaive, thresholdDouling);
 
                     for (int i = 0; i < sortedLms.Count; i++)
                     {

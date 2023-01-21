@@ -72,12 +72,12 @@ namespace AtCoder
 
 
         [Fact]
-        public void CRTHand()
+        public void CrtHand()
         {
-            MathLib.CRT(new long[] { 1, 2, 1 }, new long[] { 2, 3, 2 }).Should().Be((5, 6));
+            MathLib.Crt(new long[] { 1, 2, 1 }, new long[] { 2, 3, 2 }).Should().Be((5, 6));
         }
         [Fact]
-        public void CRT2()
+        public void Crt2()
         {
             for (int a = 1; a <= 20; a++)
             {
@@ -87,7 +87,7 @@ namespace AtCoder
                     {
                         for (int d = -10; d <= 10; d++)
                         {
-                            var (y, m) = MathLib.CRT(new long[] { c, d }, new long[] { a, b });
+                            var (y, m) = MathLib.Crt(new long[] { c, d }, new long[] { a, b });
                             if (m == 0)
                             {
                                 for (int x = 0; x < a * b / Gcd(a, b); x++)
@@ -105,7 +105,7 @@ namespace AtCoder
             }
         }
         [Fact]
-        public void CRT3()
+        public void Crt3()
         {
             for (int a = 1; a <= 5; a++)
             {
@@ -119,7 +119,7 @@ namespace AtCoder
                             {
                                 for (int f = -5; f <= 5; f++)
                                 {
-                                    var (y, m) = MathLib.CRT(new long[] { d, e, f }, new long[] { a, b, c });
+                                    var (y, m) = MathLib.Crt(new long[] { d, e, f }, new long[] { a, b, c });
                                     long lcm = a * b / Gcd(a, b);
                                     lcm = lcm * c / Gcd(lcm, c);
                                     if (m == 0)
@@ -142,20 +142,20 @@ namespace AtCoder
             }
         }
         [Fact]
-        public void CRTOverflow()
+        public void CrtOverflow()
         {
             long r0 = 0;
             long r1 = 1_000_000_000_000L - 2;
             long m0 = 900577;
             long m1 = 1_000_000_000_000L;
-            var (y, m) = MathLib.CRT(new long[] { r0, r1 }, new long[] { m0, m1 });
+            var (y, m) = MathLib.Crt(new long[] { r0, r1 }, new long[] { m0, m1 });
             m.Should().Be(m0 * m1);
             (y % m0).Should().Be(r0);
             (y % m1).Should().Be(r1);
         }
 
         [Fact]
-        public void CRTBound()
+        public void CrtBound()
         {
             const long INF = long.MaxValue;
             var pred = new List<long>();
@@ -182,7 +182,7 @@ namespace AtCoder
                 {
                     foreach (long ans in pred)
                     {
-                        var res = MathLib.CRT(new long[] { ans % a, ans % b }, new long[] { a, b });
+                        var res = MathLib.Crt(new long[] { ans % a, ans % b }, new long[] { a, b });
                         long lcm = a / Gcd(a, b) * b;
                         res.Should().Be((ans % lcm, lcm));
                     }
@@ -201,7 +201,7 @@ namespace AtCoder
                         r.Add(ans % f);
                         m.Add(f);
                     }
-                    var res = MathLib.CRT(r.ToArray(), m.ToArray());
+                    var res = MathLib.Crt(r.ToArray(), m.ToArray());
                     res.Should().Be((ans % INF, INF));
                 }
             }
@@ -217,7 +217,7 @@ namespace AtCoder
                         r.Add(ans % f);
                         m.Add(f);
                     }
-                    var res = MathLib.CRT(r.ToArray(), m.ToArray());
+                    var res = MathLib.Crt(r.ToArray(), m.ToArray());
                     res.Should().Be((ans % (INF - 1), INF - 1));
                 }
             }

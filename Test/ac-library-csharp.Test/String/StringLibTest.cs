@@ -67,7 +67,7 @@ namespace AtCoder
             StringLib.ZAlgorithm(Array.Empty<int>()).Should().Equal();
         }
         [Fact]
-        public void SALCPNaive()
+        public void SaLcpNaive()
         {
             for (int n = 1; n <= 5; n++)
             {
@@ -87,7 +87,7 @@ namespace AtCoder
                     var sa = SaNaive(s);
                     StringLib.SuffixArray(s).Should().Equal(sa);
                     StringLib.SuffixArray(s, max_c).Should().Equal(sa);
-                    StringLib.LCPArray(s, sa).Should().Equal(LcpNaive(s, sa));
+                    StringLib.LcpArray(s, sa).Should().Equal(LcpNaive(s, sa));
                 }
             }
             for (int n = 1; n <= 10; n++)
@@ -108,12 +108,12 @@ namespace AtCoder
                     var sa = SaNaive(s);
                     StringLib.SuffixArray(s).Should().Equal(sa);
                     StringLib.SuffixArray(s, max_c).Should().Equal(sa);
-                    StringLib.LCPArray(s, sa).Should().Equal(LcpNaive(s, sa));
+                    StringLib.LcpArray(s, sa).Should().Equal(LcpNaive(s, sa));
                 }
             }
         }
         [Fact]
-        public void InternalSANaiveNaive()
+        public void InternalSaNaiveNaive()
         {
             for (int n = 1; n <= 5; n++)
             {
@@ -130,7 +130,7 @@ namespace AtCoder
                         max_c = Math.Max(max_c, s[i]);
                         g /= 4;
                     }
-                    var sa = InternalString.SANaive(s);
+                    var sa = InternalString.SaNaive(s);
                     sa.Should().Equal(SaNaive(s));
                 }
             }
@@ -148,13 +148,13 @@ namespace AtCoder
                         g /= 2;
                     }
 
-                    var sa = InternalString.SANaive(s);
+                    var sa = InternalString.SaNaive(s);
                     sa.Should().Equal(SaNaive(s));
                 }
             }
         }
         [Fact]
-        public void InternalSADoublingNaive()
+        public void InternalSaDoublingNaive()
         {
             for (int n = 1; n <= 5; n++)
             {
@@ -170,7 +170,7 @@ namespace AtCoder
                         g /= 4;
                     }
 
-                    var sa = InternalString.SADoubling(s);
+                    var sa = InternalString.SaDoubling(s);
                     sa.Should().Equal(SaNaive(s));
                 }
             }
@@ -188,14 +188,14 @@ namespace AtCoder
                         g /= 2;
                     }
 
-                    var sa = InternalString.SADoubling(s);
+                    var sa = InternalString.SaDoubling(s);
                     sa.Should().Equal(SaNaive(s));
                 }
             }
         }
 
         [Fact]
-        public void InternalSAISNaive()
+        public void InternalSaIsNaive()
         {
             for (int n = 1; n <= 5; n++)
             {
@@ -213,7 +213,7 @@ namespace AtCoder
                         g /= 4;
                     }
 
-                    var sa = InternalString.SAIS(s, max_c, -1, -1);
+                    var sa = InternalString.SaIs(s, max_c, -1, -1);
                     sa.Should().Equal(SaNaive(s));
                 }
             }
@@ -233,7 +233,7 @@ namespace AtCoder
                         g /= 2;
                     }
 
-                    var sa = InternalString.SAIS(s, max_c, -1, -1);
+                    var sa = InternalString.SaIs(s, max_c, -1, -1);
                     sa.Should().Equal(SaNaive(s));
                 }
             }
@@ -314,12 +314,12 @@ namespace AtCoder
             sa.Should().Equal(new int[] { 0, 1, 2 });
             var lcp = StringLib.LCPArray(s, sa);
             lcp.Should().Equal(new int[] { 1, 0 });
-            StringLib.LCPArray(new[] { 0, 0, 1 }, sa).Should().Equal(lcp);
-            StringLib.LCPArray(new[] { -100, -100, 100 }, sa).Should().Equal(lcp);
-            StringLib.LCPArray(new[] { int.MinValue, int.MinValue, int.MaxValue }, sa).Should().Equal(lcp);
-            StringLib.LCPArray(new[] { long.MinValue, long.MinValue, long.MaxValue }, sa).Should().Equal(lcp);
-            StringLib.LCPArray(new[] { uint.MinValue, uint.MinValue, uint.MaxValue }, sa).Should().Equal(lcp);
-            StringLib.LCPArray(new[] { ulong.MinValue, ulong.MinValue, ulong.MaxValue }, sa).Should().Equal(lcp);
+            StringLib.LcpArray(new[] { 0, 0, 1 }, sa).Should().Equal(lcp);
+            StringLib.LcpArray(new[] { -100, -100, 100 }, sa).Should().Equal(lcp);
+            StringLib.LcpArray(new[] { int.MinValue, int.MinValue, int.MaxValue }, sa).Should().Equal(lcp);
+            StringLib.LcpArray(new[] { long.MinValue, long.MinValue, long.MaxValue }, sa).Should().Equal(lcp);
+            StringLib.LcpArray(new[] { uint.MinValue, uint.MinValue, uint.MaxValue }, sa).Should().Equal(lcp);
+            StringLib.LcpArray(new[] { ulong.MinValue, ulong.MinValue, ulong.MaxValue }, sa).Should().Equal(lcp);
         }
 
         [Fact]

@@ -19,7 +19,7 @@ namespace AtCoder.Solvers.Graph
                 g.AddEdge(u, v);
             }
 
-            var scc = g.SCC();
+            var scc = g.Scc();
 
             cw.WriteLine(scc.Length);
             foreach (var v in scc)
