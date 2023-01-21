@@ -2,7 +2,7 @@
 
 namespace AtCoder.Solvers.Graph
 {
-    internal class DSUTest : BaseSover
+    internal class DsuTest : BaseSover
     {
         public override string Url => "https://judge.yosupo.jp/problem/unionfind";
         public override void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
@@ -10,7 +10,7 @@ namespace AtCoder.Solvers.Graph
             int n = cr;
             int q = cr;
 
-            var dsu = new DSU(n);
+            var dsu = new Dsu(n);
 
             for (int i = 0; i < q; i++)
             {

@@ -35,9 +35,9 @@ namespace AtCoder.Internal
         /// <para>制約: 1 ≤ <paramref name="n"/></para>
         /// </remarks>
         [MethodImpl(256)]
-        public static int BSF(uint n)
+        public static int Bsf(uint n)
         {
-            Contract.Assert(n > 0, reason: $"{nameof(n)} must positive");
+            //Contract.Assert(n > 0, reason: $"{nameof(n)} must positive");
             return BitOperations.TrailingZeroCount(n);
         }
 

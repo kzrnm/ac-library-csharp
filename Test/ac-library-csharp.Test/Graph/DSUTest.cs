@@ -6,19 +6,19 @@ using Xunit;
 
 namespace AtCoder
 {
-    public class DSUTest
+    public class DsuTest
     {
         [Fact]
         public void Zero()
         {
-            var uf = new DSU(0);
+            var uf = new Dsu(0);
             uf.Groups().Should().Equal(Array.Empty<int[]>());
         }
 
         [Fact]
         public void Simple()
         {
-            var uf = new DSU(2);
+            var uf = new Dsu(2);
             uf.Same(0, 1).Should().BeFalse();
             int x = uf.Merge(0, 1);
             uf.Leader(0).Should().Be(x);
@@ -31,7 +31,7 @@ namespace AtCoder
         public void Line()
         {
             int n = 500000;
-            var uf = new DSU(n);
+            var uf = new Dsu(n);
             for (int i = 0; i < n - 1; i++)
             {
                 uf.Merge(i, i + 1);
@@ -44,7 +44,7 @@ namespace AtCoder
         public void LineReverse()
         {
             int n = 500000;
-            var uf = new DSU(n);
+            var uf = new Dsu(n);
             for (int i = n - 2; i >= 0; i--)
             {
                 uf.Merge(i, i + 1);
@@ -81,7 +81,7 @@ namespace AtCoder
         {
             int[] nq = reader.ReadLine().Split().Select(int.Parse).ToArray();
             (int n, int q) = (nq[0], nq[1]);
-            var dsu = new DSU(n);
+            var dsu = new Dsu(n);
             for (int i = 0; i < q; i++)
             {
                 int[] tuv = reader.ReadLine().Split().Select(int.Parse).ToArray();

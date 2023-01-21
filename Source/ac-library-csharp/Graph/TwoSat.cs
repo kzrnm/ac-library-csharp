@@ -57,7 +57,7 @@ namespace AtCoder
         [MethodImpl(256)]
         public bool Satisfiable()
         {
-            var sccs = scc.SCC();
+            var sccs = scc.Scc();
             var id = new int[2 * _n];
 
             // 強連結成分のリストを id として展開。

@@ -4,12 +4,12 @@ using Xunit;
 
 namespace AtCoder
 {
-    public class CSRTest
+    public class CsrTest
     {
         [Fact]
         public void Enumerator()
         {
-            var g = new CSR<int>(5, new (int, int)[] {
+            var g = new Csr<int>(5, new (int, int)[] {
                 (2,4),
                 (0,1),
                 (4,3),

@@ -382,7 +382,7 @@ namespace AtCoder
         struct SlopeDualRef
         {
             public TCost[] dual, dist;
-            public CSR<EdgeInternal> g;
+            public Csr<EdgeInternal> g;
             public int[] prevE;
             public int s, t, _n;
 
@@ -463,7 +463,7 @@ namespace AtCoder
             int m = _edges.Count;
             var edgeIdx = new int[m];
 
-            CSR<EdgeInternal> g;
+            Csr<EdgeInternal> g;
             {
                 var degree = new int[_n];
                 var redgeIdx = new int[m];
@@ -477,7 +477,7 @@ namespace AtCoder
                     elist.Add((e.From, new EdgeInternal(e.To, -1, e.Cap - e.Flow, e.Cost)));
                     elist.Add((e.To, new EdgeInternal(e.From, -1, e.Flow, -e.Cost)));
                 }
-                g = new CSR<EdgeInternal>(_n, elist);
+                g = new Csr<EdgeInternal>(_n, elist);
                 for (int i = 0; i < m; i++)
                 {
                     var e = _edges[i];
@@ -508,7 +508,7 @@ namespace AtCoder
         /// <param name="flowLimit">最大のフロー</param>
         /// <param name="removeLine">直線になるときには間を削除する</param>
         /// <returns></returns>
-        private List<(TCap cap, TCost cost)> SlopeImpl(CSR<EdgeInternal> g, int s, int t, TCap flowLimit, bool removeLine)
+        private List<(TCap cap, TCost cost)> SlopeImpl(Csr<EdgeInternal> g, int s, int t, TCap flowLimit, bool removeLine)
         {
             // variants (C = maxcost):
             // -(n-1)C <= dual[s] <= dual[i] <= dual[t] = 0

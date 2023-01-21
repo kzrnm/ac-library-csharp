@@ -18,7 +18,7 @@ namespace AtCoder.Internal
     /// </code>
     /// </example>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class CSR<TEdge> : IEnumerable<(int from, TEdge edge)>
+    public class Csr<TEdge> : IEnumerable<(int from, TEdge edge)>
     {
         /// <summary>
         /// 各頂点から伸びる有向辺数の累積和を取得します。
@@ -30,7 +30,7 @@ namespace AtCoder.Internal
         /// </summary>
         public readonly TEdge[] EList;
 
-        public CSR(int n, ICollection<(int from, TEdge e)> edges)
+        public Csr(int n, ICollection<(int from, TEdge e)> edges)
         {
             // 本家 C++ 版 ACL を参考に実装。通常の隣接リストと比較して高速か否かは未検証。
             Start = new int[n + 1];
@@ -57,13 +57,13 @@ namespace AtCoder.Internal
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         public struct Enumerator : IEnumerator<(int from, TEdge edge)>
         {
-            public Enumerator(CSR<TEdge> g)
+            public Enumerator(Csr<TEdge> g)
             {
                 _g = g;
                 index = -1;
                 start = 0;
             }
-            private readonly CSR<TEdge> _g;
+            private readonly Csr<TEdge> _g;
             private int index;
             private int start;
             public (int from, TEdge edge) Current => (start, _g.EList[index]);

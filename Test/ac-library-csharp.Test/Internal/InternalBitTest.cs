@@ -58,9 +58,9 @@ namespace AtCoder.Internal
         [InlineData((1U << 31) - 1, 0)]
         [InlineData(1U << 31, 31)]
         [InlineData(uint.MaxValue, 0)]
-        public void BSF(uint input, int expected)
+        public void Bsf(uint input, int expected)
         {
-            InternalBit.BSF(input).Should().Be(expected);
+            InternalBit.Bsf(input).Should().Be(expected);
         }
     }
 }
