@@ -136,8 +136,6 @@ namespace AtCoder.Internal
         [MethodImpl(256)]
         public static bool IsPrime(int n)
         {
-            Contract.Assert(0 <= n);
-            Contract.Assert(0 <= n, reason: $"{nameof(n)} must not be negative.");
             if (n <= 1) return false;
             if (n == 2 || n == 7 || n == 61) return true;
             if (n % 2 == 0) return false;

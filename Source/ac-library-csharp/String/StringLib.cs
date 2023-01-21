@@ -150,8 +150,8 @@ namespace AtCoder
         [MethodImpl(256)]
         public static int[] SuffixArray(int[] s, int upper)
         {
-            Contract.Assert(0U <= (uint)upper, reason: $"{nameof(upper)} must be positive.");
-            Contract.Assert(s.All(si => (uint)si <= (uint)upper), reason: $"si ∈ {nameof(s)} must be 0 <= si && si <= {nameof(upper)}");
+            Contract.Assert(0 <= upper, reason: $"{nameof(upper)} must be positive.");
+            //Contract.Assert(s.All(si => (uint)si <= (uint)upper), reason: $"si ∈ {nameof(s)} must be 0 <= si && si <= {nameof(upper)}");
             return InternalString.SAIS(s, upper);
         }
         #endregion SuffixArray
