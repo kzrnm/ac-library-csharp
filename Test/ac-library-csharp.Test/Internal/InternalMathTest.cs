@@ -148,7 +148,7 @@ namespace AtCoder.Internal
                 {
                     if (b <= 0) continue;
                     long a2 = InternalMath.SafeMod(a, b);
-                    (long first, long second) = InternalMath.InvGCD(a, b);
+                    (long first, long second) = InternalMath.InvGcd(a, b);
                     var g = Gcd(a2, b);
                     first.Should().Be(g);
                     second.Should().BeGreaterOrEqualTo(0);

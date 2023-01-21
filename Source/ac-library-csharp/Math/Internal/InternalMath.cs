@@ -91,7 +91,7 @@ namespace AtCoder.Internal
         /// <para>制約: 1≤<paramref name="b"/></para>
         /// </remarks>
         [MethodImpl(256)]
-        public static (long, long) InvGCD(long a, long b)
+        public static (long, long) InvGcd(long a, long b)
         {
             a = SafeMod(a, b);
             if (a == 0) return (b, 0);

@@ -34,7 +34,7 @@ namespace AtCoder
                     if (r0 % m1 != r1) return (0, 0);
                     continue;
                 }
-                var (g, im) = InternalMath.InvGCD(m0, m1);
+                var (g, im) = InternalMath.InvGcd(m0, m1);
 
                 long u1 = (m1 / g);
                 if ((r1 - r0) % g != 0) return (0, 0);

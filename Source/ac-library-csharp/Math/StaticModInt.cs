@@ -246,7 +246,7 @@ namespace AtCoder
             }
             else
             {
-                var (g, x) = InternalMath.InvGCD(_v, op.Mod);
+                var (g, x) = InternalMath.InvGcd(_v, op.Mod);
                 Contract.Assert(g == 1, reason: $"gcd({nameof(x)}, {nameof(Mod)}) must be 1.");
                 return new StaticModInt<T>(x);
             }

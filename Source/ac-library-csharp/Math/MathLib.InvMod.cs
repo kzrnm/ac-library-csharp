@@ -16,7 +16,7 @@ namespace AtCoder
         public static long InvMod(long x, long m)
         {
             Contract.Assert(1 <= m, reason: $"1 <= {nameof(m)}");
-            var (g, res) = InternalMath.InvGCD(x, m);
+            var (g, res) = InternalMath.InvGcd(x, m);
             Contract.Assert(g == 1, reason: $"gcd({nameof(x)}, {nameof(m)}) must be 1.");
             return res;
         }

@@ -245,7 +245,7 @@ namespace AtCoder
         [MethodImpl(256)]
         public DynamicModInt<T> Inv()
         {
-            var (g, x) = InternalMath.InvGCD(_v, bt.Mod);
+            var (g, x) = InternalMath.InvGcd(_v, bt.Mod);
             Contract.Assert(g == 1, reason: $"gcd({nameof(x)}, {nameof(Mod)}) must be 1.");
             return new DynamicModInt<T>(x);
         }
