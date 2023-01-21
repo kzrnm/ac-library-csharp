@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace AtCoder.Internal
@@ -17,7 +16,6 @@ namespace AtCoder.Internal
     /// }
     /// </code>
     /// </example>
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public class Csr<TEdge> : IEnumerable<(int from, TEdge edge)>
     {
         /// <summary>
