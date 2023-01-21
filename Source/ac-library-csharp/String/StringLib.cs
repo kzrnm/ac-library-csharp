@@ -129,7 +129,7 @@ namespace AtCoder
                 s2[idx[i]] = now;
             }
 
-            return InternalString.SAIS(s2, now);
+            return InternalString.SaIs(s2, now);
         }
         [MethodImpl(256)]
         static int[] CreateIdx<T>(ReadOnlySpan<T> m)
@@ -152,7 +152,7 @@ namespace AtCoder
         {
             Contract.Assert(0 <= upper, reason: $"{nameof(upper)} must be positive.");
             //Contract.Assert(s.All(si => (uint)si <= (uint)upper), reason: $"si ∈ {nameof(s)} must be 0 <= si && si <= {nameof(upper)}");
-            return InternalString.SAIS(s, upper);
+            return InternalString.SaIs(s, upper);
         }
         #endregion SuffixArray
 
@@ -287,7 +287,7 @@ namespace AtCoder
             /// <para>制約: 0≤|<paramref name="sm"/>|&lt;10^8</para>
             /// <para>計算量: O(|<paramref name="sm"/>|)</para>
             /// </remarks>
-            [MethodImpl(256)] public static int[] SAIS(ReadOnlySpan<int> sm, int upper) => SaIs(sm, upper, 10, 40);
+            [MethodImpl(256)] public static int[] SaIs(ReadOnlySpan<int> sm, int upper) => SaIs(sm, upper, 10, 40);
 
             /// <summary>
             /// 数列 <paramref name="sm"/> の Suffix Array を SA-IS 等により求め、長さ |<paramref name="sm"/>| の配列を返す。
