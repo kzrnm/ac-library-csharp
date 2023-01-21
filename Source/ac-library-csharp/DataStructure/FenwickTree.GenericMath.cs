@@ -29,7 +29,7 @@ namespace AtCoder
         public int Length { get; }
 
         /// <summary>
-        /// 長さ <paramref name="n"/> の配列aを持つ <see cref="FenwickTree{TValue, TOp}"/> クラスの新しいインスタンスを作ります。
+        /// 長さ <paramref name="n"/> の配列aを持つ <see cref="FenwickTree{TValue}"/> クラスの新しいインスタンスを作ります。
         /// </summary>
         /// <remarks>
         /// <para>制約: 0≤<paramref name="n"/>≤10^8</para>
@@ -70,7 +70,7 @@ namespace AtCoder
         [MethodImpl(256)]
         public TValue Sum(int l, int r)
         {
-            Contract.Assert(0U <= (uint)l && (uint)l <= (uint)r && (uint)r <= (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(l)} && {nameof(l)} <= {nameof(r)} && {nameof(r)} <= Length");
+            Contract.Assert((uint)l <= (uint)r && (uint)r <= (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(l)} && {nameof(l)} <= {nameof(r)} && {nameof(r)} <= Length");
             return Sum(r) - Sum(l);
         }
 

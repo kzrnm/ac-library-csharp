@@ -33,7 +33,7 @@ namespace AtCoder
     /// <typeparam name="T">mod の ID を表す構造体</typeparam>
     /// <example>
     /// <code>
-    /// using AtCoder.ModInt = AtCoder.DynamicModInt&lt;AtCoder.ModID0&gt;;
+    /// using AtCoder.ModInt = AtCoder.DynamicModInt&lt;AtCoder.DynamicModID0&gt;;
     ///
     /// void SomeMethod()
     /// {
@@ -88,8 +88,8 @@ namespace AtCoder
         public static DynamicModInt<T> Raw(int v)
         {
             var u = unchecked((uint)v);
-            Contract.Assert(bt != null, $"{nameof(DynamicModInt<T>)}<{nameof(T)}>.{nameof(Mod)} is undefined.");
-            Contract.Assert(u < Mod, $"{nameof(u)} must be less than {nameof(Mod)}.");
+            //Contract.Assert(bt != null, $"{nameof(DynamicModInt<T>)}<{nameof(T)}>.{nameof(Mod)} is undefined.");
+            //Contract.Assert(u < Mod, $"{nameof(u)} must be less than {nameof(Mod)}.");
             return new DynamicModInt<T>(u);
         }
 

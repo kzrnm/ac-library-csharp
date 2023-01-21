@@ -92,7 +92,7 @@ namespace AtCoder
         public static StaticModInt<T> Raw(int v)
         {
             var u = unchecked((uint)v);
-            Contract.Assert(u < Mod, $"{nameof(u)} must be less than {nameof(Mod)}.");
+            //Contract.Assert(u < Mod, $"{nameof(u)} must be less than {nameof(Mod)}.");
             return new StaticModInt<T>(u);
         }
 

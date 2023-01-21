@@ -114,7 +114,7 @@ namespace AtCoder
         [MethodImpl(256)]
         public TValue Prod(int l, int r)
         {
-            Contract.Assert(0U <= (uint)l && (uint)l <= (uint)r && (uint)r <= (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(l)} && {nameof(l)} <= {nameof(r)} && {nameof(r)} <= Length");
+            Contract.Assert((uint)l <= (uint)r && (uint)r <= (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(l)} && {nameof(l)} <= {nameof(r)} && {nameof(r)} <= Length");
             TValue sml = op.Identity, smr = op.Identity;
             l += size;
             r += size;
