@@ -9,6 +9,7 @@
     <Description>Analyzer For AtCoder library</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <NoWarn>$(NoWarn);CS1998</NoWarn>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
   <PropertyGroup>
     <IsRoslynComponent>true</IsRoslynComponent>

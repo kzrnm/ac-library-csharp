@@ -37,7 +37,9 @@ namespace AtCoder.Internal
         [MethodImpl(256)]
         public static int Bsf(uint n)
         {
-            //Contract.Assert(n > 0, reason: $"{nameof(n)} must positive");
+#if EMBEDDING
+            Contract.Assert(n > 0, reason: $"{nameof(n)} must positive");
+#endif
             return BitOperations.TrailingZeroCount(n);
         }
 

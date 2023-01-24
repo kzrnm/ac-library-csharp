@@ -8,6 +8,13 @@ namespace AtCoder.Embedding
 {
     public class SourceExpanderTest
     {
+        class EmbeddingFact : FactAttribute
+        {
+#if !EMBEDDING
+            public override string Skip => "SourceExpander.Embedder is disabled.";
+#endif
+        }
+
 #if NETCOREAPP3_0
         const bool useIntrinsics = false;
         const string languageVersion = "7.3";
@@ -20,12 +27,24 @@ namespace AtCoder.Embedding
 #endif
 
         [Fact]
+        public async Task Embedding()
+        {
+            var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
+            embedded.AssemblyMetadatas.Keys.Should()
+#if EMBEDDING
+                .ContainMatch(@"SourceExpander.*");
+#else
+                .NotContainMatch(@"SourceExpander.*");
+#endif
+        }
+
+        [EmbeddingFact]
         public void AssemblyName()
         {
             typeof(Segtree<,>).Assembly.GetName().Name.Should().Be("ac-library-csharp");
         }
 
-        [Fact]
+        [EmbeddingFact]
         public async Task Symbol()
         {
             var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
@@ -41,7 +60,7 @@ namespace AtCoder.Embedding
                 .Be(useIntrinsics);
         }
 
-        [Fact]
+        [EmbeddingFact]
         public async Task LanguageVersion()
         {
             var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
@@ -50,7 +69,7 @@ namespace AtCoder.Embedding
                 .WhoseValue.Should().Be(languageVersion);
         }
 
-        [Fact]
+        [EmbeddingFact]
         public async Task EmbeddedSource()
         {
             var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
@@ -67,7 +86,7 @@ namespace AtCoder.Embedding
                 "AtCoder.Segtree<TValue, TOp>");
         }
 
-        [Fact]
+        [EmbeddingFact]
         public async Task EmbeddedNamespaces()
         {
             var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
@@ -81,7 +100,7 @@ namespace AtCoder.Embedding
         }
 
 
-        [Fact]
+        [EmbeddingFact]
         public async Task RemoveContract()
         {
             var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
