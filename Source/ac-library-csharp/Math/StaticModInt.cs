@@ -1,8 +1,10 @@
 ﻿using System;
-using System.Globalization;
-using System.Numerics;
 using System.Runtime.CompilerServices;
 using AtCoder.Internal;
+#if GENERIC_MATH
+using System.Globalization;
+using System.Numerics;
+#endif
 
 namespace AtCoder
 {
@@ -92,7 +94,9 @@ namespace AtCoder
         public static StaticModInt<T> Raw(int v)
         {
             var u = unchecked((uint)v);
-            //Contract.Assert(u < Mod, $"{nameof(u)} must be less than {nameof(Mod)}.");
+#if EMBEDDING
+            Contract.Assert(u < Mod, $"{nameof(u)} must be less than {nameof(Mod)}.");
+#endif
             return new StaticModInt<T>(u);
         }
 
