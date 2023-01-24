@@ -26,6 +26,18 @@ namespace AtCoder.Embedding
         const string languageVersion = "11.0";
 #endif
 
+        [Fact]
+        public async Task Embedding()
+        {
+            var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
+            embedded.AssemblyMetadatas.Keys.Should()
+#if EMBEDDING
+                .ContainMatch(@"SourceExpander.*");
+#else
+                .NotContainMatch(@"SourceExpander.*");
+#endif
+        }
+
         [EmbeddingFact]
         public void AssemblyName()
         {
