@@ -16,7 +16,7 @@
 
     <PackageOutputPath>$(MSBuildThisFileDirectory)bin\Packages\$(Configuration)\</PackageOutputPath>
 
-    <EmbeddingSource>true</EmbeddingSource>
+    <EmbeddingSource>false</EmbeddingSource>
     <DefineConstants Condition="'$(EmbeddingSource)'=='true'">$(DefineConstants);EMBEDDING</DefineConstants>
 
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
