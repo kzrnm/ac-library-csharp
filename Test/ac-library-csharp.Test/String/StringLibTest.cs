@@ -271,7 +271,7 @@ namespace AtCoder
             }
         }
         [Fact]
-        public void SA()
+        public void SuffixArray()
         {
             var s = "missisippi";
 
@@ -296,6 +296,26 @@ namespace AtCoder
                 s[sa[i]..].Should().Be(answer[i]);
             }
         }
+        [Fact]
+        public void SuffixArrayInt()
+        {
+            int[] s, sa;
+            s = Enumerable.Range(0, 500000).SelectMany(i => new[] { i, ~i }).ToArray();
+            sa = StringLib.SuffixArray(s);
+            sa.Should().Equal(
+                Enumerable.Range(0, 500000).Select(i => 999999 - 2 * i).Concat(
+                    Enumerable.Range(0, 500000).Select(i => 2 * i))
+                );
+
+            s = Enumerable.Range(0, 1000000).ToArray();
+            sa = StringLib.SuffixArray(s);
+            sa.Should().Equal(s);
+
+            s = Enumerable.Range(0, 1000000).Reverse().ToArray();
+            sa = StringLib.SuffixArray(s);
+            sa.Should().Equal(s);
+        }
+
         [Fact]
         public void SASingle()
         {
