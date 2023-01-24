@@ -389,6 +389,7 @@ namespace AtCoder
                 Induce(lms, s, sa, ls, sumS, sumL);
 
                 // LMSを再帰的にソート
+                // m の値は再帰ごとに半分以下になるので再帰の回数も log(n) に抑えられる
                 if (m > 0)
                 {
                     var sortedLms = new SimpleList<int>(m);
