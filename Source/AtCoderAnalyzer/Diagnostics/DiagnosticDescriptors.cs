@@ -41,7 +41,7 @@ namespace AtCoderAnalyzer.Diagnostics
 
         internal static Diagnostic AC0007_AgressiveInlining(Location location, IEnumerable<string> methods)
             => Diagnostic.Create(AC0007_AgressiveInlining_Descriptor, location, string.Join(", ", methods));
-        
+
         internal static readonly DiagnosticDescriptor AC0007_AgressiveInlining_Descriptor = new DiagnosticDescriptor(
             "AC0007",
             new LocalizableResourceString(
