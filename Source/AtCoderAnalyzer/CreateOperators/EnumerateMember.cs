@@ -47,16 +47,19 @@ namespace AtCoderAnalyzer.CreateOperators
                 if (!member.IsAbstract)
                     continue;
                 if (member is IPropertySymbol property)
-                    yield return (CreatePropertySyntax(property), false);
+                    yield return (CreatePropertySyntax(property, member.IsStatic), false);
                 else if (member is IMethodSymbol method && method.MethodKind == MethodKind.Ordinary)
-                    yield return (CreateMethodSyntax(method), true);
+                    yield return (CreateMethodSyntax(method, member.IsStatic), true);
             }
         }
 
-        protected virtual PropertyDeclarationSyntax CreatePropertySyntax(IPropertySymbol symbol)
+        private static SyntaxTokenList PublicModifiers(bool isStatic)
+            => isStatic ? TokenList(Token(SyntaxKind.PublicKeyword), Token(SyntaxKind.StaticKeyword)) : TokenList(Token(SyntaxKind.PublicKeyword));
+
+        protected virtual PropertyDeclarationSyntax CreatePropertySyntax(IPropertySymbol symbol, bool isStatic)
         {
             var dec = PropertyDeclaration(symbol.Type.ToTypeSyntax(SemanticModel, SemanticModel.SyntaxTree.Length - 1), symbol.Name)
-                    .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword)));
+                    .WithModifiers(PublicModifiers(isStatic));
 
             if (symbol.SetMethod == null)
                 return dec
@@ -77,17 +80,17 @@ namespace AtCoderAnalyzer.CreateOperators
                     .WithSemicolonToken(SyntaxHelpers.SemicolonToken)
             });
         }
-        protected virtual MethodDeclarationSyntax CreateMethodSyntax(IMethodSymbol symbol)
+        protected virtual MethodDeclarationSyntax CreateMethodSyntax(IMethodSymbol symbol, bool isStatic)
         {
             if (symbol.ReturnsVoid)
-                return CreateMethodSyntax(SemanticModel, SemanticModel.SyntaxTree.Length - 1, symbol, Block());
+                return CreateMethodSyntax(SemanticModel, SemanticModel.SyntaxTree.Length - 1, symbol, isStatic, Block());
             else
-                return CreateMethodSyntax(SemanticModel, SemanticModel.SyntaxTree.Length - 1, symbol, SyntaxHelpers.ArrowDefault);
+                return CreateMethodSyntax(SemanticModel, SemanticModel.SyntaxTree.Length - 1, symbol, isStatic, SyntaxHelpers.ArrowDefault);
         }
 
-        private MethodDeclarationSyntax CommonMethodDeclaration(IMethodSymbol symbol, SemanticModel semanticModel, int position)
+        private MethodDeclarationSyntax CommonMethodDeclaration(IMethodSymbol symbol, SemanticModel semanticModel, int position, bool isStatic)
             => MethodDeclaration(symbol.ReturnType.ToTypeSyntax(semanticModel, semanticModel.SyntaxTree.Length), symbol.Name)
-                    .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword)))
+                    .WithModifiers(PublicModifiers(isStatic))
                     .WithAttributeLists(SingletonList(
                         AttributeList(
                                 SingletonSeparatedList(
@@ -96,14 +99,14 @@ namespace AtCoderAnalyzer.CreateOperators
                                         methodImplOptions.ToMinimalDisplayString(semanticModel, position),
                                         config.UseMethodImplNumeric)))))
                     .WithParameterList(symbol.ToParameterListSyntax(semanticModel, semanticModel.SyntaxTree.Length));
-        protected MethodDeclarationSyntax CreateMethodSyntax(SemanticModel semanticModel, int position, IMethodSymbol symbol, BlockSyntax block)
+        protected MethodDeclarationSyntax CreateMethodSyntax(SemanticModel semanticModel, int position, IMethodSymbol symbol, bool isStatic, BlockSyntax block)
         {
-            return CommonMethodDeclaration(symbol, semanticModel, position)
+            return CommonMethodDeclaration(symbol, semanticModel, position, isStatic)
                 .WithBody(block);
         }
-        protected MethodDeclarationSyntax CreateMethodSyntax(SemanticModel semanticModel, int position, IMethodSymbol symbol, ArrowExpressionClauseSyntax arrowExpressionClause)
+        protected MethodDeclarationSyntax CreateMethodSyntax(SemanticModel semanticModel, int position, IMethodSymbol symbol, bool isStatic, ArrowExpressionClauseSyntax arrowExpressionClause)
         {
-            return CommonMethodDeclaration(symbol, semanticModel, position)
+            return CommonMethodDeclaration(symbol, semanticModel, position, isStatic)
                 .WithExpressionBody(arrowExpressionClause)
                 .WithSemicolonToken(SyntaxHelpers.SemicolonToken);
         }

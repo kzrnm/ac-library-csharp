@@ -15,5 +15,5 @@
 #if GENERIC_MATH
     [System.Obsolete("Use generic math")]
 #endif
-    public class DynamicModIntFenwickTree<T> : FenwickTree<DynamicModInt<T>, DynamicModIntOperator<T>> where T : struct, IDynamicModID { public DynamicModIntFenwickTree(int n) : base(n) { } }
+    public class DynamicModIntFenwickTree<T> : FenwickTree<DynamicModInt<T>, DynamicModIntOperator<T>> where T : struct { public DynamicModIntFenwickTree(int n) : base(n) { } }
 }

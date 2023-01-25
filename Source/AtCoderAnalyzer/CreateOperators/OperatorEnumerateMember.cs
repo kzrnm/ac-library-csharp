@@ -10,7 +10,7 @@ namespace AtCoderAnalyzer.CreateOperators
         protected OperatorEnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol, AtCoderAnalyzerConfig config) : base(semanticModel, typeSymbol, config) { }
         protected abstract SyntaxKind? GetSyntaxKind(IMethodSymbol symbol);
 
-        protected override MethodDeclarationSyntax CreateMethodSyntax(IMethodSymbol symbol)
+        protected override MethodDeclarationSyntax CreateMethodSyntax(IMethodSymbol symbol, bool isStatic)
         {
             if (GetSyntaxKind(symbol) is SyntaxKind kind)
             {
@@ -20,9 +20,9 @@ namespace AtCoderAnalyzer.CreateOperators
                     IdentifierName(symbol.Parameters[1].Name));
                 return CreateMethodSyntax(
                     SemanticModel, SemanticModel.SyntaxTree.Length - 1,
-                    symbol, ArrowExpressionClause(operatorCall));
+                    symbol, false, ArrowExpressionClause(operatorCall));
             }
-            return base.CreateMethodSyntax(symbol);
+            return base.CreateMethodSyntax(symbol, isStatic);
         }
     }
 }

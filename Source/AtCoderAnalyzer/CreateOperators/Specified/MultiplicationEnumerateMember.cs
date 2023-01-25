@@ -18,7 +18,7 @@ namespace AtCoderAnalyzer.CreateOperators.Specified
                 _ => null,
             };
 
-        protected override PropertyDeclarationSyntax CreatePropertySyntax(IPropertySymbol symbol)
+        protected override PropertyDeclarationSyntax CreatePropertySyntax(IPropertySymbol symbol, bool isStatic)
         {
             if (symbol.Name == "MultiplyIdentity")
                 return PropertyDeclaration(symbol.Type.ToTypeSyntax(SemanticModel, SemanticModel.SyntaxTree.Length - 1), symbol.Name)
@@ -27,7 +27,7 @@ namespace AtCoderAnalyzer.CreateOperators.Specified
                         LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal(1)))
                     )
                     .WithSemicolonToken(SyntaxHelpers.SemicolonToken);
-            return base.CreatePropertySyntax(symbol);
+            return base.CreatePropertySyntax(symbol, isStatic);
         }
     }
 }

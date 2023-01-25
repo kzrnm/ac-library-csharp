@@ -1056,6 +1056,150 @@ build_property.AtCoderAnalyzer_UseMethodImplNumeric = true
             test.ExpectedDiagnostics.Add(VerifyCS.Diagnostic("AC0008").WithSpan(6, 5, 6, 25).WithArguments("OpSeg"));
             await test.RunAsync(CancellationToken.None);
         }
+
+
+        [Fact]
+        public async Task Virtual()
+        {
+            var source = @"
+using AtCoder;
+using System.Runtime.CompilerServices;
+[IsOperator]
+public interface IAny {
+    void Run() { }
+}
+class Program
+{
+    static void M<TOp>() where TOp : IAny {}
+    static void Run()
+    {
+        M<Op>();
+    }
+}
+";
+            var fixedSource = @"
+using AtCoder;
+using System.Runtime.CompilerServices;
+[IsOperator]
+public interface IAny {
+    void Run() { }
+}
+class Program
+{
+    static void M<TOp>() where TOp : IAny {}
+    static void Run()
+    {
+        M<Op>();
+    }
+}
+
+struct Op : IAny
+{
+}";
+            await VerifyCS.VerifyCodeFixAsync(source,
+                VerifyCS.Diagnostic("AC0008").WithSpan(13, 9, 13, 14).WithArguments("Op"),
+               fixedSource);
+        }
+
+        [Fact]
+        public async Task StaticAbstract()
+        {
+            var source = @"
+using AtCoder;
+using System.Runtime.CompilerServices;
+[IsOperator]
+public interface IAny<T> {
+    static abstract bool Init();
+    static abstract T Prop1 { set; get; }
+    static abstract (T, T) Prop2 { get; }
+}
+class Program
+{
+    static void M<T, TOp>() where TOp : IAny<T> {}
+    static void Run()
+    {
+        M<(int n, long m), Op>();
+    }
+}
+";
+            var fixedSource = @"
+using AtCoder;
+using System.Runtime.CompilerServices;
+[IsOperator]
+public interface IAny<T> {
+    static abstract bool Init();
+    static abstract T Prop1 { set; get; }
+    static abstract (T, T) Prop2 { get; }
+}
+class Program
+{
+    static void M<T, TOp>() where TOp : IAny<T> {}
+    static void Run()
+    {
+        M<(int n, long m), Op>();
+    }
+}
+
+struct Op : IAny<(int n, long m)>
+{
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool Init() => default;
+
+    public static (int n, long m) Prop1 { set; get; }
+
+    public static ((int n, long m), (int n, long m)) Prop2 => default;
+}";
+            await VerifyCS.VerifyCodeFixAsync(source,
+                VerifyCS.Diagnostic("AC0008").WithSpan(15, 9, 15, 31).WithArguments("Op"),
+               fixedSource);
+        }
+
+        [Fact]
+        public async Task StaticVirtual()
+        {
+            var source = @"
+using AtCoder;
+using System.Runtime.CompilerServices;
+[IsOperator]
+public interface IAny<T> {
+    static virtual bool Init();
+    static virtual T Prop1 { set; get; }
+    static virtual (T, T) Prop2 { get; }
+}
+class Program
+{
+    static void M<T, TOp>() where TOp : IAny<T> {}
+    static void Run()
+    {
+        M<(int n, long m), Op>();
+    }
+}
+";
+            var fixedSource = @"
+using AtCoder;
+using System.Runtime.CompilerServices;
+[IsOperator]
+public interface IAny<T> {
+    static virtual bool Init();
+    static virtual T Prop1 { set; get; }
+    static virtual (T, T) Prop2 { get; }
+}
+class Program
+{
+    static void M<T, TOp>() where TOp : IAny<T> {}
+    static void Run()
+    {
+        M<(int n, long m), Op>();
+    }
+}
+
+struct Op : IAny<(int n, long m)>
+{
+}";
+            await VerifyCS.VerifyCodeFixAsync(source,
+                VerifyCS.Diagnostic("AC0008").WithSpan(15, 9, 15, 31).WithArguments("Op"),
+               fixedSource);
+        }
         #endregion Others
     }
 }

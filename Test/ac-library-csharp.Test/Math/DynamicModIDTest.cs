@@ -2,6 +2,6 @@
 {
     public class DynamicModIDTest
     {
-        internal struct DynamicModID : IDynamicModID { }
+        internal struct DynamicModID : IDynamicModIntId { }
     }
 }

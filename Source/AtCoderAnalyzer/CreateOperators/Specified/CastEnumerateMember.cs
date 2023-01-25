@@ -8,7 +8,7 @@ namespace AtCoderAnalyzer.CreateOperators.Specified
     internal class CastEnumerateMember : EnumerateMember
     {
         internal CastEnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol, AtCoderAnalyzerConfig config) : base(semanticModel, typeSymbol, config) { }
-        protected override MethodDeclarationSyntax CreateMethodSyntax(IMethodSymbol symbol)
+        protected override MethodDeclarationSyntax CreateMethodSyntax(IMethodSymbol symbol, bool isStatic)
         {
             if (symbol is
                 {
@@ -18,10 +18,10 @@ namespace AtCoderAnalyzer.CreateOperators.Specified
             {
                 return CreateMethodSyntax(
                     SemanticModel, SemanticModel.SyntaxTree.Length - 1,
-                    symbol,
+                    symbol, isStatic,
                     ArrowExpressionClause(CastExpression(symbol.ReturnType.ToTypeSyntax(SemanticModel, SemanticModel.SyntaxTree.Length - 1), IdentifierName(symbol.Parameters[0].Name))));
             }
-            return base.CreateMethodSyntax(symbol);
+            return base.CreateMethodSyntax(symbol, isStatic);
         }
     }
 }
