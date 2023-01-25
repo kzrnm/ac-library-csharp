@@ -7,9 +7,9 @@ namespace AtCoder
 {
     public class FenwickTreeGenericMathTest
     {
-        private readonly struct ModID0 : IDynamicModID { }
-        private readonly struct ModID1 : IDynamicModID { }
-        private readonly struct ModID2 : IDynamicModID { }
+        private readonly struct ModID0 : IDynamicModIntId { }
+        private readonly struct ModID1 : IDynamicModIntId { }
+        private readonly struct ModID2 : IDynamicModIntId { }
         private struct Mod11 : IStaticMod
         {
             public uint Mod => 11;
