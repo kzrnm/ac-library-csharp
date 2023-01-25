@@ -7,8 +7,8 @@
     <RepositoryUrl>https://github.com/kzrnm/ac-library-csharp</RepositoryUrl>
     <PackageReleaseNotes>https://github.com/kzrnm/ac-library-csharp/blob/main/CHANGELOG.md</PackageReleaseNotes>
 
-    <Version>3.0.0-pre1</Version>
-    <AssemblyVersion>3.0.0.51</AssemblyVersion>
+    <Version>3.0.0-pre2</Version>
+    <AssemblyVersion>3.0.0.52</AssemblyVersion>
     <RepositoryCommit Condition="'$(GIT_COMMIT)' != ''">$(GIT_COMMIT)</RepositoryCommit>
 
     <SignAssembly>True</SignAssembly>
