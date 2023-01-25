@@ -9,7 +9,7 @@ namespace AtCoderAnalyzer.CreateOperators.Specified
     {
         internal UnaryNumEnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol, AtCoderAnalyzerConfig config) : base(semanticModel, typeSymbol, config) { }
 
-        protected override MethodDeclarationSyntax CreateMethodSyntax(IMethodSymbol symbol)
+        protected override MethodDeclarationSyntax CreateMethodSyntax(IMethodSymbol symbol, bool isStatic)
         {
             if (symbol switch
             {
@@ -25,9 +25,9 @@ namespace AtCoderAnalyzer.CreateOperators.Specified
                     IdentifierName(symbol.Parameters[0].Name));
                 return CreateMethodSyntax(
                     SemanticModel, SemanticModel.SyntaxTree.Length - 1,
-                    symbol, ArrowExpressionClause(operatorCall));
+                    symbol, isStatic, ArrowExpressionClause(operatorCall));
             }
-            return base.CreateMethodSyntax(symbol);
+            return base.CreateMethodSyntax(symbol, isStatic);
         }
     }
 }

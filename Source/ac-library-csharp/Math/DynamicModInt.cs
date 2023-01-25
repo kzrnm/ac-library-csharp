@@ -13,18 +13,18 @@ namespace AtCoder
     /// </summary>
     /// <example>
     /// <code>
-    /// public readonly struct ModID123 : IDynamicModID { }
+    /// public readonly struct ModID123 : IDynamicModIntId { }
     /// </code>
     /// </example>
     [IsOperator]
-    public interface IDynamicModID { }
-    public static class DynamicModIDExtension
+    public interface IDynamicModIntId { }
+    public static class DynamicModIntIdExtension
     {
-        public static void SetMod<T>(this T _, int mod) where T : struct, IDynamicModID => DynamicModInt<T>.Mod = mod;
+        public static void SetMod<T>(this T _, int mod) where T : struct, IDynamicModIntId => DynamicModInt<T>.Mod = mod;
     }
-    public readonly struct DynamicModID0 : IDynamicModID { }
-    public readonly struct DynamicModID1 : IDynamicModID { }
-    public readonly struct DynamicModID2 : IDynamicModID { }
+    public readonly struct DynamicModIntId0 : IDynamicModIntId { }
+    public readonly struct DynamicModIntId1 : IDynamicModIntId { }
+    public readonly struct DynamicModIntId2 : IDynamicModIntId { }
 
     /// <summary>
     /// 四則演算時に自動で mod を取る整数型。実行時に mod が決まる場合でも使用可能です。
@@ -35,7 +35,7 @@ namespace AtCoder
     /// <typeparam name="T">mod の ID を表す構造体</typeparam>
     /// <example>
     /// <code>
-    /// using AtCoder.ModInt = AtCoder.DynamicModInt&lt;AtCoder.DynamicModID0&gt;;
+    /// using AtCoder.ModInt = AtCoder.DynamicModInt&lt;AtCoder.DynamicModIntId0&gt;;
     ///
     /// void SomeMethod()
     /// {
