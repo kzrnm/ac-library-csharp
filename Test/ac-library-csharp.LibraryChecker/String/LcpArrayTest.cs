@@ -10,7 +10,7 @@ namespace AtCoder.Solvers.String
             string s = cr;
             var sa = StringLib.SuffixArray(s);
             var answer = 1L * s.Length * (s.Length + 1) / 2;
-            foreach (var x in StringLib.LCPArray(s, sa))
+            foreach (var x in StringLib.LcpArray(s, sa))
             {
                 answer -= x;
             }

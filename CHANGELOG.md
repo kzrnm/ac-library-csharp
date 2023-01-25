@@ -5,25 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0-pre5] - 2023-01-26
+### Changed
+- Fix LCPArray Å® LcpArray
+
 ## [3.0.0-pre4] - 2023-01-26
+### Added
 - Change accessibility of some members to `[EditorBrowsable(Never)] public`
 
 ## [3.0.0-pre3] - 2023-01-26
+### Added
 - Multiply 128Bit in barrett reduction
 
 ## [3.0.0-pre2] - 2023-01-25
+### Added
 - AtCoderAnalyzer: Create operator for static abstract
+### Changed
 - Rename DynamicModID to DynamicModIntId
 
 ## [3.0.0-pre1] - 2023-01-24
+### Changed
 - Rename assembly from AtCoderLibrary to ac-library-csharp
 - Rename some methods/classes to PascalCase
 
 ## [3.0.0-atcoder1] - 2023-01-24
+### Added
 - Make SourceExpander.Embedder switchable
+
+### Removed
 - Disable some Contract.Assert
 
 ## [2.1.1] - 2023-01-17
+### Changed
 - Optimize PrimitiveRoot
 
 ## [2.1.0] - 2023-01-07

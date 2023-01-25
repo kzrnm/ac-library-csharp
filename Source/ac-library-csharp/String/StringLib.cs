@@ -8,7 +8,7 @@ namespace AtCoder
 {
     public static class StringLib
     {
-        #region LCPArray
+        #region LcpArray
         /// <summary>
         /// 列 <paramref name="s"/> の LCP Array として、長さ |<paramref name="s"/>| の配列を返す。
         /// </summary>
@@ -18,7 +18,7 @@ namespace AtCoder
         /// <para>計算量: O(|<paramref name="s"/>|)</para>
         /// </remarks>
         [MethodImpl(256)]
-        public static int[] LCPArray<T>(ReadOnlySpan<T> s, int[] sa)
+        public static int[] LcpArray<T>(ReadOnlySpan<T> s, int[] sa)
         {
             Contract.Assert(1 <= s.Length, reason: $"{nameof(s)} must contain any");
             int[] rnk = new int[s.Length];
@@ -50,7 +50,7 @@ namespace AtCoder
         /// <para>制約: 0≤|<paramref name="s"/>|≤10^8, <paramref name="sa"/> は <paramref name="s"/> の Suffix Array</para>
         /// <para>計算量: O(|<paramref name="s"/>|)</para>
         /// </remarks>
-        [MethodImpl(256)] public static int[] LCPArray(string s, int[] sa) => LCPArray(s.AsSpan(), sa);
+        [MethodImpl(256)] public static int[] LcpArray(string s, int[] sa) => LcpArray(s.AsSpan(), sa);
 
         /// <summary>
         /// 数列 <paramref name="s"/> の LCP Array として、長さ |<paramref name="s"/>| の配列を返す。
@@ -60,7 +60,7 @@ namespace AtCoder
         /// <para>制約: 0≤|<paramref name="s"/>|≤10^8, <paramref name="sa"/> は <paramref name="s"/> の Suffix Array</para>
         /// <para>計算量: O(|<paramref name="s"/>|)</para>
         /// </remarks>
-        [MethodImpl(256)] public static int[] LcpArray<T>(T[] s, int[] sa) => LCPArray((ReadOnlySpan<T>)s, sa);
+        [MethodImpl(256)] public static int[] LcpArray<T>(T[] s, int[] sa) => LcpArray((ReadOnlySpan<T>)s, sa);
 
         /// <summary>
         /// 数列 <paramref name="s"/> の LCP Array として、長さ |<paramref name="s"/>| の配列を返す。
@@ -70,8 +70,8 @@ namespace AtCoder
         /// <para>制約: 0≤|<paramref name="s"/>|≤10^8, <paramref name="sa"/> は <paramref name="s"/> の Suffix Array</para>
         /// <para>計算量: O(|<paramref name="s"/>|)</para>
         /// </remarks>
-        [MethodImpl(256)] public static int[] LCPArray<T>(Span<T> s, int[] sa) => LCPArray((ReadOnlySpan<T>)s, sa);
-        #endregion LCPArray
+        [MethodImpl(256)] public static int[] LcpArray<T>(Span<T> s, int[] sa) => LcpArray((ReadOnlySpan<T>)s, sa);
+        #endregion LcpArray
 
         #region SuffixArray
         /// <summary>

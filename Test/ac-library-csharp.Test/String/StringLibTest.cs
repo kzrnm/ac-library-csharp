@@ -332,7 +332,7 @@ namespace AtCoder
             var s = "aab";
             var sa = StringLib.SuffixArray(s);
             sa.Should().Equal(new int[] { 0, 1, 2 });
-            var lcp = StringLib.LCPArray(s, sa);
+            var lcp = StringLib.LcpArray(s, sa);
             lcp.Should().Equal(new int[] { 1, 0 });
             StringLib.LcpArray(new[] { 0, 0, 1 }, sa).Should().Equal(lcp);
             StringLib.LcpArray(new[] { -100, -100, 100 }, sa).Should().Equal(lcp);
