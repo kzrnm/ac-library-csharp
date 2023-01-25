@@ -215,7 +215,7 @@ namespace AtCoder
             /// <para>制約: 0≤|<paramref name="sm"/>|&lt;10^8</para>
             /// <para>計算量: 時間O(|<paramref name="sm"/>|^2 log|<paramref name="sm"/>|), 空間O(|<paramref name="sm"/>|)</para>
             /// </remarks>
-            internal static int[] SaNaive(int[] s)
+            public static int[] SaNaive(int[] s)
             {
                 var sa = Enumerable.Range(0, s.Length).ToArray();
                 Array.Sort(sa, Compare);
@@ -247,7 +247,7 @@ namespace AtCoder
             /// <para>計算量: 時間O(|<paramref name="sm"/>|(log|<paramref name="sm"/>|)^2), 空間O(|<paramref name="sm"/>|)</para>
             /// </remarks>
             [MethodImpl(256)]
-            internal static int[] SaDoubling(ReadOnlySpan<int> s)
+            public static int[] SaDoubling(ReadOnlySpan<int> s)
             {
                 var sa = Enumerable.Range(0, s.Length).ToArray();
                 var rnk = new int[s.Length];
@@ -457,7 +457,7 @@ namespace AtCoder
                 return sa;
             }
             [MethodImpl(256)]
-            static void Induce(SimpleList<int> lms, ReadOnlySpan<int> s, int[] sa, bool[] ls, int[] sumS, int[] sumL)
+            public static void Induce(SimpleList<int> lms, ReadOnlySpan<int> s, int[] sa, bool[] ls, int[] sumS, int[] sumL)
             {
                 var n = s.Length;
                 sa.AsSpan().Fill(-1);

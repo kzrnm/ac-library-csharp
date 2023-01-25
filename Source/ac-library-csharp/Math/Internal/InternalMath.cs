@@ -163,7 +163,7 @@ namespace AtCoder.Internal
         /// <inheritdoc cref="MathLib.PowMod(long, long, int)" />
         /// </summary>
         [MethodImpl(256)]
-        internal static long PowMod(long x, long n, int m)
+        public static long PowMod(long x, long n, int m)
         {
             Contract.Assert(0 <= n && 1 <= m, reason: $"0 <= {nameof(n)} && 1 <= {nameof(m)}");
             if (m == 1) return 0;
@@ -208,7 +208,7 @@ namespace AtCoder.Internal
         /// <param name="b"></param>
         /// <returns></returns>
         [MethodImpl(256)]
-        internal static ulong Mul128Bit(ulong a, ulong b)
+        public static ulong Mul128Bit(ulong a, ulong b)
         {
 #if NETCOREAPP3_1_OR_GREATER
             if (Bmi2.X64.IsSupported)
