@@ -1,10 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Numerics;
+using System.Runtime.InteropServices;
 using FluentAssertions;
 using Xunit;
 
 namespace AtCoder.Internal
 {
+    public interface IPrimitiveRootFactory : IStaticMod
+    {
+        int PrimitiveRoot();
+    }
     public partial class InternalMathTest
     {
         static long Gcd(long a, long b)
@@ -23,51 +29,6 @@ namespace AtCoder.Internal
                 if (n % i == 0) return false;
             }
             return true;
-        }
-
-        [Fact]
-        public void Barrett()
-        {
-            for (uint m = 1; m <= 100; m++)
-            {
-                var bt = new Barrett(m);
-                for (uint a = 0; a < m; a++)
-                {
-                    for (uint b = 0; b < m; b++)
-                    {
-                        bt.Mul(a, b).Should().Be((a * b) % m);
-                    }
-                }
-            }
-
-            new Barrett(1).Mul(0, 0).Should().Be(0);
-        }
-
-        [Fact]
-        public void BarrettBorder()
-        {
-            for (uint mod = int.MaxValue; mod >= int.MaxValue - 20; mod--)
-            {
-                var bt = new Barrett(mod);
-                var v = new List<uint>();
-                for (uint i = 0; i < 10; i++)
-                {
-                    v.Add(i);
-                    v.Add(mod - i);
-                    v.Add(mod / 2 + i);
-                    v.Add(mod / 2 - i);
-                }
-                foreach (var a in v)
-                {
-                    long a2 = a;
-                    bt.Mul(a, bt.Mul(a, a)).Should().Be((uint)(a2 * a2 % mod * a2 % mod));
-                    foreach (var b in v)
-                    {
-                        long b2 = b;
-                        bt.Mul(a, b).Should().Be((uint)(a2 * b2 % mod));
-                    }
-                }
-            }
         }
 
         [Fact]
@@ -210,10 +171,44 @@ namespace AtCoder.Internal
                 MathUtil.IsPrimitiveRoot(x, mods[x].PrimitiveRoot()).Should().BeTrue();
             }
         }
-    }
 
-    public interface IPrimitiveRootFactory : IStaticMod
-    {
-        int PrimitiveRoot();
+#if NET7_0_OR_GREATER
+        [Theory]
+        [InlineData(3ul, 5ul)]
+        [InlineData((1ul << 32) - 1, 5ul)]
+        [InlineData(0xF0000000F0000000, 0xF0000000F0000000)]
+        [InlineData(0xF000000000000000, 0xF0000000F0000000)]
+        [InlineData(0x00000000F0000000, 0xF0000000F0000000)]
+        [InlineData((ulong)int.MaxValue, ulong.MaxValue)]
+        [InlineData((ulong)uint.MaxValue, ulong.MaxValue)]
+        [InlineData((ulong)int.MaxValue, (ulong)int.MaxValue)]
+        [InlineData((ulong)uint.MaxValue, (ulong)uint.MaxValue)]
+        [InlineData(ulong.MaxValue, ulong.MaxValue)]
+        public void Mul128Bit(ulong a, ulong b)
+        {
+            for (int i = -10; i <= 10; i++)
+                for (int j = -10; j <= 10; j++)
+                {
+                    var x = a + (ulong)i;
+                    var y = b + (ulong)j;
+                    ulong expected = Math.BigMul(x, y, out _);
+                    InternalMath.Mul128BitLogic(x, y).Should().Be(expected);
+                }
+        }
+        [Fact]
+        public void Mul128BitRandom()
+        {
+            var rnd = new Random(227);
+            var arr = new ulong[2];
+            for (int i = 0; i < 50000; i++)
+            {
+                rnd.NextBytes(MemoryMarshal.Cast<ulong, byte>(arr));
+                var x = arr[0];
+                var y = arr[1];
+                ulong expected = Math.BigMul(x, y, out _);
+                InternalMath.Mul128BitLogic(x, y).Should().Be(expected);
+            }
+        }
+#endif
     }
 }
