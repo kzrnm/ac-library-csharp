@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using AtCoder.Internal;
 
@@ -15,7 +16,9 @@ namespace AtCoder
     {
         readonly int _n;
         internal readonly bool[] _answer;
-        internal readonly SccGraph scc;
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public readonly SccGraph scc;
 
         /// <summary>
         /// <see cref="TwoSat"/> クラスの新しいインスタンスを、<paramref name="n"/> 変数の 2-SAT として初期化します。

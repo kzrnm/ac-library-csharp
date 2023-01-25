@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using AtCoder.Internal;
@@ -28,6 +29,12 @@ namespace AtCoder
         where TOp : struct, INumOperator<TValue>
     {
         static readonly TOp op = default;
+
+        internal readonly int _n;
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public readonly SimpleList<(int first, int second)> _pos;
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public readonly SimpleList<EdgeInternal>[] _g;
 
         /// <summary>
         /// <paramref name="n"/> 頂点 0 辺のグラフを作ります。
@@ -429,10 +436,11 @@ namespace AtCoder
         }
 
         [DebuggerDisplay("To={" + nameof(To) + "} Rev={" + nameof(Rev) + "} Cap={" + nameof(Cap) + "}")]
-        internal struct EdgeInternal
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public struct EdgeInternal
         {
-            int To { get; }
-            int Rev { get; }
+            public int To { get; }
+            public int Rev { get; }
             public TValue Cap { get; set; }
             public EdgeInternal(int to, int rev, TValue cap)
             {
@@ -448,9 +456,5 @@ namespace AtCoder
                 cap = Cap;
             }
         }
-
-        internal readonly int _n;
-        internal readonly SimpleList<(int first, int second)> _pos;
-        internal readonly SimpleList<EdgeInternal>[] _g;
     }
 }

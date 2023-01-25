@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.InteropServices;
@@ -10,12 +11,14 @@ namespace AtCoder.Internal
         /// <summary>
         /// sumE[i] = ies[0] * ... * ies[i - 1] * es[i]
         /// </summary>
-        internal static readonly StaticModInt<T>[] sumE = CalcurateSumE();
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static readonly StaticModInt<T>[] sumE = CalcurateSumE();
 
         /// <summary>
         /// sumIE[i] = es[0] * ... * es[i - 1] * ies[i]
         /// </summary>
-        internal static readonly StaticModInt<T>[] sumIE = CalcurateSumIE();
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static readonly StaticModInt<T>[] sumIE = CalcurateSumIE();
 
         public static void Calculate(Span<StaticModInt<T>> a)
         {
@@ -187,7 +190,8 @@ namespace AtCoder.Internal
             }
         }
 
-        private static StaticModInt<T>[] CalcurateSumE()
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static StaticModInt<T>[] CalcurateSumE()
         {
             int g = InternalMath.PrimitiveRoot<T>();
             int cnt2 = InternalBit.Bsf(default(T).Mod - 1);
@@ -231,7 +235,8 @@ namespace AtCoder.Internal
             return sumE;
         }
 
-        private static StaticModInt<T>[] CalcurateSumIE()
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static StaticModInt<T>[] CalcurateSumIE()
         {
             int g = InternalMath.PrimitiveRoot<T>();
             int cnt2 = InternalBit.Bsf(default(T).Mod - 1);
