@@ -15,9 +15,9 @@ namespace AtCoder
     public class SccGraph
     {
         internal readonly int _n;
-        private readonly SimpleList<(int from, Edge e)> edges;
 
-        internal int VerticesNumbers => _n;
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public readonly SimpleList<(int from, int to)> edges;
 
         /// <summary>
         /// <see cref="SccGraph"/> クラスの新しいインスタンスを、<paramref name="n"/> 頂点 0 辺の有向グラフとして初期化します。
@@ -29,7 +29,7 @@ namespace AtCoder
         public SccGraph(int n)
         {
             _n = n;
-            edges = new SimpleList<(int from, Edge e)>();
+            edges = new SimpleList<(int from, int to)>();
         }
 
         /// <summary>
@@ -42,9 +42,9 @@ namespace AtCoder
         [MethodImpl(256)]
         public void AddEdge(int from, int to)
         {
-            Contract.Assert((uint)from < (uint)VerticesNumbers, reason: $"IndexOutOfRange: 0 <= {nameof(from)} && {nameof(from)} < _n");
-            Contract.Assert((uint)to < (uint)VerticesNumbers, reason: $"IndexOutOfRange: 0 <= {nameof(to)} && {nameof(to)} < _n");
-            edges.Add((from, new Edge(to)));
+            Contract.Assert((uint)from < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(from)} && {nameof(from)} < _n");
+            Contract.Assert((uint)to < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(to)} && {nameof(to)} < _n");
+            edges.Add((from, to));
         }
 
 
@@ -60,7 +60,7 @@ namespace AtCoder
         public (int groupNum, int[] ids) SccIDs()
         {
             // R. Tarjan のアルゴリズム
-            var g = new Csr<Edge>(_n, edges);
+            var g = new Csr<int>(_n, edges);
             int nowOrd = 0;
             int groupNum = 0;
             var visited = new Stack<int>(_n);
@@ -137,14 +137,14 @@ namespace AtCoder
                     else if (ci < 0)
                     {
                         ci = -ci;
-                        int to = g.EList[ci - 1].To;
+                        int to = g.EList[ci - 1];
                         low[v] = Math.Min(low[v], low[to]);
                     }
 
                     // 頂点 v から伸びる有向辺を探索する。
                     for (; ci < g.Start[v + 1]; ci++)
                     {
-                        int to = g.EList[ci].To;
+                        int to = g.EList[ci];
                         if (ord[to] == -1)
                         {
                             stack.Push((v, -(ci + 1)));
@@ -205,17 +205,6 @@ namespace AtCoder
                 groups[ids[i]][seen[ids[i]]++] = i;
 
             return groups;
-        }
-
-        [DebuggerDisplay("To={" + nameof(To) + "}")]
-        private readonly struct Edge
-        {
-            public int To { get; }
-
-            public Edge(int to)
-            {
-                To = to;
-            }
         }
     }
 }

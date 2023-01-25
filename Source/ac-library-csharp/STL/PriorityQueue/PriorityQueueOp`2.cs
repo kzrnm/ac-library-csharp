@@ -12,9 +12,12 @@ namespace AtCoder.Internal
     public class PriorityQueueOp<TKey, TValue, TKOp> : IPriorityQueueOp<KeyValuePair<TKey, TValue>>
         where TKOp : IComparer<TKey>
     {
-        protected TKey[] keys;
-        protected TValue[] values;
-        protected readonly TKOp _comparer;
+        [EditorBrowsable(Never)]
+        public TKey[] keys;
+        [EditorBrowsable(Never)]
+        public TValue[] values;
+        [EditorBrowsable(Never)]
+        public readonly TKOp _comparer;
         internal const int DefaultCapacity = 16;
         public PriorityQueueOp() : this(default(TKOp)) { }
         public PriorityQueueOp(int capacity) : this(capacity, default(TKOp)) { }
@@ -162,8 +165,8 @@ namespace AtCoder.Internal
                 get
                 {
                     var count = pq.Count;
-                    var keys = pq.keys.AsSpan(0, count).ToArray();
-                    var values = pq.values.AsSpan(0, count).ToArray();
+                    var keys = pq.UnorderdKeys().ToArray();
+                    var values = pq.UnorderdValues().ToArray();
                     Array.Sort(keys, values, pq._comparer);
                     var arr = new KeyValuePair<TKey, TValue>[count];
                     for (int i = 0; i < arr.Length; i++)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
@@ -10,7 +11,8 @@ namespace AtCoder.Internal
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public class SimpleList<T> : IList<T>, IReadOnlyList<T>
     {
-        private T[] data;
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public T[] data;
         private const int DefaultCapacity = 2;
         public SimpleList()
         {

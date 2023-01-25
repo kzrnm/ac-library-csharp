@@ -6,13 +6,16 @@ using System.Runtime.CompilerServices;
 
 namespace AtCoder.Internal
 {
+    using static EditorBrowsableState;
     [DebuggerTypeProxy(typeof(PriorityQueueOp<,>.DebugView))]
     [DebuggerDisplay(nameof(Count) + " = {" + nameof(Count) + "}")]
     public class PriorityQueueOp<T, TOp> : IPriorityQueueOp<T>
         where TOp : IComparer<T>
     {
-        protected T[] data;
-        protected readonly TOp _comparer;
+        [EditorBrowsable(Never)]
+        public T[] data;
+        [EditorBrowsable(Never)]
+        public readonly TOp _comparer;
         internal const int DefaultCapacity = 16;
         public PriorityQueueOp() : this(default(TOp)) { }
         public PriorityQueueOp(int capacity) : this(capacity, default(TOp)) { }
@@ -117,7 +120,7 @@ namespace AtCoder.Internal
         [MethodImpl(256)] public void Clear() => Count = 0;
 
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
+        [EditorBrowsable(Never)]
         public ReadOnlySpan<T> Unorderd() => data.AsSpan(0, Count);
         private class DebugView
         {

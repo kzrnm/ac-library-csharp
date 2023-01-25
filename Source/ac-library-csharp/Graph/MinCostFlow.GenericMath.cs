@@ -32,6 +32,10 @@ namespace AtCoder
             where TCap : INumber<TCap>, IMinMaxValue<TCap>
             where TCost : INumber<TCost>, ISignedNumber<TCost>, IMinMaxValue<TCost>
     {
+        private readonly int _n;
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public readonly SimpleList<Edge> _edges = new SimpleList<Edge>();
+
         /// <summary>
         /// <paramref name="n"/> 頂点 0 辺のグラフを作ります。
         /// </summary>
@@ -611,8 +615,5 @@ namespace AtCoder
                 Cost = cost;
             }
         }
-
-        private readonly int _n;
-        private readonly SimpleList<Edge> _edges = new SimpleList<Edge>();
     }
 }

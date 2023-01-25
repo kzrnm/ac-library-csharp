@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using AtCoder.Internal;
@@ -28,6 +29,11 @@ namespace AtCoder
             where TCostOp : struct, INumOperator<TCost>
             where TCast : ICastOperator<TCap, TCost>
     {
+
+        private readonly int _n;
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public readonly SimpleList<Edge> _edges = new SimpleList<Edge>();
+
         static readonly TCapOp capOp = default;
         static readonly TCostOp costOp = default;
         static readonly TCast cast = default;
@@ -615,8 +621,5 @@ namespace AtCoder
                 Cost = cost;
             }
         }
-
-        private readonly int _n;
-        private readonly SimpleList<Edge> _edges = new SimpleList<Edge>();
     }
 }
