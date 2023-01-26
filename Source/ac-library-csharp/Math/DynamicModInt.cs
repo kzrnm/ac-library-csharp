@@ -221,24 +221,7 @@ namespace AtCoder
         /// <para>計算量: O(log(<paramref name="n"/>))</para>
         /// </remarks>
         [MethodImpl(256)]
-        public DynamicModInt<T> Pow(long n)
-        {
-            Contract.Assert(0 <= n, $"{nameof(n)} must be positive.");
-            var x = this;
-            var r = Raw(1);
-
-            while (n > 0)
-            {
-                if ((n & 1) > 0)
-                {
-                    r *= x;
-                }
-                x *= x;
-                n >>= 1;
-            }
-
-            return r;
-        }
+        public DynamicModInt<T> Pow(long n) => new DynamicModInt<T>(bt.Pow(Value, n));
 
         /// <summary>
         /// 自身を x として、 xy≡1 なる y を返します。

@@ -163,19 +163,11 @@ namespace AtCoder.Internal
         /// <inheritdoc cref="MathLib.PowMod(long, long, int)" />
         /// </summary>
         [MethodImpl(256)]
-        public static long PowMod(long x, long n, int m)
+        public static uint PowMod(long x, long n, int m)
         {
             Contract.Assert(0 <= n && 1 <= m, reason: $"0 <= {nameof(n)} && 1 <= {nameof(m)}");
             if (m == 1) return 0;
-            var barrett = new Barrett((uint)m);
-            uint r = 1, y = (uint)SafeMod(x, m);
-            while (0 < n)
-            {
-                if ((n & 1) != 0) r = barrett.Mul(r, y);
-                y = barrett.Mul(y, y);
-                n >>= 1;
-            }
-            return r;
+            return new Barrett((uint)m).Pow(x, n);
         }
 
         [MethodImpl(256)]
