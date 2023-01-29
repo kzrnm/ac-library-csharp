@@ -47,6 +47,20 @@ namespace AtCoder.Internal
         }
 
         [Fact]
+        public void RemoveLastSize()
+        {
+            var list = new SimpleList<int>
+            {
+                1,2,3,4,5,6
+            };
+            list.Should().Equal(1, 2, 3, 4, 5, 6);
+            list.RemoveLast(2);
+            list.Should().Equal(1, 2, 3, 4);
+            list.RemoveLast(4);
+            list.Should().BeEmpty();
+        }
+
+        [Fact]
         public void Reverse()
         {
             var list = new SimpleList<int>

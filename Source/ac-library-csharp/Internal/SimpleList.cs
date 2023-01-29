@@ -66,6 +66,12 @@ namespace AtCoder.Internal
                 ThrowIndexOutOfRangeException();
         }
         [MethodImpl(256)]
+        public void RemoveLast(int size)
+        {
+            if ((Count -= size) < 0)
+                ThrowIndexOutOfRangeException();
+        }
+        [MethodImpl(256)]
         public SimpleList<T> Reverse()
         {
             Array.Reverse(data, 0, Count);
