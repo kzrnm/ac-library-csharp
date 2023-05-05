@@ -299,19 +299,21 @@ namespace AtCoder
         [Fact]
         public void SuffixArrayInt()
         {
+            const int size = Global.IsCi ? 500000 : 50000;
+
             int[] s, sa;
-            s = Enumerable.Range(0, 500000).SelectMany(i => new[] { i, ~i }).ToArray();
+            s = Enumerable.Range(0, size).SelectMany(i => new[] { i, ~i }).ToArray();
             sa = StringLib.SuffixArray(s);
             sa.Should().Equal(
-                Enumerable.Range(0, 500000).Select(i => 999999 - 2 * i).Concat(
-                    Enumerable.Range(0, 500000).Select(i => 2 * i))
+                Enumerable.Range(0, size).Select(i => 2 * size - 1 - 2 * i).Concat(
+                    Enumerable.Range(0, size).Select(i => 2 * i))
                 );
 
-            s = Enumerable.Range(0, 1000000).ToArray();
+            s = Enumerable.Range(0, 2 * size).ToArray();
             sa = StringLib.SuffixArray(s);
             sa.Should().Equal(s);
 
-            s = Enumerable.Range(0, 1000000).Reverse().ToArray();
+            s = Enumerable.Range(0, 2 * size).Reverse().ToArray();
             sa = StringLib.SuffixArray(s);
             sa.Should().Equal(s);
         }

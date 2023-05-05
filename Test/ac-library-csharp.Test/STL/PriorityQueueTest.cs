@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AtCoder.Utils;
 using FluentAssertions;
 using MersenneTwister;
 using Xunit;
@@ -82,9 +81,10 @@ namespace AtCoder
         [Fact]
         public void SimpleKV()
         {
+            const int size = Global.IsCi ? 500 : 80;
             var mt = MTRandom.Create();
 
-            for (int n = 0; n < 200; n++)
+            for (int n = 0; n < size; n++)
             {
                 var list = new List<int>();
                 var pq = new PriorityQueueDictionary<long, int>();
@@ -269,7 +269,7 @@ namespace AtCoder
         {
             var pq1 = new PriorityQueue<int>();
             var pq2 = new PriorityQueue<int>();
-            Func<int, int> func = k => k * 2;
+            int func(int k) => k * 2;
             for (int i = 10; i > 0; i--)
             {
                 pq1.Enqueue(i);
@@ -295,7 +295,7 @@ namespace AtCoder
         {
             var pq1 = new PriorityQueueDictionary<int, string>();
             var pq2 = new PriorityQueueDictionary<int, string>();
-            Func<int, string, (int, string)> func = (k, v) => (k * 2, (2 * k).ToString());
+            (int, string) func(int k, string v) => (k * 2, (2 * k).ToString());
             for (int i = 10; i > 0; i--)
             {
                 pq1.Enqueue(i, i.ToString());
@@ -313,7 +313,7 @@ namespace AtCoder
                 var (k, v) = pq2.Dequeue();
                 var (ek, ev) = func(k, v);
                 pq2.Enqueue(KeyValuePair.Create(ek, ev));
-                pq1.DequeueEnqueue(func);
+                pq1.DequeueEnqueue((Func<int, string, (int, string)>)func);
                 pq1.UnorderdKeys().ToArray().Should().BeEquivalentTo(pq2.UnorderdKeys().ToArray());
                 pq1.UnorderdValues().ToArray().Should().BeEquivalentTo(pq2.UnorderdValues().ToArray());
             }

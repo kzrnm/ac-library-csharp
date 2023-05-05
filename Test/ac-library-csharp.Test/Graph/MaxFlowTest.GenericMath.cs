@@ -168,7 +168,7 @@ namespace AtCoder
             var g = new MfGraph<int>(3);
             g.AddEdge(0, 0, 100).Should().Be(0);
 
-            MfGraph<int>.Edge e = new MfGraph<int>.Edge(0, 0, 100, 0);
+            var e = new MfGraph<int>.Edge(0, 0, 100, 0);
             g.GetEdge(0).Should().Be(e);
         }
 
@@ -210,8 +210,10 @@ namespace AtCoder
         [Fact]
         public void Stress()
         {
+            const int size = Global.IsCi ? 10000 : 1000;
+
             var mt = MTRandom.Create();
-            for (int phase = 0; phase < 10000; phase++)
+            for (int phase = 0; phase < size; phase++)
             {
                 int n = mt.Next(2, 21);
                 int m = mt.Next(1, 101);
@@ -223,7 +225,7 @@ namespace AtCoder
                 {
                     int u = mt.Next(0, n);
                     int v = mt.Next(0, n);
-                    int c = mt.Next(0, 10001);
+                    int c = mt.Next(0, size + 1);
                     g.AddEdge(u, v, c);
                 }
                 int flow = g.Flow(s, t);

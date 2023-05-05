@@ -17,6 +17,7 @@ namespace AtCoder
         [Fact]
         public void PowMod()
         {
+            const int size = Global.IsCi ? 100 : 50;
             static long Native(long x, long n, int mod)
             {
                 uint mmod = (uint)mod;
@@ -28,11 +29,11 @@ namespace AtCoder
                 }
                 return (long)z;
             }
-            for (int a = -100; a <= 100; a++)
+            for (int a = -size; a <= size; a++)
             {
-                for (int b = 0; b <= 100; b++)
+                for (int b = 0; b <= size; b++)
                 {
-                    for (int c = 1; c <= 100; c++)
+                    for (int c = 1; c <= size; c++)
                     {
                         MathLib.PowMod(a, b, c).Should().Be(Native(a, b, c));
                     }
@@ -57,9 +58,10 @@ namespace AtCoder
         [Fact]
         public void InvMod()
         {
-            for (long a = -100; a <= 100; a++)
+            const int size = Global.IsCi ? 100 : 50;
+            for (long a = -size; a <= size; a++)
             {
-                for (long b = 1; b <= 1000; b++)
+                for (long b = 1; b <= size * 10; b++)
                 {
                     if (Gcd(InternalMath.SafeMod(a, b), b) != 1) continue;
                     long c = MathLib.InvMod(a, b);
@@ -79,13 +81,14 @@ namespace AtCoder
         [Fact]
         public void Crt2()
         {
-            for (int a = 1; a <= 20; a++)
+            const int size = Global.IsCi ? 10 : 6;
+            for (int a = 1; a <= size * 2; a++)
             {
-                for (int b = 1; b <= 20; b++)
+                for (int b = 1; b <= size * 2; b++)
                 {
-                    for (int c = -10; c <= 10; c++)
+                    for (int c = -size; c <= size; c++)
                     {
-                        for (int d = -10; d <= 10; d++)
+                        for (int d = -size; d <= size; d++)
                         {
                             var (y, m) = MathLib.Crt(new long[] { c, d }, new long[] { a, b });
                             if (m == 0)
@@ -107,17 +110,18 @@ namespace AtCoder
         [Fact]
         public void Crt3()
         {
-            for (int a = 1; a <= 5; a++)
+            const int size = Global.IsCi ? 6 : 4;
+            for (int a = 1; a <= size; a++)
             {
-                for (int b = 1; b <= 5; b++)
+                for (int b = 1; b <= size; b++)
                 {
-                    for (int c = 1; c <= 5; c++)
+                    for (int c = 1; c <= size; c++)
                     {
-                        for (int d = -5; d <= 5; d++)
+                        for (int d = -size; d <= size; d++)
                         {
-                            for (int e = -5; e <= 5; e++)
+                            for (int e = -size; e <= size; e++)
                             {
-                                for (int f = -5; f <= 5; f++)
+                                for (int f = -size; f <= size; f++)
                                 {
                                     var (y, m) = MathLib.Crt(new long[] { d, e, f }, new long[] { a, b, c });
                                     long lcm = a * b / Gcd(a, b);
