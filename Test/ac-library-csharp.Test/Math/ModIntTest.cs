@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using System.Runtime.InteropServices;
 using AtCoder.Internal;
 using FluentAssertions;
 using MersenneTwister;
 using Xunit;
+#if NET7_0_OR_GREATER
+using System.Numerics;
+#endif
 
 namespace AtCoder
 {
@@ -393,6 +395,8 @@ namespace AtCoder
         [Fact]
         public void ConvertFrom()
         {
+            const int size = Global.IsCi ? 100000 : 5000;
+
             RunStatic<ModID11>();
             RunStatic<ModID12>();
             RunStatic<ModID1000000007>();
@@ -408,7 +412,7 @@ namespace AtCoder
             void RunStatic<T>() where T : struct, IStaticMod
             {
                 var mod = (int)new T().Mod;
-                var max = System.Math.Min(100000, mod);
+                var max = System.Math.Min(size, mod);
                 for (int i = 0; i < max; i++)
                 {
                     int x = ConvertFrom<StaticModInt<T>, int>(i).Value;
@@ -428,7 +432,7 @@ namespace AtCoder
             void RunDynamic<T>() where T : struct
             {
                 var mod = DynamicModInt<T>.Mod;
-                var max = System.Math.Min(100000, mod);
+                var max = System.Math.Min(size, mod);
                 for (int i = 0; i < max; i++)
                 {
                     int x = ConvertFrom<DynamicModInt<T>, int>(i).Value;
@@ -452,6 +456,8 @@ namespace AtCoder
         [Fact]
         public void ConvertTo()
         {
+            const int size = Global.IsCi ? 100000 : 5000;
+
             RunStatic<ModID11>();
             RunStatic<ModID12>();
             RunStatic<ModID1000000007>();
@@ -467,7 +473,7 @@ namespace AtCoder
             void RunStatic<T>() where T : struct, IStaticMod
             {
                 var mod = (int)new T().Mod;
-                var max = System.Math.Min(100000, mod);
+                var max = System.Math.Min(size, mod);
                 for (int i = 0; i < max; i++)
                 {
                     {
@@ -492,7 +498,7 @@ namespace AtCoder
             void RunDynamic<T>() where T : struct
             {
                 var mod = DynamicModInt<T>.Mod;
-                var max = System.Math.Min(100000, mod);
+                var max = System.Math.Min(size, mod);
                 for (int i = 0; i < max; i++)
                 {
                     {

@@ -1,9 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Numerics;
-using System.Runtime.InteropServices;
 using FluentAssertions;
 using Xunit;
+#if NET7_0_OR_GREATER
+using System;
+using System.Runtime.InteropServices;
+#endif
 
 namespace AtCoder.Internal
 {
@@ -34,17 +36,19 @@ namespace AtCoder.Internal
         [Fact]
         public void IsPrime()
         {
+            const int size = Global.IsCi ? 10000 : 500;
+
             InternalMath.IsPrime(121).Should().BeFalse();
             InternalMath.IsPrime(11 * 13).Should().BeFalse();
             InternalMath.IsPrime(1_000_000_007).Should().BeTrue();
             InternalMath.IsPrime(1_000_000_008).Should().BeFalse();
             InternalMath.IsPrime(1_000_000_009).Should().BeTrue();
 
-            for (int i = 0; i <= 10000; i++)
+            for (int i = 0; i <= size; i++)
             {
                 InternalMath.IsPrime(i).Should().Be(IsPrimeNaive(i));
             }
-            for (int i = 0; i <= 10000; i++)
+            for (int i = 0; i <= size; i++)
             {
                 int x = int.MaxValue - i;
                 InternalMath.IsPrime(x).Should().Be(IsPrimeNaive(x));
@@ -123,7 +127,9 @@ namespace AtCoder.Internal
         [Fact]
         public void PrimitiveRootTestNaive()
         {
-            for (int m = 2; m <= 10000; m++)
+            const int size = Global.IsCi ? 10000 : 500;
+
+            for (int m = 2; m <= size; m++)
             {
                 if (!InternalMath.IsPrime(m)) continue;
                 //int n = InternalMath.PrimitiveRoot(m);

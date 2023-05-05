@@ -39,7 +39,7 @@ namespace AtCoder
 
     public class MathUtilTest
     {
-        private bool IsPrimitiveRootNative(int m, int g)
+        static bool IsPrimitiveRootNative(int m, int g)
         {
             (1 <= g && g < m).Should().BeTrue();
             int x = 1;
@@ -57,7 +57,8 @@ namespace AtCoder
         [Fact]
         public void IsPrimitiveRootTest()
         {
-            for (int m = 2; m <= 500; m++)
+            const int size = Global.IsCi ? 500 : 250;
+            for (int m = 2; m <= size; m++)
             {
                 if (!InternalMath.IsPrime(m)) continue;
                 for (int g = 1; g < m; g++)
@@ -69,7 +70,8 @@ namespace AtCoder
         [Fact]
         public void FactorsTest()
         {
-            for (int m = 1; m <= 50000; m++)
+            const int size = Global.IsCi ? 50000 : 10000;
+            for (int m = 1; m <= size; m++)
             {
                 var f = MathUtil.Factors(m);
                 int m2 = m;

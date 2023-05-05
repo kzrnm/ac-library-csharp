@@ -7,9 +7,14 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <NoWarn>$(NoWarn);IDE0044;NETSDK1138</NoWarn>
 
+    <LangVersion>latest</LangVersion>
+
     <GenericMath Condition="'$(TargetFramework)'!='netcoreapp3.0' And '$(TargetFramework)'!='netcoreapp3.1'">true</GenericMath>
-    <EnablePreviewFeatures Condition="'$(GenericMath)'=='true'">true</EnablePreviewFeatures>
     <DefineConstants Condition="'$(GenericMath)'=='true'">$(DefineConstants);GENERIC_MATH</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(CI)' == 'true'">
+    <DefineConstants>$(DefineConstants);CI</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(GenericMath)'!='true'">
@@ -31,19 +36,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GitHubActionsTestLogger" Version="2.0.1">
+    <PackageReference Include="GitHubActionsTestLogger" Version="2.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="CompetitiveVerifierResolverTestLogger" Version="1.2.0">
+    <PackageReference Include="CompetitiveVerifierResolverTestLogger" Version="1.4.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="SourceExpander.Core" Version="5.0.0" />
-    <PackageReference Include="FluentAssertions" Version="6.8.0" />
+    <PackageReference Include="SourceExpander.Core" Version="5.2.0" />
+    <PackageReference Include="FluentAssertions" Version="6.11.0" />
     <PackageReference Include="MersenneTwister" Version="1.0.6" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
-    <PackageReference Include="SourceExpander.Embedder.Testing" Version="5.0.0" />
+    <PackageReference Include="SourceExpander.Embedder.Testing" Version="5.2.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
       <PrivateAssets>all</PrivateAssets>
