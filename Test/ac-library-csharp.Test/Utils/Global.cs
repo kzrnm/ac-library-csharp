@@ -1,12 +1,17 @@
-﻿namespace AtCoder
+﻿using Xunit;
+
+namespace AtCoder
 {
-    internal class Global
+    public class Global
     {
-        public const bool IsCi
 #if CI
-            = true;
+        public const bool IsCi = true;
+        [Fact]
+        public void CI() { }
 #else
-            = false;
+        public const bool IsCi = false;
+        [Fact(Skip = "This is not in CI.")]
+        public void CI() { }
 #endif
     }
 }
