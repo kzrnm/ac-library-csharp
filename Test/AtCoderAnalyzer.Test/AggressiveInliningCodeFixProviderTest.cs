@@ -552,34 +552,127 @@ build_property.AtCoderAnalyzer_UseMethodImplNumeric = true
             await test.RunAsync(CancellationToken.None);
         }
 
+        [Fact]
+        public async Task Class()
+        {
+            var source = @"
+using AtCoder;
+[IsOperator]
+public interface IAny<T> {
+    T Fun1();
+    string Fun2(T v);
+}
+class Def<T> : IAny<T> {
+    public T Fun1() => default;
+    public string Fun2(T v)
+    {
+        return v.ToString();
+    }
+}
+";
+            var fixedSource = @"
+using AtCoder;
+[IsOperator]
+public interface IAny<T> {
+    T Fun1();
+    string Fun2(T v);
+}
+class Def<T> : IAny<T> {
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+    public T Fun1() => default;
+
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+    public string Fun2(T v)
+    {
+        return v.ToString();
+    }
+}
+";
+            await VerifyCS.VerifyCodeFixAsync(source,
+                VerifyCS.Diagnostic().WithSpan(8, 1, 14, 2).WithArguments("Fun1, Fun2"),
+                fixedSource);
+        }
+
+        [Fact]
+        public async Task RecordClass()
+        {
+            var source = @"
+using AtCoder;
+[IsOperator]
+public interface IAny<T> {
+    T Fun1();
+    string Fun2(T v);
+}
+record Def<T> : IAny<T> {
+    public T Fun1() => default;
+    public string Fun2(T v)
+    {
+        return v.ToString();
+    }
+}
+";
+            var fixedSource = @"
+using AtCoder;
+[IsOperator]
+public interface IAny<T> {
+    T Fun1();
+    string Fun2(T v);
+}
+record Def<T> : IAny<T> {
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+    public T Fun1() => default;
+
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+    public string Fun2(T v)
+    {
+        return v.ToString();
+    }
+}
+";
+            await VerifyCS.VerifyCodeFixAsync(source,
+                VerifyCS.Diagnostic().WithSpan(8, 1, 14, 2).WithArguments("Fun1, Fun2"),
+                fixedSource);
+        }
 
         [Fact]
         public async Task RecordStruct()
         {
             var source = @"
 using AtCoder;
-using System.Runtime.CompilerServices;
-record struct OpSeg : ISegtreeOperator<int>
-{
-    public int Identity => default;
-    public int Operate(int x, int y) => System.Math.Max(x, y);
+[IsOperator]
+public interface IAny<T> {
+    T Fun1();
+    string Fun2(T v);
+}
+record struct Def<T> : IAny<T> {
+    public T Fun1() => default;
+    public string Fun2(T v)
+    {
+        return v.ToString();
+    }
 }
 ";
             var fixedSource = @"
 using AtCoder;
-using System.Runtime.CompilerServices;
-record struct OpSeg : ISegtreeOperator<int>
-{
-    public int Identity => default;
+[IsOperator]
+public interface IAny<T> {
+    T Fun1();
+    string Fun2(T v);
+}
+record struct Def<T> : IAny<T> {
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+    public T Fun1() => default;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int Operate(int x, int y) => System.Math.Max(x, y);
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+    public string Fun2(T v)
+    {
+        return v.ToString();
+    }
 }
 ";
-            await VerifyCS.VerifyCodeFixAsync(source, new DiagnosticResult[]
-            {
-                VerifyCS.Diagnostic("AC0007").WithSpan(4, 1, 8, 2).WithArguments("Operate"),
-            }, fixedSource);
+            await VerifyCS.VerifyCodeFixAsync(source,
+                VerifyCS.Diagnostic().WithSpan(8, 1, 14, 2).WithArguments("Fun1, Fun2"),
+                fixedSource);
         }
     }
 }

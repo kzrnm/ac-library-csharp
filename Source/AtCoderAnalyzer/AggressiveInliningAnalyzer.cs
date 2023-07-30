@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using AtCoderAnalyzer.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -19,11 +20,13 @@ namespace AtCoderAnalyzer
         private class ContainingOperatorTypes
         {
             public INamedTypeSymbol MethodImplAttribute { get; }
+            public INamedTypeSymbol CompilerGeneratedAttribute { get; }
             public INamedTypeSymbol IsOperatorAttribute { get; }
 
-            public ContainingOperatorTypes(INamedTypeSymbol methodImpl, INamedTypeSymbol isOperator)
+            public ContainingOperatorTypes(INamedTypeSymbol methodImpl, INamedTypeSymbol compilerGenerated, INamedTypeSymbol isOperator)
             {
                 MethodImplAttribute = methodImpl;
+                CompilerGeneratedAttribute = compilerGenerated;
                 IsOperatorAttribute = isOperator;
             }
             public static bool TryParseTypes(Compilation compilation, out ContainingOperatorTypes types)
@@ -32,10 +35,13 @@ namespace AtCoderAnalyzer
                 var methodImpl = compilation.GetTypeByMetadataName(System_Runtime_CompilerServices_MethodImplAttribute);
                 if (methodImpl is null)
                     return false;
+                var compilerGenerated = compilation.GetTypeByMetadataName(System_Runtime_CompilerServices_CompilerGeneratedAttribute);
+                if (compilerGenerated is null)
+                    return false;
                 var isOperator = compilation.GetTypeByMetadataName(AtCoder_IsOperatorAttribute);
                 if (isOperator is null)
                     return false;
-                types = new ContainingOperatorTypes(methodImpl, isOperator);
+                types = new ContainingOperatorTypes(methodImpl, compilerGenerated, isOperator);
                 return true;
             }
         }
@@ -49,7 +55,10 @@ namespace AtCoderAnalyzer
                 {
                     compilationStartContext.RegisterSyntaxNodeAction(
                         c => AnalyzeTypeDecra(c, types),
-                        SyntaxKind.StructDeclaration, SyntaxKind.ClassConstraint, /* RecordStructDeclaration */ (SyntaxKind)9068);
+                        SyntaxKind.StructDeclaration
+                        , SyntaxKind.ClassDeclaration
+                        , /* RecordDeclaration */ (SyntaxKind)9063
+                        , /* RecordStructDeclaration */ (SyntaxKind)9068);
                 }
             });
         }
@@ -92,22 +101,32 @@ namespace AtCoderAnalyzer
                      not (MethodKind.ExplicitInterfaceImplementation or MethodKind.Ordinary))
                     return false;
 
-                if (m.GetAttributes()
-                       .FirstOrDefault(at => SymbolEqualityComparer.Default.Equals(at.AttributeClass, types.MethodImplAttribute)) is not { } attr
-                   || attr.ConstructorArguments.Length == 0)
-                    return true;
+                var result = true;
 
-                var arg = attr.ConstructorArguments[0];
-                if (arg.Kind is TypedConstantKind.Primitive or TypedConstantKind.Enum)
-                    try
+                foreach (var attr in m.GetAttributes())
+                {
+                    if (SymbolEqualityComparer.Default.Equals(attr.AttributeClass, types.CompilerGeneratedAttribute))
                     {
-                        return !((MethodImplOptions)Convert.ToInt32(arg.Value)).HasFlag(MethodImplOptions.AggressiveInlining);
+                        return false;
                     }
-                    catch
+                    else if (SymbolEqualityComparer.Default.Equals(attr.AttributeClass, types.MethodImplAttribute))
                     {
-                        return true;
+                        if (attr.ConstructorArguments.Length == 0)
+                            result = true;
+
+                        var arg = attr.ConstructorArguments[0];
+                        if (arg.Kind is TypedConstantKind.Primitive or TypedConstantKind.Enum)
+                            try
+                            {
+                                result = !((MethodImplOptions)Convert.ToInt32(arg.Value)).HasFlag(MethodImplOptions.AggressiveInlining);
+                            }
+                            catch
+                            {
+                                result = true;
+                            }
                     }
-                return true;
+                }
+                return result;
             }
 
             string[] notMethodImplInliningMethods;

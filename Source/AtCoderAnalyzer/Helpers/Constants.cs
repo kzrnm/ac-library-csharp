@@ -8,6 +8,8 @@
             = "System.Runtime.CompilerServices.MethodImplOptions";
         public const string System_Collections_Generic_IComparer
             = "System.Collections.Generic.IComparer`1";
+        public const string System_Runtime_CompilerServices_CompilerGeneratedAttribute
+            = "System.Runtime.CompilerServices.CompilerGeneratedAttribute";
 
         public const string AtCoder_IsOperatorAttribute
             = "AtCoder.IsOperatorAttribute";
