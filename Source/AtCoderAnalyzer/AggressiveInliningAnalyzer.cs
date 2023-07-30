@@ -111,19 +111,21 @@ namespace AtCoderAnalyzer
                     }
                     else if (SymbolEqualityComparer.Default.Equals(attr.AttributeClass, types.MethodImplAttribute))
                     {
-                        if (attr.ConstructorArguments.Length == 0)
+                        if (attr.ConstructorArguments is { Length: 0 })
                             result = true;
-
-                        var arg = attr.ConstructorArguments[0];
-                        if (arg.Kind is TypedConstantKind.Primitive or TypedConstantKind.Enum)
-                            try
-                            {
-                                result = !((MethodImplOptions)Convert.ToInt32(arg.Value)).HasFlag(MethodImplOptions.AggressiveInlining);
-                            }
-                            catch
-                            {
-                                result = true;
-                            }
+                        else
+                        {
+                            var arg = attr.ConstructorArguments[0];
+                            if (arg.Kind is TypedConstantKind.Primitive or TypedConstantKind.Enum)
+                                try
+                                {
+                                    result = !((MethodImplOptions)Convert.ToInt32(arg.Value)).HasFlag(MethodImplOptions.AggressiveInlining);
+                                }
+                                catch
+                                {
+                                    result = true;
+                                }
+                        }
                     }
                 }
                 return result;
