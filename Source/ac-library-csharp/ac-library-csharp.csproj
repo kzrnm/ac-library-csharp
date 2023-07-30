@@ -43,7 +43,7 @@
     </ProjectReference>
     <PackageReference Include="SourceExpander.Embedder" Version="5.1.0" Condition="'$(EmbeddingSource)'=='true'">
       <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <IncludeAssets>runtime;build;native;contentfiles;analyzers;buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
 

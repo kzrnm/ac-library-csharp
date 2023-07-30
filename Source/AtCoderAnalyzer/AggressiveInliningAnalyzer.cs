@@ -49,7 +49,7 @@ namespace AtCoderAnalyzer
                 {
                     compilationStartContext.RegisterSyntaxNodeAction(
                         c => AnalyzeTypeDecra(c, types),
-                        SyntaxKind.StructDeclaration, SyntaxKind.ClassConstraint);
+                        SyntaxKind.StructDeclaration, SyntaxKind.ClassConstraint, /* RecordStructDeclaration */ (SyntaxKind)9068);
                 }
             });
         }
