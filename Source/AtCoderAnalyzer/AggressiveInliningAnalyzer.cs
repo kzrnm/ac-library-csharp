@@ -20,13 +20,11 @@ namespace AtCoderAnalyzer
         private class ContainingOperatorTypes
         {
             public INamedTypeSymbol MethodImplAttribute { get; }
-            public INamedTypeSymbol CompilerGeneratedAttribute { get; }
             public INamedTypeSymbol IsOperatorAttribute { get; }
 
-            public ContainingOperatorTypes(INamedTypeSymbol methodImpl, INamedTypeSymbol compilerGenerated, INamedTypeSymbol isOperator)
+            public ContainingOperatorTypes(INamedTypeSymbol methodImpl, INamedTypeSymbol isOperator)
             {
                 MethodImplAttribute = methodImpl;
-                CompilerGeneratedAttribute = compilerGenerated;
                 IsOperatorAttribute = isOperator;
             }
             public static bool TryParseTypes(Compilation compilation, out ContainingOperatorTypes types)
@@ -35,13 +33,10 @@ namespace AtCoderAnalyzer
                 var methodImpl = compilation.GetTypeByMetadataName(System_Runtime_CompilerServices_MethodImplAttribute);
                 if (methodImpl is null)
                     return false;
-                var compilerGenerated = compilation.GetTypeByMetadataName(System_Runtime_CompilerServices_CompilerGeneratedAttribute);
-                if (compilerGenerated is null)
-                    return false;
                 var isOperator = compilation.GetTypeByMetadataName(AtCoder_IsOperatorAttribute);
                 if (isOperator is null)
                     return false;
-                types = new ContainingOperatorTypes(methodImpl, compilerGenerated, isOperator);
+                types = new ContainingOperatorTypes(methodImpl, isOperator);
                 return true;
             }
         }
@@ -98,41 +93,35 @@ namespace AtCoderAnalyzer
             bool DoesNotHaveMethodImplInlining(IMethodSymbol m)
             {
                 if (m.MethodKind is
-                     not (MethodKind.ExplicitInterfaceImplementation or MethodKind.Ordinary))
+                     not (MethodKind.ExplicitInterfaceImplementation or MethodKind.Ordinary)
+                    || m.IsImplicitlyDeclared)
                     return false;
 
-                var result = true;
-
-                foreach (var attr in m.GetAttributes())
+                if (m.GetAttributes()
+                    .Where(at => SymbolEqualityComparer.Default.Equals(at.AttributeClass, types.MethodImplAttribute))
+                    .FirstOrDefault() is { } attr)
                 {
-                    if (SymbolEqualityComparer.Default.Equals(attr.AttributeClass, types.CompilerGeneratedAttribute))
+                    if (attr.ConstructorArguments is { Length: 0 })
+                        return true;
+                    else
                     {
-                        return false;
-                    }
-                    else if (SymbolEqualityComparer.Default.Equals(attr.AttributeClass, types.MethodImplAttribute))
-                    {
-                        if (attr.ConstructorArguments is { Length: 0 })
-                            result = true;
-                        else
-                        {
-                            var arg = attr.ConstructorArguments[0];
-                            if (arg.Kind is TypedConstantKind.Primitive or TypedConstantKind.Enum)
-                                try
-                                {
-                                    result = !((MethodImplOptions)Convert.ToInt32(arg.Value)).HasFlag(MethodImplOptions.AggressiveInlining);
-                                }
-                                catch
-                                {
-                                    result = true;
-                                }
-                        }
+                        var arg = attr.ConstructorArguments[0];
+                        if (arg.Kind is TypedConstantKind.Primitive or TypedConstantKind.Enum)
+                            try
+                            {
+                                return !((MethodImplOptions)Convert.ToInt32(arg.Value)).HasFlag(MethodImplOptions.AggressiveInlining);
+                            }
+                            catch
+                            {
+                                return true;
+                            }
                     }
                 }
-                return result;
+                return true;
             }
 
             string[] notMethodImplInliningMethods;
-            if (concurrentBuild)
+            if (false)
                 notMethodImplInliningMethods = symbol.GetMembers()
                     .AsParallel(context.CancellationToken)
                     .OfType<IMethodSymbol>()
