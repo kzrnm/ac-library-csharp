@@ -121,7 +121,7 @@ namespace AtCoderAnalyzer
             }
 
             string[] notMethodImplInliningMethods;
-            if (false)
+            if (concurrentBuild)
                 notMethodImplInliningMethods = symbol.GetMembers()
                     .AsParallel(context.CancellationToken)
                     .OfType<IMethodSymbol>()
