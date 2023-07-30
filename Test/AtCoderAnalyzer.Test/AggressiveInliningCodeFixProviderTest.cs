@@ -551,5 +551,35 @@ build_property.AtCoderAnalyzer_UseMethodImplNumeric = true
             test.ExpectedDiagnostics.Add(VerifyCS.Diagnostic().WithSpan(5, 1, 12, 2).WithArguments("Composition, Mapping, Operate"));
             await test.RunAsync(CancellationToken.None);
         }
+
+
+        [Fact]
+        public async Task RecordStruct()
+        {
+            var source = @"
+using AtCoder;
+using System.Runtime.CompilerServices;
+record struct OpSeg : ISegtreeOperator<int>
+{
+    public int Identity => default;
+    public int Operate(int x, int y) => System.Math.Max(x, y);
+}
+";
+            var fixedSource = @"
+using AtCoder;
+using System.Runtime.CompilerServices;
+record struct OpSeg : ISegtreeOperator<int>
+{
+    public int Identity => default;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int Operate(int x, int y) => System.Math.Max(x, y);
+}
+";
+            await VerifyCS.VerifyCodeFixAsync(source, new DiagnosticResult[]
+            {
+                VerifyCS.Diagnostic("AC0007").WithSpan(4, 1, 8, 2).WithArguments("Operate"),
+            }, fixedSource);
+        }
     }
 }
