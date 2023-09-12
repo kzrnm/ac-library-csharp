@@ -15,3 +15,8 @@ namespace AtCoder
 #endif
     }
 }
+
+namespace System.Runtime.CompilerServices
+{
+    class IsExternalInit { }
+}

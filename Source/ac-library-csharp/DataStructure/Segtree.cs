@@ -252,44 +252,47 @@ namespace AtCoder
             return 0;
         }
 
-
-        [DebuggerDisplay("{" + nameof(value) + "}", Name = "{" + nameof(key) + ",nq}")]
-        private struct DebugItem
+        [SourceExpander.NotEmbeddingSource]
+        [DebuggerDisplay("{" + nameof(Value) + "}", Name = "{" + nameof(Key) + ",nq}")]
+        internal readonly struct DebugItem
         {
             public DebugItem(int l, int r, TValue value)
             {
-                if (r - l == 1)
-                    key = $"[{l}]";
-                else
-                    key = $"[{l}-{r})";
-                this.value = value;
+                L = l;
+                R = r;
+                Value = value;
             }
             [DebuggerBrowsable(0)]
-            private readonly string key;
-            private readonly TValue value;
+            public int L { get; }
+            [DebuggerBrowsable(0)]
+            public int R { get; }
+            [DebuggerBrowsable(0)]
+            public string Key => R - L == 1 ? $"[{L}]" : $"[{L}-{R})";
+            public TValue Value { get; }
         }
         private class DebugView
         {
-            private readonly Segtree<TValue, TOp> segtree;
+            private readonly Segtree<TValue, TOp> s;
             public DebugView(Segtree<TValue, TOp> segtree)
             {
-                this.segtree = segtree;
+                s = segtree;
             }
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+            [SourceExpander.NotEmbeddingSource]
             public DebugItem[] Items
             {
                 get
                 {
-                    var items = new List<DebugItem>(segtree.Length);
-                    for (int len = segtree.size; len > 0; len >>= 1)
+                    var items = new List<DebugItem>(s.d.Length);
+                    for (int len = s.size; len > 0; len >>= 1)
                     {
-                        int unit = segtree.size / len;
+                        int unit = s.size / len;
                         for (int i = 0; i < len; i++)
                         {
                             int l = i * unit;
-                            int r = Math.Min(l + unit, segtree.Length);
-                            if (l < segtree.Length)
-                                items.Add(new DebugItem(l, r, segtree.d[i + len]));
+                            int r = l + unit;
+                            if (l < s.Length)
+                                items.Add(new DebugItem(l, r, s.d[i + len]));
                         }
                     }
                     return items.ToArray();

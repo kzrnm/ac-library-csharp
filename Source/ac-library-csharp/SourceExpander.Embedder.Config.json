@@ -10,6 +10,7 @@
     "DEBUG",
     "ATCODER_CONTRACT"
   ],
+  "expanding-symbol": "DEBUG",
   "exclude-attributes": [
     "System.Diagnostics.DebuggerBrowsableAttribute",
     "System.Diagnostics.DebuggerDisplayAttribute",

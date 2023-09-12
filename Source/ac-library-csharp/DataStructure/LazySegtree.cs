@@ -349,51 +349,54 @@ namespace AtCoder
             return 0;
         }
 
-
-        [DebuggerDisplay("Value = {" + nameof(value) + "}, Lazy = {" + nameof(lazy) + "}", Name = "{" + nameof(key) + ",nq}")]
-        private struct DebugItem
+        [SourceExpander.NotEmbeddingSource]
+        [DebuggerDisplay("Value = {" + nameof(Value) + "}, Lazy = {" + nameof(Lazy) + "}", Name = "{" + nameof(Key) + ",nq}")]
+        internal readonly struct DebugItem
         {
             public DebugItem(int l, int r, TValue value, F lazy)
             {
-                if (r - l == 1)
-                    key = $"[{l}]";
-                else
-                    key = $"[{l}-{r})";
-                this.value = value;
-                this.lazy = lazy;
+                L = l;
+                R = r;
+                Value = value;
+                Lazy = lazy;
             }
             [DebuggerBrowsable(0)]
-            private readonly string key;
-            private readonly TValue value;
-            private readonly F lazy;
+            public int L { get; }
+            [DebuggerBrowsable(0)]
+            public int R { get; }
+            [DebuggerBrowsable(0)]
+            public string Key => R - L == 1 ? $"[{L}]" : $"[{L}-{R})";
+            public TValue Value { get; }
+            public F Lazy { get; }
         }
         private class DebugView
         {
-            private readonly LazySegtree<TValue, F, TOp> segtree;
+            private readonly LazySegtree<TValue, F, TOp> s;
             public DebugView(LazySegtree<TValue, F, TOp> segtree)
             {
-                this.segtree = segtree;
+                s = segtree;
             }
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+            [SourceExpander.NotEmbeddingSource]
             public DebugItem[] Items
             {
                 get
                 {
-                    var items = new List<DebugItem>(segtree.Length);
-                    for (int len = segtree.size; len > 0; len >>= 1)
+                    var items = new List<DebugItem>(s.Length);
+                    for (int len = s.size; len > 0; len >>= 1)
                     {
-                        int unit = segtree.size / len;
+                        int unit = s.size / len;
                         for (int i = 0; i < len; i++)
                         {
                             int l = i * unit;
-                            int r = Math.Min(l + unit, segtree.Length);
-                            if (l < segtree.Length)
+                            int r = l + unit;
+                            if (l < s.Length)
                             {
                                 int dataIndex = i + len;
-                                if ((uint)dataIndex < segtree.lz.Length)
-                                    items.Add(new DebugItem(l, r, segtree.d[dataIndex], segtree.lz[dataIndex]));
+                                if ((uint)dataIndex < s.lz.Length)
+                                    items.Add(new DebugItem(l, r, s.d[dataIndex], s.lz[dataIndex]));
                                 else
-                                    items.Add(new DebugItem(l, r, segtree.d[dataIndex], op.FIdentity));
+                                    items.Add(new DebugItem(l, r, s.d[dataIndex], op.FIdentity));
                             }
                         }
                     }

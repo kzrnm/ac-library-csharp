@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using SourceExpander;
@@ -14,15 +15,22 @@ namespace AtCoder.Embedding
             public override string Skip => "SourceExpander.Embedder is disabled.";
 #endif
         }
+        class EmbeddingGenericMathFact : EmbeddingFact
+        {
+            public override string Skip => genericMath ? null : "GenericMath is disabled.";
+        }
 
 #if NETCOREAPP3_0
         const bool useIntrinsics = false;
+        const bool genericMath = false;
         const string languageVersion = "7.3";
 #elif NETCOREAPP3_1
         const bool useIntrinsics = true;
+        const bool genericMath = false;
         const string languageVersion = "8.0";
 #else
         const bool useIntrinsics = true;
+        const bool genericMath = true;
         const string languageVersion = "11.0";
 #endif
 
@@ -107,5 +115,58 @@ namespace AtCoder.Embedding
             var codes = embedded.SourceFiles.Select(s => s.CodeBody);
             codes.Should().NotContain(code => code.Contains("Contract.Assert"));
         }
+
+        [EmbeddingFact]
+        public async Task SegtreeDebugView()
+        {
+            var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
+            var source = embedded.SourceFiles.Single(s => s.FileName.Split('\\', '/').Last() == "Segtree.cs");
+            source.CodeBody.Should()
+                .EndWith("private class DebugView{private readonly Segtree<TValue,TOp>s;public DebugView(Segtree<TValue,TOp>segtree){s=segtree;}}}}")
+                .And
+                .NotContain("DebugItem");
+        }
+
+        [EmbeddingFact]
+        public async Task LazySegtreeDebugView()
+        {
+            var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
+            var source = embedded.SourceFiles.Single(s => s.FileName.Split('\\', '/').Last() == "LazySegtree.cs");
+            source.CodeBody.Should()
+                .EndWith("private class DebugView{private readonly LazySegtree<TValue,F,TOp>s;public DebugView(LazySegtree<TValue,F,TOp>segtree){s=segtree;}}}}")
+                .And
+                .NotContain("DebugItem");
+        }
+
+        [EmbeddingGenericMathFact]
+        public async Task FenwickTreeGenericMathDebugView()
+        {
+            var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
+            var source = embedded.SourceFiles.Single(s => s.FileName.Split('\\', '/').Last() == "FenwickTree.GenericMath.cs");
+            source.CodeBody.Should()
+                .EndWith("private class DebugView{private readonly FenwickTree<TValue>fw;public DebugView(FenwickTree<TValue>fenwickTree){fw=fenwickTree;}}}}")
+                .And
+                .NotContain("DebugItem");
+        }
+
+        [EmbeddingFact]
+        public async Task FenwickTreeDebugView()
+        {
+            var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
+            var source = embedded.SourceFiles.Single(s => s.FileName.Split('\\', '/').Last() == "FenwickTree.cs");
+            source.CodeBody.Should()
+                .EndWith("private class DebugView{private readonly FenwickTree<TValue,TOp>fw;public DebugView(FenwickTree<TValue,TOp>fenwickTree){fw=fenwickTree;}}}}")
+                .And
+                .NotContain("DebugItem");
+        }
+
+#if DEBUG
+        [EmbeddingFact]
+        public void DebugExpanded()
+        {
+            _ = typeof(SourceExpander.Embedded.Expand.AtCoder.Segtree<,>);
+            _ = typeof(SourceExpander.Embedded.Expand.AtCoder.Mod1000000007);
+        }
+#endif
     }
 }
