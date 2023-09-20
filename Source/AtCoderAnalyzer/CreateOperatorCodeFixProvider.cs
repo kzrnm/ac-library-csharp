@@ -115,7 +115,7 @@ namespace AtCoderAnalyzer
         {
             private readonly SemanticModel semanticModel;
             private readonly int origPosition;
-            private AtCoderAnalyzerConfig config;
+            private readonly AtCoderAnalyzerConfig config;
             public OperatorTypeSyntaxBuilder(SemanticModel semanticModel, AtCoderAnalyzerConfig config)
             {
                 this.semanticModel = semanticModel;
@@ -164,7 +164,14 @@ namespace AtCoderAnalyzer
                     }
                 }
 
+                SyntaxTokenList modifiers = default;
+                if (semanticModel.SyntaxTree.Options is CSharpParseOptions parseOptions
+                    && (int)parseOptions.LanguageVersion >= (int)LanguageVersion.CSharp7_2)
+                {
+                    modifiers = SyntaxTokenList.Create(SyntaxFactory.Token(SyntaxKind.ReadOnlyKeyword));
+                }
                 var dec = SyntaxFactory.StructDeclaration(operatorTypeName)
+                    .WithModifiers(modifiers)
                     .WithBaseList(SyntaxFactory.BaseList(
                         constraints.Select(c => (BaseTypeSyntax)SyntaxFactory.SimpleBaseType(c.ToTypeSyntax(semanticModel, origPosition))).ToSeparatedSyntaxList()))
                     .WithMembers(SyntaxFactory.List(members.Distinct(MemberDeclarationEqualityComparer.Default)));

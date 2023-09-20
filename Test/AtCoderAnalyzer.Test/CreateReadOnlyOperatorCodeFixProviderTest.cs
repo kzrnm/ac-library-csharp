@@ -1,62 +1,14 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.Testing;
 using Xunit;
+using VerifyCS = AtCoderAnalyzer.Test.CSharpCodeFixVerifier<
+    AtCoderAnalyzer.CreateOperatorAnalyzer,
+    AtCoderAnalyzer.CreateOperatorCodeFixProvider>;
 
 namespace AtCoderAnalyzer.Test
 {
-    public class CreateOperatorCodeFixProviderTest
+    public class CreateReadOnlyOperatorCodeFixProviderTest
     {
-        static class VerifyCS
-        {
-            public class Test : CSharpCodeFixVerifier<CreateOperatorAnalyzer, CreateOperatorCodeFixProvider>.Test
-            {
-                protected override ParseOptions CreateParseOptions()
-                    => ((CSharpParseOptions)base.CreateParseOptions()).WithLanguageVersion(LanguageVersion.CSharp7_1);
-            }
-            public static DiagnosticResult Diagnostic()
-                => CSharpCodeFixVerifier<CreateOperatorAnalyzer, CreateOperatorCodeFixProvider>.Diagnostic();
-
-            public static DiagnosticResult Diagnostic(string diagnosticId)
-                => CSharpCodeFixVerifier<CreateOperatorAnalyzer, CreateOperatorCodeFixProvider>.Diagnostic(diagnosticId);
-
-            public static DiagnosticResult Diagnostic(DiagnosticDescriptor descriptor)
-                => CSharpCodeFixVerifier<CreateOperatorAnalyzer, CreateOperatorCodeFixProvider>.Diagnostic(descriptor);
-
-            public static async Task VerifyAnalyzerAsync(string source, params DiagnosticResult[] expected)
-            {
-                var test = new Test
-                {
-                    TestCode = source,
-                };
-
-                test.ExpectedDiagnostics.AddRange(expected);
-                await test.RunAsync(CancellationToken.None);
-            }
-
-            public static async Task VerifyCodeFixAsync(string source, string fixedSource)
-                => await VerifyCodeFixAsync(source, DiagnosticResult.EmptyDiagnosticResults, fixedSource);
-
-            public static async Task VerifyCodeFixAsync(string source, DiagnosticResult expected, string fixedSource)
-                => await VerifyCodeFixAsync(source, new[] { expected }, fixedSource);
-
-            public static async Task VerifyCodeFixAsync(string source, DiagnosticResult[] expected, string fixedSource)
-            {
-                var test = new Test
-                {
-                    TestCode = source,
-                    FixedCode = fixedSource,
-                };
-
-                test.ExpectedDiagnostics.AddRange(expected);
-                await test.RunAsync(CancellationToken.None);
-            }
-        }
-
-
-
         #region StaticModInt
         [Fact]
         public async Task StaticModInt_Using()
@@ -77,7 +29,7 @@ class Program
     StaticModInt<Mod1000000007> defined;
 }
 
-struct Op : IStaticMod
+readonly struct Op : IStaticMod
 {
     public uint Mod => default;
 
@@ -107,7 +59,7 @@ class Program
     AtCoder.StaticModInt<Mod1000000007> defined;
 }
 
-struct Op : IStaticMod
+readonly struct Op : IStaticMod
 {
     public uint Mod => default;
 
@@ -135,7 +87,7 @@ class Program
     AtCoder.StaticModInt<AtCoder.Mod1000000007> defined;
 }
 
-struct Op : AtCoder.IStaticMod
+readonly struct Op : AtCoder.IStaticMod
 {
     public uint Mod => default;
 
@@ -185,7 +137,7 @@ struct MinOp : ISegtreeOperator<int>
     }
 }
 
-struct OpSeg : ISegtreeOperator<int>
+readonly struct OpSeg : ISegtreeOperator<int>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int Operate(int x, int y) => default;
@@ -234,7 +186,7 @@ struct MinOp : ISegtreeOperator<int>
     }
 }
 
-struct OpSeg : ISegtreeOperator<int>
+readonly struct OpSeg : ISegtreeOperator<int>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int Operate(int x, int y) => default;
@@ -281,7 +233,7 @@ struct MinOp : AtCoder.ISegtreeOperator<int>
     }
 }
 
-struct OpSeg : AtCoder.ISegtreeOperator<int>
+readonly struct OpSeg : AtCoder.ISegtreeOperator<int>
 {
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public int Operate(int x, int y) => default;
@@ -332,7 +284,7 @@ struct MinOp : ISegtreeOperator<int>
     }
 }
 
-struct OpSeg : ISegtreeOperator<int>
+readonly struct OpSeg : ISegtreeOperator<int>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int Operate(int x, int y) => default;
@@ -356,7 +308,7 @@ class Program
     LazySegtree<long, int, Op> defined;
     LazySegtree<(int v, int size), (int b, int c), OpSeg> notDefined;
 }
-struct Op : ILazySegtreeOperator<long, int>
+readonly struct Op : ILazySegtreeOperator<long, int>
 {
     public long Identity => 0L;
     public int FIdentity => 0;
@@ -375,7 +327,7 @@ class Program
     LazySegtree<long, int, Op> defined;
     LazySegtree<(int v, int size), (int b, int c), OpSeg> notDefined;
 }
-struct Op : ILazySegtreeOperator<long, int>
+readonly struct Op : ILazySegtreeOperator<long, int>
 {
     public long Identity => 0L;
     public int FIdentity => 0;
@@ -387,7 +339,7 @@ struct Op : ILazySegtreeOperator<long, int>
     public long Operate(long x, long y) => 0L;
 }
 
-struct OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c)>
+readonly struct OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c)>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public (int v, int size) Operate((int v, int size) x, (int v, int size) y) => default;
@@ -415,7 +367,7 @@ class Program
     AtCoder.LazySegtree<long, int, Op> defined;
     AtCoder.LazySegtree<(int v, int size), (int b, int c), OpSeg> notDefined;
 }
-struct Op : AtCoder.ILazySegtreeOperator<long, int>
+readonly struct Op : AtCoder.ILazySegtreeOperator<long, int>
 {
     public long Identity => 0L;
     public int FIdentity => 0;
@@ -434,7 +386,7 @@ class Program
     AtCoder.LazySegtree<long, int, Op> defined;
     AtCoder.LazySegtree<(int v, int size), (int b, int c), OpSeg> notDefined;
 }
-struct Op : AtCoder.ILazySegtreeOperator<long, int>
+readonly struct Op : AtCoder.ILazySegtreeOperator<long, int>
 {
     public long Identity => 0L;
     public int FIdentity => 0;
@@ -446,7 +398,7 @@ struct Op : AtCoder.ILazySegtreeOperator<long, int>
     public long Operate(long x, long y) => 0L;
 }
 
-struct OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c)>
+readonly struct OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c)>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public (int v, int size) Operate((int v, int size) x, (int v, int size) y) => default;
@@ -474,7 +426,7 @@ class Program
     AtCoder.LazySegtree<long, int, Op> defined;
     AtCoder.LazySegtree<(int v, int size), (int b, int c), OpSeg> notDefined;
 }
-struct Op : AtCoder.ILazySegtreeOperator<long, int>
+readonly struct Op : AtCoder.ILazySegtreeOperator<long, int>
 {
     public long Identity => 0L;
     public int FIdentity => 0;
@@ -493,7 +445,7 @@ class Program
     AtCoder.LazySegtree<long, int, Op> defined;
     AtCoder.LazySegtree<(int v, int size), (int b, int c), OpSeg> notDefined;
 }
-struct Op : AtCoder.ILazySegtreeOperator<long, int>
+readonly struct Op : AtCoder.ILazySegtreeOperator<long, int>
 {
     public long Identity => 0L;
     public int FIdentity => 0;
@@ -505,7 +457,7 @@ struct Op : AtCoder.ILazySegtreeOperator<long, int>
     public long Operate(long x, long y) => 0L;
 }
 
-struct OpSeg : AtCoder.ILazySegtreeOperator<(int v, int size), (int b, int c)>
+readonly struct OpSeg : AtCoder.ILazySegtreeOperator<(int v, int size), (int b, int c)>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public (int v, int size) Operate((int v, int size) x, (int v, int size) y) => default;
@@ -534,7 +486,7 @@ class Program
     LazySegtree<long, int, Op> defined;
     LazySegtree<(int v, int size), (int b, int c), OpSeg> notDefined;
 }
-struct Op : ILazySegtreeOperator<long, int>
+readonly struct Op : ILazySegtreeOperator<long, int>
 {
     public long Identity => 0L;
     public int FIdentity => 0;
@@ -554,7 +506,7 @@ class Program
     LazySegtree<long, int, Op> defined;
     LazySegtree<(int v, int size), (int b, int c), OpSeg> notDefined;
 }
-struct Op : ILazySegtreeOperator<long, int>
+readonly struct Op : ILazySegtreeOperator<long, int>
 {
     public long Identity => 0L;
     public int FIdentity => 0;
@@ -566,7 +518,7 @@ struct Op : ILazySegtreeOperator<long, int>
     public long Operate(long x, long y) => 0L;
 }
 
-struct OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c)>
+readonly struct OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c)>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public (int v, int size) Operate((int v, int size) x, (int v, int size) y) => default;
@@ -607,7 +559,7 @@ class Program
     Type Type = typeof(Generic<,>);
 }
 
-struct Op : System.Collections.Generic.IComparer<short>
+readonly struct Op : System.Collections.Generic.IComparer<short>
 {
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public int Compare(short x, short y) => x.CompareTo(y);
@@ -664,7 +616,7 @@ struct Def<T> : IAny<T> {
     public T Prop2 { set; get; }
 }
 
-struct Op : IAny<(int, long)>
+readonly struct Op : IAny<(int, long)>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Init(ref (int, long) val, out bool success, params int[] nums)
@@ -718,7 +670,7 @@ class Program
     }
 }
 
-struct Op : IAny<(int n, long m)>
+readonly struct Op : IAny<(int n, long m)>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Init()
@@ -770,7 +722,7 @@ class Program
     }
 }
 
-struct BigOp : IAny<System.Numerics.BigInteger[]>
+readonly struct BigOp : IAny<System.Numerics.BigInteger[]>
 {
     public System.Numerics.BigInteger[] Prop => default;
 }";
@@ -816,7 +768,7 @@ class Program
     }
 }
 
-struct ModOp : IAny<StaticModInt<Mod1000000007>>
+readonly struct ModOp : IAny<StaticModInt<Mod1000000007>>
 {
     public StaticModInt<Mod1000000007> Prop => default;
 }";
@@ -852,7 +804,7 @@ class Program
     }
 }
 
-struct Op : ICastOperator<short, char>, INumOperator<float>, INumOperator<int>, IShiftOperator<int>
+readonly struct Op : ICastOperator<short, char>, INumOperator<float>, INumOperator<int>, IShiftOperator<int>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public char Cast(short y) => (char)y;
@@ -973,7 +925,7 @@ struct MinOp : ISegtreeOperator<int>
     }
 }
 
-struct OpSeg : ISegtreeOperator<ModInt>
+readonly struct OpSeg : ISegtreeOperator<ModInt>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ModInt Operate(ModInt x, ModInt y) => default;
@@ -1024,7 +976,7 @@ struct MinOp : ISegtreeOperator<int>
     }
 }
 
-struct OpSeg : ISegtreeOperator<long>
+readonly struct OpSeg : ISegtreeOperator<long>
 {
     [MI(MethodImplOptions.AggressiveInlining)]
     public long Operate(long x, long y) => default;
@@ -1078,7 +1030,7 @@ struct MinOp : ISegtreeOperator<int>
     }
 }
 
-struct OpSeg : ISegtreeOperator<long>
+readonly struct OpSeg : ISegtreeOperator<long>
 {
     [MethodImpl(256)]
     public long Operate(long x, long y) => default;
@@ -1141,7 +1093,7 @@ class Program
     }
 }
 
-struct Op : IAny
+readonly struct Op : IAny
 {
 }";
             await VerifyCS.VerifyCodeFixAsync(source,
@@ -1188,7 +1140,7 @@ class Program
     }
 }
 
-struct Op : IAny<(int n, long m)>
+readonly struct Op : IAny<(int n, long m)>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool Init() => default;
@@ -1241,7 +1193,7 @@ class Program
     }
 }
 
-struct Op : IAny<(int n, long m)>
+readonly struct Op : IAny<(int n, long m)>
 {
 }";
             await VerifyCS.VerifyCodeFixAsync(source,
