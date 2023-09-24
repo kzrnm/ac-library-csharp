@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add `Deque<T>.Grow(int capacity)`
 
 ### Changed
+- `AtCoder.Internal.Barrett` for `2^31` < m < `2^32`
 - Fix empty `Deque<T>.GetEnumerator()`
 
 ## [3.1.0] - 2023-09-24
@@ -39,7 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [3.0.0-pre5] - 2023-01-26
 ### Changed
-- Fix LCPArray Å® LcpArray
+- Fix LCPArray ‚Üí LcpArray
 
 ## [3.0.0-pre4] - 2023-01-26
 ### Added
