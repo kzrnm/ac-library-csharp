@@ -62,10 +62,7 @@ namespace AtCoder
     /// </code>
     /// </example>
     public readonly struct StaticModInt<T>
-     : IEquatable<StaticModInt<T>>, IFormattable
-#if GENERIC_MATH
-     , INumberBase<StaticModInt<T>>
-#endif
+     : IEquatable<StaticModInt<T>>, IFormattable, IModInt<StaticModInt<T>>
      where T : struct, IStaticMod
     {
         internal readonly uint _v;
@@ -107,7 +104,7 @@ namespace AtCoder
         /// <paramref name="v"/>が 0 未満、もしくは mod 以上の場合、自動で mod を取ります。
         /// </remarks>
         [MethodImpl(256)]
-        public StaticModInt(long v) : this(Round(v)) { }
+        public StaticModInt(long v) : this((uint)InternalMath.SafeMod(v, op.Mod)) { }
 
         /// <summary>
         /// StaticModInt&lt;<typeparamref name="T"/>&gt; 型のインスタンスを生成します。
@@ -120,17 +117,6 @@ namespace AtCoder
 
         [MethodImpl(256)]
         private StaticModInt(uint v) => _v = v;
-
-        [MethodImpl(256)]
-        private static uint Round(long v)
-        {
-            var x = v % op.Mod;
-            if (x < 0)
-            {
-                x += op.Mod;
-            }
-            return (uint)x;
-        }
 
         [MethodImpl(256)]
         public static StaticModInt<T> operator ++(StaticModInt<T> v)
@@ -201,7 +187,7 @@ namespace AtCoder
         [MethodImpl(256)]
         public static implicit operator StaticModInt<T>(int v) => new StaticModInt<T>(v);
         [MethodImpl(256)]
-        public static implicit operator StaticModInt<T>(uint v) => new StaticModInt<T>((long)v);
+        public static implicit operator StaticModInt<T>(uint v) => new StaticModInt<T>((ulong)v);
         [MethodImpl(256)]
         public static implicit operator StaticModInt<T>(long v) => new StaticModInt<T>(v);
         [MethodImpl(256)]
@@ -218,6 +204,19 @@ namespace AtCoder
         public StaticModInt<T> Pow(long n)
         {
             Contract.Assert(0 <= n, $"{nameof(n)} must be positive.");
+            return Pow((ulong)n);
+        }
+
+        /// <summary>
+        /// 自身を x として、x^<paramref name="n"/> を返します。
+        /// </summary>
+        /// <remarks>
+        /// <para>制約: 0≤|<paramref name="n"/>|</para>
+        /// <para>計算量: O(log(<paramref name="n"/>))</para>
+        /// </remarks>
+        [MethodImpl(256)]
+        public StaticModInt<T> Pow(ulong n)
+        {
             var x = this;
             var r = new StaticModInt<T>(1U);
 

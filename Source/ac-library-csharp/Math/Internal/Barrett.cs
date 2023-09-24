@@ -42,6 +42,19 @@ namespace AtCoder.Internal
         public uint Pow(long x, long n)
         {
             Contract.Assert(0 <= n, $"{nameof(n)} must be positive.");
+            return Pow(x, (ulong)n);
+        }
+
+        /// <summary>
+        /// <paramref name="x"/>^<paramref name="n"/> mod m を返します。
+        /// </summary>
+        /// <remarks>
+        /// <para>制約: 0≤|<paramref name="n"/>|</para>
+        /// <para>計算量: O(log(<paramref name="n"/>))</para>
+        /// </remarks>
+        [MethodImpl(256)]
+        public uint Pow(long x, ulong n)
+        {
             if (Mod == 1) return 0;
             uint r = 1, y = (uint)InternalMath.SafeMod(x, Mod);
             while (n > 0)

@@ -47,10 +47,7 @@ namespace AtCoder
     /// </code>
     /// </example>
     public readonly struct DynamicModInt<T>
-     : IEquatable<DynamicModInt<T>>, IFormattable
-#if GENERIC_MATH
-     , INumberBase<DynamicModInt<T>>
-#endif
+     : IEquatable<DynamicModInt<T>>, IFormattable, IModInt<DynamicModInt<T>>
      where T : struct
     {
         internal readonly uint _v;
@@ -105,7 +102,7 @@ namespace AtCoder
         /// <para>- <paramref name="v"/> が 0 未満、もしくは mod 以上の場合、自動で mod を取ります。</para>
         /// </remarks>
         [MethodImpl(256)]
-        public DynamicModInt(long v) : this(Round(v)) { }
+        public DynamicModInt(long v) : this((uint)InternalMath.SafeMod(v, bt.Mod)) { }
 
         /// <summary>
         /// DynamicModInt&lt;<typeparamref name="T"/>&gt; 型のインスタンスを生成します。
@@ -120,17 +117,6 @@ namespace AtCoder
         [MethodImpl(256)]
         private DynamicModInt(uint v) => _v = v;
 
-        [MethodImpl(256)]
-        private static uint Round(long v)
-        {
-            Contract.Assert(bt != null, $"{nameof(DynamicModInt<T>)}<{nameof(T)}>.{nameof(Mod)} is undefined.");
-            var x = v % bt.Mod;
-            if (x < 0)
-            {
-                x += bt.Mod;
-            }
-            return (uint)x;
-        }
 
         [MethodImpl(256)]
         public static DynamicModInt<T> operator ++(DynamicModInt<T> v)
@@ -207,7 +193,7 @@ namespace AtCoder
         [MethodImpl(256)]
         public static implicit operator DynamicModInt<T>(int v) => new DynamicModInt<T>(v);
         [MethodImpl(256)]
-        public static implicit operator DynamicModInt<T>(uint v) => new DynamicModInt<T>((long)v);
+        public static implicit operator DynamicModInt<T>(uint v) => new DynamicModInt<T>((ulong)v);
         [MethodImpl(256)]
         public static implicit operator DynamicModInt<T>(long v) => new DynamicModInt<T>(v);
         [MethodImpl(256)]
@@ -222,6 +208,16 @@ namespace AtCoder
         /// </remarks>
         [MethodImpl(256)]
         public DynamicModInt<T> Pow(long n) => new DynamicModInt<T>(bt.Pow(Value, n));
+
+        /// <summary>
+        /// 自身を x として、x^<paramref name="n"/> を返します。
+        /// </summary>
+        /// <remarks>
+        /// <para>制約: 0≤|<paramref name="n"/>|</para>
+        /// <para>計算量: O(log(<paramref name="n"/>))</para>
+        /// </remarks>
+        [MethodImpl(256)]
+        public DynamicModInt<T> Pow(ulong n) => new DynamicModInt<T>(bt.Pow(Value, n));
 
         /// <summary>
         /// 自身を x として、 xy≡1 なる y を返します。

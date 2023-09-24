@@ -152,6 +152,54 @@ namespace AtCoder
             }
         }
 
+        [Fact]
+        public void Pow()
+        {
+            RunStatic<ModID11>();
+            RunStatic<ModID12>();
+            RunStatic<ModID1000000007>();
+            RunStatic<ModID1000000008>();
+            RunStatic<ModID998244353>();
+
+            DynamicModInt<ModID998244353>.Mod = 998244353;
+            RunDynamic<ModID998244353>();
+
+            DynamicModInt<ModID1000000008>.Mod = 1000000008;
+            RunDynamic<ModID1000000008>();
+
+            void RunStatic<T>() where T : struct, IStaticMod
+            {
+                var mod = (int)new T().Mod;
+                var nums = Enumerable.Range(-100, 200).Concat(Enumerable.Range(mod - 100, 200));
+                foreach (var n in nums)
+                {
+                    StaticModInt<T> num = n;
+                    StaticModInt<T> expected = 1;
+                    for (int i = 0; i < 200; i++)
+                    {
+                        num.Pow(i).Should().Be(expected);
+                        expected *= num;
+                    }
+                }
+            }
+
+            void RunDynamic<T>() where T : struct
+            {
+                var mod = DynamicModInt<T>.Mod;
+                var nums = Enumerable.Range(-100, 200).Concat(Enumerable.Range(mod - 100, 200));
+                foreach (var n in nums)
+                {
+                    DynamicModInt<T> num = n;
+                    DynamicModInt<T> expected = 1;
+                    for (int i = 0; i < 200; i++)
+                    {
+                        num.Pow(i).Should().Be(expected);
+                        expected *= num;
+                    }
+                }
+            }
+        }
+
         private struct IncrementID : IStaticMod
         {
             public uint Mod => 11;
