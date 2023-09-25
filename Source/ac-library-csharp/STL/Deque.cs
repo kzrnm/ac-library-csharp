@@ -143,7 +143,11 @@ namespace AtCoder
             {
                 this.deque = deque;
                 this.isReverse = isReverse;
-                if (isReverse)
+                if (deque.head == deque.tail)
+                {
+                    index = last = 0;
+                }
+                else if (isReverse)
                 {
                     index = deque.tail;
                     last = deque.head;

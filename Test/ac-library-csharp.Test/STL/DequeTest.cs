@@ -3,12 +3,106 @@ using System.Collections.Generic;
 using System.Linq;
 using AtCoder.Internal;
 using FluentAssertions;
+using MersenneTwister;
 using Xunit;
 
 namespace AtCoder
 {
     public class DequeTest
     {
+        [Fact]
+        public void Empty()
+        {
+            Impl(new Deque<int>());
+            for (int capacity = 0; capacity < 10; capacity++)
+            {
+                Impl(new Deque<int>(capacity));
+
+                var deque = new Deque<int>(capacity);
+                deque.AddFirst(0);
+                deque.PopLast();
+                Impl(new Deque<int>(capacity));
+            }
+
+            static void Impl(Deque<int> deque)
+            {
+                deque.GetEnumerator().MoveNext().Should().BeFalse();
+                deque.Count.Should().Be(0);
+                deque.Should().BeEmpty();
+                deque.Should().Equal(Array.Empty<int>());
+            }
+        }
+
+        [Fact]
+        public void Lengths()
+        {
+            for (int size = 1; size < 10; size++)
+            {
+                var orig = Enumerable.Range(1, size).ToArray();
+                var deque = new Deque<int>();
+                foreach (var num in orig)
+                    deque.AddLast(num);
+                deque.Count.Should().Be(size);
+                deque.Should().Equal(orig);
+            }
+        }
+
+        [Fact]
+        public void Random()
+        {
+            var mt = MTRandom.Create();
+            var deque = new Deque<int>();
+            var list = new LinkedList<int>();
+
+            void AddFirst(int num)
+            {
+                deque.AddFirst(num);
+                list.AddFirst(num);
+            }
+
+            void AddLast(int num)
+            {
+                deque.AddLast(num);
+                list.AddLast(num);
+            }
+            void PopFirst()
+            {
+                deque.PopFirst();
+                list.RemoveFirst();
+            }
+
+            void PopLast()
+            {
+                deque.PopLast();
+                list.RemoveLast();
+            }
+
+
+            for (int q = 0; q < 10000; q++)
+            {
+                var type = mt.Next(4);
+                if (deque.Count == 0) type %= 2;
+
+                switch (type)
+                {
+                    case 0:
+                        AddFirst(mt.Next());
+                        break;
+                    case 1:
+                        AddLast(mt.Next());
+                        break;
+                    case 2:
+                        PopFirst();
+                        break;
+                    case 3:
+                        PopLast();
+                        break;
+                }
+
+                deque.Should().Equal(list);
+            }
+        }
+
         [Fact]
         public void Simple()
         {
