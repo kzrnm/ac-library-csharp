@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using AtCoder.Internal;
 
@@ -14,7 +15,6 @@ namespace AtCoder
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public class Deque<T> : IEnumerable<T>, IReadOnlyCollection<T>, ICollection<T>
     {
-
         [EditorBrowsable(Never)]
         public T[] data;
 
@@ -30,14 +30,8 @@ namespace AtCoder
         public Deque() : this(1) { }
         public Deque(int capacity)
         {
-            capacity =
-#if NET7_0_OR_GREATER
-                (int)System.Numerics.BitOperations.RoundUpToPowerOf2((uint)capacity + 1u);
-#else
-                1 << (InternalBit.CeilPow2(capacity + 1));
-#endif
-            data = new T[capacity];
-            mask = capacity - 1;
+            data = Array.Empty<T>();
+            Grow(capacity);
         }
 
         public int Count => (tail - head) & mask;
@@ -64,28 +58,58 @@ namespace AtCoder
         [MethodImpl(256)]
         public void AddFirst(T item)
         {
-            data[head = (head - 1) & mask] = item;
-            if (head == tail) Resize();
+            var nxt = (head - 1) & mask;
+            if (nxt == tail)
+            {
+                Grow();
+                nxt = (head - 1) & mask;
+            }
+            data[nxt] = item;
+            head = nxt;
         }
         [MethodImpl(256)]
         public void AddLast(T item)
         {
+            var nxt = (tail + 1) & mask;
+            if (head == nxt)
+            {
+                Grow();
+                nxt = (tail + 1) & mask;
+            }
             data[tail] = item;
-            tail = (tail + 1) & mask;
-            if (head == tail) Resize();
+            tail = nxt;
         }
 
         [EditorBrowsable(Never)]
-        public void Resize()
-        {
-            var oldSize = data.Length;
-            var newArray = new T[oldSize << 1];
+        public void Grow() => Grow(Math.Max(mask << 1, 0b11));
 
-            var hsize = oldSize - head;
-            Array.Copy(data, head, newArray, 0, hsize);
-            Array.Copy(data, 0, newArray, hsize, tail);
+        [EditorBrowsable(Never)]
+        public void Grow(int capacity)
+        {
+            capacity =
+#if NET7_0_OR_GREATER
+                (int)BitOperations.RoundUpToPowerOf2((uint)capacity + 1u);
+#else
+                1 << (InternalBit.CeilPow2(capacity + 1));
+#endif
+            Debug.Assert(BitOperations.PopCount((uint)capacity) == 1);
+            if (capacity <= data.Length) return;
+            var oldSize = Count;
+            var newArray = new T[capacity];
+            if (head <= tail)
+            {
+                Array.Copy(data, head, newArray, 0, oldSize);
+            }
+            else
+            {
+                var hsize = data.Length - head;
+                Debug.Assert(hsize + tail == oldSize);
+                Array.Copy(data, head, newArray, 0, hsize);
+                Array.Copy(data, 0, newArray, hsize, tail);
+            }
+
             data = newArray;
-            mask = data.Length - 1;
+            mask = capacity - 1;
             head = 0;
             tail = oldSize;
         }
