@@ -26,9 +26,9 @@ namespace AtCoder.Internal
         public uint Reduce(ulong z)
         {
             var x = InternalMath.Mul128Bit(z, IM);
-            var v = unchecked((uint)(z - x * Mod));
-            if (Mod <= v) v += Mod;
-            return v;
+            var y = x * Mod;
+            if (z < y) return (uint)(z - y + Mod);
+            return (uint)(z - y);
         }
 
         /// <summary>
