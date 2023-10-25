@@ -25,7 +25,7 @@ namespace AtCoder.Internal
         [MethodImpl(256)]
         public uint Reduce(ulong z)
         {
-            var x = InternalMath.Mul128Bit(z, IM);
+            var x = BigMul.Mul128Bit(z, IM);
             var y = x * Mod;
             if (z < y) return (uint)(z - y + Mod);
             return (uint)(z - y);
@@ -56,7 +56,7 @@ namespace AtCoder.Internal
         public uint Pow(long x, ulong n)
         {
             if (Mod == 1) return 0;
-            uint r = 1, y = (uint)InternalMath.SafeMod(x, Mod);
+            uint r = 1, y = (uint)ModCalc.SafeMod(x, Mod);
             while (n > 0)
             {
                 if ((n & 1) != 0) r = Mul(r, y);

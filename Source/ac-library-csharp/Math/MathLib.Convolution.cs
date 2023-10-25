@@ -84,11 +84,9 @@ namespace AtCoder
         {
             if (a.Length < b.Length)
             {
-#pragma warning disable IDE0180 // ref 構造体のため型引数として使えない
                 var temp = a;
                 a = b;
                 b = temp;
-#pragma warning restore IDE0180
             }
 
             var ans = new StaticModInt<TMod>[a.Length + b.Length - 1];
@@ -142,9 +140,9 @@ namespace AtCoder
                 Debug.Assert(default(FFTMod1).Mod == Mod1);
                 Debug.Assert(default(FFTMod2).Mod == Mod2);
                 Debug.Assert(default(FFTMod3).Mod == Mod3);
-                Debug.Assert(i1 == (ulong)InternalMath.InvGcd((long)M2M3, (long)Mod1).Item2);
-                Debug.Assert(i2 == (ulong)InternalMath.InvGcd((long)M1M3, (long)Mod2).Item2);
-                Debug.Assert(i3 == (ulong)InternalMath.InvGcd((long)M1M2, (long)Mod3).Item2);
+                Debug.Assert(i1 == (ulong)ModCalc.InvGcd((long)M2M3, (long)Mod1).Item2);
+                Debug.Assert(i2 == (ulong)ModCalc.InvGcd((long)M1M3, (long)Mod2).Item2);
+                Debug.Assert(i3 == (ulong)ModCalc.InvGcd((long)M1M2, (long)Mod3).Item2);
 
                 var c1 = Convolution<FFTMod1>(a, b);
                 var c2 = Convolution<FFTMod2>(a, b);
@@ -161,7 +159,7 @@ namespace AtCoder
                     x += ((ulong)c2[i] * i2) % Mod2 * M1M3;
                     x += ((ulong)c3[i] * i3) % Mod3 * M1M2;
 
-                    long diff = c1[i] - InternalMath.SafeMod((long)x, (long)Mod1);
+                    long diff = c1[i] - ModCalc.SafeMod((long)x, (long)Mod1);
                     if (diff < 0)
                     {
                         diff += (long)Mod1;

@@ -66,7 +66,7 @@ namespace AtCoder
         /// <paramref name="v"/>が 0 未満、もしくは mod 以上の場合、自動で mod を取ります。
         /// </remarks>
         [MethodImpl(256)]
-        public StaticModInt(long v) : this((uint)InternalMath.SafeMod(v, op.Mod)) { }
+        public StaticModInt(long v) : this((uint)ModCalc.SafeMod(v, op.Mod)) { }
 
         /// <summary>
         /// StaticModInt&lt;<typeparamref name="T"/>&gt; 型のインスタンスを生成します。
@@ -211,7 +211,7 @@ namespace AtCoder
             }
             else
             {
-                var (g, x) = InternalMath.InvGcd(_v, op.Mod);
+                var (g, x) = ModCalc.InvGcd(_v, op.Mod);
                 Contract.Assert(g == 1, reason: $"gcd({nameof(x)}, {nameof(Mod)}) must be 1.");
                 return new StaticModInt<T>(x);
             }
