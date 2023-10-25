@@ -19,6 +19,8 @@
     <EmbeddingSource>true</EmbeddingSource>
     <DefineConstants Condition="'$(EmbeddingSource)'=='true'">$(DefineConstants);EMBEDDING</DefineConstants>
 
+    <SourceExpanderVersion>5.5.1</SourceExpanderVersion>
+
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>

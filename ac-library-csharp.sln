@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30413.136
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ac-library-csharp", "Source\ac-library-csharp\ac-library-csharp.csproj", "{7915FF27-0322-4460-A94E-FA7B86D5E25C}"
 EndProject
@@ -23,6 +23,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AtCoderAnalyzer.Test", "Test\AtCoderAnalyzer.Test\AtCoderAnalyzer.Test.csproj", "{522A1037-5060-4CBA-A4A3-99624FAD732E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ac-library-csharp.LibraryChecker", "Test\ac-library-csharp.LibraryChecker\ac-library-csharp.LibraryChecker.csproj", "{D61D3584-B86E-4C1F-BB8A-A1747A60E834}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Expand.Test", "Test\Expand.Test\Expand.Test.csproj", "{5121294D-76A4-44D4-8C2C-36B29FC162E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +52,10 @@ Global
 		{D61D3584-B86E-4C1F-BB8A-A1747A60E834}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D61D3584-B86E-4C1F-BB8A-A1747A60E834}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D61D3584-B86E-4C1F-BB8A-A1747A60E834}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5121294D-76A4-44D4-8C2C-36B29FC162E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5121294D-76A4-44D4-8C2C-36B29FC162E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5121294D-76A4-44D4-8C2C-36B29FC162E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5121294D-76A4-44D4-8C2C-36B29FC162E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,6 +64,7 @@ Global
 		{D0662927-8142-43D2-ABA9-C1977107F0ED} = {573A3DC6-BEB2-4E3A-8EB3-E4CB88F3C8F1}
 		{522A1037-5060-4CBA-A4A3-99624FAD732E} = {573A3DC6-BEB2-4E3A-8EB3-E4CB88F3C8F1}
 		{D61D3584-B86E-4C1F-BB8A-A1747A60E834} = {573A3DC6-BEB2-4E3A-8EB3-E4CB88F3C8F1}
+		{5121294D-76A4-44D4-8C2C-36B29FC162E4} = {573A3DC6-BEB2-4E3A-8EB3-E4CB88F3C8F1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3DF2A5DC-C174-486C-A24B-1F08FAA0D4F5}

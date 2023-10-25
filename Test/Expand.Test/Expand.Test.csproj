@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net7.0;netcoreapp3.1</TargetFrameworks>
+    <Nullable>annotations</Nullable>
+
+    <LangVersion Condition="'$(TargetFramework)' == 'netcoreapp3.1'">8</LangVersion>
+    <LangVersion Condition="'$(TargetFramework)' == 'net7.0'">11</LangVersion>
+
+    <NoWarn>$(NoWarn);CS0436;CS8981;CS0649</NoWarn>
+    <SourceExpander_Generator_ExpandingAll>true</SourceExpander_Generator_ExpandingAll>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SourceExpander.Generator" Version="$(SourceExpanderVersion)">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Source\ac-library-csharp\ac-library-csharp.csproj" />
+  </ItemGroup>
+</Project>
