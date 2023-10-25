@@ -349,7 +349,9 @@ namespace AtCoder
             return 0;
         }
 
+#if EMBEDDING
         [SourceExpander.NotEmbeddingSource]
+#endif
         [DebuggerDisplay("Value = {" + nameof(Value) + "}, Lazy = {" + nameof(Lazy) + "}", Name = "{" + nameof(Key) + ",nq}")]
         internal readonly struct DebugItem
         {
@@ -369,6 +371,9 @@ namespace AtCoder
             public TValue Value { get; }
             public F Lazy { get; }
         }
+#if EMBEDDING
+        [SourceExpander.NotEmbeddingSource]
+#endif
         private class DebugView
         {
             private readonly LazySegtree<TValue, F, TOp> s;
@@ -377,7 +382,6 @@ namespace AtCoder
                 s = segtree;
             }
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-            [SourceExpander.NotEmbeddingSource]
             public DebugItem[] Items
             {
                 get

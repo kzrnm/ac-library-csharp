@@ -107,57 +107,32 @@ namespace AtCoder.Embedding
                 "AtCoder.Operators");
         }
 
-
         [EmbeddingFact]
         public async Task RemoveContract()
         {
             var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
-            var codes = embedded.SourceFiles.Select(s => s.CodeBody);
-            codes.Should().NotContain(code => code.Contains("Contract.Assert"));
+            var code = string.Join(' ', embedded.SourceFiles.Select(s => s.CodeBody));
+            code.Should().NotContain("Contract.Assert");
         }
 
         [EmbeddingFact]
-        public async Task SegtreeDebugView()
+        public async Task RemoveDebugView()
         {
             var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
-            var source = embedded.SourceFiles.Single(s => s.FileName.Split('\\', '/').Last() == "Segtree.cs");
-            source.CodeBody.Should()
-                .EndWith("private class DebugView{private readonly Segtree<TValue,TOp>s;public DebugView(Segtree<TValue,TOp>segtree){s=segtree;}}}}")
-                .And
-                .NotContain("DebugItem");
-        }
-
-        [EmbeddingFact]
-        public async Task LazySegtreeDebugView()
-        {
-            var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
-            var source = embedded.SourceFiles.Single(s => s.FileName.Split('\\', '/').Last() == "LazySegtree.cs");
-            source.CodeBody.Should()
-                .EndWith("private class DebugView{private readonly LazySegtree<TValue,F,TOp>s;public DebugView(LazySegtree<TValue,F,TOp>segtree){s=segtree;}}}}")
-                .And
-                .NotContain("DebugItem");
+            var code = string.Join(' ', embedded.SourceFiles.Select(s => s.CodeBody));
+            code.Should().Contain("CollectionDebugView");
+            code.Replace("CollectionDebugView", "CoDe").Should().NotContain("Debug");
         }
 
         [EmbeddingGenericMathFact]
-        public async Task FenwickTreeGenericMathDebugView()
+        public async Task FenwickTreeGenericMath()
         {
             var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
             var source = embedded.SourceFiles.Single(s => s.FileName.Split('\\', '/').Last() == "FenwickTree.GenericMath.cs");
             source.CodeBody.Should()
-                .EndWith("private class DebugView{private readonly FenwickTree<TValue>fw;public DebugView(FenwickTree<TValue>fenwickTree){fw=fenwickTree;}}}}")
+                .Contain("FenwickTree<TValue>")
                 .And
-                .NotContain("DebugItem");
-        }
-
-        [EmbeddingFact]
-        public async Task FenwickTreeDebugView()
-        {
-            var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
-            var source = embedded.SourceFiles.Single(s => s.FileName.Split('\\', '/').Last() == "FenwickTree.cs");
-            source.CodeBody.Should()
-                .EndWith("private class DebugView{private readonly FenwickTree<TValue,TOp>fw;public DebugView(FenwickTree<TValue,TOp>fenwickTree){fw=fenwickTree;}}}}")
-                .And
-                .NotContain("DebugItem");
+                .NotContain("Debug");
         }
 
 #if DEBUG

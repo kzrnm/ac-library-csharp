@@ -152,6 +152,10 @@ namespace AtCoder.Internal
         public ReadOnlySpan<TKey> UnorderdKeys() => keys.AsSpan(0, Count);
         [EditorBrowsable(Never)]
         public ReadOnlySpan<TValue> UnorderdValues() => values.AsSpan(0, Count);
+
+#if EMBEDDING
+        [SourceExpander.NotEmbeddingSource]
+#endif
         private class DebugView
         {
             private readonly PriorityQueueOp<TKey, TValue, TKOp> pq;

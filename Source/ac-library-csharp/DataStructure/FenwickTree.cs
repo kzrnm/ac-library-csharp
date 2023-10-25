@@ -95,7 +95,9 @@ namespace AtCoder
         [MethodImpl(256)]
         public TValue Slice(int l, int len) => Sum(l, l + len);
 
+#if EMBEDDING
         [SourceExpander.NotEmbeddingSource]
+#endif
         [DebuggerDisplay("Value = {" + nameof(Value) + "}, Sum = {" + nameof(Sum) + "}")]
         internal readonly struct DebugItem
         {
@@ -107,6 +109,9 @@ namespace AtCoder
             public TValue Value { get; }
             public TValue Sum { get; }
         }
+#if EMBEDDING
+        [SourceExpander.NotEmbeddingSource]
+#endif
         private class DebugView
         {
             private readonly FenwickTree<TValue, TOp> fw;
@@ -115,7 +120,6 @@ namespace AtCoder
                 fw = fenwickTree;
             }
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-            [SourceExpander.NotEmbeddingSource]
             public DebugItem[] Items
             {
                 get

@@ -252,7 +252,9 @@ namespace AtCoder
             return 0;
         }
 
+#if EMBEDDING
         [SourceExpander.NotEmbeddingSource]
+#endif
         [DebuggerDisplay("{" + nameof(Value) + "}", Name = "{" + nameof(Key) + ",nq}")]
         internal readonly struct DebugItem
         {
@@ -270,6 +272,9 @@ namespace AtCoder
             public string Key => R - L == 1 ? $"[{L}]" : $"[{L}-{R})";
             public TValue Value { get; }
         }
+#if EMBEDDING
+        [SourceExpander.NotEmbeddingSource]
+#endif
         private class DebugView
         {
             private readonly Segtree<TValue, TOp> s;
@@ -278,7 +283,6 @@ namespace AtCoder
                 s = segtree;
             }
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-            [SourceExpander.NotEmbeddingSource]
             public DebugItem[] Items
             {
                 get
