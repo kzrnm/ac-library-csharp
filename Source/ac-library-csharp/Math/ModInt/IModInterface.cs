@@ -25,6 +25,18 @@ namespace AtCoder
         /// <para>計算量: O(log(<paramref name="n"/>))</para>
         /// </remarks>
         T Pow(ulong n);
+
+        /// <summary>
+        /// 格納されている値を返します。
+        /// </summary>
+        int Value { get; }
+
+#if GENERIC_MATH
+        /// <summary>
+        /// mod を返します。
+        /// </summary>
+        abstract static int Mod { get; }
+#endif
     }
 
     /// <summary>
