@@ -102,7 +102,7 @@ namespace AtCoder
         /// <para>- <paramref name="v"/> が 0 未満、もしくは mod 以上の場合、自動で mod を取ります。</para>
         /// </remarks>
         [MethodImpl(256)]
-        public DynamicModInt(long v) : this((uint)InternalMath.SafeMod(v, bt.Mod)) { }
+        public DynamicModInt(long v) : this((uint)ModCalc.SafeMod(v, bt.Mod)) { }
 
         /// <summary>
         /// DynamicModInt&lt;<typeparamref name="T"/>&gt; 型のインスタンスを生成します。
@@ -228,7 +228,7 @@ namespace AtCoder
         [MethodImpl(256)]
         public DynamicModInt<T> Inv()
         {
-            var (g, x) = InternalMath.InvGcd(_v, bt.Mod);
+            var (g, x) = ModCalc.InvGcd(_v, bt.Mod);
             Contract.Assert(g == 1, reason: $"gcd({nameof(x)}, {nameof(Mod)}) must be 1.");
             return new DynamicModInt<T>(x);
         }
