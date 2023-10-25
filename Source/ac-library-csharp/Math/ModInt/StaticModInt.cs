@@ -9,43 +9,6 @@ using System.Numerics;
 namespace AtCoder
 {
     /// <summary>
-    /// コンパイル時に決定する mod を表します。
-    /// </summary>
-    /// <example>
-    /// <code>
-    /// public readonly struct Mod1000000009 : IStaticMod
-    /// {
-    ///     public uint Mod => 1000000009;
-    ///     public bool IsPrime => true;
-    /// }
-    /// </code>
-    /// </example>
-    [IsOperator]
-    public interface IStaticMod
-    {
-        /// <summary>
-        /// mod を取得します。
-        /// </summary>
-        uint Mod { get; }
-
-        /// <summary>
-        /// mod が素数であるか識別します。
-        /// </summary>
-        bool IsPrime { get; }
-    }
-    public readonly struct Mod1000000007 : IStaticMod
-    {
-        public uint Mod => 1000000007;
-        public bool IsPrime => true;
-    }
-
-    public readonly struct Mod998244353 : IStaticMod
-    {
-        public uint Mod => 998244353;
-        public bool IsPrime => true;
-    }
-
-    /// <summary>
     /// 四則演算時に自動で mod を取る整数型。mod の値はコンパイル時に決定している必要があります。
     /// </summary>
     /// <typeparam name="T">定数 mod を表す構造体</typeparam>
@@ -61,9 +24,8 @@ namespace AtCoder
     /// }
     /// </code>
     /// </example>
-    public readonly struct StaticModInt<T>
-     : IEquatable<StaticModInt<T>>, IFormattable, IModInt<StaticModInt<T>>
-     where T : struct, IStaticMod
+    public readonly struct StaticModInt<T> : IEquatable<StaticModInt<T>>, IFormattable, IModInt<StaticModInt<T>>
+        where T : struct, IStaticMod
     {
         internal readonly uint _v;
         private static readonly T op = default;
