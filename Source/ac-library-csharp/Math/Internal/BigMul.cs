@@ -5,7 +5,7 @@ using System.Runtime.Intrinsics.X86;
 
 namespace AtCoder.Internal
 {
-    public static class BigMul
+    public static class Mul128
     {
         /// <summary>
         /// <paramref name="a"/> * <paramref name="b"/> の上位 64 ビットを返します。

@@ -25,7 +25,7 @@ namespace AtCoder.Internal
         [MethodImpl(256)]
         public uint Reduce(ulong z)
         {
-            var x = BigMul.Mul128Bit(z, IM);
+            var x = Mul128.Mul128Bit(z, IM);
             var y = x * Mod;
             if (z < y) return (uint)(z - y + Mod);
             return (uint)(z - y);

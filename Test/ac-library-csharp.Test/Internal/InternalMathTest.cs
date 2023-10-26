@@ -199,7 +199,7 @@ namespace AtCoder.Internal
                     var y = b + (ulong)j;
                     ulong expected = Math.BigMul(x, y, out _);
                     InternalMath.Mul128Bit(x, y).Should().Be(expected);
-                    BigMul.Mul128Bit(x, y).Should().Be(expected);
+                    Mul128.Mul128Bit(x, y).Should().Be(expected);
                 }
         }
         [Fact]
@@ -213,7 +213,7 @@ namespace AtCoder.Internal
                 var x = arr[0];
                 var y = arr[1];
                 ulong expected = Math.BigMul(x, y, out _);
-                BigMul.Mul128BitLogic(x, y).Should().Be(expected);
+                Mul128.Mul128BitLogic(x, y).Should().Be(expected);
             }
         }
 #endif

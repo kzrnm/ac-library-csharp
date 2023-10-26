@@ -25,9 +25,9 @@ namespace AtCoder.Internal
         public static uint PowMod(long x, long n, int m)
             => ModCalc.PowMod(x, n, m);
 
-        /// <inheritdoc cref="BigMul.Mul128Bit(ulong, ulong)" />
+        /// <inheritdoc cref="Mul128.Mul128Bit(ulong, ulong)" />
         [MethodImpl(256)]
-        public static ulong Mul128Bit(ulong a, ulong b) => BigMul.Mul128Bit(a, b);
+        public static ulong Mul128Bit(ulong a, ulong b) => Mul128.Mul128Bit(a, b);
 
         /// <summary>
         /// <paramref name="n"/> が素数かを返します。
