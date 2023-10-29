@@ -130,7 +130,7 @@ namespace AtCoder.Embedding
             var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
             var source = embedded.SourceFiles.Single(s => s.FileName.Split('\\', '/').Last() == "FenwickTree.GenericMath.cs");
             source.CodeBody.Should()
-                .Contain("FenwickTree<TValue>")
+                .Contain("FenwickTree<T>")
                 .And
                 .NotContain("Debug");
         }

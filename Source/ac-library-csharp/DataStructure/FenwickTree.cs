@@ -18,19 +18,19 @@ namespace AtCoder
     /// </list>
     /// <para>を O(log⁡N) で求めることが出来るデータ構造です。</para>
     /// </summary>
-    /// <typeparam name="TValue">配列要素の型</typeparam>
+    /// <typeparam name="T">配列要素の型</typeparam>
     /// <typeparam name="TOp">配列要素の操作を表す型</typeparam>
     [DebuggerTypeProxy(typeof(FenwickTree<,>.DebugView))]
 #if GENERIC_MATH
     [System.Obsolete("Use generic math")]
 #endif
-    public class FenwickTree<TValue, TOp>
-        where TOp : struct, IAdditionOperator<TValue>, ISubtractOperator<TValue>
+    public class FenwickTree<T, TOp>
+        where TOp : struct, IAdditionOperator<T>, ISubtractOperator<T>
     {
         private static readonly TOp op = default;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public readonly TValue[] data;
+        public readonly T[] data;
 
         public int Length { get; }
 
@@ -45,7 +45,7 @@ namespace AtCoder
         public FenwickTree(int n)
         {
             Length = n;
-            data = new TValue[n + 1];
+            data = new T[n + 1];
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace AtCoder
         /// <para>計算量: O(log n)</para>
         /// </remarks>
         [MethodImpl(256)]
-        public void Add(int p, TValue x)
+        public void Add(int p, T x)
         {
             Contract.Assert((uint)p < (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(p)} && {nameof(p)} < Length");
             for (++p; p < data.Length; p += (int)InternalBit.ExtractLowestSetBit(p))
@@ -74,7 +74,7 @@ namespace AtCoder
         /// </remarks>
         /// <returns>a[<paramref name="l"/>] + a[<paramref name="l"/> - 1] + ... + a[<paramref name="r"/> - 1]</returns>
         [MethodImpl(256)]
-        public TValue Sum(int l, int r)
+        public T Sum(int l, int r)
         {
             Contract.Assert((uint)l <= (uint)r && (uint)r <= (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(l)} && {nameof(l)} <= {nameof(r)} && {nameof(r)} <= Length");
             return op.Subtract(Sum(r), Sum(l));
@@ -82,9 +82,9 @@ namespace AtCoder
 
         [MethodImpl(256)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public TValue Sum(int r)
+        public T Sum(int r)
         {
-            TValue s = default;
+            T s = default;
             for (; r > 0; r &= r - 1)
             {
                 s = op.Add(s, data[r]);
@@ -93,7 +93,7 @@ namespace AtCoder
         }
 
         [MethodImpl(256)]
-        public TValue Slice(int l, int len) => Sum(l, l + len);
+        public T Slice(int l, int len) => Sum(l, l + len);
 
 #if EMBEDDING
         [SourceExpander.NotEmbeddingSource]
@@ -101,21 +101,21 @@ namespace AtCoder
         [DebuggerDisplay("Value = {" + nameof(Value) + "}, Sum = {" + nameof(Sum) + "}")]
         internal readonly struct DebugItem
         {
-            public DebugItem(TValue value, TValue sum)
+            public DebugItem(T value, T sum)
             {
                 Value = value;
                 Sum = sum;
             }
-            public TValue Value { get; }
-            public TValue Sum { get; }
+            public T Value { get; }
+            public T Sum { get; }
         }
 #if EMBEDDING
         [SourceExpander.NotEmbeddingSource]
 #endif
         private class DebugView
         {
-            private readonly FenwickTree<TValue, TOp> fw;
-            public DebugView(FenwickTree<TValue, TOp> fenwickTree)
+            private readonly FenwickTree<T, TOp> fw;
+            public DebugView(FenwickTree<T, TOp> fenwickTree)
             {
                 fw = fenwickTree;
             }
