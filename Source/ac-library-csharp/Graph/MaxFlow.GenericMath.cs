@@ -25,7 +25,7 @@ namespace AtCoder
         : INumber<T>
         , IMinMaxValue<T>
     {
-        internal readonly int _n;
+        public int Count => _g.Length;
         [EditorBrowsable(EditorBrowsableState.Never)]
         public readonly SimpleList<(int first, int second)> _pos;
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -40,7 +40,6 @@ namespace AtCoder
         /// </remarks>
         public MfGraph(int n)
         {
-            _n = n;
             _g = new SimpleList<EdgeInternal>[n];
             for (int i = 0; i < _g.Length; i++)
             {
@@ -69,8 +68,8 @@ namespace AtCoder
         public int AddEdge(int from, int to, T cap)
         {
             int m = _pos.Count;
-            Contract.Assert((uint)from < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(from)} && {nameof(from)} < _n");
-            Contract.Assert((uint)to < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(to)} && {nameof(to)} < _n");
+            Contract.Assert((uint)from < (uint)Count, reason: $"IndexOutOfRange: 0 <= {nameof(from)} && {nameof(from)} < Count");
+            Contract.Assert((uint)to < (uint)Count, reason: $"IndexOutOfRange: 0 <= {nameof(to)} && {nameof(to)} < Count");
             Contract.Assert(T.IsPositive(cap), reason: $"IndexOutOfRange: 0 <= {nameof(cap)}");
             _pos.Add((from, _g[from].Count));
             int fromId = _g[from].Count;
@@ -234,11 +233,11 @@ namespace AtCoder
         [MethodImpl(256)]
         public T Flow(int s, int t, T flowLimit)
         {
-            Contract.Assert((uint)s < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(s)} && {nameof(s)} < _n");
-            Contract.Assert((uint)t < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(t)} && {nameof(t)} < _n");
+            Contract.Assert((uint)s < (uint)Count, reason: $"IndexOutOfRange: 0 <= {nameof(s)} && {nameof(s)} < Count");
+            Contract.Assert((uint)t < (uint)Count, reason: $"IndexOutOfRange: 0 <= {nameof(t)} && {nameof(t)} < Count");
             Contract.Assert(s != t, reason: $"{nameof(s)} and {nameof(t)} must be different.");
 
-            var level = new int[_n];
+            var level = new int[Count];
             int[] iter;
             var que = new Queue<int>();
 
@@ -278,7 +277,7 @@ namespace AtCoder
             //        res = op.Add(res, d);
             //        if (EqualityComparer<TValue>.Default.Equals(res, up)) return res;
             //    }
-            //    level[v] = _n;
+            //    level[v] = Count;
             //    return res;
             //}
 
@@ -328,7 +327,7 @@ namespace AtCoder
                             childOk = true;
                         }
                     }
-                    level[v] = _n;
+                    level[v] = Count;
                     lastRes = res;
                 }
                 return lastRes;
@@ -339,7 +338,7 @@ namespace AtCoder
             {
                 Bfs();
                 if (level[t] == -1) break;
-                iter = new int[_n];
+                iter = new int[Count];
                 var f = Dfs(t, flowLimit - flow);
                 if (EqualityComparer<T>.Default.Equals(f, default)) break;
                 flow += f;
@@ -370,7 +369,7 @@ namespace AtCoder
         [MethodImpl(256)]
         public bool[] MinCut(int s)
         {
-            var visited = new bool[_n];
+            var visited = new bool[Count];
             var que = new Queue<int>();
             que.Enqueue(s);
             while (que.Count > 0)
