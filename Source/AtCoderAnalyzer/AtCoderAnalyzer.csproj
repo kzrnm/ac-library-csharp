@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>9</LangVersion>
-    <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageTags>ac-library-csharp;AtCoder;Analyzer</PackageTags>
     <PackageId>AtCoderAnalyzer</PackageId>
     <Description>Analyzer For AtCoder library</Description>
