@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using AtCoder.Internal;
 using FluentAssertions;
 using MersenneTwister;
 using Xunit;
-#if NET7_0_OR_GREATER
-using System.Numerics;
-#endif
 
 namespace AtCoder
 {
@@ -261,6 +260,99 @@ namespace AtCoder
             }
         }
 
+        [Fact]
+        public void Parse()
+        {
+            var bigs = new[]{
+                BigInteger.Pow(10, 1000),
+                BigInteger.Pow(10, 1000),
+            };
+            var invalids = new[]
+            {
+                "2-2",
+                "ABC",
+                "111.0",
+                "111,1",
+            };
+            RunStatic<ModID11>();
+            RunStatic<ModID12>();
+            RunStatic<ModID1000000007>();
+            RunStatic<ModID1000000008>();
+            RunStatic<ModID998244353>();
+
+            DynamicModInt<ModID998244353>.Mod = 998244353;
+            RunDynamic<ModID998244353>();
+
+            DynamicModInt<ModID1000000008>.Mod = 1000000008;
+            RunDynamic<ModID1000000008>();
+
+            void RunStatic<T>() where T : struct, IStaticMod
+            {
+                var mod = (int)new T().Mod;
+                var nums = Enumerable.Range(-100, 200).Concat(Enumerable.Range(mod - 100, 200));
+                foreach (var n in nums)
+                {
+                    var s = n.ToString();
+                    var expected = (n % mod + mod) % mod;
+                    StaticModInt<T>.TryParse(s, out var num1).Should().BeTrue();
+                    var num2 = StaticModInt<T>.Parse(s);
+
+                    num1.Value.Should().Be(expected);
+                    num2.Value.Should().Be(expected);
+                }
+
+                foreach (var n in bigs)
+                {
+                    var s = n.ToString();
+                    var expected = (int)(n % mod + mod) % mod;
+                    StaticModInt<T>.TryParse(s, out var num1).Should().BeTrue();
+                    var num2 = StaticModInt<T>.Parse(s);
+
+                    num1.Value.Should().Be(expected);
+                    num2.Value.Should().Be(expected);
+                }
+
+                foreach (var s in invalids)
+                {
+                    StaticModInt<T>.TryParse(s, out _).Should().BeFalse();
+                    s.Invoking(s => StaticModInt<T>.Parse(s)).Should().ThrowExactly<FormatException>();
+                }
+            }
+
+            void RunDynamic<T>() where T : struct
+            {
+                var mod = DynamicModInt<T>.Mod;
+                var nums = Enumerable.Range(-100, 200).Concat(Enumerable.Range(mod - 100, 200));
+                foreach (var n in nums)
+                {
+                    var s = n.ToString();
+                    var expected = (n % mod + mod) % mod;
+                    DynamicModInt<T>.TryParse(s, out var num1).Should().BeTrue();
+                    var num2 = DynamicModInt<T>.Parse(s);
+
+                    num1.Value.Should().Be(expected);
+                    num2.Value.Should().Be(expected);
+                }
+
+                foreach (var n in bigs)
+                {
+                    var s = n.ToString();
+                    var expected = (int)(n % mod + mod) % mod;
+                    DynamicModInt<T>.TryParse(s, out var num1).Should().BeTrue();
+                    var num2 = DynamicModInt<T>.Parse(s);
+
+                    num1.Value.Should().Be(expected);
+                    num2.Value.Should().Be(expected);
+                }
+
+                foreach (var s in invalids)
+                {
+                    DynamicModInt<T>.TryParse(s, out _).Should().BeFalse();
+                    s.Invoking(s => DynamicModInt<T>.Parse(s)).Should().ThrowExactly<FormatException>();
+                }
+            }
+        }
+
 
         private struct DynamicUsageID { }
         [Fact]
@@ -313,6 +405,7 @@ namespace AtCoder
             new StaticModInt<ConstructorID>(-10).Value.Should().Be(1);
             (1 + new StaticModInt<ConstructorID>(1)).Value.Should().Be(2);
         }
+
 
         private struct MemoryID : IStaticMod
         {
