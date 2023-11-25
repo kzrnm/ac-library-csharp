@@ -5,7 +5,7 @@ namespace AtCoder.Internal
     public static class FloorSum
     {
         /// <summary>
-        /// sum_{i=0}^{<paramref name="n"/>-1} floor(<paramref name="a"/>*i+<paramref name="b"/>/<paramref name="m"/>) を返します。答えがオーバーフローしたならば  mod2^64 で等しい値を返します。
+        /// sum_{i=0}^{<paramref name="n"/>-1} floor((<paramref name="a"/>*i+<paramref name="b"/>)/<paramref name="m"/>) を返します。答えがオーバーフローしたならば  mod2^64 で等しい値を返します。
         /// </summary>
         /// <remarks>
         /// <para>制約:</para>
