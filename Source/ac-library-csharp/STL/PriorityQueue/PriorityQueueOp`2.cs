@@ -91,7 +91,7 @@ namespace AtCoder.Internal
         public KeyValuePair<TKey, TValue> EnqueueDequeue(TKey key, TValue value)
         {
             var res = KeyValuePair.Create(keys[0], values[0]);
-            if (_comparer.Compare(key, keys[0]) <= 0)
+            if (Count == 0 || _comparer.Compare(key, keys[0]) <= 0)
             {
                 return KeyValuePair.Create(key, value);
             }

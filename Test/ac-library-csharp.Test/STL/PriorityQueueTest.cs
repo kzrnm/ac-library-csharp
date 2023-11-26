@@ -216,6 +216,9 @@ namespace AtCoder
         {
             var pq1 = new PriorityQueue<int>();
             var pq2 = new PriorityQueue<int>();
+
+            pq1.EnqueueDequeue(1).Should().Be(1);
+
             for (int i = 10; i > 0; i--)
             {
                 pq1.Enqueue(i);
@@ -242,6 +245,9 @@ namespace AtCoder
         {
             var pq1 = new PriorityQueueDictionary<int, string>();
             var pq2 = new PriorityQueueDictionary<int, string>();
+
+            pq1.EnqueueDequeue(1, "ab").Should().Be(KeyValuePair.Create(1, "ab"));
+
             for (int i = 10; i > 0; i--)
             {
                 pq1.Enqueue(i, i.ToString());
