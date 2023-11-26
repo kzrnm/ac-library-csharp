@@ -69,7 +69,7 @@ namespace AtCoder.Internal
         public T EnqueueDequeue(T value)
         {
             var res = data[0];
-            if (_comparer.Compare(value, res) <= 0)
+            if (Count == 0 || _comparer.Compare(value, res) <= 0)
             {
                 return value;
             }
