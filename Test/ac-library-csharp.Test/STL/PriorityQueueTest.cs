@@ -71,9 +71,11 @@ namespace AtCoder
                     pq.Enqueue(-lx);
                 foreach (var lx in list)
                 {
-                    pq.TryDequeue(out var res).Should().BeTrue();
+                    pq.TryPeek(out var res).Should().BeTrue();
+                    pq.TryDequeue(out res).Should().BeTrue();
                     res.Should().Be(-lx);
                 }
+                pq.TryPeek(out _).Should().BeFalse();
                 pq.TryDequeue(out _).Should().BeFalse();
                 pq.Count.Should().Be(0);
             }
@@ -110,7 +112,8 @@ namespace AtCoder
                     pq.Enqueue(-lx, lx);
                 foreach (var lx in list)
                 {
-                    pq.TryDequeue(out var res).Should().BeTrue();
+                    pq.TryPeek(out var res).Should().BeTrue();
+                    pq.TryDequeue(out res).Should().BeTrue();
                     res.Should().Be(KeyValuePair.Create(-(long)lx, lx));
                 }
                 pq.TryDequeue(out _).Should().BeFalse();
@@ -120,10 +123,14 @@ namespace AtCoder
                     pq.Enqueue(-lx, lx);
                 foreach (var lx in list)
                 {
-                    pq.TryDequeue(out var key, out var val).Should().BeTrue();
+                    pq.TryPeek(out var key, out var val).Should().BeTrue();
+                    key.Should().Be(-lx);
+                    val.Should().Be(lx);
+                    pq.TryDequeue(out key, out val).Should().BeTrue();
                     key.Should().Be(-lx);
                     val.Should().Be(lx);
                 }
+                pq.TryPeek(out _, out _).Should().BeFalse();
                 pq.TryDequeue(out _, out _).Should().BeFalse();
                 pq.Count.Should().Be(0);
             }
@@ -270,8 +277,62 @@ namespace AtCoder
             }
         }
 
+
         [Fact]
         public void DequeueEnqueue()
+        {
+            var pq1 = new PriorityQueue<int>();
+            var pq2 = new PriorityQueue<int>();
+            for (int i = 10; i > 0; i--)
+            {
+                pq1.Enqueue(i);
+                pq2.Enqueue(i);
+            }
+            var mt = MTRandom.Create();
+
+            for (int i = -1; i < 20; i++)
+            {
+                DequeueEnqueue();
+            }
+
+            void DequeueEnqueue()
+            {
+                var value = mt.Next();
+                pq1.DequeueEnqueue(value).Should().Be(pq2.Dequeue());
+                pq2.Enqueue(value);
+                pq1.Unorderd().ToArray().Should().BeEquivalentTo(pq2.Unorderd().ToArray());
+            }
+        }
+
+        [Fact]
+        public void DequeueEnqueueKV()
+        {
+            var pq1 = new PriorityQueueDictionary<int, string>();
+            var pq2 = new PriorityQueueDictionary<int, string>();
+            for (int i = 10; i > 0; i--)
+            {
+                pq1.Enqueue(i, i.ToString());
+                pq2.Enqueue(i, i.ToString());
+            }
+            var mt = MTRandom.Create();
+
+            for (int i = -1; i < 20; i++)
+            {
+                DequeueEnqueue();
+            }
+
+            void DequeueEnqueue()
+            {
+                var key = mt.Next();
+                var value = mt.Next().ToString();
+                pq1.DequeueEnqueue(key, value).Should().Be(pq2.Dequeue());
+                pq2.Enqueue(key, value);
+                pq1.UnorderdKeys().ToArray().Should().BeEquivalentTo(pq2.UnorderdKeys().ToArray());
+                pq1.UnorderdValues().ToArray().Should().BeEquivalentTo(pq2.UnorderdValues().ToArray());
+            }
+        }
+        [Fact]
+        public void DequeueEnqueueFunc()
         {
             var pq1 = new PriorityQueue<int>();
             var pq2 = new PriorityQueue<int>();
@@ -285,10 +346,10 @@ namespace AtCoder
 
             for (int i = -1; i < 20; i++)
             {
-                EnqueueDequeue();
+                DequeueEnqueue();
             }
 
-            void EnqueueDequeue()
+            void DequeueEnqueue()
             {
                 pq2.Enqueue(func(pq2.Dequeue()));
                 pq1.DequeueEnqueue(func);
@@ -297,7 +358,7 @@ namespace AtCoder
         }
 
         [Fact]
-        public void DequeueEnqueueKV()
+        public void DequeueEnqueueFuncKV()
         {
             var pq1 = new PriorityQueueDictionary<int, string>();
             var pq2 = new PriorityQueueDictionary<int, string>();
@@ -311,10 +372,10 @@ namespace AtCoder
 
             for (int i = -1; i < 20; i++)
             {
-                EnqueueDequeue();
+                DequeueEnqueue();
             }
 
-            void EnqueueDequeue()
+            void DequeueEnqueue()
             {
                 var (k, v) = pq2.Dequeue();
                 var (ek, ev) = func(k, v);
