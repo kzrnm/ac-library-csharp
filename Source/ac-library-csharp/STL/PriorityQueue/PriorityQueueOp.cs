@@ -78,6 +78,17 @@ namespace AtCoder.Internal
             return res;
         }
         /// <summary>
+        /// Dequeue してから <paramref name="value"/> を Enqueue(T) します。
+        /// </summary>
+        [MethodImpl(256)]
+        public T DequeueEnqueue(T value)
+        {
+            var res = data[0];
+            data[0] = value;
+            UpdateDown(0);
+            return res;
+        }
+        /// <summary>
         /// Dequeue した値に <paramref name="func"/> を適用して Enqueue(T) します。
         /// </summary>
         [MethodImpl(256)]

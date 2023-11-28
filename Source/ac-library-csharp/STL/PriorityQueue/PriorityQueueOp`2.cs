@@ -57,8 +57,8 @@ namespace AtCoder.Internal
         {
             if (Count == 0)
             {
-                key = default(TKey);
-                value = default(TValue);
+                key = default;
+                value = default;
                 return false;
             }
             (key, value) = Dequeue();
@@ -95,6 +95,18 @@ namespace AtCoder.Internal
             {
                 return KeyValuePair.Create(key, value);
             }
+            keys[0] = key;
+            values[0] = value;
+            UpdateDown(0);
+            return res;
+        }
+        /// <summary>
+        /// Dequeue してから <paramref name="value"/> を Enqueue(T) します。
+        /// </summary>
+        [MethodImpl(256)]
+        public KeyValuePair<TKey, TValue> DequeueEnqueue(TKey key, TValue value)
+        {
+            var res = KeyValuePair.Create(keys[0], values[0]);
             keys[0] = key;
             values[0] = value;
             UpdateDown(0);
