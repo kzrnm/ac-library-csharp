@@ -71,9 +71,11 @@ namespace AtCoder
                     pq.Enqueue(-lx);
                 foreach (var lx in list)
                 {
-                    pq.TryDequeue(out var res).Should().BeTrue();
+                    pq.TryPeek(out var res).Should().BeTrue();
+                    pq.TryDequeue(out res).Should().BeTrue();
                     res.Should().Be(-lx);
                 }
+                pq.TryPeek(out _).Should().BeFalse();
                 pq.TryDequeue(out _).Should().BeFalse();
                 pq.Count.Should().Be(0);
             }
@@ -110,7 +112,8 @@ namespace AtCoder
                     pq.Enqueue(-lx, lx);
                 foreach (var lx in list)
                 {
-                    pq.TryDequeue(out var res).Should().BeTrue();
+                    pq.TryPeek(out var res).Should().BeTrue();
+                    pq.TryDequeue(out res).Should().BeTrue();
                     res.Should().Be(KeyValuePair.Create(-(long)lx, lx));
                 }
                 pq.TryDequeue(out _).Should().BeFalse();
@@ -120,10 +123,14 @@ namespace AtCoder
                     pq.Enqueue(-lx, lx);
                 foreach (var lx in list)
                 {
-                    pq.TryDequeue(out var key, out var val).Should().BeTrue();
+                    pq.TryPeek(out var key, out var val).Should().BeTrue();
+                    key.Should().Be(-lx);
+                    val.Should().Be(lx);
+                    pq.TryDequeue(out key, out val).Should().BeTrue();
                     key.Should().Be(-lx);
                     val.Should().Be(lx);
                 }
+                pq.TryPeek(out _, out _).Should().BeFalse();
                 pq.TryDequeue(out _, out _).Should().BeFalse();
                 pq.Count.Should().Be(0);
             }

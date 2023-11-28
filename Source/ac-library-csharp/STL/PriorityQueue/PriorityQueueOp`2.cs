@@ -53,6 +53,29 @@ namespace AtCoder.Internal
             UpdateUp(Count - 1);
         }
         [MethodImpl(256)]
+        public bool TryPeek(out TKey key, out TValue value)
+        {
+            if (Count == 0)
+            {
+                key = default;
+                value = default;
+                return false;
+            }
+            (key, value) = (keys[0], values[0]);
+            return true;
+        }
+        [MethodImpl(256)]
+        public bool TryPeek(out KeyValuePair<TKey, TValue> result)
+        {
+            if (Count == 0)
+            {
+                result = default;
+                return false;
+            }
+            result = Peek;
+            return true;
+        }
+        [MethodImpl(256)]
         public bool TryDequeue(out TKey key, out TValue value)
         {
             if (Count == 0)
@@ -69,7 +92,7 @@ namespace AtCoder.Internal
         {
             if (Count == 0)
             {
-                result = default(KeyValuePair<TKey, TValue>);
+                result = default;
                 return false;
             }
             result = Dequeue();
