@@ -64,9 +64,29 @@ namespace AtCoder
         /// <para>計算量: O(<paramref name="n"/>)</para>
         /// </remarks>
         /// <param name="v">初期配列</param>
-        public LazySegtree(TValue[] v) : this(v.Length)
+        public LazySegtree(TValue[] v) : this((ReadOnlySpan<TValue>)v) { }
+
+        /// <summary>
+        /// 長さ n=<paramref name="v"/>.Length の数列 a　を持つ <see cref="LazySegtree{TValue, F, TOp}"/> クラスの新しいインスタンスを作ります。初期値は <paramref name="v"/> です。
+        /// </summary>
+        /// <remarks>
+        /// <para>制約: 0≤<paramref name="n"/>≤10^8</para>
+        /// <para>計算量: O(<paramref name="n"/>)</para>
+        /// </remarks>
+        /// <param name="v">初期配列</param>
+        public LazySegtree(Span<TValue> v) : this((ReadOnlySpan<TValue>)v) { }
+
+        /// <summary>
+        /// 長さ n=<paramref name="v"/>.Length の数列 a　を持つ <see cref="LazySegtree{TValue, F, TOp}"/> クラスの新しいインスタンスを作ります。初期値は <paramref name="v"/> です。
+        /// </summary>
+        /// <remarks>
+        /// <para>制約: 0≤<paramref name="n"/>≤10^8</para>
+        /// <para>計算量: O(<paramref name="n"/>)</para>
+        /// </remarks>
+        /// <param name="v">初期配列</param>
+        public LazySegtree(ReadOnlySpan<TValue> v) : this(v.Length)
         {
-            for (int i = 0; i < v.Length; i++) d[size + i] = v[i];
+            v.CopyTo(d.AsSpan(size));
             for (int i = size - 1; i >= 1; i--)
             {
                 Update(i);
