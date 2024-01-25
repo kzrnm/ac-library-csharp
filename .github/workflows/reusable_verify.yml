@@ -60,7 +60,7 @@ jobs:
           solution: ${{ env.WORKFLOW_BUILD_SLN }}
           output-path: verify_files.json
           include: Source/ac-library-csharp/** Test/ac-library-csharp.LibraryChecker/** Test/ac-library-csharp.Test
-          exclude: Test/ac-library-csharp.LibraryChecker/BaseSover.cs **/obj/**
+          exclude: Test/ac-library-csharp.LibraryChecker/BaseSolver.cs **/obj/**
           unittest-result: ${{runner.temp}}/VerifierCsUnitTestResult/*.csv
           problems: ${{runner.temp}}/problems-*.json
           msbuild-properties: Configuration=Release

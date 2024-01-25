@@ -2,7 +2,7 @@
 
 namespace AtCoder.Solvers.String
 {
-    internal class SuffixArrayTest : BaseSover
+    internal class SuffixArrayTest : BaseSolver
     {
         public override string Url => "https://judge.yosupo.jp/problem/suffixarray";
         public override void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)

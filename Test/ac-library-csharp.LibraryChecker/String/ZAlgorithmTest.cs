@@ -2,7 +2,7 @@
 
 namespace AtCoder.Solvers.String
 {
-    internal class ZAlgorithmTest : BaseSover
+    internal class ZAlgorithmTest : BaseSolver
     {
         public override string Url => "https://judge.yosupo.jp/problem/zalgorithm";
         public override void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)

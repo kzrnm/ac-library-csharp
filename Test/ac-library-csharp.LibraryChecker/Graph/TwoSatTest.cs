@@ -3,7 +3,7 @@ using Kzrnm.Competitive.IO;
 
 namespace AtCoder.Solvers
 {
-    internal class TwoSatTest : BaseSover
+    internal class TwoSatTest : BaseSolver
     {
         public override string Url => "https://judge.yosupo.jp/problem/two_sat";
         public override void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)

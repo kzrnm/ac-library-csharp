@@ -3,7 +3,7 @@
 namespace AtCoder.Solvers.DataStructure
 {
 
-    internal class FenwickTreeTest : BaseSover
+    internal class FenwickTreeTest : BaseSolver
     {
         public override string Url => "https://judge.yosupo.jp/problem/point_add_range_sum";
         public override void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)

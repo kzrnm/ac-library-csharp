@@ -2,7 +2,7 @@
 
 namespace AtCoder.Solvers.MathN
 {
-    internal class ConvolutionTest : BaseSover
+    internal class ConvolutionTest : BaseSolver
     {
         public override string Url => "https://judge.yosupo.jp/problem/convolution_mod";
         public override void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)

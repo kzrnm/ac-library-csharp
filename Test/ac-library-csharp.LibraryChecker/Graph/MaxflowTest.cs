@@ -2,7 +2,7 @@
 
 namespace AtCoder.Solvers.Graph
 {
-    internal class MaxflowTest : BaseSover
+    internal class MaxflowTest : BaseSolver
     {
         public override string Url => "https://judge.yosupo.jp/problem/bipartitematching";
         public override void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
