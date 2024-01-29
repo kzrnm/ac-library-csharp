@@ -17,12 +17,12 @@ env:
 
 jobs:
   get-version:
-    uses: kzrnm/dotnet-actions/.github/workflows/get-version.yml@v1
+    uses: kzrnm/dotnet-actions/.github/workflows/get-version.yml@v2
     with:
       project-path: Directory.Build.props
 
   format:
-    uses: kzrnm/dotnet-actions/.github/workflows/format.yml@v1
+    uses: kzrnm/dotnet-actions/.github/workflows/format.yml@v2
     with:
       target: ac-library-csharp.sln
       dotnet-version: |
@@ -30,7 +30,7 @@ jobs:
         3.1.x
         7.0.x
   test:
-    uses: kzrnm/dotnet-actions/.github/workflows/unittest.yml@v1
+    uses: kzrnm/dotnet-actions/.github/workflows/unittest.yml@v2
     with:
       target: ac-library-csharp.sln
       test-logger: GitHubActions
@@ -48,7 +48,7 @@ jobs:
   publish:
     needs: [get-version, test, format, build-verify]
     if: ${{ needs.get-version.outputs.is-new == 'true' }}
-    uses: kzrnm/dotnet-actions/.github/workflows/publish.yml@v1
+    uses: kzrnm/dotnet-actions/.github/workflows/publish.yml@v2
     with:
       artifact-name: dist
       version: ${{ needs.get-version.outputs.version }}
