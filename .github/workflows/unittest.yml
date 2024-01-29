@@ -14,12 +14,12 @@ env:
 
 jobs:
   format:
-    uses: kzrnm/dotnet-actions/.github/workflows/format.yml@v1
+    uses: kzrnm/dotnet-actions/.github/workflows/format.yml@v2
     with:
       target: ac-library-csharp.sln
       dotnet-version: 7.0.x
   test:
-    uses: kzrnm/dotnet-actions/.github/workflows/unittest.yml@v1
+    uses: kzrnm/dotnet-actions/.github/workflows/unittest.yml@v2
     with:
       target: ac-library-csharp.sln
       test-logger: GitHubActions
