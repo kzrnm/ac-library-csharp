@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "AtCoderAnalyzer": {
-      "commandName": "DebugRoslynComponent",
-      "targetProject": "..\\ac-library-csharp\\ac-library-csharp.csproj"
-    }
-  }
-}
