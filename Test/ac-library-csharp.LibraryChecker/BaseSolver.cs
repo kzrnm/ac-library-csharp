@@ -2,7 +2,7 @@
 
 namespace AtCoder
 {
-    internal abstract class BaseSover : CompetitiveVerifier.ProblemSolver
+    internal abstract class BaseSolver : CompetitiveVerifier.ProblemSolver
     {
         public override void Solve()
         {

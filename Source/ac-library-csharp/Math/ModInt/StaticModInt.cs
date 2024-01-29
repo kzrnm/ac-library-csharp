@@ -9,43 +9,6 @@ using System.Numerics;
 namespace AtCoder
 {
     /// <summary>
-    /// コンパイル時に決定する mod を表します。
-    /// </summary>
-    /// <example>
-    /// <code>
-    /// public readonly struct Mod1000000009 : IStaticMod
-    /// {
-    ///     public uint Mod => 1000000009;
-    ///     public bool IsPrime => true;
-    /// }
-    /// </code>
-    /// </example>
-    [IsOperator]
-    public interface IStaticMod
-    {
-        /// <summary>
-        /// mod を取得します。
-        /// </summary>
-        uint Mod { get; }
-
-        /// <summary>
-        /// mod が素数であるか識別します。
-        /// </summary>
-        bool IsPrime { get; }
-    }
-    public readonly struct Mod1000000007 : IStaticMod
-    {
-        public uint Mod => 1000000007;
-        public bool IsPrime => true;
-    }
-
-    public readonly struct Mod998244353 : IStaticMod
-    {
-        public uint Mod => 998244353;
-        public bool IsPrime => true;
-    }
-
-    /// <summary>
     /// 四則演算時に自動で mod を取る整数型。mod の値はコンパイル時に決定している必要があります。
     /// </summary>
     /// <typeparam name="T">定数 mod を表す構造体</typeparam>
@@ -61,12 +24,8 @@ namespace AtCoder
     /// }
     /// </code>
     /// </example>
-    public readonly struct StaticModInt<T>
-     : IEquatable<StaticModInt<T>>, IFormattable
-#if GENERIC_MATH
-     , INumberBase<StaticModInt<T>>
-#endif
-     where T : struct, IStaticMod
+    public readonly struct StaticModInt<T> : IEquatable<StaticModInt<T>>, IFormattable, IModInt<StaticModInt<T>>
+        where T : struct, IStaticMod
     {
         internal readonly uint _v;
         private static readonly T op = default;
@@ -107,7 +66,7 @@ namespace AtCoder
         /// <paramref name="v"/>が 0 未満、もしくは mod 以上の場合、自動で mod を取ります。
         /// </remarks>
         [MethodImpl(256)]
-        public StaticModInt(long v) : this(Round(v)) { }
+        public StaticModInt(long v) : this((uint)ModCalc.SafeMod(v, op.Mod)) { }
 
         /// <summary>
         /// StaticModInt&lt;<typeparamref name="T"/>&gt; 型のインスタンスを生成します。
@@ -120,17 +79,6 @@ namespace AtCoder
 
         [MethodImpl(256)]
         private StaticModInt(uint v) => _v = v;
-
-        [MethodImpl(256)]
-        private static uint Round(long v)
-        {
-            var x = v % op.Mod;
-            if (x < 0)
-            {
-                x += op.Mod;
-            }
-            return (uint)x;
-        }
 
         [MethodImpl(256)]
         public static StaticModInt<T> operator ++(StaticModInt<T> v)
@@ -201,7 +149,7 @@ namespace AtCoder
         [MethodImpl(256)]
         public static implicit operator StaticModInt<T>(int v) => new StaticModInt<T>(v);
         [MethodImpl(256)]
-        public static implicit operator StaticModInt<T>(uint v) => new StaticModInt<T>((long)v);
+        public static implicit operator StaticModInt<T>(uint v) => new StaticModInt<T>((ulong)v);
         [MethodImpl(256)]
         public static implicit operator StaticModInt<T>(long v) => new StaticModInt<T>(v);
         [MethodImpl(256)]
@@ -218,6 +166,19 @@ namespace AtCoder
         public StaticModInt<T> Pow(long n)
         {
             Contract.Assert(0 <= n, $"{nameof(n)} must be positive.");
+            return Pow((ulong)n);
+        }
+
+        /// <summary>
+        /// 自身を x として、x^<paramref name="n"/> を返します。
+        /// </summary>
+        /// <remarks>
+        /// <para>制約: 0≤|<paramref name="n"/>|</para>
+        /// <para>計算量: O(log(<paramref name="n"/>))</para>
+        /// </remarks>
+        [MethodImpl(256)]
+        public StaticModInt<T> Pow(ulong n)
+        {
             var x = this;
             var r = new StaticModInt<T>(1U);
 
@@ -250,7 +211,7 @@ namespace AtCoder
             }
             else
             {
-                var (g, x) = InternalMath.InvGcd(_v, op.Mod);
+                var (g, x) = ModCalc.InvGcd(_v, op.Mod);
                 Contract.Assert(g == 1, reason: $"gcd({nameof(x)}, {nameof(Mod)}) must be 1.");
                 return new StaticModInt<T>(x);
             }
@@ -261,6 +222,34 @@ namespace AtCoder
         public override bool Equals(object obj) => obj is StaticModInt<T> m && Equals(m);
         [MethodImpl(256)] public bool Equals(StaticModInt<T> other) => _v == other._v;
         public override int GetHashCode() => _v.GetHashCode();
+        public static bool TryParse(ReadOnlySpan<char> s, out StaticModInt<T> result)
+        {
+            result = Zero;
+            StaticModInt<T> ten = 10u;
+            s = s.Trim();
+            bool minus = false;
+            if (s.Length > 0 && s[0] == '-')
+            {
+                minus = true;
+                s = s.Slice(1);
+            }
+            for (int i = 0; i < s.Length; i++)
+            {
+                var d = (uint)(s[i] - '0');
+                if (d >= 10) return false;
+                result = result * ten + d;
+            }
+            if (minus)
+                result = -result;
+            return true;
+        }
+        public static StaticModInt<T> Parse(ReadOnlySpan<char> s)
+        {
+            if (!TryParse(s, out var r))
+                Throw();
+            return r;
+            void Throw() => throw new FormatException();
+        }
 
 #if GENERIC_MATH
         static int INumberBase<StaticModInt<T>>.Radix => 2;
@@ -288,24 +277,16 @@ namespace AtCoder
         static StaticModInt<T> INumberBase<StaticModInt<T>>.MaxMagnitudeNumber(StaticModInt<T> x, StaticModInt<T> y) => new StaticModInt<T>(uint.Max(x._v, y._v));
         static StaticModInt<T> INumberBase<StaticModInt<T>>.MinMagnitude(StaticModInt<T> x, StaticModInt<T> y) => new StaticModInt<T>(uint.Min(x._v, y._v));
         static StaticModInt<T> INumberBase<StaticModInt<T>>.MinMagnitudeNumber(StaticModInt<T> x, StaticModInt<T> y) => new StaticModInt<T>(uint.Min(x._v, y._v));
-        static StaticModInt<T> INumberBase<StaticModInt<T>>.Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider provider) => long.Parse(s, style, provider);
-        static StaticModInt<T> INumberBase<StaticModInt<T>>.Parse(string s, NumberStyles style, IFormatProvider provider) => long.Parse(s, style, provider);
-        static StaticModInt<T> ISpanParsable<StaticModInt<T>>.Parse(ReadOnlySpan<char> s, IFormatProvider provider) => long.Parse(s, provider);
-        static StaticModInt<T> IParsable<StaticModInt<T>>.Parse(string s, IFormatProvider provider) => long.Parse(s, provider);
-        static bool ISpanParsable<StaticModInt<T>>.TryParse(ReadOnlySpan<char> s, IFormatProvider provider, out StaticModInt<T> result)
-        => TryParse(s, NumberStyles.None, provider, out result);
-        static bool IParsable<StaticModInt<T>>.TryParse(string s, IFormatProvider provider, out StaticModInt<T> result)
-        => TryParse(s, NumberStyles.None, provider, out result);
-        static bool INumberBase<StaticModInt<T>>.TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider provider, out StaticModInt<T> result)
-        => TryParse(s, style, provider, out result);
-        static bool INumberBase<StaticModInt<T>>.TryParse(string s, NumberStyles style, IFormatProvider provider, out StaticModInt<T> result)
-        => TryParse(s, style, provider, out result);
-        private static bool TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider provider, out StaticModInt<T> result)
-        {
-            var b = long.TryParse(s, style, provider, out var r);
-            result = r;
-            return b;
-        }
+
+        static StaticModInt<T> INumberBase<StaticModInt<T>>.Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider provider) => Parse(s);
+        static StaticModInt<T> INumberBase<StaticModInt<T>>.Parse(string s, NumberStyles style, IFormatProvider provider) => Parse(s);
+        static StaticModInt<T> ISpanParsable<StaticModInt<T>>.Parse(ReadOnlySpan<char> s, IFormatProvider provider) => Parse(s);
+        static StaticModInt<T> IParsable<StaticModInt<T>>.Parse(string s, IFormatProvider provider) => Parse(s);
+        static bool ISpanParsable<StaticModInt<T>>.TryParse(ReadOnlySpan<char> s, IFormatProvider provider, out StaticModInt<T> result) => TryParse(s, out result);
+        static bool IParsable<StaticModInt<T>>.TryParse(string s, IFormatProvider provider, out StaticModInt<T> result) => TryParse(s, out result);
+        static bool INumberBase<StaticModInt<T>>.TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider provider, out StaticModInt<T> result) => TryParse(s, out result);
+        static bool INumberBase<StaticModInt<T>>.TryParse(string s, NumberStyles style, IFormatProvider provider, out StaticModInt<T> result) => TryParse(s, out result);
+
         bool ISpanFormattable.TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider provider) => _v.TryFormat(destination, out charsWritten, format, provider);
 
 

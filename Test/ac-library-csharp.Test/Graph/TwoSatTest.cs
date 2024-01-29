@@ -39,8 +39,10 @@ namespace AtCoder
         [Fact]
         public void StressOK()
         {
+            const int size = Global.IsCi ? 10000 : 1000;
+
             var mt = MTRandom.Create();
-            for (int phase = 0; phase < 10000; phase++)
+            for (int phase = 0; phase < size; phase++)
             {
                 int n = mt.Next(1, 21);
                 int m = mt.Next(1, 101);

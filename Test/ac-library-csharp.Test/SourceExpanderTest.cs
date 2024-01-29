@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using SourceExpander;
@@ -14,15 +15,26 @@ namespace AtCoder.Embedding
             public override string Skip => "SourceExpander.Embedder is disabled.";
 #endif
         }
+        class EmbeddingGenericMathFact : EmbeddingFact
+        {
+#if EMBEDDING
+            public override string Skip => genericMath ? null : "GenericMath is disabled.";
+#else
+            public override string Skip => "SourceExpander.Embedder is disabled.";
+#endif
+        }
 
 #if NETCOREAPP3_0
         const bool useIntrinsics = false;
+        const bool genericMath = false;
         const string languageVersion = "7.3";
 #elif NETCOREAPP3_1
         const bool useIntrinsics = true;
+        const bool genericMath = false;
         const string languageVersion = "8.0";
 #else
         const bool useIntrinsics = true;
+        const bool genericMath = true;
         const string languageVersion = "11.0";
 #endif
 
@@ -99,13 +111,41 @@ namespace AtCoder.Embedding
                 "AtCoder.Operators");
         }
 
-
         [EmbeddingFact]
         public async Task RemoveContract()
         {
             var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
-            var codes = embedded.SourceFiles.Select(s => s.CodeBody);
-            codes.Should().NotContain(code => code.Contains("Contract.Assert"));
+            var code = string.Join(' ', embedded.SourceFiles.Select(s => s.CodeBody));
+            code.Should().NotContain("Contract.Assert");
         }
+
+        [EmbeddingFact]
+        public async Task RemoveDebugView()
+        {
+            var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
+            var code = string.Join(' ', embedded.SourceFiles.Select(s => s.CodeBody));
+            code.Should().Contain("CollectionDebugView");
+            code.Replace("CollectionDebugView", "CoDe").Should().NotContain("Debug");
+        }
+
+        [EmbeddingGenericMathFact]
+        public async Task FenwickTreeGenericMath()
+        {
+            var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
+            var source = embedded.SourceFiles.Single(s => s.FileName.Split('\\', '/').Last() == "FenwickTree.GenericMath.cs");
+            source.CodeBody.Should()
+                .Contain("FenwickTree<T>")
+                .And
+                .NotContain("Debug");
+        }
+
+#if DEBUG && EMBEDDING
+        [Fact]
+        public void DebugExpanded()
+        {
+            _ = typeof(SourceExpander.Embedded.Expand.AtCoder.Segtree<,>);
+            _ = typeof(SourceExpander.Embedded.Expand.AtCoder.Mod1000000007);
+        }
+#endif
     }
 }

@@ -63,10 +63,12 @@ namespace AtCoder
         [Fact]
         public void NaiveTest()
         {
+            const int size = Global.IsCi ? 10 : 3;
+
             var mt = MTRandom.Create();
             for (int n = 1; n <= 30; n++)
             {
-                for (int ph = 0; ph < 10; ph++)
+                for (int ph = 0; ph < size; ph++)
                 {
                     var seg0 = new LazySegtree<(int l, int r, int time), int, Op>(n);
                     var tm = new TimeManager(n);
@@ -109,6 +111,8 @@ namespace AtCoder
         [Fact]
         public void MaxRightTest()
         {
+            const int size = Global.IsCi ? 1000 : 100;
+
             var mt = MTRandom.Create();
             for (int n = 1; n <= 30; n++)
             {
@@ -121,7 +125,7 @@ namespace AtCoder
                         seg0[i] = (i, i + 1, -1);
                     }
                     int now = 0;
-                    for (int q = 0; q < 1000; q++)
+                    for (int q = 0; q < size; q++)
                     {
                         int ty = mt.Next(0, 3);
                         var (l, r) = mt.NextPair(0, n + 1);

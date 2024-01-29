@@ -5,7 +5,7 @@ using FluentAssertions;
 using MersenneTwister;
 using Xunit;
 
-namespace AtCoder.Utils
+namespace AtCoder
 {
     public static class ComparerUtil
     {

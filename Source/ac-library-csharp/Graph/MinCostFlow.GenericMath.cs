@@ -11,9 +11,9 @@ namespace AtCoder
     /// <summary>
     /// Minimum-cost flow problem を扱うライブラリです。
     /// </summary>
-    /// <typeparam name="TValue">容量とコストの型</typeparam>
-    public class McfGraph<TValue> : McfGraph<TValue, TValue>
-            where TValue : INumber<TValue>, ISignedNumber<TValue>, IMinMaxValue<TValue>
+    /// <typeparam name="T">容量とコストの型</typeparam>
+    public class McfGraph<T> : McfGraph<T, T>
+            where T : INumber<T>, ISignedNumber<T>, IMinMaxValue<T>
     {
         /// <summary>
         /// <paramref name="n"/> 頂点 0 辺のグラフを作ります。

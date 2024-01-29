@@ -11,10 +11,10 @@ namespace AtCoder
     /// <summary>
     /// 最大フロー問題 を解くライブラリです。
     /// </summary>
-    /// <typeparam name="TValue">容量の型</typeparam>
-    /// <typeparam name="TOp"><typeparamref name="TValue"/>に対応する演算を提要する型</typeparam>
+    /// <typeparam name="T">容量の型</typeparam>
+    /// <typeparam name="TOp"><typeparamref name="T"/>に対応する演算を提要する型</typeparam>
     /// <remarks>
-    /// <para>制約: <typeparamref name="TValue"/> は int, long。</para>
+    /// <para>制約: <typeparamref name="T"/> は int, long。</para>
     /// <para>
     /// 内部では各辺 e について 2 つの変数、流量 f_e と容量 c_e を管理しています。
     /// 頂点 v から出る辺の集合を out(v)、入る辺の集合を in(v)、
@@ -24,13 +24,13 @@ namespace AtCoder
 #if GENERIC_MATH
     [Obsolete("Use generic math")]
 #endif
-    public class MfGraph<TValue, TOp>
-        where TValue : struct
-        where TOp : struct, INumOperator<TValue>
+    public class MfGraph<T, TOp>
+        where T : struct
+        where TOp : struct, INumOperator<T>
     {
         static readonly TOp op = default;
 
-        internal readonly int _n;
+        public int Count => _g.Length;
         [EditorBrowsable(EditorBrowsableState.Never)]
         public readonly SimpleList<(int first, int second)> _pos;
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -45,7 +45,6 @@ namespace AtCoder
         /// </remarks>
         public MfGraph(int n)
         {
-            _n = n;
             _g = new SimpleList<EdgeInternal>[n];
             for (int i = 0; i < _g.Length; i++)
             {
@@ -71,11 +70,11 @@ namespace AtCoder
         /// <para>計算量: ならしO(1)</para>
         /// </remarks>
         [MethodImpl(256)]
-        public int AddEdge(int from, int to, TValue cap)
+        public int AddEdge(int from, int to, T cap)
         {
             int m = _pos.Count;
-            Contract.Assert((uint)from < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(from)} && {nameof(from)} < _n");
-            Contract.Assert((uint)to < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(to)} && {nameof(to)} < _n");
+            Contract.Assert((uint)from < (uint)Count, reason: $"IndexOutOfRange: 0 <= {nameof(from)} && {nameof(from)} < Count");
+            Contract.Assert((uint)to < (uint)Count, reason: $"IndexOutOfRange: 0 <= {nameof(to)} && {nameof(to)} < Count");
             Contract.Assert(op.LessThanOrEqual(default, cap), reason: $"IndexOutOfRange: 0 <= {nameof(cap)}");
             _pos.Add((from, _g[from].Count));
             int fromId = _g[from].Count;
@@ -136,7 +135,7 @@ namespace AtCoder
         /// </para>
         /// </remarks>
         [MethodImpl(256)]
-        public void ChangeEdge(int i, TValue newCap, TValue newFlow)
+        public void ChangeEdge(int i, T newCap, T newFlow)
         {
             Contract.Assert((uint)i < (uint)_pos.Count, reason: $"IndexOutOfRange: 0 <= {nameof(i)} && {nameof(i)} < edgeCount");
             Contract.Assert(op.LessThanOrEqual(default, newFlow) && op.LessThanOrEqual(newFlow, newCap), reason: $"IndexOutOfRange: 0 <= {nameof(newFlow)} && {nameof(newFlow)} <= {nameof(newCap)}");
@@ -177,7 +176,7 @@ namespace AtCoder
         /// </description>
         /// </item>
         /// </list>
-        /// <para>制約: 返値が <typeparamref name="TValue"/> に収まる。</para>
+        /// <para>制約: 返値が <typeparamref name="T"/> に収まる。</para>
         /// 計算量: m を追加された辺数として、
         /// <list type="bullet">
         /// <item>
@@ -189,7 +188,7 @@ namespace AtCoder
         /// </list>
         /// </remarks>
         [MethodImpl(256)]
-        public TValue Flow(int s, int t)
+        public T Flow(int s, int t)
         {
             return Flow(s, t, op.MaxValue);
         }
@@ -225,7 +224,7 @@ namespace AtCoder
         /// </description>
         /// </item>
         /// </list>
-        /// <para>制約: 返値が <typeparamref name="TValue"/> に収まる。</para>
+        /// <para>制約: 返値が <typeparamref name="T"/> に収まる。</para>
         /// 計算量: m を追加された辺数として、
         /// <list type="bullet">
         /// <item>
@@ -237,13 +236,13 @@ namespace AtCoder
         /// </list>
         /// </remarks>
         [MethodImpl(256)]
-        public TValue Flow(int s, int t, TValue flowLimit)
+        public T Flow(int s, int t, T flowLimit)
         {
-            Contract.Assert((uint)s < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(s)} && {nameof(s)} < _n");
-            Contract.Assert((uint)t < (uint)_n, reason: $"IndexOutOfRange: 0 <= {nameof(t)} && {nameof(t)} < _n");
+            Contract.Assert((uint)s < (uint)Count, reason: $"IndexOutOfRange: 0 <= {nameof(s)} && {nameof(s)} < Count");
+            Contract.Assert((uint)t < (uint)Count, reason: $"IndexOutOfRange: 0 <= {nameof(t)} && {nameof(t)} < Count");
             Contract.Assert(s != t, reason: $"{nameof(s)} and {nameof(t)} must be different.");
 
-            var level = new int[_n];
+            var level = new int[Count];
             int[] iter;
             var que = new Queue<int>();
 
@@ -258,7 +257,7 @@ namespace AtCoder
                     int v = que.Dequeue();
                     foreach (var (to, _, cap) in _g[v].AsSpan())
                     {
-                        if (EqualityComparer<TValue>.Default.Equals(cap, default) || level[to] >= 0) continue;
+                        if (EqualityComparer<T>.Default.Equals(cap, default) || level[to] >= 0) continue;
                         level[to] = level[v] + 1;
                         if (to == t) return;
                         que.Enqueue(to);
@@ -283,19 +282,19 @@ namespace AtCoder
             //        res = op.Add(res, d);
             //        if (EqualityComparer<TValue>.Default.Equals(res, up)) return res;
             //    }
-            //    level[v] = _n;
+            //    level[v] = Count;
             //    return res;
             //}
 
-            TValue Dfs(int v, TValue up)
+            T Dfs(int v, T up)
             {
-                var lastRes = default(TValue);
-                var stack = new Stack<(int v, TValue up, TValue res, bool childOk)>();
+                var lastRes = default(T);
+                var stack = new Stack<(int v, T up, T res, bool childOk)>();
                 stack.Push((v, up, default, true));
 
             DFS: while (stack.Count > 0)
                 {
-                    TValue res;
+                    T res;
                     bool childOk;
                     (v, up, res, childOk) = stack.Pop();
                     if (v == s)
@@ -308,7 +307,7 @@ namespace AtCoder
                         var (to, rev, cap) = _g[v][itrv];
                         if (childOk)
                         {
-                            if (level[v] <= level[to] || EqualityComparer<TValue>.Default.Equals(_g[to][rev].Cap, default))
+                            if (level[v] <= level[to] || EqualityComparer<T>.Default.Equals(_g[to][rev].Cap, default))
                                 continue;
 
                             var up1 = op.Subtract(up, res);
@@ -326,7 +325,7 @@ namespace AtCoder
                                 _g[to][rev].Cap = op.Subtract(_g[to][rev].Cap, d);
                                 res = op.Add(res, d);
 
-                                if (EqualityComparer<TValue>.Default.Equals(res, up))
+                                if (EqualityComparer<T>.Default.Equals(res, up))
                                 {
                                     lastRes = res;
                                     goto DFS;
@@ -335,20 +334,20 @@ namespace AtCoder
                             childOk = true;
                         }
                     }
-                    level[v] = _n;
+                    level[v] = Count;
                     lastRes = res;
                 }
                 return lastRes;
             }
 
-            TValue flow = default;
+            T flow = default;
             while (op.LessThan(flow, flowLimit))
             {
                 Bfs();
                 if (level[t] == -1) break;
-                iter = new int[_n];
+                iter = new int[Count];
                 var f = Dfs(t, op.Subtract(flowLimit, flow));
-                if (EqualityComparer<TValue>.Default.Equals(f, default)) break;
+                if (EqualityComparer<T>.Default.Equals(f, default)) break;
                 flow = op.Add(flow, f);
             }
             return flow;
@@ -377,7 +376,7 @@ namespace AtCoder
         [MethodImpl(256)]
         public bool[] MinCut(int s)
         {
-            var visited = new bool[_n];
+            var visited = new bool[Count];
             var que = new Queue<int>();
             que.Enqueue(s);
             while (que.Count > 0)
@@ -386,7 +385,7 @@ namespace AtCoder
                 visited[p] = true;
                 foreach (var (to, _, cap) in _g[p])
                 {
-                    if (!EqualityComparer<TValue>.Default.Equals(cap, default) && !visited[to])
+                    if (!EqualityComparer<T>.Default.Equals(cap, default) && !visited[to])
                     {
                         visited[to] = true;
                         que.Enqueue(to);
@@ -408,10 +407,10 @@ namespace AtCoder
             /// <summary>フローが流入する頂点。</summary>
             public int To { get; set; }
             /// <summary>辺の容量。</summary>
-            public TValue Cap { get; set; }
+            public T Cap { get; set; }
             /// <summary>辺の流量。</summary>
-            public TValue Flow { get; set; }
-            public Edge(int from, int to, TValue cap, TValue flow)
+            public T Flow { get; set; }
+            public Edge(int from, int to, T cap, T flow)
             {
                 From = from;
                 To = to;
@@ -427,8 +426,8 @@ namespace AtCoder
             public bool Equals(Edge other)
                 => From == other.From &&
                        To == other.To &&
-                       EqualityComparer<TValue>.Default.Equals(Cap, other.Cap) &&
-                       EqualityComparer<TValue>.Default.Equals(Flow, other.Flow);
+                       EqualityComparer<T>.Default.Equals(Cap, other.Cap) &&
+                       EqualityComparer<T>.Default.Equals(Flow, other.Flow);
             public override int GetHashCode()
                 => HashCode.Combine(From, To, Cap, Flow);
             [MethodImpl(256)] public static bool operator ==(Edge left, Edge right) => left.Equals(right);
@@ -441,15 +440,15 @@ namespace AtCoder
         {
             public int To { get; }
             public int Rev { get; }
-            public TValue Cap { get; set; }
-            public EdgeInternal(int to, int rev, TValue cap)
+            public T Cap { get; set; }
+            public EdgeInternal(int to, int rev, T cap)
             {
                 To = to;
                 Rev = rev;
                 Cap = cap;
             }
             [MethodImpl(256)]
-            public void Deconstruct(out int to, out int rev, out TValue cap)
+            public void Deconstruct(out int to, out int rev, out T cap)
             {
                 to = To;
                 rev = Rev;

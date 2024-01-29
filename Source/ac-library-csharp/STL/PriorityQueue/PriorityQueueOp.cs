@@ -44,11 +44,22 @@ namespace AtCoder.Internal
             UpdateUp(Count - 1);
         }
         [MethodImpl(256)]
+        public bool TryPeek(out T result)
+        {
+            if (Count == 0)
+            {
+                result = default;
+                return false;
+            }
+            result = data[0];
+            return true;
+        }
+        [MethodImpl(256)]
         public bool TryDequeue(out T result)
         {
             if (Count == 0)
             {
-                result = default(T);
+                result = default;
                 return false;
             }
             result = Dequeue();
@@ -69,10 +80,21 @@ namespace AtCoder.Internal
         public T EnqueueDequeue(T value)
         {
             var res = data[0];
-            if (_comparer.Compare(value, res) <= 0)
+            if (Count == 0 || _comparer.Compare(value, res) <= 0)
             {
                 return value;
             }
+            data[0] = value;
+            UpdateDown(0);
+            return res;
+        }
+        /// <summary>
+        /// Dequeue してから <paramref name="value"/> を Enqueue(T) します。
+        /// </summary>
+        [MethodImpl(256)]
+        public T DequeueEnqueue(T value)
+        {
+            var res = data[0];
             data[0] = value;
             UpdateDown(0);
             return res;
@@ -122,6 +144,10 @@ namespace AtCoder.Internal
 
         [EditorBrowsable(Never)]
         public ReadOnlySpan<T> Unorderd() => data.AsSpan(0, Count);
+
+#if EMBEDDING
+        [SourceExpander.NotEmbeddingSource]
+#endif
         private class DebugView
         {
             private readonly PriorityQueueOp<T, TOp> pq;

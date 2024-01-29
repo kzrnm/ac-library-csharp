@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AtCoder.Utils;
 using FluentAssertions;
 using MersenneTwister;
 using Xunit;
@@ -72,9 +71,11 @@ namespace AtCoder
                     pq.Enqueue(-lx);
                 foreach (var lx in list)
                 {
-                    pq.TryDequeue(out var res).Should().BeTrue();
+                    pq.TryPeek(out var res).Should().BeTrue();
+                    pq.TryDequeue(out res).Should().BeTrue();
                     res.Should().Be(-lx);
                 }
+                pq.TryPeek(out _).Should().BeFalse();
                 pq.TryDequeue(out _).Should().BeFalse();
                 pq.Count.Should().Be(0);
             }
@@ -82,9 +83,10 @@ namespace AtCoder
         [Fact]
         public void SimpleKV()
         {
+            const int size = Global.IsCi ? 500 : 80;
             var mt = MTRandom.Create();
 
-            for (int n = 0; n < 200; n++)
+            for (int n = 0; n < size; n++)
             {
                 var list = new List<int>();
                 var pq = new PriorityQueueDictionary<long, int>();
@@ -110,7 +112,8 @@ namespace AtCoder
                     pq.Enqueue(-lx, lx);
                 foreach (var lx in list)
                 {
-                    pq.TryDequeue(out var res).Should().BeTrue();
+                    pq.TryPeek(out var res).Should().BeTrue();
+                    pq.TryDequeue(out res).Should().BeTrue();
                     res.Should().Be(KeyValuePair.Create(-(long)lx, lx));
                 }
                 pq.TryDequeue(out _).Should().BeFalse();
@@ -120,10 +123,14 @@ namespace AtCoder
                     pq.Enqueue(-lx, lx);
                 foreach (var lx in list)
                 {
-                    pq.TryDequeue(out var key, out var val).Should().BeTrue();
+                    pq.TryPeek(out var key, out var val).Should().BeTrue();
+                    key.Should().Be(-lx);
+                    val.Should().Be(lx);
+                    pq.TryDequeue(out key, out val).Should().BeTrue();
                     key.Should().Be(-lx);
                     val.Should().Be(lx);
                 }
+                pq.TryPeek(out _, out _).Should().BeFalse();
                 pq.TryDequeue(out _, out _).Should().BeFalse();
                 pq.Count.Should().Be(0);
             }
@@ -216,6 +223,9 @@ namespace AtCoder
         {
             var pq1 = new PriorityQueue<int>();
             var pq2 = new PriorityQueue<int>();
+
+            pq1.EnqueueDequeue(1).Should().Be(1);
+
             for (int i = 10; i > 0; i--)
             {
                 pq1.Enqueue(i);
@@ -242,6 +252,9 @@ namespace AtCoder
         {
             var pq1 = new PriorityQueueDictionary<int, string>();
             var pq2 = new PriorityQueueDictionary<int, string>();
+
+            pq1.EnqueueDequeue(1, "ab").Should().Be(KeyValuePair.Create(1, "ab"));
+
             for (int i = 10; i > 0; i--)
             {
                 pq1.Enqueue(i, i.ToString());
@@ -264,12 +277,12 @@ namespace AtCoder
             }
         }
 
+
         [Fact]
         public void DequeueEnqueue()
         {
             var pq1 = new PriorityQueue<int>();
             var pq2 = new PriorityQueue<int>();
-            Func<int, int> func = k => k * 2;
             for (int i = 10; i > 0; i--)
             {
                 pq1.Enqueue(i);
@@ -279,13 +292,14 @@ namespace AtCoder
 
             for (int i = -1; i < 20; i++)
             {
-                EnqueueDequeue();
+                DequeueEnqueue();
             }
 
-            void EnqueueDequeue()
+            void DequeueEnqueue()
             {
-                pq2.Enqueue(func(pq2.Dequeue()));
-                pq1.DequeueEnqueue(func);
+                var value = mt.Next();
+                pq1.DequeueEnqueue(value).Should().Be(pq2.Dequeue());
+                pq2.Enqueue(value);
                 pq1.Unorderd().ToArray().Should().BeEquivalentTo(pq2.Unorderd().ToArray());
             }
         }
@@ -295,7 +309,6 @@ namespace AtCoder
         {
             var pq1 = new PriorityQueueDictionary<int, string>();
             var pq2 = new PriorityQueueDictionary<int, string>();
-            Func<int, string, (int, string)> func = (k, v) => (k * 2, (2 * k).ToString());
             for (int i = 10; i > 0; i--)
             {
                 pq1.Enqueue(i, i.ToString());
@@ -305,15 +318,69 @@ namespace AtCoder
 
             for (int i = -1; i < 20; i++)
             {
-                EnqueueDequeue();
+                DequeueEnqueue();
             }
 
-            void EnqueueDequeue()
+            void DequeueEnqueue()
+            {
+                var key = mt.Next();
+                var value = mt.Next().ToString();
+                pq1.DequeueEnqueue(key, value).Should().Be(pq2.Dequeue());
+                pq2.Enqueue(key, value);
+                pq1.UnorderdKeys().ToArray().Should().BeEquivalentTo(pq2.UnorderdKeys().ToArray());
+                pq1.UnorderdValues().ToArray().Should().BeEquivalentTo(pq2.UnorderdValues().ToArray());
+            }
+        }
+        [Fact]
+        public void DequeueEnqueueFunc()
+        {
+            var pq1 = new PriorityQueue<int>();
+            var pq2 = new PriorityQueue<int>();
+            int func(int k) => k * 2;
+            for (int i = 10; i > 0; i--)
+            {
+                pq1.Enqueue(i);
+                pq2.Enqueue(i);
+            }
+            var mt = MTRandom.Create();
+
+            for (int i = -1; i < 20; i++)
+            {
+                DequeueEnqueue();
+            }
+
+            void DequeueEnqueue()
+            {
+                pq2.Enqueue(func(pq2.Dequeue()));
+                pq1.DequeueEnqueue(func);
+                pq1.Unorderd().ToArray().Should().BeEquivalentTo(pq2.Unorderd().ToArray());
+            }
+        }
+
+        [Fact]
+        public void DequeueEnqueueFuncKV()
+        {
+            var pq1 = new PriorityQueueDictionary<int, string>();
+            var pq2 = new PriorityQueueDictionary<int, string>();
+            (int, string) func(int k, string v) => (k * 2, (2 * k).ToString());
+            for (int i = 10; i > 0; i--)
+            {
+                pq1.Enqueue(i, i.ToString());
+                pq2.Enqueue(i, i.ToString());
+            }
+            var mt = MTRandom.Create();
+
+            for (int i = -1; i < 20; i++)
+            {
+                DequeueEnqueue();
+            }
+
+            void DequeueEnqueue()
             {
                 var (k, v) = pq2.Dequeue();
                 var (ek, ev) = func(k, v);
                 pq2.Enqueue(KeyValuePair.Create(ek, ev));
-                pq1.DequeueEnqueue(func);
+                pq1.DequeueEnqueue((Func<int, string, (int, string)>)func);
                 pq1.UnorderdKeys().ToArray().Should().BeEquivalentTo(pq2.UnorderdKeys().ToArray());
                 pq1.UnorderdValues().ToArray().Should().BeEquivalentTo(pq2.UnorderdValues().ToArray());
             }

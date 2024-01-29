@@ -5,6 +5,74 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.9.0]
+### Changed
+- `ILazySegtreeOperator<T, F>` implements `ISegtreeOperator<T>`
+
+## [3.8.0] - 2023-12-03
+### Added
+- Create `Segtree<T>` from Span
+
+## [3.7.0] - 2023-11-29
+### Added
+- Add PriorityQueue.TryPeek(out T)
+- Add PriorityQueue.DequeueEnqueue(T)
+
+## [3.6.2] - 2023-11-26
+### Changed
+- Fix EnqueueDequeue
+
+## [3.6.1] - 2023-11-25
+### Changed
+- Fix doc of FloorSum
+
+## [3.6.0] - 2023-11-23
+### Added
+- Add `Parse`/`TryParse` to `ModInt`
+
+## [3.5.0] - 2023-10-29
+### Added
+- Add MfGraph.Count
+### Changed
+- Rename generic parameter TValue to T
+
+## [3.4.1] - 2023-10-26
+### Changed
+- Rename `AtCoder.Internal.BigMul` into `AtCoder.Internal.Mul128`
+
+## [3.4.0] - 2023-10-26
+### Changed
+- Separate `MathLib` and `InternalMath` implementations in separate classes
+
+## [3.3.0] - 2023-10-25
+### Added
+- Add `IModInt<T>.Value` and `IModInt<T>.Mod`
+### Changed
+- Move `IStaticMod` to IModInterface.cs
+### Removed
+- Remove DebugView from expanded code
+
+## [3.2.0] - 2023-09-25
+### Added
+- Add `Deque<T>.Grow(int capacity)`
+
+### Changed
+- `AtCoder.Internal.Barrett` for `2^31` < m < `2^32`
+- Fix empty `Deque<T>.GetEnumerator()`
+
+## [3.1.0] - 2023-09-24
+### Added
+- Add IModInt interface
+
+## [3.0.2] - 2023-09-21
+### Changed
+- AtCoderAnalyzer: Create operator as readonly struct
+
+## [3.0.1] - 2023-09-12
+### Change
+- Update DebugView
+- Rename IMinMaxValue<T> to IMinMaxValueOperator<T>
+
 ## [3.0.0-pre8] - 2023-01-27
 ### Added
 - Add SimpleList<T>.RemoveLastSize
@@ -19,7 +87,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [3.0.0-pre5] - 2023-01-26
 ### Changed
-- Fix LCPArray Å® LcpArray
+- Fix LCPArray ‚Üí LcpArray
 
 ## [3.0.0-pre4] - 2023-01-26
 ### Added

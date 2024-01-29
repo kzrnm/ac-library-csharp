@@ -2,7 +2,7 @@
 
 namespace AtCoder.Solvers.MathN
 {
-    internal class FloorSumTest : BaseSover
+    internal class FloorSumTest : BaseSolver
     {
         public override string Url => "https://judge.yosupo.jp/problem/sum_of_floor_of_linear";
         public override void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)

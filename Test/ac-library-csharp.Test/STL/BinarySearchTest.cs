@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using AtCoder.Utils;
 using FluentAssertions;
 using Xunit;
 

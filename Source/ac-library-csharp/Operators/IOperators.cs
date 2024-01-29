@@ -142,7 +142,7 @@ namespace AtCoder.Operators
 #if GENERIC_MATH
     [System.Obsolete("Use generic math")]
 #endif
-    public interface IMinMaxValue<T>
+    public interface IMinMaxValueOperator<T>
     {
         /// <summary>
         /// MinValue
@@ -158,7 +158,7 @@ namespace AtCoder.Operators
 #if GENERIC_MATH
     [System.Obsolete("Use generic math")]
 #endif
-    public interface INumOperator<T> : IArithmeticOperator<T>, ICompareOperator<T>, IMinMaxValue<T>
+    public interface INumOperator<T> : IArithmeticOperator<T>, ICompareOperator<T>, IMinMaxValueOperator<T>
     {
     }
 

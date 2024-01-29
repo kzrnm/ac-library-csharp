@@ -2,7 +2,7 @@
 
 namespace AtCoder.Solvers.Graph
 {
-    internal class SccTest : BaseSover
+    internal class SccTest : BaseSolver
     {
         public override string Url => "https://judge.yosupo.jp/problem/scc";
         public override void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)

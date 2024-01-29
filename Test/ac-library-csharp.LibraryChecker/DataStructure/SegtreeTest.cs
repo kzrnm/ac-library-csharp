@@ -2,7 +2,7 @@
 
 namespace AtCoder.Solvers.DataStructure
 {
-    internal class SegtreeTest : BaseSover
+    internal class SegtreeTest : BaseSolver
     {
         public override string Url => "https://judge.yosupo.jp/problem/point_set_range_composite";
         public override void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)

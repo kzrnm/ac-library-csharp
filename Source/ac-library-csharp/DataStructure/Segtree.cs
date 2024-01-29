@@ -61,9 +61,27 @@ namespace AtCoder
         /// <para>計算量: O(<paramref name="n"/>)</para>
         /// </remarks>
         /// <param name="v">初期配列</param>
-        public Segtree(TValue[] v) : this(v.Length)
+        public Segtree(TValue[] v) : this((ReadOnlySpan<TValue>)v) { }
+        /// <summary>
+        /// 長さ n=<paramref name="v"/>.Length の数列 a　を持つ <see cref="Segtree{TValue, TOp}"/> クラスの新しいインスタンスを作ります。初期値は <paramref name="v"/> です。
+        /// </summary>
+        /// <remarks>
+        /// <para>制約: 0≤<paramref name="n"/>≤10^8</para>
+        /// <para>計算量: O(<paramref name="n"/>)</para>
+        /// </remarks>
+        /// <param name="v">初期配列</param>
+        public Segtree(Span<TValue> v) : this((ReadOnlySpan<TValue>)v) { }
+        /// <summary>
+        /// 長さ n=<paramref name="v"/>.Length の数列 a　を持つ <see cref="Segtree{TValue, TOp}"/> クラスの新しいインスタンスを作ります。初期値は <paramref name="v"/> です。
+        /// </summary>
+        /// <remarks>
+        /// <para>制約: 0≤<paramref name="n"/>≤10^8</para>
+        /// <para>計算量: O(<paramref name="n"/>)</para>
+        /// </remarks>
+        /// <param name="v">初期配列</param>
+        public Segtree(ReadOnlySpan<TValue> v) : this(v.Length)
         {
-            for (int i = 0; i < v.Length; i++) d[size + i] = v[i];
+            v.CopyTo(d.AsSpan(size));
             for (int i = size - 1; i >= 1; i--)
             {
                 Update(i);
@@ -252,44 +270,51 @@ namespace AtCoder
             return 0;
         }
 
-
-        [DebuggerDisplay("{" + nameof(value) + "}", Name = "{" + nameof(key) + ",nq}")]
-        private struct DebugItem
+#if EMBEDDING
+        [SourceExpander.NotEmbeddingSource]
+#endif
+        [DebuggerDisplay("{" + nameof(Value) + "}", Name = "{" + nameof(Key) + ",nq}")]
+        internal readonly struct DebugItem
         {
             public DebugItem(int l, int r, TValue value)
             {
-                if (r - l == 1)
-                    key = $"[{l}]";
-                else
-                    key = $"[{l}-{r})";
-                this.value = value;
+                L = l;
+                R = r;
+                Value = value;
             }
             [DebuggerBrowsable(0)]
-            private readonly string key;
-            private readonly TValue value;
+            public int L { get; }
+            [DebuggerBrowsable(0)]
+            public int R { get; }
+            [DebuggerBrowsable(0)]
+            public string Key => R - L == 1 ? $"[{L}]" : $"[{L}-{R})";
+            public TValue Value { get; }
         }
+#if EMBEDDING
+        [SourceExpander.NotEmbeddingSource]
+#endif
         private class DebugView
         {
-            private readonly Segtree<TValue, TOp> segtree;
+            private readonly Segtree<TValue, TOp> s;
             public DebugView(Segtree<TValue, TOp> segtree)
             {
-                this.segtree = segtree;
+                s = segtree;
             }
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
             public DebugItem[] Items
             {
                 get
                 {
-                    var items = new List<DebugItem>(segtree.Length);
-                    for (int len = segtree.size; len > 0; len >>= 1)
+                    var items = new List<DebugItem>(s.d.Length);
+                    for (int len = s.size; len > 0; len >>= 1)
                     {
-                        int unit = segtree.size / len;
+                        int unit = s.size / len;
                         for (int i = 0; i < len; i++)
                         {
                             int l = i * unit;
-                            int r = Math.Min(l + unit, segtree.Length);
-                            if (l < segtree.Length)
-                                items.Add(new DebugItem(l, r, segtree.d[i + len]));
+                            int r = l + unit;
+                            if (l < s.Length)
+                                items.Add(new DebugItem(l, r, s.d[i + len]));
                         }
                     }
                     return items.ToArray();

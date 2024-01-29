@@ -193,7 +193,7 @@ namespace AtCoder.Internal
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static StaticModInt<T>[] CalcurateSumE()
         {
-            int g = InternalMath.PrimitiveRoot<T>();
+            int g = ModPrimitiveRoot.PrimitiveRoot<T>();
             int cnt2 = InternalBit.Bsf(default(T).Mod - 1);
             var e = new StaticModInt<T>(g).Pow((default(T).Mod - 1) >> cnt2);
             var ie = e.Inv();
@@ -238,7 +238,7 @@ namespace AtCoder.Internal
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static StaticModInt<T>[] CalcurateSumIE()
         {
-            int g = InternalMath.PrimitiveRoot<T>();
+            int g = ModPrimitiveRoot.PrimitiveRoot<T>();
             int cnt2 = InternalBit.Bsf(default(T).Mod - 1);
             var e = new StaticModInt<T>(g).Pow((default(T).Mod - 1) >> cnt2);
             var ie = e.Inv();

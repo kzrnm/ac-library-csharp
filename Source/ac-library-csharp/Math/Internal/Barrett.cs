@@ -25,10 +25,10 @@ namespace AtCoder.Internal
         [MethodImpl(256)]
         public uint Reduce(ulong z)
         {
-            var x = InternalMath.Mul128Bit(z, IM);
-            var v = unchecked((uint)(z - x * Mod));
-            if (Mod <= v) v += Mod;
-            return v;
+            var x = Mul128.Mul128Bit(z, IM);
+            var y = x * Mod;
+            if (z < y) return (uint)(z - y + Mod);
+            return (uint)(z - y);
         }
 
         /// <summary>
@@ -42,8 +42,21 @@ namespace AtCoder.Internal
         public uint Pow(long x, long n)
         {
             Contract.Assert(0 <= n, $"{nameof(n)} must be positive.");
+            return Pow(x, (ulong)n);
+        }
+
+        /// <summary>
+        /// <paramref name="x"/>^<paramref name="n"/> mod m を返します。
+        /// </summary>
+        /// <remarks>
+        /// <para>制約: 0≤|<paramref name="n"/>|</para>
+        /// <para>計算量: O(log(<paramref name="n"/>))</para>
+        /// </remarks>
+        [MethodImpl(256)]
+        public uint Pow(long x, ulong n)
+        {
             if (Mod == 1) return 0;
-            uint r = 1, y = (uint)InternalMath.SafeMod(x, Mod);
+            uint r = 1, y = (uint)ModCalc.SafeMod(x, Mod);
             while (n > 0)
             {
                 if ((n & 1) != 0) r = Mul(r, y);

@@ -18,13 +18,13 @@ namespace AtCoder
     /// </list>
     /// <para>を O(log⁡N) で求めることが出来るデータ構造です。</para>
     /// </summary>
-    /// <typeparam name="TValue">配列要素の型</typeparam>
+    /// <typeparam name="T">配列要素の型</typeparam>
     [DebuggerTypeProxy(typeof(FenwickTree<>.DebugView))]
-    public class FenwickTree<TValue>
-        where TValue : IAdditionOperators<TValue, TValue, TValue>, ISubtractionOperators<TValue, TValue, TValue>, IAdditiveIdentity<TValue, TValue>
+    public class FenwickTree<T>
+        where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>, IAdditiveIdentity<T, T>
     {
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public readonly TValue[] data;
+        public readonly T[] data;
 
         public int Length { get; }
 
@@ -39,7 +39,7 @@ namespace AtCoder
         public FenwickTree(int n)
         {
             Length = n;
-            data = new TValue[n + 1];
+            data = new T[n + 1];
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace AtCoder
         /// <para>計算量: O(log n)</para>
         /// </remarks>
         [MethodImpl(256)]
-        public void Add(int p, TValue x)
+        public void Add(int p, T x)
         {
             Contract.Assert((uint)p < (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(p)} && {nameof(p)} < Length");
             for (++p; p < data.Length; p += (int)InternalBit.ExtractLowestSetBit(p))
@@ -68,7 +68,7 @@ namespace AtCoder
         /// </remarks>
         /// <returns>a[<paramref name="l"/>] + a[<paramref name="l"/> - 1] + ... + a[<paramref name="r"/> - 1]</returns>
         [MethodImpl(256)]
-        public TValue Sum(int l, int r)
+        public T Sum(int l, int r)
         {
             Contract.Assert((uint)l <= (uint)r && (uint)r <= (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(l)} && {nameof(l)} <= {nameof(r)} && {nameof(r)} <= Length");
             return Sum(r) - Sum(l);
@@ -76,9 +76,9 @@ namespace AtCoder
 
         [MethodImpl(256)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public TValue Sum(int r)
+        public T Sum(int r)
         {
-            TValue s = TValue.AdditiveIdentity;
+            T s = T.AdditiveIdentity;
             for (; r > 0; r &= r - 1)
             {
                 s += data[r];
@@ -87,40 +87,48 @@ namespace AtCoder
         }
 
         [MethodImpl(256)]
-        public TValue Slice(int l, int len) => Sum(l, l + len);
+        public T Slice(int l, int len) => Sum(l, l + len);
 
-        [DebuggerDisplay("Value = {" + nameof(value) + "}, Sum = {" + nameof(sum) + "}")]
-        internal struct DebugItem
+#if EMBEDDING
+        [SourceExpander.NotEmbeddingSource]
+#endif
+        [DebuggerDisplay("Value = {" + nameof(Value) + "}, Sum = {" + nameof(Sum) + "}")]
+        internal readonly struct DebugItem
         {
-            public DebugItem(TValue value, TValue sum)
+            public DebugItem(T value, T sum)
             {
-                this.sum = sum;
-                this.value = value;
+                Value = value;
+                Sum = sum;
             }
-            public readonly TValue value;
-            public readonly TValue sum;
+            public T Value { get; }
+            public T Sum { get; }
         }
-        internal class DebugView
+#if EMBEDDING
+        [SourceExpander.NotEmbeddingSource]
+#endif
+        private class DebugView
         {
-            private readonly FenwickTree<TValue> fenwickTree;
-            public DebugView(FenwickTree<TValue> fenwickTree)
+            private readonly FenwickTree<T> fw;
+            public DebugView(FenwickTree<T> fenwickTree)
             {
-                this.fenwickTree = fenwickTree;
+                fw = fenwickTree;
             }
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
             public DebugItem[] Items
             {
                 get
                 {
-                    var data = fenwickTree.data;
+                    var data = fw.data;
                     var items = new DebugItem[data.Length - 1];
+                    if (items.Length == 0) return System.Array.Empty<DebugItem>();
+
                     items[0] = new DebugItem(data[1], data[1]);
                     for (int i = 2; i < data.Length; i++)
                     {
                         int length = (int)InternalBit.ExtractLowestSetBit(i);
                         var pr = i - length - 1;
-                        var sum = data[i] + (0 <= pr ? items[pr].sum : TValue.AdditiveIdentity);
-                        var val = sum - items[i - 2].sum;
+                        var sum = data[i] + (0 <= pr ? items[pr].Sum : T.AdditiveIdentity);
+                        var val = sum - items[i - 2].Sum;
                         items[i - 1] = new DebugItem(val, sum);
                     }
                     return items;

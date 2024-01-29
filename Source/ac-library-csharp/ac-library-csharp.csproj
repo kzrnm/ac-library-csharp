@@ -37,7 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SourceExpander.Embedder" Version="5.1.0" Condition="'$(EmbeddingSource)'=='true'">
+    <PackageReference Include="SourceExpander.Embedder" Version="$(SourceExpanderVersion)" Condition="'$(EmbeddingSource)'=='true'">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

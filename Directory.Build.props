@@ -7,8 +7,8 @@
     <RepositoryUrl>https://github.com/kzrnm/ac-library-csharp</RepositoryUrl>
     <PackageReleaseNotes>https://github.com/kzrnm/ac-library-csharp/blob/main/CHANGELOG.md</PackageReleaseNotes>
 
-    <Version>3.0.0-atcoder8</Version>
-    <AssemblyVersion>3.0.0.8</AssemblyVersion>
+    <Version>3.9.0-atcoder1</Version>
+    <AssemblyVersion>3.9.0.1</AssemblyVersion>
     <RepositoryCommit Condition="'$(GIT_COMMIT)' != ''">$(GIT_COMMIT)</RepositoryCommit>
 
     <SignAssembly>True</SignAssembly>
@@ -18,6 +18,8 @@
 
     <EmbeddingSource>false</EmbeddingSource>
     <DefineConstants Condition="'$(EmbeddingSource)'=='true'">$(DefineConstants);EMBEDDING</DefineConstants>
+
+    <SourceExpanderVersion>5.5.1</SourceExpanderVersion>
 
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols>true</IncludeSymbols>
@@ -30,7 +32,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
       <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <IncludeAssets>runtime;build;native;contentfiles;analyzers;buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
 

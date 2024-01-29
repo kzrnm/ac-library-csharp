@@ -22,13 +22,15 @@ namespace AtCoder
         [Fact]
         public void FloorSum()
         {
-            for (int n = 0; n < 20; n++)
+            int increment(ref int n) => Global.IsCi ? ++n : n += 2;
+
+            for (int n = 0; n < 20; increment(ref n))
             {
-                for (int m = 1; m < 20; m++)
+                for (int m = 1; m < 20; increment(ref m))
                 {
-                    for (int a = -20; a < 20; a++)
+                    for (int a = -20; a < 20; increment(ref a))
                     {
-                        for (int b = -20; b < 20; b++)
+                        for (int b = -20; b < 20; increment(ref b))
                         {
                             var expected = FloorSumNative(n, m, a, b);
                             MathLib.FloorSum(n, m, a, b).Should()

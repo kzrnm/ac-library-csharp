@@ -19,14 +19,14 @@ jobs:
   build-resolve:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-dotnet@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: |
             3.0.x
             3.1.x
             7.0.x
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/Directory.Build.props') }}
@@ -60,7 +60,7 @@ jobs:
           solution: ${{ env.WORKFLOW_BUILD_SLN }}
           output-path: verify_files.json
           include: Source/ac-library-csharp/** Test/ac-library-csharp.LibraryChecker/** Test/ac-library-csharp.Test
-          exclude: Test/ac-library-csharp.LibraryChecker/BaseSover.cs **/obj/**
+          exclude: Test/ac-library-csharp.LibraryChecker/BaseSolver.cs **/obj/**
           unittest-result: ${{runner.temp}}/VerifierCsUnitTestResult/*.csv
           problems: ${{runner.temp}}/problems-*.json
           msbuild-properties: Configuration=Release
@@ -69,13 +69,13 @@ jobs:
         with:
           file: verify_files.json
       - name: Upload binaries
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: binary-${{github.sha}}
           path: Test/ac-library-csharp.LibraryChecker/bin/Release
 
       - name: Upload packages
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: inputs.upload-artifact
         with:
           name: dist
@@ -92,7 +92,7 @@ jobs:
         index:
           ["0", "1", "2", "3", "4", "5"]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up competitive-verifier
         uses: competitive-verifier/actions/setup@v1
@@ -103,20 +103,20 @@ jobs:
       - name: Download verify_files.json
         uses: competitive-verifier/actions/download-verify-artifact@v1
 
-      - uses: actions/setup-dotnet@v3
+      - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: |
             3.0.x
             3.1.x
             7.0.x
       - name: Download binaries
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: binary-${{github.sha}}
           path: Test/ac-library-csharp.LibraryChecker/bin/Release
 
       - name: Verify
-        uses: competitive-verifier/actions/verify@v1
+        uses: competitive-verifier/actions/verify@v2
         with:
           destination: ${{runner.temp}}/result.json
           split-size: ${{ env.SPLIT_SIZE }}

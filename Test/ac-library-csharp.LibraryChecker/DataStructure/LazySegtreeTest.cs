@@ -2,7 +2,7 @@
 
 namespace AtCoder.Solvers.DataStructure
 {
-    internal class LazySegtreeTest : BaseSover
+    internal class LazySegtreeTest : BaseSolver
     {
         public override string Url => "https://judge.yosupo.jp/problem/range_affine_range_sum";
         public override void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)

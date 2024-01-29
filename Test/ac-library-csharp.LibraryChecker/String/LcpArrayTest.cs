@@ -2,7 +2,7 @@
 
 namespace AtCoder.Solvers.String
 {
-    internal class LcpArrayTest : BaseSover
+    internal class LcpArrayTest : BaseSolver
     {
         public override string Url => "https://judge.yosupo.jp/problem/number_of_substrings";
         public override void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)

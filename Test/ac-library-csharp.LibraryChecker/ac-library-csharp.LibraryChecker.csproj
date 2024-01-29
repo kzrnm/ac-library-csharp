@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Competitive.IO" Version="1.0.1" />
-    <PackageReference Include="CompetitiveVerifierProblem" Version="1.2.0" />
+    <PackageReference Include="CompetitiveVerifierProblem" Version="1.5.0" />
   </ItemGroup>
 
   <ItemGroup>
