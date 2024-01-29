@@ -17,7 +17,11 @@ namespace AtCoder.Embedding
         }
         class EmbeddingGenericMathFact : EmbeddingFact
         {
+#if EMBEDDING
             public override string Skip => genericMath ? null : "GenericMath is disabled.";
+#else
+            public override string Skip => "SourceExpander.Embedder is disabled.";
+#endif
         }
 
 #if NETCOREAPP3_0
@@ -135,8 +139,8 @@ namespace AtCoder.Embedding
                 .NotContain("Debug");
         }
 
-#if DEBUG
-        [EmbeddingFact]
+#if DEBUG && EMBEDDING
+        [Fact]
         public void DebugExpanded()
         {
             _ = typeof(SourceExpander.Embedded.Expand.AtCoder.Segtree<,>);
