@@ -3,13 +3,8 @@ using System.IO;
 
 namespace AtCoder
 {
-    class SolverRunner
+    record SolverRunner(Action<TextReader, TextWriter> Action)
     {
-        private Action<TextReader, TextWriter> Action { get; }
-        public SolverRunner(Action<TextReader, TextWriter> action)
-        {
-            Action = action;
-        }
         public string Solve(string input)
         {
             using var sr = new StringReader(input);

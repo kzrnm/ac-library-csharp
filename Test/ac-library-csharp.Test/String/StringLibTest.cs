@@ -26,16 +26,16 @@ namespace AtCoder
             else if (xm) return 1;
             else return -1;
         }
-        private static int[] SaNaive(IList<int> s)
+        private static int[] SaNaive(int[] s)
         {
-            int n = s.Count;
+            int n = s.Length;
             var sa = Enumerable.Range(0, n).ToArray();
             Array.Sort(sa, (l, r) => Compare(s.Skip(l), s.Skip(r)));
             return sa;
         }
-        private static int[] LcpNaive(IList<int> s, IList<int> sa)
+        private static int[] LcpNaive(int[] s, int[] sa)
         {
-            int n = s.Count;
+            int n = s.Length;
             n.Should().NotBe(0);
             var lcp = new int[n - 1];
             for (int i = 0; i < n - 1; i++)
@@ -46,9 +46,9 @@ namespace AtCoder
             return lcp;
         }
 
-        private static int[] Znaive(IList<int> s)
+        private static int[] Znaive(int[] s)
         {
-            int n = s.Count;
+            int n = s.Length;
             var z = new int[n];
             for (int i = 0; i < n; i++)
             {
@@ -321,11 +321,11 @@ namespace AtCoder
         [Fact]
         public void SASingle()
         {
-            StringLib.SuffixArray(new[] { 0 }).Should().Equal(new[] { 0 });
-            StringLib.SuffixArray(new[] { -1 }).Should().Equal(new[] { 0 });
-            StringLib.SuffixArray(new[] { 1 }).Should().Equal(new[] { 0 });
-            StringLib.SuffixArray(new[] { int.MinValue }).Should().Equal(new[] { 0 });
-            StringLib.SuffixArray(new[] { int.MaxValue }).Should().Equal(new[] { 0 });
+            StringLib.SuffixArray([0]).Should().Equal([0]);
+            StringLib.SuffixArray([-1]).Should().Equal([0]);
+            StringLib.SuffixArray([1]).Should().Equal([0]);
+            StringLib.SuffixArray([int.MinValue]).Should().Equal([0]);
+            StringLib.SuffixArray([int.MaxValue]).Should().Equal([0]);
         }
 
         [Fact]
@@ -333,15 +333,15 @@ namespace AtCoder
         {
             var s = "aab";
             var sa = StringLib.SuffixArray(s);
-            sa.Should().Equal(new int[] { 0, 1, 2 });
+            sa.Should().Equal([0, 1, 2]);
             var lcp = StringLib.LcpArray(s, sa);
-            lcp.Should().Equal(new int[] { 1, 0 });
-            StringLib.LcpArray(new[] { 0, 0, 1 }, sa).Should().Equal(lcp);
-            StringLib.LcpArray(new[] { -100, -100, 100 }, sa).Should().Equal(lcp);
-            StringLib.LcpArray(new[] { int.MinValue, int.MinValue, int.MaxValue }, sa).Should().Equal(lcp);
-            StringLib.LcpArray(new[] { long.MinValue, long.MinValue, long.MaxValue }, sa).Should().Equal(lcp);
-            StringLib.LcpArray(new[] { uint.MinValue, uint.MinValue, uint.MaxValue }, sa).Should().Equal(lcp);
-            StringLib.LcpArray(new[] { ulong.MinValue, ulong.MinValue, ulong.MaxValue }, sa).Should().Equal(lcp);
+            lcp.Should().Equal([1, 0]);
+            StringLib.LcpArray([0, 0, 1], sa).Should().Equal(lcp);
+            StringLib.LcpArray([-100, -100, 100], sa).Should().Equal(lcp);
+            StringLib.LcpArray([int.MinValue, int.MinValue, int.MaxValue], sa).Should().Equal(lcp);
+            StringLib.LcpArray([long.MinValue, long.MinValue, long.MaxValue], sa).Should().Equal(lcp);
+            StringLib.LcpArray([uint.MinValue, uint.MinValue, uint.MaxValue], sa).Should().Equal(lcp);
+            StringLib.LcpArray([ulong.MinValue, ulong.MinValue, ulong.MaxValue], sa).Should().Equal(lcp);
         }
 
         [Fact]
@@ -350,8 +350,8 @@ namespace AtCoder
             var s = "abab";
             var z = StringLib.ZAlgorithm(s);
             z.Should().Equal(4, 0, 2, 0);
-            StringLib.ZAlgorithm(new[] { 1, 10, 1, 10 }).Should().Equal(4, 0, 2, 0);
-            StringLib.ZAlgorithm(new[] { 0, 0, 0, 0, 0, 0, 0 }).Should().Equal(Znaive(new[] { 0, 0, 0, 0, 0, 0, 0 }));
+            StringLib.ZAlgorithm([1, 10, 1, 10]).Should().Equal(4, 0, 2, 0);
+            StringLib.ZAlgorithm([0, 0, 0, 0, 0, 0, 0]).Should().Equal(Znaive([0, 0, 0, 0, 0, 0, 0]));
         }
         [Fact]
         public void ZNaive()

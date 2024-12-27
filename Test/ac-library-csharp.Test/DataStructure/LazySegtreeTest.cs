@@ -128,7 +128,7 @@ namespace AtCoder
 
             Sk[] a = reader.ReadLine().Split().Select(x => new Sk() { A = int.Parse(x), Size = 1 }).ToArray();
 
-            LazySegtree<Sk, Fk, Operatork> seg = new LazySegtree<Sk, Fk, Operatork>(a);
+            LazySegtree<Sk, Fk, Operatork> seg = new(a);
 
             for (int i = 0; i < q; i++)
             {
@@ -137,7 +137,7 @@ namespace AtCoder
                 if (t == 0)
                 {
                     (int l, int r, int c, int d) = (query[1], query[2], query[3], query[4]);
-                    seg.Apply(l, r, new Fk() { A = c, B = d });
+                    seg.Apply(l, r, new() { A = c, B = d });
                 }
                 else
                 {
@@ -157,19 +157,19 @@ namespace AtCoder
             public StaticModInt<Mod998244353> A, B;
         }
 
-        struct Operatork : ILazySegtreeOperator<Sk, Fk>
+        readonly struct Operatork : ILazySegtreeOperator<Sk, Fk>
         {
             public Sk Identity => default;
-            public Fk FIdentity => new Fk() { A = 1 };
+            public Fk FIdentity => new() { A = 1 };
 
             public Fk Composition(Fk l, Fk r)
-                => new Fk() { A = l.A * r.A, B = l.A * r.B + l.B };
+                => new() { A = l.A * r.A, B = l.A * r.B + l.B };
 
             public Sk Mapping(Fk l, Sk r)
-                => new Sk() { A = r.A * l.A + r.Size * l.B, Size = r.Size };
+                => new() { A = r.A * l.A + r.Size * l.B, Size = r.Size };
 
             public Sk Operate(Sk x, Sk y)
-                => new Sk { A = x.A + y.A, Size = x.Size + y.Size };
+                => new() { A = x.A + y.A, Size = x.Size + y.Size };
         }
 
         [Theory]
@@ -200,7 +200,7 @@ namespace AtCoder
             Sl[] a = reader.ReadLine().Split().Select(int.Parse)
                 .Select(x => new Sl() { Zero = x ^ 1, One = x, Inversion = 0 }).ToArray();
 
-            LazySegtree<Sl, bool, Operatorl> seg = new LazySegtree<Sl, bool, Operatorl>(a);
+            LazySegtree<Sl, bool, Operatorl> seg = new(a);
 
             for (int i = 0; i < q; i++)
             {
@@ -226,7 +226,7 @@ namespace AtCoder
             public long Inversion;
         }
 
-        struct Operatorl : ILazySegtreeOperator<Sl, bool>
+        readonly struct Operatorl : ILazySegtreeOperator<Sl, bool>
         {
             public Sl Identity => default;
             public bool FIdentity => false;
@@ -237,10 +237,10 @@ namespace AtCoder
             {
                 if (!l) return r;
                 // swap
-                return new Sl { Zero = r.One, One = r.Zero, Inversion = r.One * r.Zero - r.Inversion };
+                return new() { Zero = r.One, One = r.Zero, Inversion = r.One * r.Zero - r.Inversion };
             }
 
-            public Sl Operate(Sl l, Sl r) => new Sl
+            public Sl Operate(Sl l, Sl r) => new()
             {
                 Zero = l.Zero + r.Zero,
                 One = l.One + r.One,

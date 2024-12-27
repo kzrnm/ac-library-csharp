@@ -10,7 +10,7 @@ namespace AtCoder
         private readonly struct ModID0 : IDynamicModIntId { }
         private readonly struct ModID1 : IDynamicModIntId { }
         private readonly struct ModID2 : IDynamicModIntId { }
-        private struct Mod11 : IStaticMod
+        private readonly struct Mod11 : IStaticMod
         {
             public uint Mod => 11;
             public bool IsPrime => true;

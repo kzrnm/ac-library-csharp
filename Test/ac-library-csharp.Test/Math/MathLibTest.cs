@@ -41,7 +41,7 @@ namespace AtCoder
             }
         }
 
-        public static TheoryData InvBoundHandTestData = new TheoryData<long, long, long>
+        public static TheoryData InvBoundHandTestData => new TheoryData<long, long, long>
         {
             { long.MinValue, long.MaxValue, MathLib.InvMod(-1, long.MaxValue) },
             { long.MaxValue, long.MaxValue-1, 1 },
@@ -76,7 +76,7 @@ namespace AtCoder
         [Fact]
         public void CrtHand()
         {
-            MathLib.Crt(new long[] { 1, 2, 1 }, new long[] { 2, 3, 2 }).Should().Be((5, 6));
+            MathLib.Crt([1, 2, 1], [2, 3, 2]).Should().Be((5, 6));
         }
         [Fact]
         public void Crt2()
@@ -90,7 +90,7 @@ namespace AtCoder
                     {
                         for (int d = -size; d <= size; d++)
                         {
-                            var (y, m) = MathLib.Crt(new long[] { c, d }, new long[] { a, b });
+                            var (y, m) = MathLib.Crt([c, d], [a, b]);
                             if (m == 0)
                             {
                                 for (int x = 0; x < a * b / Gcd(a, b); x++)
@@ -123,7 +123,7 @@ namespace AtCoder
                             {
                                 for (int f = -size; f <= size; f++)
                                 {
-                                    var (y, m) = MathLib.Crt(new long[] { d, e, f }, new long[] { a, b, c });
+                                    var (y, m) = MathLib.Crt([d, e, f], [a, b, c]);
                                     long lcm = a * b / Gcd(a, b);
                                     lcm = lcm * c / Gcd(lcm, c);
                                     if (m == 0)
@@ -152,7 +152,7 @@ namespace AtCoder
             long r1 = 1_000_000_000_000L - 2;
             long m0 = 900577;
             long m1 = 1_000_000_000_000L;
-            var (y, m) = MathLib.Crt(new long[] { r0, r1 }, new long[] { m0, m1 });
+            var (y, m) = MathLib.Crt([r0, r1], [m0, m1]);
             m.Should().Be(m0 * m1);
             (y % m0).Should().Be(r0);
             (y % m1).Should().Be(r1);
@@ -186,7 +186,7 @@ namespace AtCoder
                 {
                     foreach (long ans in pred)
                     {
-                        var res = MathLib.Crt(new long[] { ans % a, ans % b }, new long[] { a, b });
+                        var res = MathLib.Crt([ans % a, ans % b], [a, b]);
                         long lcm = a / Gcd(a, b) * b;
                         res.Should().Be((ans % lcm, lcm));
                     }
@@ -194,7 +194,7 @@ namespace AtCoder
                 }
             }
 
-            foreach (var factorInf in StlFunction.Permutations(new long[] { 49, 73, 127, 337, 92737, 649657 }))
+            foreach (var factorInf in StlFunction.Permutations([49, 73, 127, 337, 92737, 649657]))
             {
                 foreach (long ans in pred)
                 {
@@ -210,7 +210,7 @@ namespace AtCoder
                 }
             }
 
-            foreach (var factorInfn1 in StlFunction.Permutations(new long[] { 2, 3, 715827883, 2147483647 }))
+            foreach (var factorInfn1 in StlFunction.Permutations([2, 3, 715827883, 2147483647]))
             {
                 foreach (long ans in pred)
                 {

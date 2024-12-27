@@ -17,7 +17,7 @@ namespace AtCoder
             {
                 var type = typeof(FenwickTree<T>).GetNestedType("DebugView", BindingFlags.NonPublic)
                     .MakeGenericType(typeof(T));
-                debugView = type.GetConstructor(new[] { fw.GetType() }).Invoke(new object[] { fw });
+                debugView = type.GetConstructor([fw.GetType()]).Invoke([fw]);
                 itemsProperty = debugView.GetType().GetProperty("Items");
             }
             public FenwickTree<T>.DebugItem[] GetItems()
@@ -36,7 +36,7 @@ namespace AtCoder
             view.GetItems().Should().BeEmpty();
         }
 
-        public static TheoryData Simple_Data = new TheoryData<int, FenwickTree<long>.DebugItem[]>
+        public static TheoryData Simple_Data => new TheoryData<int, FenwickTree<long>.DebugItem[]>
         {
             {
                 1,

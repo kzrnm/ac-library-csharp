@@ -8,10 +8,10 @@ namespace AtCoder
 {
     public class LazySegtree_StressTest
     {
-        private class TimeManager
+        private class TimeManager(int n)
         {
-            int[] v;
-            public TimeManager(int n) { v = Enumerable.Repeat(-1, n).ToArray(); }
+            int[] v = Enumerable.Repeat(-1, n).ToArray();
+
             public void Action(int l, int r, int time)
             {
                 for (int i = l; i < r; i++)

@@ -16,7 +16,7 @@ namespace AtCoder
             {
                 var type = typeof(Segtree<T, TOp>).GetNestedType("DebugView", BindingFlags.NonPublic)
                     .MakeGenericType(typeof(T), typeof(TOp));
-                debugView = type.GetConstructor(new[] { s.GetType() }).Invoke(new object[] { s });
+                debugView = type.GetConstructor([s.GetType()]).Invoke([s]);
                 itemsProperty = debugView.GetType().GetProperty("Items");
             }
             public Segtree<T, TOp>.DebugItem[] GetItems()
@@ -35,7 +35,7 @@ namespace AtCoder
             view.GetItems().Should().BeEmpty();
         }
 
-        public static TheoryData Simple_Data = new TheoryData<int, Segtree<string, MonoidOperator>.DebugItem[]>
+        public static TheoryData Simple_Data => new TheoryData<int, Segtree<string, MonoidOperator>.DebugItem[]>
         {
             {
                 1,

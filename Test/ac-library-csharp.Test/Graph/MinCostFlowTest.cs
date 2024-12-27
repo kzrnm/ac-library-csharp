@@ -19,7 +19,7 @@ namespace AtCoder
             g.AddEdge(1, 3, 1, 1);
             g.AddEdge(2, 3, 1, 1);
             g.AddEdge(1, 2, 1, 1);
-            g.Slope(0, 3, 10).Should().Equal(new[] { (0, 0), (2, 4) });
+            g.Slope(0, 3, 10).Should().Equal([(0, 0), (2, 4)]);
 
             McfGraphInt.Edge e;
 
@@ -41,7 +41,7 @@ namespace AtCoder
             var g = new McfGraph<int, IntOperator, long, LongOperator, IntToLongCastOperator>(4);
             g.AddEdge(0, 1, 1 << 28, 1L << 33);
             g.AddEdge(0, 1, 1, 1);
-            g.Slope(0, 1).Should().Equal(new[] { (0, 0L), (1, 1), ((1 << 28) + 1, (1L << 61) + 1) });
+            g.Slope(0, 1).Should().Equal([(0, 0L), (1, 1), ((1 << 28) + 1, (1L << 61) + 1)]);
 
             McfGraph<int, IntOperator, long, LongOperator, IntToLongCastOperator>.Edge e;
 
@@ -61,7 +61,7 @@ namespace AtCoder
             {
                 var g = new McfGraphInt(2);
                 g.AddEdge(0, 1, 1, 2);
-                g.Slope(0, 1).Should().Equal(new[] { (0, 0), (1, 2) });
+                g.Slope(0, 1).Should().Equal([(0, 0), (1, 2)]);
             }
         }
         [Fact]
@@ -99,7 +99,7 @@ namespace AtCoder
             var g = new McfGraphInt(3);
             g.AddEdge(0, 0, 100, 123).Should().Be(0);
 
-            McfGraphInt.Edge e = new McfGraphInt.Edge(0, 0, 100, 0, 123);
+            McfGraphInt.Edge e = new(0, 0, 100, 0, 123);
             g.GetEdge(0).Should().Be(e);
         }
 
@@ -110,7 +110,7 @@ namespace AtCoder
             g.AddEdge(0, 1, 1, 1).Should().Be(0);
             g.AddEdge(1, 2, 1, 0).Should().Be(1);
             g.AddEdge(0, 2, 2, 1).Should().Be(2);
-            g.Slope(0, 2).Should().Equal(new[] { (0, 0), (3, 3) });
+            g.Slope(0, 2).Should().Equal([(0, 0), (3, 3)]);
         }
 
         [Fact]

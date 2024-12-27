@@ -12,14 +12,7 @@ namespace AtCoder.Internal
 {
     public static class ModPrimitiveRoot
     {
-        private static readonly Dictionary<uint, int> primitiveRootsCache = new Dictionary<uint, int>()
-        {
-            { 2, 1 },
-            { 167772161, 3 },
-            { 469762049, 3 },
-            { 754974721, 11 },
-            { 998244353, 3 }
-        };
+        private static Dictionary<uint, int> primitiveRootsCache;
 
         /// <summary>
         /// <typeparamref name="TMod"/> の最小の原始根を求めます。
@@ -33,6 +26,22 @@ namespace AtCoder.Internal
             uint m = default(TMod).Mod;
             Contract.Assert(m >= 2, reason: $"{nameof(m)} must be greater or equal 2");
             Contract.Assert(default(TMod).IsPrime, reason: $"{nameof(m)} must be prime number");
+
+            switch (m)
+            {
+                case 2: return 1;
+                case 167772161: return 3;
+                case 469762049: return 3;
+                case 754974721: return 11;
+                case 998244353: return 3;
+            }
+
+#if NETCOREAPP3_1_OR_GREATER
+            primitiveRootsCache ??= new Dictionary<uint, int>();
+#else
+            if (primitiveRootsCache == null)
+                primitiveRootsCache = new Dictionary<uint, int>();
+#endif
 
 #if NET7_0_OR_GREATER
             ref var result = ref CollectionsMarshal.GetValueRefOrAddDefault(primitiveRootsCache, m, out var exists);
