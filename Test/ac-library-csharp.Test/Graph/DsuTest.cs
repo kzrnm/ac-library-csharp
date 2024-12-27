@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using FluentAssertions;
 using Xunit;
@@ -12,7 +11,7 @@ namespace AtCoder
         public void Zero()
         {
             var uf = new Dsu(0);
-            uf.Groups().Should().Equal(Array.Empty<int[]>());
+            uf.Groups().Should().Equal([]);
         }
 
         [Fact]

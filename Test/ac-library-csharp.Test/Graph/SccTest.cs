@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using FluentAssertions;
 using Xunit;
@@ -11,7 +10,7 @@ namespace AtCoder
         [Fact]
         public void Empty()
         {
-            new SccGraph(0).Scc().Should().Equal(Array.Empty<int[]>());
+            new SccGraph(0).Scc().Should().Equal([]);
         }
         [Fact]
         public void Simple()

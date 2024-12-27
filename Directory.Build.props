@@ -6,6 +6,7 @@
     <PackageProjectUrl>https://github.com/kzrnm/ac-library-csharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/kzrnm/ac-library-csharp</RepositoryUrl>
     <PackageReleaseNotes>https://github.com/kzrnm/ac-library-csharp/blob/main/CHANGELOG.md</PackageReleaseNotes>
+    <NoWarn>$(NoWarn);IDE0305</NoWarn>
 
     <Version>3.9.0</Version>
     <AssemblyVersion>3.9.0.101</AssemblyVersion>

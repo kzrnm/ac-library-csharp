@@ -48,7 +48,7 @@ namespace AtCoder
             }
         }
 
-        private struct Mod1ID : IStaticMod
+        private readonly struct Mod1ID : IStaticMod
         {
             public uint Mod => 1;
             public bool IsPrime => false;
@@ -84,27 +84,27 @@ namespace AtCoder
             (new StaticModInt<Mod1ID>(0).Inv()).Value.Should().Be(0);
         }
 
-        private struct ModID11 : IStaticMod
+        private readonly struct ModID11 : IStaticMod
         {
             public uint Mod => 11;
             public bool IsPrime => true;
         }
-        private struct ModID12 : IStaticMod
+        private readonly struct ModID12 : IStaticMod
         {
             public uint Mod => 12;
             public bool IsPrime => false;
         }
-        private struct ModID1000000007 : IStaticMod
+        private readonly struct ModID1000000007 : IStaticMod
         {
             public uint Mod => 1000000007;
             public bool IsPrime => false;
         }
-        private struct ModID1000000008 : IStaticMod
+        private readonly struct ModID1000000008 : IStaticMod
         {
             public uint Mod => 1000000008;
             public bool IsPrime => false;
         }
-        private struct ModID998244353 : IStaticMod
+        private readonly struct ModID998244353 : IStaticMod
         {
             public uint Mod => 998244353;
             public bool IsPrime => true;
@@ -199,7 +199,7 @@ namespace AtCoder
             }
         }
 
-        private struct IncrementID : IStaticMod
+        private readonly struct IncrementID : IStaticMod
         {
             public uint Mod => 11;
             public bool IsPrime => true;
@@ -384,7 +384,7 @@ namespace AtCoder
             new DynamicModInt<DynamicUsageID>(3).Invoking(m => m.Pow(-1)).Should().ThrowContractAssert();
         }
 
-        private struct ConstructorID : IStaticMod
+        private readonly struct ConstructorID : IStaticMod
         {
             public uint Mod => 11;
             public bool IsPrime => true;
@@ -407,7 +407,7 @@ namespace AtCoder
         }
 
 
-        private struct MemoryID : IStaticMod
+        private readonly struct MemoryID : IStaticMod
         {
             public uint Mod => 101;
             public bool IsPrime => true;

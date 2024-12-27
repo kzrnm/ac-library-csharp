@@ -15,7 +15,7 @@ namespace AtCoder
             {
                 var type = typeof(LazySegtree<T, F, TOp>).GetNestedType("DebugView", BindingFlags.NonPublic)
                     .MakeGenericType(typeof(T), typeof(F), typeof(TOp));
-                debugView = type.GetConstructor(new[] { s.GetType() }).Invoke(new object[] { s });
+                debugView = type.GetConstructor([s.GetType()]).Invoke([s]);
                 itemsProperty = debugView.GetType().GetProperty("Items");
             }
             public LazySegtree<T, F, TOp>.DebugItem[] GetItems()
@@ -44,7 +44,7 @@ namespace AtCoder
             view.GetItems().Should().BeEmpty();
         }
 
-        public static TheoryData Simple_Data = new TheoryData<int, LazySegtree<int, int, MaxOp>.DebugItem[]>
+        public static TheoryData Simple_Data() => new TheoryData<int, LazySegtree<int, int, MaxOp>.DebugItem[]>
         {
             {
                 1,
@@ -147,8 +147,7 @@ namespace AtCoder
             var view = CreateWrapper(s);
 
             s.Apply(1, 4);
-            view.GetItems().Should().Equal(new LazySegtree<int, int, MaxOp>.DebugItem[]
-            {
+            view.GetItems().Should().Equal([
                     CreateDebugItem(0, 1, 0),
                     CreateDebugItem(1, 2, 5),
                     CreateDebugItem(2, 3, 2),
@@ -160,11 +159,10 @@ namespace AtCoder
                     CreateDebugItem(0, 4, 5),
                     CreateDebugItem(4, 8, 4),
                     CreateDebugItem(0, 8, 5),
-            });
+            ]);
 
             s.Apply(2, 5, -2);
-            view.GetItems().Should().Equal(new LazySegtree<int, int, MaxOp>.DebugItem[]
-            {
+            view.GetItems().Should().Equal([
                     CreateDebugItem(0, 1, 0),
                     CreateDebugItem(1, 2, 5),
                     CreateDebugItem(2, 3, 2),
@@ -176,11 +174,10 @@ namespace AtCoder
                     CreateDebugItem(0, 4, 5),
                     CreateDebugItem(4, 8, 2),
                     CreateDebugItem(0, 8, 5),
-            });
+            ]);
 
             s.Apply(3, 5, 3);
-            view.GetItems().Should().Equal(new LazySegtree<int, int, MaxOp>.DebugItem[]
-            {
+            view.GetItems().Should().Equal([
                     CreateDebugItem(0, 1, 0),
                     CreateDebugItem(1, 2, 5),
                     CreateDebugItem(2, 3, 0),
@@ -192,11 +189,10 @@ namespace AtCoder
                     CreateDebugItem(0, 4, 5),
                     CreateDebugItem(4, 8, 5),
                     CreateDebugItem(0, 8, 5),
-            });
+            ]);
 
             s.Apply(0, 5, 1);
-            view.GetItems().Should().Equal(new LazySegtree<int, int, MaxOp>.DebugItem[]
-            {
+            view.GetItems().Should().Equal([
                     CreateDebugItem(0, 1, 0),
                     CreateDebugItem(1, 2, 5),
                     CreateDebugItem(2, 3, 0),
@@ -208,11 +204,10 @@ namespace AtCoder
                     CreateDebugItem(0, 4, 6, 1),
                     CreateDebugItem(4, 8, 6),
                     CreateDebugItem(0, 8, 6),
-            });
+            ]);
 
             s[2] = 5;
-            view.GetItems().Should().Equal(new LazySegtree<int, int, MaxOp>.DebugItem[]
-            {
+            view.GetItems().Should().Equal([
                     CreateDebugItem(0, 1, 0),
                     CreateDebugItem(1, 2, 5),
                     CreateDebugItem(2, 3, 5),
@@ -224,7 +219,7 @@ namespace AtCoder
                     CreateDebugItem(0, 4, 6),
                     CreateDebugItem(4, 8, 6),
                     CreateDebugItem(0, 8, 6),
-            });
+            ]);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace AtCoder
         [Fact]
         public void Empty()
         {
-            Impl(new Deque<int>());
+            Impl([]);
             for (int capacity = 0; capacity < 10; capacity++)
             {
                 Impl(new Deque<int>(capacity));
@@ -29,7 +29,7 @@ namespace AtCoder
                 deque.GetEnumerator().MoveNext().Should().BeFalse();
                 deque.Count.Should().Be(0);
                 deque.Should().BeEmpty();
-                deque.Should().Equal(Array.Empty<int>());
+                deque.Should().Equal([]);
             }
         }
 
@@ -210,25 +210,25 @@ namespace AtCoder
             var deque = new Deque<int>();
 
             deque.CopyTo(dist, 0);
-            dist.Should().Equal(new[] { -1, -1, -1, -1, -1, -1, -1, -1 });
+            dist.Should().Equal([-1, -1, -1, -1, -1, -1, -1, -1]);
 
             deque.AddLast(1);
             deque.AddLast(2);
             deque.CopyTo(dist, 0);
-            dist.Should().Equal(new[] { 1, 2, -1, -1, -1, -1, -1, -1 });
+            dist.Should().Equal([1, 2, -1, -1, -1, -1, -1, -1]);
 
             deque.AddFirst(3);
             deque.AddFirst(4);
             deque.CopyTo(dist, 0);
-            dist.Should().Equal(new[] { 4, 3, 1, 2, -1, -1, -1, -1 });
+            dist.Should().Equal([4, 3, 1, 2, -1, -1, -1, -1]);
         }
 
         [Fact]
         public void Enumerate()
         {
             var deque = new Deque<int> { 1, 2, 3, 4, 5 };
-            deque.Should().Equal(new[] { 1, 2, 3, 4, 5 });
-            deque.Reversed().Should().Equal(new[] { 5, 4, 3, 2, 1 });
+            deque.Should().Equal([1, 2, 3, 4, 5]);
+            deque.Reversed().Should().Equal([5, 4, 3, 2, 1]);
         }
 
         [Fact]
@@ -236,29 +236,29 @@ namespace AtCoder
         {
             {
                 var deque = new Deque<int> { 1, };
-                deque.Should().Equal(new[] { 1, });
+                deque.Should().Equal([1,]);
                 deque.Grow(6);
                 deque.data.Should().HaveCount(8);
-                deque.Should().Equal(new[] { 1, });
+                deque.Should().Equal([1,]);
             }
             {
                 var deque = new Deque<int> { 1, 2, 3, };
-                deque.Should().Equal(new[] { 1, 2, 3, });
+                deque.Should().Equal([1, 2, 3,]);
                 deque.Grow(6);
                 deque.data.Should().HaveCount(8);
-                deque.Should().Equal(new[] { 1, 2, 3, });
+                deque.Should().Equal([1, 2, 3,]);
             }
             {
                 var deque = new Deque<int> { 1, 2, 3, };
-                deque.Should().Equal(new[] { 1, 2, 3, });
+                deque.Should().Equal([1, 2, 3,]);
                 deque.PopFirst();
                 deque.Grow(6);
                 deque.data.Should().HaveCount(8);
-                deque.Should().Equal(new[] { 2, 3, });
+                deque.Should().Equal([2, 3,]);
             }
             {
                 var deque = new Deque<int> { 1, 2, 3, };
-                deque.Should().Equal(new[] { 1, 2, 3, });
+                deque.Should().Equal([1, 2, 3,]);
                 deque.PopFirst();
                 deque.PopFirst();
                 deque.AddLast(-1);
@@ -266,11 +266,11 @@ namespace AtCoder
                 deque.PopFirst();
                 deque.Grow(6);
                 deque.data.Should().HaveCount(8);
-                deque.Should().Equal(new[] { -1, -2, });
+                deque.Should().Equal([-1, -2,]);
             }
             {
                 var deque = new Deque<int> { 1, 2, 3, };
-                deque.Should().Equal(new[] { 1, 2, 3, });
+                deque.Should().Equal([1, 2, 3,]);
                 deque.PopFirst();
                 deque.PopFirst();
                 deque.PopFirst();
@@ -281,7 +281,7 @@ namespace AtCoder
             }
             {
                 var deque = new Deque<int> { 1, 2, 3, };
-                deque.Should().Equal(new[] { 1, 2, 3, });
+                deque.Should().Equal([1, 2, 3,]);
                 deque.PopLast();
                 deque.PopFirst();
                 deque.PopFirst();

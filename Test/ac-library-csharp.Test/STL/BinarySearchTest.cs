@@ -190,7 +190,7 @@ namespace AtCoder.Extension
             Array s;
             public ArrayLengthComparable(int length) { s = new byte[length]; }
             public ArrayLengthComparable(Array s) { this.s = s; }
-            public int CompareTo(int other) => s.Length.CompareTo(other);
+            public readonly int CompareTo(int other) => s.Length.CompareTo(other);
         }
 
         [Fact]
