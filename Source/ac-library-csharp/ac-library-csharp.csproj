@@ -1,13 +1,14 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net7.0;netcoreapp3.1;netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>net9.0;net7.0;netcoreapp3.1;netstandard2.1</TargetFrameworks>
     <RootNamespace>AtCoder</RootNamespace>
     <OutputType>Library</OutputType>
 
     <LangVersion Condition="'$(TargetFramework)' == 'netstandard2.1'">7.3</LangVersion>
     <LangVersion Condition="'$(TargetFramework)' == 'netcoreapp3.1'">8</LangVersion>
     <LangVersion Condition="'$(TargetFramework)' == 'net7.0'">11</LangVersion>
+    <LangVersion Condition="'$(TargetFramework)' == 'net9.0'">13</LangVersion>
 
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
 
@@ -17,7 +18,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
 
-    <NoWarn>$(NoWarn);CS1574;CA1034;CS1591;CS1734;IDE0039;IDE0057</NoWarn>
+    <NoWarn>$(NoWarn);CS1574;CA1034;CS1591;CS1734;IDE0039;IDE0057;IDE0130</NoWarn>
 
     <PackageLicenseExpression></PackageLicenseExpression>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
@@ -60,6 +61,13 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>MathLib.Convolution.Primitives.tt</DependentUpon>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

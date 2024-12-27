@@ -8,17 +8,17 @@ namespace AtCoder
 {
     public class ConvolutionTest
     {
-        private struct Mod924844033 : IStaticMod
+        private readonly struct Mod924844033 : IStaticMod
         {
             public uint Mod => 924844033;
             public bool IsPrime => true;
         }
-        private struct Mod641 : IStaticMod
+        private readonly struct Mod641 : IStaticMod
         {
             public uint Mod => 641;
             public bool IsPrime => true;
         }
-        private struct Mod18433 : IStaticMod
+        private readonly struct Mod18433 : IStaticMod
         {
             public uint Mod => 18433;
             public bool IsPrime => true;
@@ -74,12 +74,12 @@ namespace AtCoder
              => ConvNative<T>(a.Select(n => (long)n).ToArray(), b.Select(n => (long)n).ToArray()).Select(n => (ulong)n).ToArray();
         #endregion Native
 
-        public static TheoryData EmptyIntTestData = new TheoryData<int[], int[], int[]>
+        public static TheoryData EmptyIntTestData => new TheoryData<int[], int[], int[]>
         {
-            { Array.Empty<int>(), Array.Empty<int>(), Array.Empty<int>() },
-            { Array.Empty<int>(), new int[]{ 1, 2 }, Array.Empty<int>() },
-            { new int[]{ 1, 2 }, Array.Empty<int>(), Array.Empty<int>() },
-            { new int[]{ 1 }, Array.Empty<int>(), Array.Empty<int>() },
+            { [], [], [] },
+            { [], [1,2], [] },
+            { [1,2], [], [] },
+            { [1], [], [] },
         };
 
         [Theory]
@@ -89,7 +89,7 @@ namespace AtCoder
         {
             MathLib.Convolution(a, b).Should().Equal(expected);
         }
-        public static TheoryData EmptyLongTestData = new TheoryData<long[], long[], long[]>
+        public static TheoryData EmptyLongTestData => new TheoryData<long[], long[], long[]>
         {
             { Array.Empty<long>(), Array.Empty<long>(), Array.Empty<long>() },
             { Array.Empty<long>(), new long[]{ 1, 2 }, Array.Empty<long>() },
@@ -101,7 +101,7 @@ namespace AtCoder
         {
             MathLib.Convolution(a, b).Should().Equal(expected);
         }
-        public static TheoryData EmptyModIntTestData = new TheoryData<StaticModInt<Mod998244353>[], StaticModInt<Mod998244353>[], StaticModInt<Mod998244353>[]>
+        public static TheoryData EmptyModIntTestData => new TheoryData<StaticModInt<Mod998244353>[], StaticModInt<Mod998244353>[], StaticModInt<Mod998244353>[]>
         {
             { Array.Empty<StaticModInt<Mod998244353>>(), Array.Empty<StaticModInt<Mod998244353>>(), Array.Empty<StaticModInt<Mod998244353>>() },
             { Array.Empty<StaticModInt<Mod998244353>>(), new StaticModInt<Mod998244353>[]{ 1, 2 }, Array.Empty<StaticModInt<Mod998244353>>() },

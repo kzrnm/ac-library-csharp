@@ -34,7 +34,7 @@ namespace AtCoder
             e = new MfGraphInt.Edge(1, 2, 1, 0);
             g.GetEdge(4).Should().Be(e);
 
-            g.MinCut(0).Should().Equal(new[] { true, false, false, false });
+            g.MinCut(0).Should().Equal([true, false, false, false]);
         }
 
         [Fact]
@@ -62,7 +62,7 @@ namespace AtCoder
             e = new MfGraphInt.Edge(0, 1, 5, 5);
             g.GetEdge(4).Should().Be(e);
 
-            g.MinCut(0).Should().Equal(new[] { true, false });
+            g.MinCut(0).Should().Equal([true, false]);
         }
 
         [Fact]
@@ -80,7 +80,7 @@ namespace AtCoder
             g.GetEdge(1).Should().Be(e);
 
 
-            g.MinCut(0).Should().Equal(new[] { true, true, false });
+            g.MinCut(0).Should().Equal([true, true, false]);
         }
 
         [Fact]

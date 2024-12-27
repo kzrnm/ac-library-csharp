@@ -10,8 +10,11 @@ namespace AtCoder
     /// </summary>
     public class Dsu
     {
+        /// <summary>
+        /// Parent or size. A negative value indicates size, a positive value indicates parent.
+        /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public readonly int[] _parentOrSize;
+        public readonly int[] _ps;
 
         /// <summary>
         /// <see cref="Dsu"/> クラスの新しいインスタンスを、<paramref name="n"/> 頂点 0 辺のグラフとして初期化します。
@@ -22,8 +25,8 @@ namespace AtCoder
         /// </remarks>
         public Dsu(int n)
         {
-            _parentOrSize = new int[n];
-            _parentOrSize.AsSpan().Fill(-1);
+            _ps = new int[n];
+            _ps.AsSpan().Fill(-1);
         }
 
         /// <summary>
@@ -36,13 +39,13 @@ namespace AtCoder
         [MethodImpl(256)]
         public int Merge(int a, int b)
         {
-            Contract.Assert((uint)a < (uint)_parentOrSize.Length, reason: $"IndexOutOfRange: 0 <= {nameof(a)} && {nameof(a)} < n");
-            Contract.Assert((uint)b < (uint)_parentOrSize.Length, reason: $"IndexOutOfRange: 0 <= {nameof(b)} && {nameof(b)} < n");
+            Contract.Assert((uint)a < (uint)_ps.Length, reason: $"IndexOutOfRange: 0 <= {nameof(a)} && {nameof(a)} < n");
+            Contract.Assert((uint)b < (uint)_ps.Length, reason: $"IndexOutOfRange: 0 <= {nameof(b)} && {nameof(b)} < n");
             int x = Leader(a), y = Leader(b);
             if (x == y) return x;
-            if (-_parentOrSize[x] < -_parentOrSize[y]) (x, y) = (y, x);
-            _parentOrSize[x] += _parentOrSize[y];
-            _parentOrSize[y] = x;
+            if (-_ps[x] < -_ps[y]) (x, y) = (y, x);
+            _ps[x] += _ps[y];
+            _ps[y] = x;
             return x;
         }
 
@@ -56,8 +59,8 @@ namespace AtCoder
         [MethodImpl(256)]
         public bool Same(int a, int b)
         {
-            Contract.Assert((uint)a < (uint)_parentOrSize.Length, reason: $"IndexOutOfRange: 0 <= {nameof(a)} && {nameof(a)} < n");
-            Contract.Assert((uint)b < (uint)_parentOrSize.Length, reason: $"IndexOutOfRange: 0 <= {nameof(b)} && {nameof(b)} < n");
+            Contract.Assert((uint)a < (uint)_ps.Length, reason: $"IndexOutOfRange: 0 <= {nameof(a)} && {nameof(a)} < n");
+            Contract.Assert((uint)b < (uint)_ps.Length, reason: $"IndexOutOfRange: 0 <= {nameof(b)} && {nameof(b)} < n");
             return Leader(a) == Leader(b);
         }
 
@@ -71,13 +74,13 @@ namespace AtCoder
         [MethodImpl(256)]
         public int Leader(int a)
         {
-            Contract.Assert((uint)a < (uint)_parentOrSize.Length, reason: $"IndexOutOfRange: 0 <= {nameof(a)} && {nameof(a)} < n");
-            if (_parentOrSize[a] < 0) return a;
-            while (0 <= _parentOrSize[_parentOrSize[a]])
+            Contract.Assert((uint)a < (uint)_ps.Length, reason: $"IndexOutOfRange: 0 <= {nameof(a)} && {nameof(a)} < n");
+            if (_ps[a] < 0) return a;
+            while (0 <= _ps[_ps[a]])
             {
-                (a, _parentOrSize[a]) = (_parentOrSize[a], _parentOrSize[_parentOrSize[a]]);
+                (a, _ps[a]) = (_ps[a], _ps[_ps[a]]);
             }
-            return _parentOrSize[a];
+            return _ps[a];
         }
 
 
@@ -91,8 +94,8 @@ namespace AtCoder
         [MethodImpl(256)]
         public int Size(int a)
         {
-            Contract.Assert(0 <= a && a < _parentOrSize.Length, reason: $"IndexOutOfRange: 0 <= {nameof(a)} && {nameof(a)} < _n");
-            return -_parentOrSize[Leader(a)];
+            Contract.Assert(0 <= a && a < _ps.Length, reason: $"IndexOutOfRange: 0 <= {nameof(a)} && {nameof(a)} < _n");
+            return -_ps[Leader(a)];
         }
 
         /// <summary>
@@ -103,7 +106,7 @@ namespace AtCoder
         [MethodImpl(256)]
         public int[][] Groups()
         {
-            int n = _parentOrSize.Length;
+            int n = _ps.Length;
             int[] leaderBuf = new int[n];
             int[] id = new int[n];
             var resultList = new SimpleList<int[]>(n);
@@ -113,7 +116,7 @@ namespace AtCoder
                 if (i == leaderBuf[i])
                 {
                     id[i] = resultList.Count;
-                    resultList.Add(new int[-_parentOrSize[i]]);
+                    resultList.Add(new int[-_ps[i]]);
                 }
             }
             var result = resultList.ToArray();

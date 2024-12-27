@@ -1,5 +1,4 @@
-﻿using System;
-using FluentAssertions;
+﻿using FluentAssertions;
 using MersenneTwister;
 using Xunit;
 
@@ -12,7 +11,7 @@ namespace AtCoder
         {
             var ts1 = new TwoSat(0);
             ts1.Satisfiable().Should().BeTrue();
-            ts1.Answer().Should().Equal(Array.Empty<bool>());
+            ts1.Answer().Should().Equal([]);
         }
         [Fact]
         public void One()

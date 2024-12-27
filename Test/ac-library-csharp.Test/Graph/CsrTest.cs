@@ -9,20 +9,20 @@ namespace AtCoder
         [Fact]
         public void Enumerator()
         {
-            var g = new Csr<int>(5, new (int, int)[] {
+            var g = new Csr<int>(5, [
                 (2,4),
                 (0,1),
                 (4,3),
                 (0,2),
                 (1,3),
-            });
-            g.Should().Equal(new (int, int)[] {
+            ]);
+            g.Should().Equal([
                 (0,1),
                 (0,2),
                 (1,3),
                 (2,4),
                 (4,3),
-            });
+            ]);
         }
     }
 }
