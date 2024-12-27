@@ -39,22 +39,22 @@ namespace AtCoder.Internal
         {
             int n = a.Length, m = b.Length;
             int z = 1 << InternalBit.CeilPow2(n + m - 1);
-            var a2 = new StaticModInt<TMod>[z];
+            var rt = new StaticModInt<TMod>[z];
             var b2 = new StaticModInt<TMod>[z];
-            a.CopyTo(a2);
+            a.CopyTo(rt);
             b.CopyTo(b2);
 
-            var result = ConvolutionFFTInner(a2, b2);
-            Array.Resize(ref result, n + m - 1);
+            ConvolutionFFTInner(rt, b2);
+            Array.Resize(ref rt, n + m - 1);
             var iz = new StaticModInt<TMod>(z).Inv();
-            for (int i = 0; i < result.Length; i++)
-                result[i] *= iz;
+            for (int i = 0; i < rt.Length; i++)
+                rt[i] *= iz;
 
-            return result;
+            return rt;
         }
 
         [MethodImpl(256)]
-        private static StaticModInt<TMod>[] ConvolutionFFTInner<TMod>(StaticModInt<TMod>[] a, StaticModInt<TMod>[] b)
+        private static void ConvolutionFFTInner<TMod>(StaticModInt<TMod>[] a, Span<StaticModInt<TMod>> b)
             where TMod : struct, IStaticMod
         {
             Butterfly<TMod>.Calculate(a);
@@ -62,7 +62,6 @@ namespace AtCoder.Internal
             for (int i = 0; i < a.Length; i++)
                 a[i] *= b[i];
             Butterfly<TMod>.CalculateInv(a);
-            return a;
         }
         [MethodImpl(256)]
         private static StaticModInt<TMod>[] ConvolutionNaive<TMod>(ReadOnlySpan<StaticModInt<TMod>> a, ReadOnlySpan<StaticModInt<TMod>> b)
