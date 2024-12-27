@@ -26,12 +26,18 @@ jobs:
             3.0.x
             3.1.x
             7.0.x
+            9.0.x
       - uses: actions/cache@v4
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/Directory.Build.props') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
+      - name: openssl 1.0
+        shell: bash
+        run: |
+          wget http://security.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu5_amd64.deb
+          sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu5_amd64.deb
       - name: Build
         shell: bash
         run: dotnet build $WORKFLOW_BUILD_SLN -c Release
@@ -53,6 +59,11 @@ jobs:
         env:
           VERIFY_CSPROJ: Test/ac-library-csharp.LibraryChecker/ac-library-csharp.LibraryChecker.csproj
           FRAMEWORK: net7.0
+      - name: Resolve net9.0
+        run: dotnet run --project $VERIFY_CSPROJ --framework $FRAMEWORK --no-launch-profile --no-build -c Release | tee "${{runner.temp}}/problems-$FRAMEWORK.json"
+        env:
+          VERIFY_CSPROJ: Test/ac-library-csharp.LibraryChecker/ac-library-csharp.LibraryChecker.csproj
+          FRAMEWORK: net9.0
 
       - name: cs-resolve
         uses: competitive-verifier/actions/cs-resolve@v1
@@ -109,6 +120,12 @@ jobs:
             3.0.x
             3.1.x
             7.0.x
+            9.0.x
+      - name: openssl 1.0
+        shell: bash
+        run: |
+          wget http://security.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu5_amd64.deb
+          sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu5_amd64.deb
       - name: Download binaries
         uses: actions/download-artifact@v4
         with:

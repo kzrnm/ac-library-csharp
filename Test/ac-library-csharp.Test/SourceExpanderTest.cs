@@ -32,10 +32,14 @@ namespace AtCoder.Embedding
         const bool useIntrinsics = true;
         const bool genericMath = false;
         const string languageVersion = "8.0";
-#else
+#elif NET7_0
         const bool useIntrinsics = true;
         const bool genericMath = true;
         const string languageVersion = "11.0";
+#elif NET9_0
+        const bool useIntrinsics = true;
+        const bool genericMath = true;
+        const string languageVersion = "13.0";
 #endif
 
         [Fact]

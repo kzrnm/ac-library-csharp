@@ -19,22 +19,22 @@
     <EmbeddingSource>true</EmbeddingSource>
     <DefineConstants Condition="'$(EmbeddingSource)'=='true'">$(DefineConstants);EMBEDDING</DefineConstants>
 
-    <SourceExpanderVersion>5.5.1</SourceExpanderVersion>
+    <SourceExpanderVersion>7.0.0</SourceExpanderVersion>
 
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime;build;native;contentfiles;analyzers;buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-
 
 </Project>

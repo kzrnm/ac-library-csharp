@@ -17,15 +17,17 @@ jobs:
     uses: kzrnm/dotnet-actions/.github/workflows/format.yml@v2
     with:
       target: ac-library-csharp.sln
-      dotnet-version: 7.0.x
+      dotnet-version: 9.0.x
   test:
     uses: kzrnm/dotnet-actions/.github/workflows/unittest.yml@v2
     with:
       target: ac-library-csharp.sln
       test-logger: GitHubActions
+      use-openssl1: true
       dotnet-version: |
         3.0.x
         3.1.x
         7.0.x
+        9.0.x
   verify:
     uses: ./.github/workflows/reusable_verify.yml
