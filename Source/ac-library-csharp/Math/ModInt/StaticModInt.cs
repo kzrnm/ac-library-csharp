@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using AtCoder.Internal;
 #if GENERIC_MATH
@@ -24,6 +25,7 @@ namespace AtCoder
     /// }
     /// </code>
     /// </example>
+    [DebuggerDisplay("{Value,nq}")]
     public readonly struct StaticModInt<T> : IEquatable<StaticModInt<T>>, IFormattable, IModInt<StaticModInt<T>>
         where T : struct, IStaticMod
     {
