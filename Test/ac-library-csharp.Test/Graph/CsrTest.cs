@@ -1,5 +1,5 @@
 ﻿using AtCoder.Internal;
-using FluentAssertions;
+using Shouldly;
 using Xunit;
 
 namespace AtCoder
@@ -16,7 +16,7 @@ namespace AtCoder
                 (0,2),
                 (1,3),
             ]);
-            g.Should().Equal([
+            g.ShouldBe([
                 (0,1),
                 (0,2),
                 (1,3),

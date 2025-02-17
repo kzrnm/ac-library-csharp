@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using AtCoder.Internal;
-using FluentAssertions;
+using Shouldly;
 using Xunit;
 
 namespace AtCoder
@@ -9,7 +9,7 @@ namespace AtCoder
     {
         static long Gcd(long a, long b)
         {
-            (0 <= a && 0 <= b).Should().BeTrue();
+            (0 <= a && 0 <= b).ShouldBeTrue();
             if (b == 0) return a;
             return Gcd(b, a % b);
         }
@@ -35,7 +35,7 @@ namespace AtCoder
                 {
                     for (int c = 1; c <= size; c++)
                     {
-                        MathLib.PowMod(a, b, c).Should().Be(Native(a, b, c));
+                        MathLib.PowMod(a, b, c).ShouldBe(Native(a, b, c));
                     }
                 }
             }
@@ -52,7 +52,7 @@ namespace AtCoder
         [MemberData(nameof(InvBoundHandTestData))]
         public void InvBoundHand(long x, long mod, long expected)
         {
-            MathLib.InvMod(x, mod).Should().Be(expected);
+            MathLib.InvMod(x, mod).ShouldBe(expected);
         }
 
         [Fact]
@@ -65,9 +65,9 @@ namespace AtCoder
                 {
                     if (Gcd(InternalMath.SafeMod(a, b), b) != 1) continue;
                     long c = MathLib.InvMod(a, b);
-                    c.Should().BeGreaterOrEqualTo(0);
-                    b.Should().BeGreaterThan(c);
-                    ((a * c % b + b) % b).Should().Be(1 % b);
+                    c.ShouldBeGreaterThanOrEqualTo(0);
+                    b.ShouldBeGreaterThan(c);
+                    ((a * c % b + b) % b).ShouldBe(1 % b);
                 }
             }
         }
@@ -76,7 +76,7 @@ namespace AtCoder
         [Fact]
         public void CrtHand()
         {
-            MathLib.Crt([1, 2, 1], [2, 3, 2]).Should().Be((5, 6));
+            MathLib.Crt([1, 2, 1], [2, 3, 2]).ShouldBe((5, 6));
         }
         [Fact]
         public void Crt2()
@@ -95,13 +95,13 @@ namespace AtCoder
                             {
                                 for (int x = 0; x < a * b / Gcd(a, b); x++)
                                 {
-                                    (x % a != c || x % b != d).Should().BeTrue();
+                                    (x % a != c || x % b != d).ShouldBeTrue();
                                 }
                                 continue;
                             }
-                            m.Should().Be(a * b / Gcd(a, b));
-                            (y % a).Should().Be(InternalMath.SafeMod(c, a));
-                            (y % b).Should().Be(InternalMath.SafeMod(d, b));
+                            m.ShouldBe(a * b / Gcd(a, b));
+                            (y % a).ShouldBe(InternalMath.SafeMod(c, a));
+                            (y % b).ShouldBe(InternalMath.SafeMod(d, b));
                         }
                     }
                 }
@@ -130,14 +130,14 @@ namespace AtCoder
                                     {
                                         for (int x = 0; x < lcm; x++)
                                         {
-                                            (x % a != d || x % b != e || x % c != f).Should().BeTrue();
+                                            (x % a != d || x % b != e || x % c != f).ShouldBeTrue();
                                         }
                                         continue;
                                     }
-                                    m.Should().Be(lcm);
-                                    (y % a).Should().Be(InternalMath.SafeMod(d, a));
-                                    (y % b).Should().Be(InternalMath.SafeMod(e, b));
-                                    (y % c).Should().Be(InternalMath.SafeMod(f, c));
+                                    m.ShouldBe(lcm);
+                                    (y % a).ShouldBe(InternalMath.SafeMod(d, a));
+                                    (y % b).ShouldBe(InternalMath.SafeMod(e, b));
+                                    (y % c).ShouldBe(InternalMath.SafeMod(f, c));
                                 }
                             }
                         }
@@ -153,9 +153,9 @@ namespace AtCoder
             long m0 = 900577;
             long m1 = 1_000_000_000_000L;
             var (y, m) = MathLib.Crt([r0, r1], [m0, m1]);
-            m.Should().Be(m0 * m1);
-            (y % m0).Should().Be(r0);
-            (y % m1).Should().Be(r1);
+            m.ShouldBe(m0 * m1);
+            (y % m0).ShouldBe(r0);
+            (y % m1).ShouldBe(r1);
         }
 
         [Fact]
@@ -188,7 +188,7 @@ namespace AtCoder
                     {
                         var res = MathLib.Crt([ans % a, ans % b], [a, b]);
                         long lcm = a / Gcd(a, b) * b;
-                        res.Should().Be((ans % lcm, lcm));
+                        res.ShouldBe((ans % lcm, lcm));
                     }
                     (a, b) = (b, a);
                 }
@@ -206,7 +206,7 @@ namespace AtCoder
                         m.Add(f);
                     }
                     var res = MathLib.Crt(r.ToArray(), m.ToArray());
-                    res.Should().Be((ans % INF, INF));
+                    res.ShouldBe((ans % INF, INF));
                 }
             }
 
@@ -222,7 +222,7 @@ namespace AtCoder
                         m.Add(f);
                     }
                     var res = MathLib.Crt(r.ToArray(), m.ToArray());
-                    res.Should().Be((ans % (INF - 1), INF - 1));
+                    res.ShouldBe((ans % (INF - 1), INF - 1));
                 }
             }
         }

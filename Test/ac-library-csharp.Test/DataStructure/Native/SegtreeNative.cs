@@ -1,5 +1,5 @@
 ﻿using System;
-using FluentAssertions;
+using Shouldly;
 
 namespace AtCoder.DataStructure.Native
 {
@@ -45,7 +45,7 @@ namespace AtCoder.DataStructure.Native
         public int MaxRight(int l, Predicate<string> f)
         {
             var sum = op.Identity;
-            f(sum).Should().BeTrue();
+            f(sum).ShouldBeTrue();
             for (int i = l; i < n; i++)
             {
                 sum = op.Operate(sum, d[i]);
@@ -56,7 +56,7 @@ namespace AtCoder.DataStructure.Native
         public int MinLeft(int r, Predicate<string> f)
         {
             var sum = op.Identity;
-            f(sum).Should().BeTrue();
+            f(sum).ShouldBeTrue();
             for (int i = r - 1; i >= 0; i--)
             {
                 sum = op.Operate(d[i], sum);

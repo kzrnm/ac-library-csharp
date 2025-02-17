@@ -3,9 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Numerics;
 using System.Runtime.CompilerServices;
 using AtCoder.Internal;
+
+#if !NETSTANDARD2_1
+using System.Numerics;
+#endif
 
 namespace AtCoder
 {

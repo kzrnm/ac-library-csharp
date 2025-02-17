@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
-using FluentAssertions;
+using Shouldly;
 using Xunit;
 #if NET7_0_OR_GREATER
 using System;
@@ -17,14 +17,14 @@ namespace AtCoder.Internal
     {
         static long Gcd(long a, long b)
         {
-            (0 <= a && 0 <= b).Should().BeTrue();
+            (0 <= a && 0 <= b).ShouldBeTrue();
             if (b == 0) return a;
             return Gcd(b, a % b);
         }
 
         private static bool IsPrimeNaive(long n)
         {
-            (0 <= n && n <= int.MaxValue).Should().BeTrue();
+            (0 <= n && n <= int.MaxValue).ShouldBeTrue();
             if (n == 0 || n == 1) return false;
             for (long i = 2; i * i <= n; i++)
             {
@@ -38,20 +38,20 @@ namespace AtCoder.Internal
         {
             const int size = Global.IsCi ? 10000 : 500;
 
-            InternalMath.IsPrime(121).Should().BeFalse();
-            InternalMath.IsPrime(11 * 13).Should().BeFalse();
-            InternalMath.IsPrime(1_000_000_007).Should().BeTrue();
-            InternalMath.IsPrime(1_000_000_008).Should().BeFalse();
-            InternalMath.IsPrime(1_000_000_009).Should().BeTrue();
+            InternalMath.IsPrime(121).ShouldBeFalse();
+            InternalMath.IsPrime(11 * 13).ShouldBeFalse();
+            InternalMath.IsPrime(1_000_000_007).ShouldBeTrue();
+            InternalMath.IsPrime(1_000_000_008).ShouldBeFalse();
+            InternalMath.IsPrime(1_000_000_009).ShouldBeTrue();
 
             for (int i = 0; i <= size; i++)
             {
-                InternalMath.IsPrime(i).Should().Be(IsPrimeNaive(i));
+                InternalMath.IsPrime(i).ShouldBe(IsPrimeNaive(i));
             }
             for (int i = 0; i <= size; i++)
             {
                 int x = int.MaxValue - i;
-                InternalMath.IsPrime(x).Should().Be(IsPrimeNaive(x));
+                InternalMath.IsPrime(x).ShouldBe(IsPrimeNaive(x));
             }
         }
 
@@ -74,7 +74,7 @@ namespace AtCoder.Internal
                 {
                     if (b <= 0) continue;
                     var ans = (long)((new BigInteger(a) % b + b) % b);
-                    InternalMath.SafeMod(a, b).Should().Be(ans);
+                    InternalMath.SafeMod(a, b).ShouldBe(ans);
                 }
             }
         }
@@ -115,11 +115,11 @@ namespace AtCoder.Internal
                     long a2 = InternalMath.SafeMod(a, b);
                     (long first, long second) = InternalMath.InvGcd(a, b);
                     var g = Gcd(a2, b);
-                    first.Should().Be(g);
-                    second.Should().BeGreaterOrEqualTo(0);
+                    first.ShouldBe(g);
+                    second.ShouldBeGreaterThanOrEqualTo(0);
 
-                    (b / first).Should().BeGreaterOrEqualTo(second);
-                    ((long)(new BigInteger(second) * a2 % b)).Should().Be(g % b);
+                    (b / first).ShouldBeGreaterThanOrEqualTo(second);
+                    ((long)(new BigInteger(second) * a2 % b)).ShouldBe(g % b);
                 }
             }
         }
@@ -134,36 +134,36 @@ namespace AtCoder.Internal
                 if (!InternalMath.IsPrime(m)) continue;
                 //int n = InternalMath.PrimitiveRoot(m);
                 int n = mods[m].PrimitiveRoot();
-                n.Should().BeGreaterOrEqualTo(1);
-                m.Should().BeGreaterThan(n);
+                n.ShouldBeGreaterThanOrEqualTo(1);
+                m.ShouldBeGreaterThan(n);
                 int x = 1;
                 for (int i = 1; i <= m - 2; i++)
                 {
                     x = (int)((long)x * n % m);
                     // x == n^i
-                    x.Should().NotBe(1);
+                    x.ShouldNotBe(1);
                 }
                 x = (int)((long)x * n % m);
-                x.Should().Be(1);
+                x.ShouldBe(1);
             }
         }
 
         [Fact]
         public void PrimitiveRootTemplateTest()
         {
-            MathUtil.IsPrimitiveRoot(2, InternalMath.PrimitiveRoot<Mod2>()).Should().BeTrue();
-            MathUtil.IsPrimitiveRoot(3, InternalMath.PrimitiveRoot<Mod3>()).Should().BeTrue();
-            MathUtil.IsPrimitiveRoot(5, InternalMath.PrimitiveRoot<Mod5>()).Should().BeTrue();
-            MathUtil.IsPrimitiveRoot(7, InternalMath.PrimitiveRoot<Mod7>()).Should().BeTrue();
-            MathUtil.IsPrimitiveRoot(11, InternalMath.PrimitiveRoot<Mod11>()).Should().BeTrue();
-            MathUtil.IsPrimitiveRoot(998244353, InternalMath.PrimitiveRoot<Mod998244353>()).Should().BeTrue();
-            MathUtil.IsPrimitiveRoot(1000000007, InternalMath.PrimitiveRoot<Mod1000000007>()).Should().BeTrue();
-            MathUtil.IsPrimitiveRoot(469762049, InternalMath.PrimitiveRoot<Mod469762049>()).Should().BeTrue();
-            MathUtil.IsPrimitiveRoot(167772161, InternalMath.PrimitiveRoot<Mod167772161>()).Should().BeTrue();
-            MathUtil.IsPrimitiveRoot(754974721, InternalMath.PrimitiveRoot<Mod754974721>()).Should().BeTrue();
-            MathUtil.IsPrimitiveRoot(324013369, InternalMath.PrimitiveRoot<Mod324013369>()).Should().BeTrue();
-            MathUtil.IsPrimitiveRoot(831143041, InternalMath.PrimitiveRoot<Mod831143041>()).Should().BeTrue();
-            MathUtil.IsPrimitiveRoot(1685283601, InternalMath.PrimitiveRoot<Mod1685283601>()).Should().BeTrue();
+            MathUtil.IsPrimitiveRoot(2, InternalMath.PrimitiveRoot<Mod2>()).ShouldBeTrue();
+            MathUtil.IsPrimitiveRoot(3, InternalMath.PrimitiveRoot<Mod3>()).ShouldBeTrue();
+            MathUtil.IsPrimitiveRoot(5, InternalMath.PrimitiveRoot<Mod5>()).ShouldBeTrue();
+            MathUtil.IsPrimitiveRoot(7, InternalMath.PrimitiveRoot<Mod7>()).ShouldBeTrue();
+            MathUtil.IsPrimitiveRoot(11, InternalMath.PrimitiveRoot<Mod11>()).ShouldBeTrue();
+            MathUtil.IsPrimitiveRoot(998244353, InternalMath.PrimitiveRoot<Mod998244353>()).ShouldBeTrue();
+            MathUtil.IsPrimitiveRoot(1000000007, InternalMath.PrimitiveRoot<Mod1000000007>()).ShouldBeTrue();
+            MathUtil.IsPrimitiveRoot(469762049, InternalMath.PrimitiveRoot<Mod469762049>()).ShouldBeTrue();
+            MathUtil.IsPrimitiveRoot(167772161, InternalMath.PrimitiveRoot<Mod167772161>()).ShouldBeTrue();
+            MathUtil.IsPrimitiveRoot(754974721, InternalMath.PrimitiveRoot<Mod754974721>()).ShouldBeTrue();
+            MathUtil.IsPrimitiveRoot(324013369, InternalMath.PrimitiveRoot<Mod324013369>()).ShouldBeTrue();
+            MathUtil.IsPrimitiveRoot(831143041, InternalMath.PrimitiveRoot<Mod831143041>()).ShouldBeTrue();
+            MathUtil.IsPrimitiveRoot(1685283601, InternalMath.PrimitiveRoot<Mod1685283601>()).ShouldBeTrue();
         }
 
         [Fact]
@@ -174,7 +174,7 @@ namespace AtCoder.Internal
             {
                 int x = int.MaxValue - i;
                 if (!InternalMath.IsPrime(x)) continue;
-                MathUtil.IsPrimitiveRoot(x, mods[x].PrimitiveRoot()).Should().BeTrue();
+                MathUtil.IsPrimitiveRoot(x, mods[x].PrimitiveRoot()).ShouldBeTrue();
             }
         }
 
@@ -198,8 +198,8 @@ namespace AtCoder.Internal
                     var x = a + (ulong)i;
                     var y = b + (ulong)j;
                     ulong expected = Math.BigMul(x, y, out _);
-                    InternalMath.Mul128Bit(x, y).Should().Be(expected);
-                    Mul128.Mul128Bit(x, y).Should().Be(expected);
+                    InternalMath.Mul128Bit(x, y).ShouldBe(expected);
+                    Mul128.Mul128Bit(x, y).ShouldBe(expected);
                 }
         }
         [Fact]
@@ -213,7 +213,7 @@ namespace AtCoder.Internal
                 var x = arr[0];
                 var y = arr[1];
                 ulong expected = Math.BigMul(x, y, out _);
-                Mul128.Mul128BitLogic(x, y).Should().Be(expected);
+                Mul128.Mul128BitLogic(x, y).ShouldBe(expected);
             }
         }
 #endif

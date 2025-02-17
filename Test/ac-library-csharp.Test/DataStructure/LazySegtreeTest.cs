@@ -1,7 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using FluentAssertions;
+using AtCoder.Internal;
+using Shouldly;
 using Xunit;
 
 namespace AtCoder
@@ -23,38 +24,38 @@ namespace AtCoder
         [Fact]
         public void Zero()
         {
-            new LazySegtree<int, int, Starry>(0).AllProd.Should().Be(-1_000_000_000);
-            new LazySegtree<int, int, Starry>(10).AllProd.Should().Be(-1_000_000_000);
+            new LazySegtree<int, int, Starry>(0).AllProd.ShouldBe(-1_000_000_000);
+            new LazySegtree<int, int, Starry>(10).AllProd.ShouldBe(-1_000_000_000);
         }
 
         [Fact]
         public void Invalid()
         {
             var s = new LazySegtree<int, int, Starry>(10);
-            s.Invoking(s => s[-1]).Should().ThrowContractAssert();
-            s.Invoking(s => s[10]).Should().ThrowContractAssert();
-            s.Invoking(s => s[0]).Should().NotThrow();
-            s.Invoking(s => s[9]).Should().NotThrow();
+            new Action(() => _ = s[-1]).ShouldThrow<ContractAssertException>();
+            new Action(() => _ = s[10]).ShouldThrow<ContractAssertException>();
+            new Action(() => _ = s[0]).ShouldNotThrow();
+            new Action(() => _ = s[9]).ShouldNotThrow();
 
-            s.Invoking(s => s.Prod(-1, -1)).Should().ThrowContractAssert();
-            s.Invoking(s => s.Prod(3, 2)).Should().ThrowContractAssert();
-            s.Invoking(s => s.Prod(0, 11)).Should().ThrowContractAssert();
-            s.Invoking(s => s.Prod(-1, 11)).Should().ThrowContractAssert();
-            s.Invoking(s => s.Prod(0, 0)).Should().NotThrow();
-            s.Invoking(s => s.Prod(10, 10)).Should().NotThrow();
-            s.Invoking(s => s.Prod(0, 10)).Should().NotThrow();
+            new Action(() => _ = s.Prod(-1, -1)).ShouldThrow<ContractAssertException>();
+            new Action(() => _ = s.Prod(3, 2)).ShouldThrow<ContractAssertException>();
+            new Action(() => _ = s.Prod(0, 11)).ShouldThrow<ContractAssertException>();
+            new Action(() => _ = s.Prod(-1, 11)).ShouldThrow<ContractAssertException>();
+            new Action(() => _ = s.Prod(0, 0)).ShouldNotThrow();
+            new Action(() => _ = s.Prod(10, 10)).ShouldNotThrow();
+            new Action(() => _ = s.Prod(0, 10)).ShouldNotThrow();
 
-            s.Invoking(s => s.MaxRight(11, s => true)).Should().ThrowContractAssert();
-            s.Invoking(s => s.MaxRight(-1, s => true)).Should().ThrowContractAssert();
-            s.Invoking(s => s.MaxRight(0, s => false)).Should().ThrowContractAssert();
-            s.Invoking(s => s.MaxRight(0, s => true)).Should().NotThrow();
-            s.Invoking(s => s.MaxRight(10, s => true)).Should().NotThrow();
+            new Action(() => _ = s.MaxRight(11, s => true)).ShouldThrow<ContractAssertException>();
+            new Action(() => _ = s.MaxRight(-1, s => true)).ShouldThrow<ContractAssertException>();
+            new Action(() => _ = s.MaxRight(0, s => false)).ShouldThrow<ContractAssertException>();
+            new Action(() => _ = s.MaxRight(0, s => true)).ShouldNotThrow();
+            new Action(() => _ = s.MaxRight(10, s => true)).ShouldNotThrow();
 
-            s.Invoking(s => s.MinLeft(11, s => true)).Should().ThrowContractAssert();
-            s.Invoking(s => s.MinLeft(-1, s => true)).Should().ThrowContractAssert();
-            s.Invoking(s => s.MinLeft(0, s => false)).Should().ThrowContractAssert();
-            s.Invoking(s => s.MinLeft(0, s => true)).Should().NotThrow();
-            s.Invoking(s => s.MinLeft(10, s => true)).Should().NotThrow();
+            new Action(() => _ = s.MinLeft(11, s => true)).ShouldThrow<ContractAssertException>();
+            new Action(() => _ = s.MinLeft(-1, s => true)).ShouldThrow<ContractAssertException>();
+            new Action(() => _ = s.MinLeft(0, s => false)).ShouldThrow<ContractAssertException>();
+            new Action(() => _ = s.MinLeft(0, s => true)).ShouldNotThrow();
+            new Action(() => _ = s.MinLeft(10, s => true)).ShouldNotThrow();
         }
 
         [Fact]
@@ -78,7 +79,8 @@ namespace AtCoder
                         {
                             e = Math.Max(e, p[i]);
                         }
-                        seg.Prod(l, r).Should().Be(seg[l..r]).And.Be(e);
+                        seg.Prod(l, r).ShouldBe(e);
+                        seg[l..r].ShouldBe(e);
                     }
                 }
             }
@@ -88,12 +90,14 @@ namespace AtCoder
         public void Usage()
         {
             var seg = new LazySegtree<int, int, Starry>(new int[10]);
-            seg.AllProd.Should().Be(0);
+            seg.AllProd.ShouldBe(0);
             seg.Apply(0, 3, 5);
-            seg.AllProd.Should().Be(5);
+            seg.AllProd.ShouldBe(5);
             seg.Apply(2, -10);
-            seg.Prod(2, 3).Should().Be(seg[2..3]).And.Be(-5);
-            seg.Prod(2, 4).Should().Be(seg[2..4]).And.Be(0);
+            seg.Prod(2, 3).ShouldBe(-5);
+            seg[2..3].ShouldBe(-5);
+            seg.Prod(2, 4).ShouldBe(0);
+            seg[2..4].ShouldBe(0);
         }
 
         [Theory]
@@ -120,7 +124,7 @@ namespace AtCoder
 "
 )]
         public void PracticeK(string input, string expected)
-            => new SolverRunner(SolverK).Solve(input).Should().EqualLines(expected);
+            => new SolverRunner(SolverK).Solve(input).ShouldEqualLines(expected);
         static void SolverK(TextReader reader, TextWriter writer)
         {
             int[] nq = reader.ReadLine().Split().Select(int.Parse).ToArray();
@@ -191,7 +195,7 @@ namespace AtCoder
 "
 )]
         public void PracticeL(string input, string expected)
-            => new SolverRunner(SolverL).Solve(input).Should().EqualLines(expected);
+            => new SolverRunner(SolverL).Solve(input).ShouldEqualLines(expected);
         static void SolverL(TextReader reader, TextWriter writer)
         {
             int[] nq = reader.ReadLine().Split().Select(int.Parse).ToArray();

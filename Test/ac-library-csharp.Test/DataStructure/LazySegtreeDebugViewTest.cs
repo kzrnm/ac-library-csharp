@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Reflection;
-using FluentAssertions;
+using Shouldly;
 using Xunit;
 
 namespace AtCoder
@@ -41,7 +41,7 @@ namespace AtCoder
         {
             var s = new LazySegtree<int, int, MaxOp>(0);
             var view = CreateWrapper(s);
-            view.GetItems().Should().BeEmpty();
+            view.GetItems().ShouldBeEmpty();
         }
 
         public static TheoryData Simple_Data() => new TheoryData<int, LazySegtree<int, int, MaxOp>.DebugItem[]>
@@ -134,9 +134,9 @@ namespace AtCoder
 
             var view = CreateWrapper(s);
             var items = view.GetItems();
-            items.Should().Equal(expected);
+            items.ShouldBe(expected);
             foreach (var item in items)
-                item.Value.Should().Be(System.Math.Min(item.R, size) - 1);
+                item.Value.ShouldBe(System.Math.Min(item.R, size) - 1);
         }
 
         [Fact]
@@ -147,7 +147,7 @@ namespace AtCoder
             var view = CreateWrapper(s);
 
             s.Apply(1, 4);
-            view.GetItems().Should().Equal([
+            view.GetItems().ShouldBe([
                     CreateDebugItem(0, 1, 0),
                     CreateDebugItem(1, 2, 5),
                     CreateDebugItem(2, 3, 2),
@@ -162,7 +162,7 @@ namespace AtCoder
             ]);
 
             s.Apply(2, 5, -2);
-            view.GetItems().Should().Equal([
+            view.GetItems().ShouldBe([
                     CreateDebugItem(0, 1, 0),
                     CreateDebugItem(1, 2, 5),
                     CreateDebugItem(2, 3, 2),
@@ -177,7 +177,7 @@ namespace AtCoder
             ]);
 
             s.Apply(3, 5, 3);
-            view.GetItems().Should().Equal([
+            view.GetItems().ShouldBe([
                     CreateDebugItem(0, 1, 0),
                     CreateDebugItem(1, 2, 5),
                     CreateDebugItem(2, 3, 0),
@@ -192,7 +192,7 @@ namespace AtCoder
             ]);
 
             s.Apply(0, 5, 1);
-            view.GetItems().Should().Equal([
+            view.GetItems().ShouldBe([
                     CreateDebugItem(0, 1, 0),
                     CreateDebugItem(1, 2, 5),
                     CreateDebugItem(2, 3, 0),
@@ -207,7 +207,7 @@ namespace AtCoder
             ]);
 
             s[2] = 5;
-            view.GetItems().Should().Equal([
+            view.GetItems().ShouldBe([
                     CreateDebugItem(0, 1, 0),
                     CreateDebugItem(1, 2, 5),
                     CreateDebugItem(2, 3, 5),

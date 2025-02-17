@@ -1,6 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
-using FluentAssertions;
+using AtCoder.Internal;
+using Shouldly;
 using Xunit;
 
 namespace AtCoder
@@ -20,16 +22,13 @@ namespace AtCoder
         public void Zero()
         {
             var fwLong = new FenwickTree<long>(0);
-            fwLong.Sum(0, 0).Should().Be(0L);
-            fwLong[0..0].Should().Be(0L);
+            fwLong.Sum(0, 0).ShouldBe(0L);
+            fwLong[0..0].ShouldBe(0L);
 
             default(ModID0).SetMod(2);
             var fwMod = new FenwickTree<DynamicModInt<ModID0>>(0);
-            fwMod.Sum(0, 0)
-                .Should()
-                .Be(fwMod[0..0])
-                .And
-                .Be(new DynamicModInt<ModID0>(0));
+            fwMod.Sum(0, 0).ShouldBe(new DynamicModInt<ModID0>(0));
+            fwMod[0..0].ShouldBe(new DynamicModInt<ModID0>(0));
         }
 
         [Fact]
@@ -50,11 +49,9 @@ namespace AtCoder
                     {
                         sum += k;
                     }
-                    fw.Sum((int)i, (int)j)
-                        .Should()
-                        .Be(fw[(int)i..(int)j])
-                        .And
-                        .Be(((j - i) % 2) != 0 ? (1UL << 63) + sum : sum);
+                    var expected = ((j - i) % 2) != 0 ? (1UL << 63) + sum : sum;
+                    fw.Sum((int)i, (int)j).ShouldBe(expected);
+                    fw[(int)i..(int)j].ShouldBe(expected);
                 }
             }
         }
@@ -78,7 +75,8 @@ namespace AtCoder
                         {
                             sum += i * i;
                         }
-                        fw.Sum(l, r).Should().Be(fw[l..r]).And.Be(sum);
+                        fw.Sum(l, r).ShouldBe(sum);
+                        fw[l..r].ShouldBe(sum);
                     }
                 }
             }
@@ -103,7 +101,8 @@ namespace AtCoder
                         {
                             sum += i * i;
                         }
-                        fw.Sum(l, r).Should().Be(fw[l..r]).And.Be(sum);
+                        fw.Sum(l, r).ShouldBe(sum);
+                        fw[l..r].ShouldBe(sum);
                     }
                 }
             }
@@ -129,7 +128,8 @@ namespace AtCoder
                         {
                             sum += i * i;
                         }
-                        fw.Sum(l, r).Should().Be(fw[l..r]).And.Be(sum);
+                        fw.Sum(l, r).ShouldBe(sum);
+                        fw[l..r].ShouldBe(sum);
                     }
                 }
             }
@@ -139,22 +139,22 @@ namespace AtCoder
         public void Invalid()
         {
             var s = new FenwickTree<int>(10);
-            s.Invoking(s => s.Add(-1, 0)).Should().ThrowContractAssert();
-            s.Invoking(s => s.Add(10, 0)).Should().ThrowContractAssert();
-            s.Invoking(s => s.Add(0, 0)).Should().NotThrow();
-            s.Invoking(s => s.Add(9, 0)).Should().NotThrow();
+            new Action(() => s.Add(-1, 0)).ShouldThrow<ContractAssertException>();
+            new Action(() => s.Add(10, 0)).ShouldThrow<ContractAssertException>();
+            new Action(() => s.Add(0, 0)).ShouldNotThrow();
+            new Action(() => s.Add(9, 0)).ShouldNotThrow();
 
-            s.Invoking(s => s.Sum(-1, 3)).Should().ThrowContractAssert();
-            s.Invoking(s => s.Sum(3, 11)).Should().ThrowContractAssert();
-            s.Invoking(s => s.Sum(5, 3)).Should().ThrowContractAssert();
-            s.Invoking(s => s.Sum(0, 10)).Should().NotThrow();
-            s.Invoking(s => s.Sum(10, 10)).Should().NotThrow();
+            new Action(() => s.Sum(-1, 3)).ShouldThrow<ContractAssertException>();
+            new Action(() => s.Sum(3, 11)).ShouldThrow<ContractAssertException>();
+            new Action(() => s.Sum(5, 3)).ShouldThrow<ContractAssertException>();
+            new Action(() => s.Sum(0, 10)).ShouldNotThrow();
+            new Action(() => s.Sum(10, 10)).ShouldNotThrow();
 
-            s.Invoking(s => s[-1..3]).Should().ThrowContractAssert();
-            s.Invoking(s => s[3..11]).Should().ThrowContractAssert();
-            s.Invoking(s => s[5..3]).Should().ThrowContractAssert();
-            s.Invoking(s => s[0..10]).Should().NotThrow();
-            s.Invoking(s => s[10..10]).Should().NotThrow();
+            new Action(() => _ = s[-1..3]).ShouldThrow<ContractAssertException>();
+            new Action(() => _ = s[3..11]).ShouldThrow<ContractAssertException>();
+            new Action(() => _ = s[5..3]).ShouldThrow<ContractAssertException>();
+            new Action(() => _ = s[0..10]).ShouldNotThrow();
+            new Action(() => _ = s[10..10]).ShouldNotThrow();
         }
 
         [Fact]
@@ -164,10 +164,14 @@ namespace AtCoder
             fw.Add(3, int.MaxValue);
             fw.Add(5, int.MinValue);
 
-            fw.Sum(0, 10).Should().Be(fw[0..10]).And.Be(-1);
-            fw.Sum(3, 6).Should().Be(fw[3..6]).And.Be(-1);
-            fw.Sum(3, 4).Should().Be(fw[3..4]).And.Be(int.MaxValue);
-            fw.Sum(4, 10).Should().Be(fw[4..10]).And.Be(int.MinValue);
+            fw.Sum(0, 10).ShouldBe(-1);
+            fw[0..10].ShouldBe(-1);
+            fw.Sum(3, 6).ShouldBe(-1);
+            fw[3..6].ShouldBe(-1);
+            fw.Sum(3, 4).ShouldBe(int.MaxValue);
+            fw[3..4].ShouldBe(int.MaxValue);
+            fw.Sum(4, 10).ShouldBe(int.MinValue);
+            fw[4..10].ShouldBe(int.MinValue);
         }
 
         [Fact]
@@ -177,10 +181,14 @@ namespace AtCoder
             fw.Add(3, long.MaxValue);
             fw.Add(5, long.MinValue);
 
-            fw.Sum(0, 10).Should().Be(fw[0..10]).And.Be(-1);
-            fw.Sum(3, 6).Should().Be(fw[3..6]).And.Be(-1);
-            fw.Sum(3, 4).Should().Be(fw[3..4]).And.Be(long.MaxValue);
-            fw.Sum(4, 10).Should().Be(fw[4..10]).And.Be(long.MinValue);
+            fw.Sum(0, 10).ShouldBe(-1);
+            fw[0..10].ShouldBe(-1);
+            fw.Sum(3, 6).ShouldBe(-1);
+            fw[3..6].ShouldBe(-1);
+            fw.Sum(3, 4).ShouldBe(long.MaxValue);
+            fw[3..4].ShouldBe(long.MaxValue);
+            fw.Sum(4, 10).ShouldBe(long.MinValue);
+            fw[4..10].ShouldBe(long.MinValue);
         }
 
         [Fact]
@@ -214,7 +222,7 @@ namespace AtCoder
                         sum += a[i];
                     }
                     long dif = sum - fw.Sum(l, r);
-                    (dif % (1L << 32)).Should().Be(0);
+                    (dif % (1L << 32)).ShouldBe(0);
                 }
             }
         }
@@ -241,7 +249,7 @@ namespace AtCoder
 "
         )]
         public void Practice(string input, string expected)
-            => new SolverRunner(Solver).Solve(input).Should().EqualLines(expected);
+            => new SolverRunner(Solver).Solve(input).ShouldEqualLines(expected);
         static void Solver(TextReader reader, TextWriter writer)
         {
             int[] nq = reader.ReadLine().Split().Select(int.Parse).ToArray();

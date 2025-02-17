@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using FluentAssertions;
+using Shouldly;
 using Xunit;
 
 namespace AtCoder.Internal
@@ -16,12 +16,12 @@ namespace AtCoder.Internal
                 {
                     for (uint b = 0; b < m; b++)
                     {
-                        bt.Mul(a, b).Should().Be((a * b) % m);
+                        bt.Mul(a, b).ShouldBe((a * b) % m);
                     }
                 }
             }
 
-            new Barrett(1).Mul(0, 0).Should().Be(0);
+            new Barrett(1).Mul(0, 0).ShouldBe(0u);
         }
 
         [Fact]
@@ -41,11 +41,11 @@ namespace AtCoder.Internal
                 foreach (var a in v)
                 {
                     ulong a2 = a;
-                    bt.Mul(a, bt.Mul(a, a)).Should().Be((uint)(a2 * a2 % mod * a2 % mod));
+                    bt.Mul(a, bt.Mul(a, a)).ShouldBe((uint)(a2 * a2 % mod * a2 % mod));
                     foreach (var b in v)
                     {
                         ulong b2 = b;
-                        bt.Mul(a, b).Should().Be((uint)(a2 * b2 % mod));
+                        bt.Mul(a, b).ShouldBe((uint)(a2 * b2 % mod));
                     }
                 }
             }
@@ -68,11 +68,11 @@ namespace AtCoder.Internal
                 foreach (var a in v)
                 {
                     ulong a2 = a;
-                    bt.Mul(a, bt.Mul(a, a)).Should().Be((uint)(a2 * a2 % mod * a2 % mod));
+                    bt.Mul(a, bt.Mul(a, a)).ShouldBe((uint)(a2 * a2 % mod * a2 % mod));
                     foreach (var b in v)
                     {
                         ulong b2 = b;
-                        bt.Mul(a, b).Should().Be((uint)(a2 * b2 % mod));
+                        bt.Mul(a, b).ShouldBe((uint)(a2 * b2 % mod));
                     }
                 }
             }

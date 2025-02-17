@@ -1,6 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
-using FluentAssertions;
+using AtCoder.Internal;
+using Shouldly;
 using Xunit;
 
 namespace AtCoder
@@ -10,7 +12,7 @@ namespace AtCoder
         [Fact]
         public void Empty()
         {
-            new SccGraph(0).Scc().Should().Equal([]);
+            new SccGraph(0).Scc().ShouldBe([]);
         }
         [Fact]
         public void Simple()
@@ -18,7 +20,7 @@ namespace AtCoder
             var graph = new SccGraph(2);
             graph.AddEdge(0, 1);
             graph.AddEdge(1, 0);
-            graph.Scc().Should().HaveCount(1);
+            graph.Scc().Length.ShouldBe(1);
         }
         [Fact]
         public void SelfLoop()
@@ -27,7 +29,7 @@ namespace AtCoder
             graph.AddEdge(0, 0);
             graph.AddEdge(0, 0);
             graph.AddEdge(1, 1);
-            graph.Scc().Should().HaveCount(2);
+            graph.Scc().Length.ShouldBe(2);
         }
 
 
@@ -35,12 +37,12 @@ namespace AtCoder
         public void Invalid()
         {
             var graph = new SccGraph(2);
-            graph.Invoking(graph => graph.AddEdge(0, 2)).Should().ThrowContractAssert();
-            graph.Invoking(graph => graph.AddEdge(2, 0)).Should().ThrowContractAssert();
-            graph.Invoking(graph => graph.AddEdge(-1, 1)).Should().ThrowContractAssert();
-            graph.Invoking(graph => graph.AddEdge(1, -1)).Should().ThrowContractAssert();
-            graph.Invoking(graph => graph.AddEdge(0, 1)).Should().NotThrow();
-            graph.Invoking(graph => graph.AddEdge(1, 0)).Should().NotThrow();
+            new Action(() => graph.AddEdge(0, 2)).ShouldThrow<ContractAssertException>();
+            new Action(() => graph.AddEdge(2, 0)).ShouldThrow<ContractAssertException>();
+            new Action(() => graph.AddEdge(-1, 1)).ShouldThrow<ContractAssertException>();
+            new Action(() => graph.AddEdge(1, -1)).ShouldThrow<ContractAssertException>();
+            new Action(() => graph.AddEdge(0, 1)).ShouldNotThrow();
+            new Action(() => graph.AddEdge(1, 0)).ShouldNotThrow();
         }
 
         [Theory]
@@ -67,7 +69,7 @@ namespace AtCoder
 "
 )]
         public void Practice(string input, string expected)
-            => new SolverRunner(Solver).Solve(input).Should().EqualLines(expected);
+            => new SolverRunner(Solver).Solve(input).ShouldEqualLines(expected);
         static void Solver(TextReader reader, TextWriter writer)
         {
             int[] nm = reader.ReadLine().Split().Select(int.Parse).ToArray();

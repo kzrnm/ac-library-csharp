@@ -1,8 +1,10 @@
 ﻿using System.IO;
 using System.Linq;
-using FluentAssertions;
+using Shouldly;
 using MersenneTwister;
 using Xunit;
+using AtCoder.Internal;
+using System;
 
 namespace AtCoder
 {
@@ -12,115 +14,115 @@ namespace AtCoder
         public void Simple()
         {
             var g = new MfGraph<int>(4);
-            g.AddEdge(0, 1, 1).Should().Be(0);
-            g.AddEdge(0, 2, 1).Should().Be(1);
-            g.AddEdge(1, 3, 1).Should().Be(2);
-            g.AddEdge(2, 3, 1).Should().Be(3);
-            g.AddEdge(1, 2, 1).Should().Be(4);
-            g.Flow(0, 3).Should().Be(2);
+            g.AddEdge(0, 1, 1).ShouldBe(0);
+            g.AddEdge(0, 2, 1).ShouldBe(1);
+            g.AddEdge(1, 3, 1).ShouldBe(2);
+            g.AddEdge(2, 3, 1).ShouldBe(3);
+            g.AddEdge(1, 2, 1).ShouldBe(4);
+            g.Flow(0, 3).ShouldBe(2);
 
             MfGraph<int>.Edge e;
             e = new MfGraph<int>.Edge(0, 1, 1, 1);
-            g.GetEdge(0).Should().Be(e);
+            g.GetEdge(0).ShouldBe(e);
             e = new MfGraph<int>.Edge(0, 2, 1, 1);
-            g.GetEdge(1).Should().Be(e);
+            g.GetEdge(1).ShouldBe(e);
             e = new MfGraph<int>.Edge(1, 3, 1, 1);
-            g.GetEdge(2).Should().Be(e);
+            g.GetEdge(2).ShouldBe(e);
             e = new MfGraph<int>.Edge(2, 3, 1, 1);
-            g.GetEdge(3).Should().Be(e);
+            g.GetEdge(3).ShouldBe(e);
             e = new MfGraph<int>.Edge(1, 2, 1, 0);
-            g.GetEdge(4).Should().Be(e);
+            g.GetEdge(4).ShouldBe(e);
 
-            g.MinCut(0).Should().Equal([true, false, false, false]);
+            g.MinCut(0).ShouldBe([true, false, false, false]);
         }
 
         [Fact]
         public void NotSimple()
         {
             var g = new MfGraph<int>(2);
-            g.AddEdge(0, 1, 1).Should().Be(0);
-            g.AddEdge(0, 1, 2).Should().Be(1);
-            g.AddEdge(0, 1, 3).Should().Be(2);
-            g.AddEdge(0, 1, 4).Should().Be(3);
-            g.AddEdge(0, 1, 5).Should().Be(4);
-            g.AddEdge(0, 0, 6).Should().Be(5);
-            g.AddEdge(1, 1, 7).Should().Be(6);
-            g.Flow(0, 1).Should().Be(15);
+            g.AddEdge(0, 1, 1).ShouldBe(0);
+            g.AddEdge(0, 1, 2).ShouldBe(1);
+            g.AddEdge(0, 1, 3).ShouldBe(2);
+            g.AddEdge(0, 1, 4).ShouldBe(3);
+            g.AddEdge(0, 1, 5).ShouldBe(4);
+            g.AddEdge(0, 0, 6).ShouldBe(5);
+            g.AddEdge(1, 1, 7).ShouldBe(6);
+            g.Flow(0, 1).ShouldBe(15);
 
             MfGraph<int>.Edge e;
             e = new MfGraph<int>.Edge(0, 1, 1, 1);
-            g.GetEdge(0).Should().Be(e);
+            g.GetEdge(0).ShouldBe(e);
             e = new MfGraph<int>.Edge(0, 1, 2, 2);
-            g.GetEdge(1).Should().Be(e);
+            g.GetEdge(1).ShouldBe(e);
             e = new MfGraph<int>.Edge(0, 1, 3, 3);
-            g.GetEdge(2).Should().Be(e);
+            g.GetEdge(2).ShouldBe(e);
             e = new MfGraph<int>.Edge(0, 1, 4, 4);
-            g.GetEdge(3).Should().Be(e);
+            g.GetEdge(3).ShouldBe(e);
             e = new MfGraph<int>.Edge(0, 1, 5, 5);
-            g.GetEdge(4).Should().Be(e);
+            g.GetEdge(4).ShouldBe(e);
 
-            g.MinCut(0).Should().Equal([true, false]);
+            g.MinCut(0).ShouldBe([true, false]);
         }
 
         [Fact]
         public void Cut()
         {
             var g = new MfGraph<int>(3);
-            g.AddEdge(0, 1, 2).Should().Be(0);
-            g.AddEdge(1, 2, 1).Should().Be(1);
-            g.Flow(0, 2).Should().Be(1);
+            g.AddEdge(0, 1, 2).ShouldBe(0);
+            g.AddEdge(1, 2, 1).ShouldBe(1);
+            g.Flow(0, 2).ShouldBe(1);
 
             MfGraph<int>.Edge e;
             e = new MfGraph<int>.Edge(0, 1, 2, 1);
-            g.GetEdge(0).Should().Be(e);
+            g.GetEdge(0).ShouldBe(e);
             e = new MfGraph<int>.Edge(1, 2, 1, 1);
-            g.GetEdge(1).Should().Be(e);
+            g.GetEdge(1).ShouldBe(e);
 
 
-            g.MinCut(0).Should().Equal([true, true, false]);
+            g.MinCut(0).ShouldBe([true, true, false]);
         }
 
         [Fact]
         public void Twice()
         {
             var g = new MfGraph<int>(3);
-            g.AddEdge(0, 1, 1).Should().Be(0);
-            g.AddEdge(0, 2, 1).Should().Be(1);
-            g.AddEdge(1, 2, 1).Should().Be(2);
-            g.Flow(0, 2).Should().Be(2);
+            g.AddEdge(0, 1, 1).ShouldBe(0);
+            g.AddEdge(0, 2, 1).ShouldBe(1);
+            g.AddEdge(1, 2, 1).ShouldBe(2);
+            g.Flow(0, 2).ShouldBe(2);
 
             MfGraph<int>.Edge e;
 
 
             e = new MfGraph<int>.Edge(0, 1, 1, 1);
-            g.GetEdge(0).Should().Be(e);
+            g.GetEdge(0).ShouldBe(e);
             e = new MfGraph<int>.Edge(0, 2, 1, 1);
-            g.GetEdge(1).Should().Be(e);
+            g.GetEdge(1).ShouldBe(e);
             e = new MfGraph<int>.Edge(1, 2, 1, 1);
-            g.GetEdge(2).Should().Be(e);
+            g.GetEdge(2).ShouldBe(e);
 
             g.ChangeEdge(0, 100, 10);
             e = new MfGraph<int>.Edge(0, 1, 100, 10);
-            g.GetEdge(0).Should().Be(e);
+            g.GetEdge(0).ShouldBe(e);
 
-            g.Flow(0, 2).Should().Be(0);
-            g.Flow(0, 1).Should().Be(90);
+            g.Flow(0, 2).ShouldBe(0);
+            g.Flow(0, 1).ShouldBe(90);
 
             e = new MfGraph<int>.Edge(0, 1, 100, 100);
-            g.GetEdge(0).Should().Be(e);
+            g.GetEdge(0).ShouldBe(e);
             e = new MfGraph<int>.Edge(0, 2, 1, 1);
-            g.GetEdge(1).Should().Be(e);
+            g.GetEdge(1).ShouldBe(e);
             e = new MfGraph<int>.Edge(1, 2, 1, 1);
-            g.GetEdge(2).Should().Be(e);
+            g.GetEdge(2).ShouldBe(e);
 
-            g.Flow(2, 0).Should().Be(2);
+            g.Flow(2, 0).ShouldBe(2);
 
             e = new MfGraph<int>.Edge(0, 1, 100, 99);
-            g.GetEdge(0).Should().Be(e);
+            g.GetEdge(0).ShouldBe(e);
             e = new MfGraph<int>.Edge(0, 2, 1, 0);
-            g.GetEdge(1).Should().Be(e);
+            g.GetEdge(1).ShouldBe(e);
             e = new MfGraph<int>.Edge(1, 2, 1, 0);
-            g.GetEdge(2).Should().Be(e);
+            g.GetEdge(2).ShouldBe(e);
         }
         [Fact]
         public void Bound()
@@ -129,18 +131,18 @@ namespace AtCoder
 
             const int INF = int.MaxValue;
             var g = new MfGraph<int>(3);
-            g.AddEdge(0, 1, INF).Should().Be(0);
-            g.AddEdge(1, 0, INF).Should().Be(1);
-            g.AddEdge(0, 2, INF).Should().Be(2);
+            g.AddEdge(0, 1, INF).ShouldBe(0);
+            g.AddEdge(1, 0, INF).ShouldBe(1);
+            g.AddEdge(0, 2, INF).ShouldBe(2);
 
-            g.Flow(0, 2).Should().Be(INF);
+            g.Flow(0, 2).ShouldBe(INF);
 
             e = new MfGraph<int>.Edge(0, 1, INF, 0);
-            g.GetEdge(0).Should().Be(e);
+            g.GetEdge(0).ShouldBe(e);
             e = new MfGraph<int>.Edge(1, 0, INF, 0);
-            g.GetEdge(1).Should().Be(e);
+            g.GetEdge(1).ShouldBe(e);
             e = new MfGraph<int>.Edge(0, 2, INF, INF);
-            g.GetEdge(2).Should().Be(e);
+            g.GetEdge(2).ShouldBe(e);
         }
         [Fact]
         public void BoundUint()
@@ -149,27 +151,27 @@ namespace AtCoder
 
             const uint INF = uint.MaxValue;
             var g = new MfGraph<uint>(3);
-            g.AddEdge(0, 1, INF).Should().Be(0);
-            g.AddEdge(1, 0, INF).Should().Be(1);
-            g.AddEdge(0, 2, INF).Should().Be(2);
+            g.AddEdge(0, 1, INF).ShouldBe(0);
+            g.AddEdge(1, 0, INF).ShouldBe(1);
+            g.AddEdge(0, 2, INF).ShouldBe(2);
 
-            g.Flow(0, 2).Should().Be(INF);
+            g.Flow(0, 2).ShouldBe(INF);
 
             e = new MfGraph<uint>.Edge(0, 1, INF, 0);
-            g.GetEdge(0).Should().Be(e);
+            g.GetEdge(0).ShouldBe(e);
             e = new MfGraph<uint>.Edge(1, 0, INF, 0);
-            g.GetEdge(1).Should().Be(e);
+            g.GetEdge(1).ShouldBe(e);
             e = new MfGraph<uint>.Edge(0, 2, INF, INF);
-            g.GetEdge(2).Should().Be(e);
+            g.GetEdge(2).ShouldBe(e);
         }
         [Fact]
         public void SelfLoop()
         {
             var g = new MfGraph<int>(3);
-            g.AddEdge(0, 0, 100).Should().Be(0);
+            g.AddEdge(0, 0, 100).ShouldBe(0);
 
             var e = new MfGraph<int>.Edge(0, 0, 100, 0);
-            g.GetEdge(0).Should().Be(e);
+            g.GetEdge(0).ShouldBe(e);
         }
 
         [Fact]
@@ -177,34 +179,34 @@ namespace AtCoder
         {
             var g = new MfGraph<int>(2);
 
-            g.Invoking(g => g.Flow(0, 2)).Should().ThrowContractAssert();
-            g.Invoking(g => g.Flow(2, 0)).Should().ThrowContractAssert();
-            g.Invoking(g => g.Flow(2, 0, 0)).Should().ThrowContractAssert();
-            g.Invoking(g => g.Flow(0, 2, 0)).Should().ThrowContractAssert();
-            g.Invoking(g => g.Flow(0, 0)).Should().ThrowContractAssert();
-            g.Invoking(g => g.Flow(0, 0, 0)).Should().ThrowContractAssert();
-            g.Invoking(g => g.Flow(0, 1)).Should().NotThrow();
-            g.Invoking(g => g.Flow(1, 0, 1)).Should().NotThrow();
+            new Action(() => g.Flow(0, 2)).ShouldThrow<ContractAssertException>();
+            new Action(() => g.Flow(2, 0)).ShouldThrow<ContractAssertException>();
+            new Action(() => g.Flow(2, 0, 0)).ShouldThrow<ContractAssertException>();
+            new Action(() => g.Flow(0, 2, 0)).ShouldThrow<ContractAssertException>();
+            new Action(() => g.Flow(0, 0)).ShouldThrow<ContractAssertException>();
+            new Action(() => g.Flow(0, 0, 0)).ShouldThrow<ContractAssertException>();
+            new Action(() => g.Flow(0, 1)).ShouldNotThrow();
+            new Action(() => g.Flow(1, 0, 1)).ShouldNotThrow();
 
-            g.Invoking(g => g.AddEdge(0, 2, 0)).Should().ThrowContractAssert();
-            g.Invoking(g => g.AddEdge(2, 0, 0)).Should().ThrowContractAssert();
-            g.Invoking(g => g.AddEdge(0, 0, -1)).Should().ThrowContractAssert();
-            g.Invoking(g => g.AddEdge(0, 0, 0)).Should().NotThrow();
-            g.Invoking(g => g.AddEdge(1, 0, 10)).Should().NotThrow();
+            new Action(() => g.AddEdge(0, 2, 0)).ShouldThrow<ContractAssertException>();
+            new Action(() => g.AddEdge(2, 0, 0)).ShouldThrow<ContractAssertException>();
+            new Action(() => g.AddEdge(0, 0, -1)).ShouldThrow<ContractAssertException>();
+            new Action(() => g.AddEdge(0, 0, 0)).ShouldNotThrow();
+            new Action(() => g.AddEdge(1, 0, 10)).ShouldNotThrow();
 
-            g.Invoking(g => g.GetEdge(-1)).Should().ThrowContractAssert();
-            g.Invoking(g => g.GetEdge(2)).Should().ThrowContractAssert();
-            g.Invoking(g => g.GetEdge(0)).Should().NotThrow();
-            g.Invoking(g => g.GetEdge(1)).Should().NotThrow();
+            new Action(() => g.GetEdge(-1)).ShouldThrow<ContractAssertException>();
+            new Action(() => g.GetEdge(2)).ShouldThrow<ContractAssertException>();
+            new Action(() => g.GetEdge(0)).ShouldNotThrow();
+            new Action(() => g.GetEdge(1)).ShouldNotThrow();
 
-            g.Invoking(g => g.ChangeEdge(-1, 2, 2)).Should().ThrowContractAssert();
-            g.Invoking(g => g.ChangeEdge(2, 2, 2)).Should().ThrowContractAssert();
-            g.Invoking(g => g.ChangeEdge(0, 2, 2)).Should().NotThrow();
-            g.Invoking(g => g.ChangeEdge(1, 2, 2)).Should().NotThrow();
+            new Action(() => g.ChangeEdge(-1, 2, 2)).ShouldThrow<ContractAssertException>();
+            new Action(() => g.ChangeEdge(2, 2, 2)).ShouldThrow<ContractAssertException>();
+            new Action(() => g.ChangeEdge(0, 2, 2)).ShouldNotThrow();
+            new Action(() => g.ChangeEdge(1, 2, 2)).ShouldNotThrow();
 
-            g.Invoking(g => g.ChangeEdge(0, 1, 2)).Should().ThrowContractAssert();
-            g.Invoking(g => g.ChangeEdge(1, 1, 2)).Should().ThrowContractAssert();
-            g.Invoking(g => g.ChangeEdge(0, 0, -1)).Should().ThrowContractAssert();
+            new Action(() => g.ChangeEdge(0, 1, 2)).ShouldThrow<ContractAssertException>();
+            new Action(() => g.ChangeEdge(1, 1, 2)).ShouldThrow<ContractAssertException>();
+            new Action(() => g.ChangeEdge(0, 0, -1)).ShouldThrow<ContractAssertException>();
         }
 
         [Fact]
@@ -238,13 +240,13 @@ namespace AtCoder
                     vFlow[e.To] += e.Flow;
                     if (cut[e.From] && !cut[e.To]) dual += e.Cap;
                 }
-                dual.Should().Be(flow);
-                vFlow[s].Should().Be(-flow);
-                vFlow[t].Should().Be(flow);
+                dual.ShouldBe(flow);
+                vFlow[s].ShouldBe(-flow);
+                vFlow[t].ShouldBe(flow);
                 for (int i = 0; i < n; i++)
                 {
                     if (i == s || i == t) continue;
-                    vFlow[i].Should().Be(0);
+                    vFlow[i].ShouldBe(0);
                 }
             }
         }
@@ -266,7 +268,7 @@ namespace AtCoder
 "
 )]
         public void Practice(string input, string expected)
-            => new SolverRunner(Solver).Solve(input).Should().EqualLines(expected);
+            => new SolverRunner(Solver).Solve(input).ShouldEqualLines(expected);
         static void Solver(TextReader reader, TextWriter writer)
         {
             int[] nm = reader.ReadLine().Split().Select(int.Parse).ToArray();

@@ -1,6 +1,8 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using MersenneTwister;
 using Xunit;
+using System;
+using AtCoder.Internal;
 
 namespace AtCoder
 {
@@ -15,20 +17,20 @@ namespace AtCoder
             g.AddEdge(1, 3, 1, 1);
             g.AddEdge(2, 3, 1, 1);
             g.AddEdge(1, 2, 1, 1);
-            g.Slope(0, 3, 10).Should().Equal([(0, 0), (2, 4)]);
+            g.Slope(0, 3, 10).ShouldBe([(0, 0), (2, 4)]);
 
             McfGraph<int>.Edge e;
 
             e = new McfGraph<int>.Edge(0, 1, 1, 1, 1);
-            g.GetEdge(0).Should().Be(e);
+            g.GetEdge(0).ShouldBe(e);
             e = new McfGraph<int>.Edge(0, 2, 1, 1, 1);
-            g.GetEdge(1).Should().Be(e);
+            g.GetEdge(1).ShouldBe(e);
             e = new McfGraph<int>.Edge(1, 3, 1, 1, 1);
-            g.GetEdge(2).Should().Be(e);
+            g.GetEdge(2).ShouldBe(e);
             e = new McfGraph<int>.Edge(2, 3, 1, 1, 1);
-            g.GetEdge(3).Should().Be(e);
+            g.GetEdge(3).ShouldBe(e);
             e = new McfGraph<int>.Edge(1, 2, 1, 0, 1);
-            g.GetEdge(4).Should().Be(e);
+            g.GetEdge(4).ShouldBe(e);
         }
 
         [Fact]
@@ -37,14 +39,14 @@ namespace AtCoder
             var g = new McfGraph<int, long>(4);
             g.AddEdge(0, 1, 1 << 28, 1L << 33);
             g.AddEdge(0, 1, 1, 1);
-            g.Slope(0, 1).Should().Equal([(0, 0L), (1, 1), ((1 << 28) + 1, (1L << 61) + 1)]);
+            g.Slope(0, 1).ShouldBe([(0, 0L), (1, 1), ((1 << 28) + 1, (1L << 61) + 1)]);
 
             McfGraph<int, long>.Edge e;
 
             e = new McfGraph<int, long>.Edge(0, 1, 1 << 28, 1 << 28, 1L << 33);
-            g.GetEdge(0).Should().Be(e);
+            g.GetEdge(0).ShouldBe(e);
             e = new McfGraph<int, long>.Edge(0, 1, 1, 1, 1);
-            g.GetEdge(1).Should().Be(e);
+            g.GetEdge(1).ShouldBe(e);
         }
         [Fact]
         public void Usage()
@@ -52,69 +54,69 @@ namespace AtCoder
             {
                 var g = new McfGraph<int>(2);
                 g.AddEdge(0, 1, 1, 2);
-                g.Flow(0, 1).Should().Be((1, 2));
+                g.Flow(0, 1).ShouldBe((1, 2));
             }
             {
                 var g = new McfGraph<int>(2);
                 g.AddEdge(0, 1, 1, 2);
-                g.Slope(0, 1).Should().Equal([(0, 0), (1, 2)]);
+                g.Slope(0, 1).ShouldBe([(0, 0), (1, 2)]);
             }
         }
         [Fact]
         public void OutOfRange()
         {
             var g = new McfGraph<int>(2);
-            g.Invoking(g => g.Slope(-1, 3)).Should().ThrowContractAssert();
-            g.Invoking(g => g.Slope(3, 3)).Should().ThrowContractAssert();
+            new Action(() => g.Slope(-1, 3)).ShouldThrow<ContractAssertException>();
+            new Action(() => g.Slope(3, 3)).ShouldThrow<ContractAssertException>();
 
-            g.Invoking(g => g.Flow(0, 2)).Should().ThrowContractAssert();
-            g.Invoking(g => g.Flow(2, 0)).Should().ThrowContractAssert();
-            g.Invoking(g => g.Flow(2, 0, 0)).Should().ThrowContractAssert();
-            g.Invoking(g => g.Flow(0, 2, 0)).Should().ThrowContractAssert();
-            g.Invoking(g => g.Flow(0, 0)).Should().ThrowContractAssert();
-            g.Invoking(g => g.Flow(0, 0, 0)).Should().ThrowContractAssert();
-            g.Invoking(g => g.Flow(0, 1)).Should().NotThrow();
-            g.Invoking(g => g.Flow(1, 0, 1)).Should().NotThrow();
+            new Action(() => g.Flow(0, 2)).ShouldThrow<ContractAssertException>();
+            new Action(() => g.Flow(2, 0)).ShouldThrow<ContractAssertException>();
+            new Action(() => g.Flow(2, 0, 0)).ShouldThrow<ContractAssertException>();
+            new Action(() => g.Flow(0, 2, 0)).ShouldThrow<ContractAssertException>();
+            new Action(() => g.Flow(0, 0)).ShouldThrow<ContractAssertException>();
+            new Action(() => g.Flow(0, 0, 0)).ShouldThrow<ContractAssertException>();
+            new Action(() => g.Flow(0, 1)).ShouldNotThrow();
+            new Action(() => g.Flow(1, 0, 1)).ShouldNotThrow();
 
-            g.Invoking(g => g.AddEdge(0, 2, 0, 0)).Should().ThrowContractAssert();
-            g.Invoking(g => g.AddEdge(2, 0, 0, 0)).Should().ThrowContractAssert();
-            g.Invoking(g => g.AddEdge(0, 0, -1, 0)).Should().ThrowContractAssert();
-            g.Invoking(g => g.AddEdge(0, 0, 0, -1)).Should().ThrowContractAssert();
-            g.Invoking(g => g.AddEdge(0, 0, 0, 0)).Should().NotThrow();
-            g.Invoking(g => g.AddEdge(1, 0, 10, 0)).Should().NotThrow();
+            new Action(() => g.AddEdge(0, 2, 0, 0)).ShouldThrow<ContractAssertException>();
+            new Action(() => g.AddEdge(2, 0, 0, 0)).ShouldThrow<ContractAssertException>();
+            new Action(() => g.AddEdge(0, 0, -1, 0)).ShouldThrow<ContractAssertException>();
+            new Action(() => g.AddEdge(0, 0, 0, -1)).ShouldThrow<ContractAssertException>();
+            new Action(() => g.AddEdge(0, 0, 0, 0)).ShouldNotThrow();
+            new Action(() => g.AddEdge(1, 0, 10, 0)).ShouldNotThrow();
 
-            g.Invoking(g => g.GetEdge(-1)).Should().ThrowContractAssert();
-            g.Invoking(g => g.GetEdge(2)).Should().ThrowContractAssert();
-            g.Invoking(g => g.GetEdge(0)).Should().NotThrow();
-            g.Invoking(g => g.GetEdge(1)).Should().NotThrow();
+            new Action(() => g.GetEdge(-1)).ShouldThrow<ContractAssertException>();
+            new Action(() => g.GetEdge(2)).ShouldThrow<ContractAssertException>();
+            new Action(() => g.GetEdge(0)).ShouldNotThrow();
+            new Action(() => g.GetEdge(1)).ShouldNotThrow();
         }
 
         [Fact]
         public void SelfLoop()
         {
             var g = new McfGraph<int>(3);
-            g.AddEdge(0, 0, 100, 123).Should().Be(0);
+            g.AddEdge(0, 0, 100, 123).ShouldBe(0);
 
             McfGraph<int>.Edge e = new(0, 0, 100, 0, 123);
-            g.GetEdge(0).Should().Be(e);
+            g.GetEdge(0).ShouldBe(e);
         }
 
         [Fact]
         public void SameCostPaths()
         {
             var g = new McfGraph<int>(3);
-            g.AddEdge(0, 1, 1, 1).Should().Be(0);
-            g.AddEdge(1, 2, 1, 0).Should().Be(1);
-            g.AddEdge(0, 2, 2, 1).Should().Be(2);
-            g.Slope(0, 2).Should().Equal([(0, 0), (3, 3)]);
+            g.AddEdge(0, 1, 1, 1).ShouldBe(0);
+            g.AddEdge(1, 2, 1, 0).ShouldBe(1);
+            g.AddEdge(0, 2, 2, 1).ShouldBe(2);
+            g.Slope(0, 2).ShouldBe([(0, 0), (3, 3)]);
         }
 
         [Fact]
         public void Invalid()
         {
             var g = new McfGraph<int>(2);
-            g.Invoking(g => g.AddEdge(0, 0, -1, 0)).Should().ThrowContractAssert();
-            g.Invoking(g => g.AddEdge(0, 0, 0, -1)).Should().ThrowContractAssert();
+            new Action(() => g.AddEdge(0, 0, -1, 0)).ShouldThrow<ContractAssertException>();
+            new Action(() => g.AddEdge(0, 0, 0, -1)).ShouldThrow<ContractAssertException>();
         }
 
         [Fact]
@@ -140,7 +142,7 @@ namespace AtCoder
                     gMf.AddEdge(u, v, cap);
                 }
                 var (flow, cost) = g.Flow(s, t);
-                gMf.Flow(s, t).Should().Be(flow);
+                gMf.Flow(s, t).ShouldBe(flow);
 
                 int cost2 = 0;
                 var vCap = new int[n];
@@ -150,21 +152,21 @@ namespace AtCoder
                     vCap[e.To] += e.Flow;
                     cost2 += e.Flow * e.Cost;
                 }
-                cost.Should().Be(cost2);
+                cost.ShouldBe(cost2);
 
                 for (int i = 0; i < n; i++)
                 {
                     if (i == s)
                     {
-                        (-flow).Should().Be(vCap[i]);
+                        (-flow).ShouldBe(vCap[i]);
                     }
                     else if (i == t)
                     {
-                        flow.Should().Be(vCap[i]);
+                        flow.ShouldBe(vCap[i]);
                     }
                     else
                     {
-                        vCap[i].Should().Be(0);
+                        vCap[i].ShouldBe(0);
                     }
                 }
 

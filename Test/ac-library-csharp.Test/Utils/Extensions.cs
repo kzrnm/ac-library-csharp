@@ -1,31 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using AtCoder.Internal;
-using FluentAssertions;
-using FluentAssertions.Primitives;
-using FluentAssertions.Specialized;
+using Shouldly;
 
 namespace AtCoder
 {
     static class Extensions
     {
-        #region Contract
-        public static void ThrowContractAssert<TDelegate, TAssertions>(
-            this DelegateAssertions<TDelegate, TAssertions> assertions,
-            string because = "",
-            params object[] becauseArgs)
-            where TDelegate : Delegate where TAssertions : DelegateAssertions<TDelegate, TAssertions>
-        {
-            assertions.Throw<ContractAssertException>(because, becauseArgs);
-        }
-        #endregion Contract
-
         #region Random
         public static uint NextUInt(this Random rnd) => unchecked((uint)rnd.Next());
         public static (int, int) NextPair(this Random rnd, int lower, int upper)
         {
-            (upper - lower).Should().BeGreaterOrEqualTo(1);
+            (upper - lower).ShouldBeGreaterThanOrEqualTo(1);
             int a, b;
             do
             {
@@ -50,9 +36,9 @@ namespace AtCoder
             }
         }
 
-        public static void EqualLines(this StringAssertions assertions, string expected)
+        public static void ShouldEqualLines(this string actual, string expected)
         {
-            assertions.Subject.ToLines().Should().Equal(expected.ToLines());
+            actual.ToLines().ShouldBe(expected.ToLines());
         }
         #endregion String
     }
