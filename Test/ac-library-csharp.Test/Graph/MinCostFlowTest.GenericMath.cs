@@ -1,8 +1,8 @@
-﻿using Shouldly;
-using MersenneTwister;
-using Xunit;
-using System;
+﻿using System;
 using AtCoder.Internal;
+using MersenneTwister;
+using Shouldly;
+using Xunit;
 
 namespace AtCoder
 {

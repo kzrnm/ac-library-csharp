@@ -1,5 +1,5 @@
-﻿using Shouldly;
-using MersenneTwister;
+﻿using MersenneTwister;
+using Shouldly;
 using Xunit;
 
 namespace AtCoder

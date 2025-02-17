@@ -1,10 +1,10 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
-using Shouldly;
-using MersenneTwister;
-using Xunit;
 using AtCoder.Internal;
-using System;
+using MersenneTwister;
+using Shouldly;
+using Xunit;
 
 namespace AtCoder
 {

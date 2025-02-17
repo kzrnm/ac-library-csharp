@@ -4,8 +4,8 @@ using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using AtCoder.Internal;
-using Shouldly;
 using MersenneTwister;
+using Shouldly;
 using Xunit;
 
 namespace AtCoder

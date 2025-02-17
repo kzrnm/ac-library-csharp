@@ -1,9 +1,9 @@
-﻿using AtCoder.Operators;
-using Shouldly;
-using MersenneTwister;
-using Xunit;
+﻿using System;
 using AtCoder.Internal;
-using System;
+using AtCoder.Operators;
+using MersenneTwister;
+using Shouldly;
+using Xunit;
 
 namespace AtCoder
 {

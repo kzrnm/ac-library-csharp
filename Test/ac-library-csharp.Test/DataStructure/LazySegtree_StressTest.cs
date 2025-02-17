@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using Shouldly;
 using MersenneTwister;
+using Shouldly;
 using Xunit;
 
 namespace AtCoder
