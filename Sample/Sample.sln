@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleProject", "SampleProj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ac-library-csharp", "..\Source\ac-library-csharp\ac-library-csharp.csproj", "{75EDB69F-2582-4251-8709-E0BB934336C4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AtCoderAnalyzer", "..\Source\AtCoderAnalyzer\AtCoderAnalyzer.csproj", "{4101D5BE-4FC7-467E-BCAD-0C6BD57B3485}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{75EDB69F-2582-4251-8709-E0BB934336C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75EDB69F-2582-4251-8709-E0BB934336C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75EDB69F-2582-4251-8709-E0BB934336C4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4101D5BE-4FC7-467E-BCAD-0C6BD57B3485}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4101D5BE-4FC7-467E-BCAD-0C6BD57B3485}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4101D5BE-4FC7-467E-BCAD-0C6BD57B3485}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4101D5BE-4FC7-467E-BCAD-0C6BD57B3485}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

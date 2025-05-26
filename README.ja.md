@@ -25,49 +25,6 @@ README languages: [English](README.md), [日本語](README.ja.md)
 
 [AtCoder Library](https://github.com/atcoder/ac-library) の C# 移植です。 commit: [db0826383c5a6c909f8eac58e64a45aadd4867e2](https://github.com/atcoder/ac-library/tree/db0826383c5a6c909f8eac58e64a45aadd4867e2)
 
-### AtCoderAnalyzer
-
-`ac-library-csharp` 利用者向けのAnalyzer
-
-#### 利用例
-
-Operator 型を自動生成する機能などがあります。
-
-From
-
-```C#
-using AtCoder;
-class Program
-{
-    static void Main()
-    {
-        var seg = new Segtree<int, Op>(10);
-    }
-}
-```
-
-To
-
-```C#
-using AtCoder;
-using System.Runtime.CompilerServices;
-
-class Program
-{
-    static void Main()
-    {
-        var seg = new Segtree<int, Op>(10);
-    }
-}
-struct Op : ISegtreeOperator<int>
-{
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int Operate(int x, int y) => default;
-
-    public int Identity => default;
-}
-```
-
 ## Status
 
 [![NuGet version (ac-library-csharp)](https://img.shields.io/nuget/v/ac-library-csharp.svg?style=flat-square)](https://www.nuget.org/packages/ac-library-csharp/)
@@ -80,14 +37,6 @@ struct Op : ISegtreeOperator<int>
 ```
 Install-Package ac-library-csharp
 ```
-
-### Install analyzer(optional)
-
-```
-Install-Package AtCoderAnalyzer
-```
-
-[AtCoderAnalyzer](/document_ja/analyzers/index.md) をインストールするとコードフィックス機能が提供されます。
 
 ### output combinded source code
 
