@@ -19,9 +19,7 @@ README languages: [English](README.md), [日本語](README.ja.md)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## Packages
-
-### ac-library-csharp
+## About
 
 C# port of [AtCoder Library](https://github.com/atcoder/ac-library) commit: [db0826383c5a6c909f8eac58e64a45aadd4867e2](https://github.com/atcoder/ac-library/tree/db0826383c5a6c909f8eac58e64a45aadd4867e2)
 
@@ -37,6 +35,12 @@ C# port of [AtCoder Library](https://github.com/atcoder/ac-library) commit: [db0
 ```
 Install-Package ac-library-csharp
 ```
+
+#### What is `-atcoder` verison?
+
+There are versions with the -atcoder suffix on NuGet. [example](https://www.nuget.org/packages/ac-library-csharp/3.0.0-atcoder8).
+These versions don’t use SourceExpander (described below), so the source embedding feature isn’t available—but the DLL size is a few hundred kilobytes smaller.
+They are intended for use in judge systems like AtCoder, where the library is preinstalled on the server.
 
 ### output combinded source code
 

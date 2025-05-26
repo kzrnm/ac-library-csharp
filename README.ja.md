@@ -19,9 +19,7 @@ README languages: [English](README.md), [日本語](README.ja.md)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## Packages
-
-### ac-library-csharp
+## About
 
 [AtCoder Library](https://github.com/atcoder/ac-library) の C# 移植です。 commit: [db0826383c5a6c909f8eac58e64a45aadd4867e2](https://github.com/atcoder/ac-library/tree/db0826383c5a6c909f8eac58e64a45aadd4867e2)
 
@@ -37,6 +35,11 @@ README languages: [English](README.md), [日本語](README.ja.md)
 ```
 Install-Package ac-library-csharp
 ```
+
+#### What is `-atcoder` verison?
+
+NuGet 上に `-atcoder` サフィックスの付いたバージョンを登録しています。[example](https://www.nuget.org/packages/ac-library-csharp/3.0.0-atcoder8) このバージョンでは SourceExpander (後述) を使用していないのでソースコード埋め込み機能は使えませんが、DLL のサイズが数百キロバイト小さくなっています。
+AtCoder などの ac-library-csharp をサーバーに導入されている環境での使用を想定しています。
 
 ### output combinded source code
 
