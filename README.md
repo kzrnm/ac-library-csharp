@@ -6,14 +6,11 @@ README languages: [English](README.md), [日本語](README.ja.md)
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**
 
-- [Packages](#packages)
-  - [ac-library-csharp](#ac-library-csharp)
-  - [AtCoderAnalyzer](#atcoderanalyzer)
-    - [For example](#for-example)
+- [About](#about)
 - [Status](#status)
 - [Getting started](#getting-started)
   - [Installation](#installation)
-  - [Install analyzer(optional)](#install-analyzeroptional)
+    - [What is `-atcoder` verison?](#what-is--atcoder-verison)
   - [output combinded source code](#output-combinded-source-code)
 - [License](#license)
 
