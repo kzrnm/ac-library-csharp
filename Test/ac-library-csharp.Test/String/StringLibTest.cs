@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AtCoder.Internal;
-using FluentAssertions;
+using Shouldly;
 using Xunit;
 
 namespace AtCoder
@@ -36,7 +36,7 @@ namespace AtCoder
         private static int[] LcpNaive(int[] s, int[] sa)
         {
             int n = s.Length;
-            n.Should().NotBe(0);
+            n.ShouldNotBe(0);
             var lcp = new int[n - 1];
             for (int i = 0; i < n - 1; i++)
             {
@@ -60,11 +60,11 @@ namespace AtCoder
         [Fact]
         public void Empty()
         {
-            StringLib.SuffixArray("").Should().Equal();
-            StringLib.SuffixArray(Array.Empty<int>()).Should().Equal();
+            StringLib.SuffixArray("").ShouldBe([]);
+            StringLib.SuffixArray(Array.Empty<int>()).ShouldBe([]);
 
-            StringLib.ZAlgorithm("").Should().Equal();
-            StringLib.ZAlgorithm(Array.Empty<int>()).Should().Equal();
+            StringLib.ZAlgorithm("").ShouldBe([]);
+            StringLib.ZAlgorithm(Array.Empty<int>()).ShouldBe([]);
         }
         [Fact]
         public void SaLcpNaive()
@@ -85,9 +85,9 @@ namespace AtCoder
                         g /= 4;
                     }
                     var sa = SaNaive(s);
-                    StringLib.SuffixArray(s).Should().Equal(sa);
-                    StringLib.SuffixArray(s, max_c).Should().Equal(sa);
-                    StringLib.LcpArray(s, sa).Should().Equal(LcpNaive(s, sa));
+                    StringLib.SuffixArray(s).ShouldBe(sa);
+                    StringLib.SuffixArray(s, max_c).ShouldBe(sa);
+                    StringLib.LcpArray(s, sa).ShouldBe(LcpNaive(s, sa));
                 }
             }
             for (int n = 1; n <= 10; n++)
@@ -106,9 +106,9 @@ namespace AtCoder
                         g /= 2;
                     }
                     var sa = SaNaive(s);
-                    StringLib.SuffixArray(s).Should().Equal(sa);
-                    StringLib.SuffixArray(s, max_c).Should().Equal(sa);
-                    StringLib.LcpArray(s, sa).Should().Equal(LcpNaive(s, sa));
+                    StringLib.SuffixArray(s).ShouldBe(sa);
+                    StringLib.SuffixArray(s, max_c).ShouldBe(sa);
+                    StringLib.LcpArray(s, sa).ShouldBe(LcpNaive(s, sa));
                 }
             }
         }
@@ -131,7 +131,7 @@ namespace AtCoder
                         g /= 4;
                     }
                     var sa = InternalString.SaNaive(s);
-                    sa.Should().Equal(SaNaive(s));
+                    sa.ShouldBe(SaNaive(s));
                 }
             }
             for (int n = 1; n <= 10; n++)
@@ -149,7 +149,7 @@ namespace AtCoder
                     }
 
                     var sa = InternalString.SaNaive(s);
-                    sa.Should().Equal(SaNaive(s));
+                    sa.ShouldBe(SaNaive(s));
                 }
             }
         }
@@ -171,7 +171,7 @@ namespace AtCoder
                     }
 
                     var sa = InternalString.SaDoubling(s);
-                    sa.Should().Equal(SaNaive(s));
+                    sa.ShouldBe(SaNaive(s));
                 }
             }
             for (int n = 1; n <= 10; n++)
@@ -189,7 +189,7 @@ namespace AtCoder
                     }
 
                     var sa = InternalString.SaDoubling(s);
-                    sa.Should().Equal(SaNaive(s));
+                    sa.ShouldBe(SaNaive(s));
                 }
             }
         }
@@ -214,7 +214,7 @@ namespace AtCoder
                     }
 
                     var sa = InternalString.SaIs(s, max_c, -1, -1);
-                    sa.Should().Equal(SaNaive(s));
+                    sa.ShouldBe(SaNaive(s));
                 }
             }
             for (int n = 1; n <= 10; n++)
@@ -234,7 +234,7 @@ namespace AtCoder
                     }
 
                     var sa = InternalString.SaIs(s, max_c, -1, -1);
-                    sa.Should().Equal(SaNaive(s));
+                    sa.ShouldBe(SaNaive(s));
                 }
             }
         }
@@ -245,9 +245,9 @@ namespace AtCoder
             {
                 var s = Enumerable.Repeat(10, n).ToArray();
                 var sa = SaNaive(s);
-                StringLib.SuffixArray(s).Should().Equal(sa);
-                StringLib.SuffixArray(s, 10).Should().Equal(sa);
-                StringLib.SuffixArray(s, 12).Should().Equal(sa);
+                StringLib.SuffixArray(s).ShouldBe(sa);
+                StringLib.SuffixArray(s, 10).ShouldBe(sa);
+                StringLib.SuffixArray(s, 12).ShouldBe(sa);
             }
         }
         [Fact]
@@ -258,16 +258,16 @@ namespace AtCoder
                 var s = new int[n];
                 for (int i = 0; i < n; i++) s[i] = (i % 2);
                 var sa = SaNaive(s);
-                StringLib.SuffixArray(s).Should().Equal(sa);
-                StringLib.SuffixArray(s, 3).Should().Equal(sa);
+                StringLib.SuffixArray(s).ShouldBe(sa);
+                StringLib.SuffixArray(s, 3).ShouldBe(sa);
             }
             for (int n = 1; n <= 100; n++)
             {
                 var s = new int[n];
                 for (int i = 0; i < n; i++) s[i] = 1 - (i % 2);
                 var sa = SaNaive(s);
-                StringLib.SuffixArray(s).Should().Equal(sa);
-                StringLib.SuffixArray(s, 3).Should().Equal(sa);
+                StringLib.SuffixArray(s).ShouldBe(sa);
+                StringLib.SuffixArray(s, 3).ShouldBe(sa);
             }
         }
         [Fact]
@@ -290,10 +290,10 @@ namespace AtCoder
                 "ssisippi",    // 2
             };
 
-            sa.Should().HaveCount(answer.Length);
+            sa.Length.ShouldBe(answer.Length);
             for (int i = 0; i < sa.Length; i++)
             {
-                s[sa[i]..].Should().Be(answer[i]);
+                s[sa[i]..].ShouldBe(answer[i]);
             }
         }
         [Fact]
@@ -304,28 +304,28 @@ namespace AtCoder
             int[] s, sa;
             s = Enumerable.Range(0, size).SelectMany(i => new[] { i, ~i }).ToArray();
             sa = StringLib.SuffixArray(s);
-            sa.Should().Equal(
+            sa.ShouldBe(
                 Enumerable.Range(0, size).Select(i => 2 * size - 1 - 2 * i).Concat(
                     Enumerable.Range(0, size).Select(i => 2 * i))
                 );
 
             s = Enumerable.Range(0, 2 * size).ToArray();
             sa = StringLib.SuffixArray(s);
-            sa.Should().Equal(s);
+            sa.ShouldBe(s);
 
             s = Enumerable.Range(0, 2 * size).Reverse().ToArray();
             sa = StringLib.SuffixArray(s);
-            sa.Should().Equal(s);
+            sa.ShouldBe(s);
         }
 
         [Fact]
         public void SASingle()
         {
-            StringLib.SuffixArray([0]).Should().Equal([0]);
-            StringLib.SuffixArray([-1]).Should().Equal([0]);
-            StringLib.SuffixArray([1]).Should().Equal([0]);
-            StringLib.SuffixArray([int.MinValue]).Should().Equal([0]);
-            StringLib.SuffixArray([int.MaxValue]).Should().Equal([0]);
+            StringLib.SuffixArray([0]).ShouldBe([0]);
+            StringLib.SuffixArray([-1]).ShouldBe([0]);
+            StringLib.SuffixArray([1]).ShouldBe([0]);
+            StringLib.SuffixArray([int.MinValue]).ShouldBe([0]);
+            StringLib.SuffixArray([int.MaxValue]).ShouldBe([0]);
         }
 
         [Fact]
@@ -333,15 +333,15 @@ namespace AtCoder
         {
             var s = "aab";
             var sa = StringLib.SuffixArray(s);
-            sa.Should().Equal([0, 1, 2]);
+            sa.ShouldBe([0, 1, 2]);
             var lcp = StringLib.LcpArray(s, sa);
-            lcp.Should().Equal([1, 0]);
-            StringLib.LcpArray([0, 0, 1], sa).Should().Equal(lcp);
-            StringLib.LcpArray([-100, -100, 100], sa).Should().Equal(lcp);
-            StringLib.LcpArray([int.MinValue, int.MinValue, int.MaxValue], sa).Should().Equal(lcp);
-            StringLib.LcpArray([long.MinValue, long.MinValue, long.MaxValue], sa).Should().Equal(lcp);
-            StringLib.LcpArray([uint.MinValue, uint.MinValue, uint.MaxValue], sa).Should().Equal(lcp);
-            StringLib.LcpArray([ulong.MinValue, ulong.MinValue, ulong.MaxValue], sa).Should().Equal(lcp);
+            lcp.ShouldBe([1, 0]);
+            StringLib.LcpArray([0, 0, 1], sa).ShouldBe(lcp);
+            StringLib.LcpArray([-100, -100, 100], sa).ShouldBe(lcp);
+            StringLib.LcpArray([int.MinValue, int.MinValue, int.MaxValue], sa).ShouldBe(lcp);
+            StringLib.LcpArray([long.MinValue, long.MinValue, long.MaxValue], sa).ShouldBe(lcp);
+            StringLib.LcpArray([uint.MinValue, uint.MinValue, uint.MaxValue], sa).ShouldBe(lcp);
+            StringLib.LcpArray([ulong.MinValue, ulong.MinValue, ulong.MaxValue], sa).ShouldBe(lcp);
         }
 
         [Fact]
@@ -349,9 +349,9 @@ namespace AtCoder
         {
             var s = "abab";
             var z = StringLib.ZAlgorithm(s);
-            z.Should().Equal(4, 0, 2, 0);
-            StringLib.ZAlgorithm([1, 10, 1, 10]).Should().Equal(4, 0, 2, 0);
-            StringLib.ZAlgorithm([0, 0, 0, 0, 0, 0, 0]).Should().Equal(Znaive([0, 0, 0, 0, 0, 0, 0]));
+            z.ShouldBe([4, 0, 2, 0]);
+            StringLib.ZAlgorithm([1, 10, 1, 10]).ShouldBe([4, 0, 2, 0]);
+            StringLib.ZAlgorithm([0, 0, 0, 0, 0, 0, 0]).ShouldBe(Znaive([0, 0, 0, 0, 0, 0, 0]));
         }
         [Fact]
         public void ZNaive()
@@ -369,7 +369,7 @@ namespace AtCoder
                         s[i] = g % 4;
                         g /= 4;
                     }
-                    StringLib.ZAlgorithm(s).Should().Equal(Znaive(s));
+                    StringLib.ZAlgorithm(s).ShouldBe(Znaive(s));
                 }
             }
             for (int n = 1; n <= 10; n++)
@@ -385,7 +385,7 @@ namespace AtCoder
                         s[i] = g % 2;
                         g /= 2;
                     }
-                    StringLib.ZAlgorithm(s).Should().Equal(Znaive(s));
+                    StringLib.ZAlgorithm(s).ShouldBe(Znaive(s));
                 }
             }
         }

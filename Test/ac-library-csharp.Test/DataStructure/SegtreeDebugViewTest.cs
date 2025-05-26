@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Reflection;
 using AtCoder.DataStructure.Native;
-using FluentAssertions;
+using Shouldly;
 using Xunit;
 
 namespace AtCoder
@@ -32,7 +32,7 @@ namespace AtCoder
         {
             var s = new Segtree<string, MonoidOperator>(0);
             var view = CreateWrapper(s);
-            view.GetItems().Should().BeEmpty();
+            view.GetItems().ShouldBeEmpty();
         }
 
         public static TheoryData Simple_Data => new TheoryData<int, Segtree<string, MonoidOperator>.DebugItem[]>
@@ -128,9 +128,9 @@ namespace AtCoder
 
             var view = CreateWrapper(s);
             var items = view.GetItems();
-            items.Should().Equal(expected);
+            items.ShouldBe(expected);
             foreach (var item in items)
-                item.Value.Should().Be(naive.Prod(item.L, System.Math.Min(item.R, size)));
+                item.Value.ShouldBe(naive.Prod(item.L, System.Math.Min(item.R, size)));
         }
     }
 }

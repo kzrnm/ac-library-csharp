@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FluentAssertions;
 using MersenneTwister;
+using Shouldly;
 using Xunit;
 
 namespace AtCoder
@@ -29,7 +29,7 @@ namespace AtCoder
                 Array.Sort(arr);
                 Array.Reverse(arr);
                 Array.Sort(cpp, ComparerUtil.ReverseComparerInt);
-                cpp.Should().Equal(cpp);
+                cpp.ShouldBe(cpp);
             }
             for (int n = 0; n < 200; n++)
             {
@@ -42,7 +42,7 @@ namespace AtCoder
                 Array.Sort(arr);
                 Array.Reverse(arr);
                 Array.Sort(cpp, ComparerUtil.ReverseComparerLong);
-                cpp.Should().Equal(cpp);
+                cpp.ShouldBe(cpp);
             }
         }
     }

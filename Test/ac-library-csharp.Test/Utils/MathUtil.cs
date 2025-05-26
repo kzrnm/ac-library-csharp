@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using AtCoder.Internal;
-using FluentAssertions;
+using Shouldly;
 using Xunit;
 
 namespace AtCoder
@@ -27,7 +27,7 @@ namespace AtCoder
 
         public static bool IsPrimitiveRoot(int m, int g)
         {
-            (1 <= g && g < m).Should().BeTrue();
+            (1 <= g && g < m).ShouldBeTrue();
             foreach (var x in Factors(m - 1))
             {
                 if (MathLib.PowMod(g, (m - 1) / x, m) == 1)
@@ -41,7 +41,7 @@ namespace AtCoder
     {
         static bool IsPrimitiveRootNative(int m, int g)
         {
-            (1 <= g && g < m).Should().BeTrue();
+            (1 <= g && g < m).ShouldBeTrue();
             int x = 1;
             for (int i = 1; i <= m - 2; i++)
             {
@@ -50,7 +50,7 @@ namespace AtCoder
                 if (x == 1) return false;
             }
             x = (int)((long)x * g % m);
-            x.Should().Be(1);
+            x.ShouldBe(1);
             return true;
         }
 
@@ -63,7 +63,7 @@ namespace AtCoder
                 if (!InternalMath.IsPrime(m)) continue;
                 for (int g = 1; g < m; g++)
                 {
-                    MathUtil.IsPrimitiveRoot(m, g).Should().Be(IsPrimitiveRootNative(m, g));
+                    MathUtil.IsPrimitiveRoot(m, g).ShouldBe(IsPrimitiveRootNative(m, g));
                 }
             }
         }
@@ -77,10 +77,10 @@ namespace AtCoder
                 int m2 = m;
                 foreach (var x in f)
                 {
-                    (m % x).Should().Be(0);
+                    (m % x).ShouldBe(0);
                     while (m2 % x == 0) m2 /= x;
                 }
-                m2.Should().Be(1);
+                m2.ShouldBe(1);
             }
         }
 

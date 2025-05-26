@@ -12,7 +12,7 @@
 
   <ItemGroup Condition="'$(UseLocalReference)' != 'true'">
     <PackageReference Include="ac-library-csharp" Version="1.0.5" />
-    <PackageReference Include="AtCoderAnalyzer" Version="1.0.5">
+    <PackageReference Include="Kzrnm.Competitive.Analyzer" Version="1.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -20,10 +20,6 @@
   
   <ItemGroup Condition="'$(UseLocalReference)' == 'true'">
     <ProjectReference Include="..\..\Source\ac-library-csharp\ac-library-csharp.csproj" />
-    <ProjectReference Include="..\..\Source\AtCoderAnalyzer\AtCoderAnalyzer.csproj">
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <OutputItemType>Analyzer</OutputItemType>
-    </ProjectReference>
   </ItemGroup>
 
 </Project>

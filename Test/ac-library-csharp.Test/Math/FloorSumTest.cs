@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using AtCoder.Internal;
-using FluentAssertions;
+using Shouldly;
 using Xunit;
 
 namespace AtCoder
@@ -33,8 +33,7 @@ namespace AtCoder
                         for (int b = -20; b < 20; increment(ref b))
                         {
                             var expected = FloorSumNative(n, m, a, b);
-                            MathLib.FloorSum(n, m, a, b).Should()
-                                .Be(expected, "FloorSum({0},{1},{2},{3}) should be {4}", n, m, a, b, expected);
+                            MathLib.FloorSum(n, m, a, b).ShouldBe(expected, $"FloorSum({n}, {m}, {a}, {b}) should be {expected}");
                         }
                     }
                 }
@@ -62,7 +61,7 @@ namespace AtCoder
 "
 )]
         public void Practice(string input, string expected)
-            => new SolverRunner(Solver).Solve(input).Should().EqualLines(expected);
+            => new SolverRunner(Solver).Solve(input).ShouldEqualLines(expected);
         static void Solver(TextReader reader, TextWriter writer)
         {
             int t = int.Parse(reader.ReadLine());

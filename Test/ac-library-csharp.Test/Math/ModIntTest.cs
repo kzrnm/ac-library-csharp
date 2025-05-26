@@ -4,8 +4,8 @@ using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using AtCoder.Internal;
-using FluentAssertions;
 using MersenneTwister;
+using Shouldly;
 using Xunit;
 
 namespace AtCoder
@@ -37,12 +37,12 @@ namespace AtCoder
                 foreach (var a in v)
                 {
                     new DynamicModInt<DynamicBorderID>(a).Pow(3).Value
-                        .Should().Be((int)(((a * a) % mod * a) % mod));
+                        .ShouldBe((int)(((a * a) % mod * a) % mod));
                     foreach (var b in v)
                     {
-                        (new DynamicModInt<DynamicBorderID>(a) + b).Value.Should().Be((int)InternalMath.SafeMod(a + b, mod));
-                        (new DynamicModInt<DynamicBorderID>(a) - b).Value.Should().Be((int)InternalMath.SafeMod(a - b, mod));
-                        (new DynamicModInt<DynamicBorderID>(a) * b).Value.Should().Be((int)InternalMath.SafeMod(a * b, mod));
+                        (new DynamicModInt<DynamicBorderID>(a) + b).Value.ShouldBe((int)InternalMath.SafeMod(a + b, mod));
+                        (new DynamicModInt<DynamicBorderID>(a) - b).Value.ShouldBe((int)InternalMath.SafeMod(a - b, mod));
+                        (new DynamicModInt<DynamicBorderID>(a) * b).Value.ShouldBe((int)InternalMath.SafeMod(a * b, mod));
                     }
                 }
             }
@@ -61,27 +61,27 @@ namespace AtCoder
             {
                 for (int j = 0; j < 100; j++)
                 {
-                    (new DynamicModInt<Mod1ID>(i) * j).Value.Should().Be(0);
+                    (new DynamicModInt<Mod1ID>(i) * j).Value.ShouldBe(0);
                 }
             }
-            (new DynamicModInt<Mod1ID>(1234) + 5678).Value.Should().Be(0);
-            (new DynamicModInt<Mod1ID>(1234) - 5678).Value.Should().Be(0);
-            (new DynamicModInt<Mod1ID>(1234) * 5678).Value.Should().Be(0);
-            //(new DynamicModInt<Mod1ID>(1234).Pow(5678)).Value.Should().Be(0); // faild in Debug.Assert
-            (new DynamicModInt<Mod1ID>(0).Inv()).Value.Should().Be(0);
+            (new DynamicModInt<Mod1ID>(1234) + 5678).Value.ShouldBe(0);
+            (new DynamicModInt<Mod1ID>(1234) - 5678).Value.ShouldBe(0);
+            (new DynamicModInt<Mod1ID>(1234) * 5678).Value.ShouldBe(0);
+            //(new DynamicModInt<Mod1ID>(1234).Pow(5678)).Value.ShouldBe(0); // faild in Debug.Assert
+            (new DynamicModInt<Mod1ID>(0).Inv()).Value.ShouldBe(0);
 
             for (int i = 0; i < 100; i++)
             {
                 for (int j = 0; j < 100; j++)
                 {
-                    (new StaticModInt<Mod1ID>(i) * j).Value.Should().Be(0);
+                    (new StaticModInt<Mod1ID>(i) * j).Value.ShouldBe(0);
                 }
             }
-            (new StaticModInt<Mod1ID>(1234) + 5678).Value.Should().Be(0);
-            (new StaticModInt<Mod1ID>(1234) - 5678).Value.Should().Be(0);
-            (new StaticModInt<Mod1ID>(1234) * 5678).Value.Should().Be(0);
-            //(new StaticModInt<Mod1ID>(1234).Pow(5678)).Value.Should().Be(0); // faild in Debug.Assert
-            (new StaticModInt<Mod1ID>(0).Inv()).Value.Should().Be(0);
+            (new StaticModInt<Mod1ID>(1234) + 5678).Value.ShouldBe(0);
+            (new StaticModInt<Mod1ID>(1234) - 5678).Value.ShouldBe(0);
+            (new StaticModInt<Mod1ID>(1234) * 5678).Value.ShouldBe(0);
+            //(new StaticModInt<Mod1ID>(1234).Pow(5678)).Value.ShouldBe(0); // faild in Debug.Assert
+            (new StaticModInt<Mod1ID>(0).Inv()).Value.ShouldBe(0);
         }
 
         private readonly struct ModID11 : IStaticMod
@@ -133,7 +133,7 @@ namespace AtCoder
                     int i = (int)InternalMath.SafeMod(n, mod);
                     if (i == 0 || !new T().IsPrime && Gcd(i, mod) != 1) continue;
                     int x = new StaticModInt<T>(i).Inv().Value;
-                    ((long)x * i % mod).Should().Be(1);
+                    ((long)x * i % mod).ShouldBe(1);
                 }
             }
 
@@ -146,7 +146,7 @@ namespace AtCoder
                     int i = (int)InternalMath.SafeMod(n, mod);
                     if (i == 0 || !InternalMath.IsPrime(mod) && Gcd(i, mod) != 1) continue;
                     int x = new DynamicModInt<T>(i).Inv().Value;
-                    ((long)x * i % mod).Should().Be(1);
+                    ((long)x * i % mod).ShouldBe(1);
                 }
             }
         }
@@ -176,7 +176,7 @@ namespace AtCoder
                     StaticModInt<T> expected = 1;
                     for (int i = 0; i < 200; i++)
                     {
-                        num.Pow(i).Should().Be(expected);
+                        num.Pow(i).ShouldBe(expected);
                         expected *= num;
                     }
                 }
@@ -192,7 +192,7 @@ namespace AtCoder
                     DynamicModInt<T> expected = 1;
                     for (int i = 0; i < 200; i++)
                     {
-                        num.Pow(i).Should().Be(expected);
+                        num.Pow(i).ShouldBe(expected);
                         expected *= num;
                     }
                 }
@@ -211,52 +211,52 @@ namespace AtCoder
             {
                 StaticModInt<IncrementID> a;
                 a = 8;
-                (++a).Value.Should().Be(9);
-                (++a).Value.Should().Be(10);
-                (++a).Value.Should().Be(0);
-                (++a).Value.Should().Be(1);
+                (++a).Value.ShouldBe(9);
+                (++a).Value.ShouldBe(10);
+                (++a).Value.ShouldBe(0);
+                (++a).Value.ShouldBe(1);
                 a = 3;
-                (--a).Value.Should().Be(2);
-                (--a).Value.Should().Be(1);
-                (--a).Value.Should().Be(0);
-                (--a).Value.Should().Be(10);
+                (--a).Value.ShouldBe(2);
+                (--a).Value.ShouldBe(1);
+                (--a).Value.ShouldBe(0);
+                (--a).Value.ShouldBe(10);
                 a = 8;
-                (a++).Value.Should().Be(8);
-                (a++).Value.Should().Be(9);
-                (a++).Value.Should().Be(10);
-                (a++).Value.Should().Be(0);
-                a.Value.Should().Be(1);
+                (a++).Value.ShouldBe(8);
+                (a++).Value.ShouldBe(9);
+                (a++).Value.ShouldBe(10);
+                (a++).Value.ShouldBe(0);
+                a.Value.ShouldBe(1);
                 a = 3;
-                (a--).Value.Should().Be(3);
-                (a--).Value.Should().Be(2);
-                (a--).Value.Should().Be(1);
-                (a--).Value.Should().Be(0);
-                a.Value.Should().Be(10);
+                (a--).Value.ShouldBe(3);
+                (a--).Value.ShouldBe(2);
+                (a--).Value.ShouldBe(1);
+                (a--).Value.ShouldBe(0);
+                a.Value.ShouldBe(10);
             }
             {
                 DynamicModInt<IncrementID> a;
                 a = 8;
-                (++a).Value.Should().Be(9);
-                (++a).Value.Should().Be(10);
-                (++a).Value.Should().Be(0);
-                (++a).Value.Should().Be(1);
+                (++a).Value.ShouldBe(9);
+                (++a).Value.ShouldBe(10);
+                (++a).Value.ShouldBe(0);
+                (++a).Value.ShouldBe(1);
                 a = 3;
-                (--a).Value.Should().Be(2);
-                (--a).Value.Should().Be(1);
-                (--a).Value.Should().Be(0);
-                (--a).Value.Should().Be(10);
+                (--a).Value.ShouldBe(2);
+                (--a).Value.ShouldBe(1);
+                (--a).Value.ShouldBe(0);
+                (--a).Value.ShouldBe(10);
                 a = 8;
-                (a++).Value.Should().Be(8);
-                (a++).Value.Should().Be(9);
-                (a++).Value.Should().Be(10);
-                (a++).Value.Should().Be(0);
-                a.Value.Should().Be(1);
+                (a++).Value.ShouldBe(8);
+                (a++).Value.ShouldBe(9);
+                (a++).Value.ShouldBe(10);
+                (a++).Value.ShouldBe(0);
+                a.Value.ShouldBe(1);
                 a = 3;
-                (a--).Value.Should().Be(3);
-                (a--).Value.Should().Be(2);
-                (a--).Value.Should().Be(1);
-                (a--).Value.Should().Be(0);
-                a.Value.Should().Be(10);
+                (a--).Value.ShouldBe(3);
+                (a--).Value.ShouldBe(2);
+                (a--).Value.ShouldBe(1);
+                (a--).Value.ShouldBe(0);
+                a.Value.ShouldBe(10);
             }
         }
 
@@ -294,28 +294,28 @@ namespace AtCoder
                 {
                     var s = n.ToString();
                     var expected = (n % mod + mod) % mod;
-                    StaticModInt<T>.TryParse(s, out var num1).Should().BeTrue();
+                    StaticModInt<T>.TryParse(s, out var num1).ShouldBeTrue();
                     var num2 = StaticModInt<T>.Parse(s);
 
-                    num1.Value.Should().Be(expected);
-                    num2.Value.Should().Be(expected);
+                    num1.Value.ShouldBe(expected);
+                    num2.Value.ShouldBe(expected);
                 }
 
                 foreach (var n in bigs)
                 {
                     var s = n.ToString();
                     var expected = (int)(n % mod + mod) % mod;
-                    StaticModInt<T>.TryParse(s, out var num1).Should().BeTrue();
+                    StaticModInt<T>.TryParse(s, out var num1).ShouldBeTrue();
                     var num2 = StaticModInt<T>.Parse(s);
 
-                    num1.Value.Should().Be(expected);
-                    num2.Value.Should().Be(expected);
+                    num1.Value.ShouldBe(expected);
+                    num2.Value.ShouldBe(expected);
                 }
 
                 foreach (var s in invalids)
                 {
-                    StaticModInt<T>.TryParse(s, out _).Should().BeFalse();
-                    s.Invoking(s => StaticModInt<T>.Parse(s)).Should().ThrowExactly<FormatException>();
+                    StaticModInt<T>.TryParse(s, out _).ShouldBeFalse();
+                    new Action(() => StaticModInt<T>.Parse(s)).ShouldThrow<FormatException>();
                 }
             }
 
@@ -327,28 +327,28 @@ namespace AtCoder
                 {
                     var s = n.ToString();
                     var expected = (n % mod + mod) % mod;
-                    DynamicModInt<T>.TryParse(s, out var num1).Should().BeTrue();
+                    DynamicModInt<T>.TryParse(s, out var num1).ShouldBeTrue();
                     var num2 = DynamicModInt<T>.Parse(s);
 
-                    num1.Value.Should().Be(expected);
-                    num2.Value.Should().Be(expected);
+                    num1.Value.ShouldBe(expected);
+                    num2.Value.ShouldBe(expected);
                 }
 
                 foreach (var n in bigs)
                 {
                     var s = n.ToString();
                     var expected = (int)(n % mod + mod) % mod;
-                    DynamicModInt<T>.TryParse(s, out var num1).Should().BeTrue();
+                    DynamicModInt<T>.TryParse(s, out var num1).ShouldBeTrue();
                     var num2 = DynamicModInt<T>.Parse(s);
 
-                    num1.Value.Should().Be(expected);
-                    num2.Value.Should().Be(expected);
+                    num1.Value.ShouldBe(expected);
+                    num2.Value.ShouldBe(expected);
                 }
 
                 foreach (var s in invalids)
                 {
-                    DynamicModInt<T>.TryParse(s, out _).Should().BeFalse();
-                    s.Invoking(s => DynamicModInt<T>.Parse(s)).Should().ThrowExactly<FormatException>();
+                    DynamicModInt<T>.TryParse(s, out _).ShouldBeFalse();
+                    new Action(() => DynamicModInt<T>.Parse(s)).ShouldThrow<FormatException>();
                 }
             }
         }
@@ -359,29 +359,29 @@ namespace AtCoder
         public void DynamicUsage()
         {
             DynamicModInt<DynamicUsageID>.Mod = 998244353;
-            DynamicModInt<DynamicUsageID>.Mod.Should().Be(998244353);
-            (new DynamicModInt<DynamicUsageID>(1) + new DynamicModInt<DynamicUsageID>(2)).Value.Should().Be(3);
-            (1 + new DynamicModInt<DynamicUsageID>(2)).Value.Should().Be(3);
-            (new DynamicModInt<DynamicUsageID>(1) + 2).Value.Should().Be(3);
+            DynamicModInt<DynamicUsageID>.Mod.ShouldBe(998244353);
+            (new DynamicModInt<DynamicUsageID>(1) + new DynamicModInt<DynamicUsageID>(2)).Value.ShouldBe(3);
+            (1 + new DynamicModInt<DynamicUsageID>(2)).Value.ShouldBe(3);
+            (new DynamicModInt<DynamicUsageID>(1) + 2).Value.ShouldBe(3);
 
             DynamicModInt<DynamicUsageID>.Mod = 3;
-            DynamicModInt<DynamicUsageID>.Mod.Should().Be(3);
-            (new DynamicModInt<DynamicUsageID>(2) - new DynamicModInt<DynamicUsageID>(1)).Value.Should().Be(1);
-            (new DynamicModInt<DynamicUsageID>(1) + new DynamicModInt<DynamicUsageID>(2)).Value.Should().Be(0);
+            DynamicModInt<DynamicUsageID>.Mod.ShouldBe(3);
+            (new DynamicModInt<DynamicUsageID>(2) - new DynamicModInt<DynamicUsageID>(1)).Value.ShouldBe(1);
+            (new DynamicModInt<DynamicUsageID>(1) + new DynamicModInt<DynamicUsageID>(2)).Value.ShouldBe(0);
 
             DynamicModInt<DynamicUsageID>.Mod = 11;
-            DynamicModInt<DynamicUsageID>.Mod.Should().Be(11);
-            (new DynamicModInt<DynamicUsageID>(3) * new DynamicModInt<DynamicUsageID>(5)).Value.Should().Be(4);
+            DynamicModInt<DynamicUsageID>.Mod.ShouldBe(11);
+            (new DynamicModInt<DynamicUsageID>(3) * new DynamicModInt<DynamicUsageID>(5)).Value.ShouldBe(4);
 
-            (+new DynamicModInt<DynamicUsageID>(4)).Should().Be(new DynamicModInt<DynamicUsageID>(4));
-            (-new DynamicModInt<DynamicUsageID>(4)).Should().Be(new DynamicModInt<DynamicUsageID>(7));
+            (+new DynamicModInt<DynamicUsageID>(4)).ShouldBe(new DynamicModInt<DynamicUsageID>(4));
+            (-new DynamicModInt<DynamicUsageID>(4)).ShouldBe(new DynamicModInt<DynamicUsageID>(7));
 
-            (new DynamicModInt<DynamicUsageID>(1) == new DynamicModInt<DynamicUsageID>(3)).Should().BeFalse();
-            (new DynamicModInt<DynamicUsageID>(1) != new DynamicModInt<DynamicUsageID>(3)).Should().BeTrue();
-            (new DynamicModInt<DynamicUsageID>(1) == new DynamicModInt<DynamicUsageID>(12)).Should().BeTrue();
-            (new DynamicModInt<DynamicUsageID>(1) != new DynamicModInt<DynamicUsageID>(12)).Should().BeFalse();
+            (new DynamicModInt<DynamicUsageID>(1) == new DynamicModInt<DynamicUsageID>(3)).ShouldBeFalse();
+            (new DynamicModInt<DynamicUsageID>(1) != new DynamicModInt<DynamicUsageID>(3)).ShouldBeTrue();
+            (new DynamicModInt<DynamicUsageID>(1) == new DynamicModInt<DynamicUsageID>(12)).ShouldBeTrue();
+            (new DynamicModInt<DynamicUsageID>(1) != new DynamicModInt<DynamicUsageID>(12)).ShouldBeFalse();
 
-            new DynamicModInt<DynamicUsageID>(3).Invoking(m => m.Pow(-1)).Should().ThrowContractAssert();
+            Should.Throw<ContractAssertException>(() => new DynamicModInt<DynamicUsageID>(3).Pow(-1));
         }
 
         private readonly struct ConstructorID : IStaticMod
@@ -393,17 +393,17 @@ namespace AtCoder
         public void Constructor()
         {
             DynamicModInt<ConstructorID>.Mod = 11;
-            new DynamicModInt<ConstructorID>(3).Value.Should().Be(3);
-            new DynamicModInt<ConstructorID>(-10).Value.Should().Be(1);
-            (1 + new DynamicModInt<ConstructorID>(1)).Value.Should().Be(2);
+            new DynamicModInt<ConstructorID>(3).Value.ShouldBe(3);
+            new DynamicModInt<ConstructorID>(-10).Value.ShouldBe(1);
+            (1 + new DynamicModInt<ConstructorID>(1)).Value.ShouldBe(2);
         }
 
         [Fact]
         public void ConstructorStatic()
         {
-            new StaticModInt<ConstructorID>(3).Value.Should().Be(3);
-            new StaticModInt<ConstructorID>(-10).Value.Should().Be(1);
-            (1 + new StaticModInt<ConstructorID>(1)).Value.Should().Be(2);
+            new StaticModInt<ConstructorID>(3).Value.ShouldBe(3);
+            new StaticModInt<ConstructorID>(-10).Value.ShouldBe(1);
+            (1 + new StaticModInt<ConstructorID>(1)).Value.ShouldBe(2);
         }
 
 
@@ -429,7 +429,7 @@ namespace AtCoder
                     expected[i] = v % 101;
                 }
                 MemoryMarshal.Cast<DynamicModInt<MemoryID>, uint>(arr).ToArray()
-                    .Should().Equal(expected);
+                    .ShouldBe(expected);
             }
         }
 
@@ -448,7 +448,7 @@ namespace AtCoder
                     expected[i] = v % 101;
                 }
                 MemoryMarshal.Cast<StaticModInt<MemoryID>, uint>(arr).ToArray()
-                    .Should().Equal(expected);
+                    .ShouldBe(expected);
             }
         }
 
@@ -475,7 +475,7 @@ namespace AtCoder
                 {
                     int i = (int)InternalMath.SafeMod(n, mod);
                     int x = (+new StaticModInt<T>(i)).Value;
-                    x.Should().Be(i % mod);
+                    x.ShouldBe(i % mod);
                 }
             }
 
@@ -487,7 +487,7 @@ namespace AtCoder
                 {
                     int i = (int)InternalMath.SafeMod(n, mod);
                     int x = (+new DynamicModInt<T>(i)).Value;
-                    x.Should().Be(i % mod);
+                    x.ShouldBe(i % mod);
                 }
             }
         }
@@ -515,7 +515,7 @@ namespace AtCoder
                 {
                     int i = (int)InternalMath.SafeMod(n, mod);
                     int x = (-new StaticModInt<T>(i)).Value;
-                    x.Should().Be((mod - i) % mod);
+                    x.ShouldBe((mod - i) % mod);
                 }
             }
 
@@ -527,7 +527,7 @@ namespace AtCoder
                 {
                     int i = (int)InternalMath.SafeMod(n, mod);
                     int x = (-new DynamicModInt<T>(i)).Value;
-                    x.Should().Be((mod - i) % mod);
+                    x.ShouldBe((mod - i) % mod);
                 }
             }
         }
@@ -557,16 +557,16 @@ namespace AtCoder
                 for (int i = 0; i < max; i++)
                 {
                     int x = ConvertFrom<StaticModInt<T>, int>(i).Value;
-                    x.Should().Be(i % mod);
+                    x.ShouldBe(i % mod);
 
                     x = ConvertFrom<StaticModInt<T>, long>(i).Value;
-                    x.Should().Be(i % mod);
+                    x.ShouldBe(i % mod);
 
                     x = ConvertFrom<StaticModInt<T>, uint>((uint)i).Value;
-                    x.Should().Be(i % mod);
+                    x.ShouldBe(i % mod);
 
                     x = ConvertFrom<StaticModInt<T>, ulong>((ulong)i).Value;
-                    x.Should().Be(i % mod);
+                    x.ShouldBe(i % mod);
                 }
             }
 
@@ -577,16 +577,16 @@ namespace AtCoder
                 for (int i = 0; i < max; i++)
                 {
                     int x = ConvertFrom<DynamicModInt<T>, int>(i).Value;
-                    x.Should().Be(i % mod);
+                    x.ShouldBe(i % mod);
 
                     x = ConvertFrom<DynamicModInt<T>, long>(i).Value;
-                    x.Should().Be(i % mod);
+                    x.ShouldBe(i % mod);
 
                     x = ConvertFrom<DynamicModInt<T>, uint>((uint)i).Value;
-                    x.Should().Be(i % mod);
+                    x.ShouldBe(i % mod);
 
                     x = ConvertFrom<DynamicModInt<T>, ulong>((ulong)i).Value;
-                    x.Should().Be(i % mod);
+                    x.ShouldBe(i % mod);
                 }
             }
 
@@ -619,19 +619,19 @@ namespace AtCoder
                 {
                     {
                         var x = ConvertTo<StaticModInt<T>, int>(i);
-                        x.Should().Be((int)(i % mod));
+                        x.ShouldBe((int)(i % mod));
                     }
                     {
                         var x = ConvertTo<StaticModInt<T>, long>(i);
-                        x.Should().Be((long)(i % mod));
+                        x.ShouldBe((long)(i % mod));
                     }
                     {
                         var x = ConvertTo<StaticModInt<T>, uint>(i);
-                        x.Should().Be((uint)(i % mod));
+                        x.ShouldBe((uint)(i % mod));
                     }
                     {
                         var x = ConvertTo<StaticModInt<T>, ulong>(i);
-                        x.Should().Be((ulong)(i % mod));
+                        x.ShouldBe((ulong)(i % mod));
                     }
                 }
             }
@@ -644,19 +644,19 @@ namespace AtCoder
                 {
                     {
                         var x = ConvertTo<DynamicModInt<T>, int>(i);
-                        x.Should().Be((int)(i % mod));
+                        x.ShouldBe((int)(i % mod));
                     }
                     {
                         var x = ConvertTo<DynamicModInt<T>, long>(i);
-                        x.Should().Be((long)(i % mod));
+                        x.ShouldBe((long)(i % mod));
                     }
                     {
                         var x = ConvertTo<DynamicModInt<T>, uint>(i);
-                        x.Should().Be((uint)(i % mod));
+                        x.ShouldBe((uint)(i % mod));
                     }
                     {
                         var x = ConvertTo<DynamicModInt<T>, ulong>(i);
-                        x.Should().Be((ulong)(i % mod));
+                        x.ShouldBe((ulong)(i % mod));
                     }
                 }
             }

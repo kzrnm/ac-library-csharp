@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using Xunit;
 
 namespace AtCoder.Internal
@@ -21,8 +21,8 @@ namespace AtCoder.Internal
         [InlineData(int.MaxValue, 1)]
         public void ExtractLowestSetBit(int input, uint expected)
         {
-            InternalBit.ExtractLowestSetBit(input).Should().Be(expected);
-            (input & -input).Should().Be((int)expected);
+            InternalBit.ExtractLowestSetBit(input).ShouldBe(expected);
+            (input & -input).ShouldBe((int)expected);
         }
 
         [Theory]
@@ -41,7 +41,7 @@ namespace AtCoder.Internal
         [InlineData(int.MaxValue, 31)]
         public void CeilPow2(int input, int expected)
         {
-            InternalBit.CeilPow2(input).Should().Be(expected);
+            InternalBit.CeilPow2(input).ShouldBe(expected);
         }
 
         [Theory]
@@ -60,7 +60,7 @@ namespace AtCoder.Internal
         [InlineData(uint.MaxValue, 0)]
         public void Bsf(uint input, int expected)
         {
-            InternalBit.Bsf(input).Should().Be(expected);
+            InternalBit.Bsf(input).ShouldBe(expected);
         }
     }
 }

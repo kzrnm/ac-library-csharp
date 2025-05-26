@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using FluentAssertions;
+using Shouldly;
 using SourceExpander;
 using Xunit;
 
 namespace AtCoder.Embedding
 {
-    public class SourceExpanderTest
+    public partial class SourceExpanderTest
     {
         class EmbeddingFact : FactAttribute
         {
@@ -46,73 +47,69 @@ namespace AtCoder.Embedding
         public async Task Embedding()
         {
             var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
-            embedded.AssemblyMetadatas.Keys.Should()
 #if EMBEDDING
-                .ContainMatch(@"SourceExpander.*");
+#pragma warning disable SYSLIB1045 // 'GeneratedRegexAttribute' に変換します。
+            embedded.AssemblyMetadatas.Keys.ShouldContain(k => Regex.IsMatch(k, "SourceExpander.*"));
+#pragma warning restore SYSLIB1045 // 'GeneratedRegexAttribute' に変換します。
 #else
-                .NotContainMatch(@"SourceExpander.*");
+            embedded.AssemblyMetadatas.Keys.ShouldNotContain(k => Regex.IsMatch(k, "SourceExpander.*"));
 #endif
         }
 
         [EmbeddingFact]
         public void AssemblyName()
         {
-            typeof(Segtree<,>).Assembly.GetName().Name.Should().Be("ac-library-csharp");
+            typeof(Segtree<,>).Assembly.GetName().Name.ShouldBe("ac-library-csharp");
         }
 
         [EmbeddingFact]
         public async Task Symbol()
         {
             var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
-            embedded.AssemblyMetadatas.Should().ContainKey("SourceExpander.EmbeddedSourceCode.GZipBase32768");
-            embedded.SourceFiles.Select(s => s.FileName)
-                .Should()
-                .HaveCountGreaterThan(2)
-                .And
-                .OnlyContain(name => name.StartsWith("ac-library-csharp>"));
+            embedded.AssemblyMetadatas.ShouldContainKey("SourceExpander.EmbeddedSourceCode.GZipBase32768");
+            embedded.SourceFiles.Select(s => s.FileName).ToArray().ShouldSatisfyAllConditions([
+                s => s.Length.ShouldBeGreaterThan(2),
+                s => s.ShouldAllBe(name => name.StartsWith("ac-library-csharp>")),
+            ]);
             embedded.SourceFiles.SelectMany(s => s.Usings)
                 .Contains("using System.Runtime.Intrinsics.X86;")
-                .Should()
-                .Be(useIntrinsics);
+                .ShouldBe(useIntrinsics);
         }
 
         [EmbeddingFact]
         public async Task LanguageVersion()
         {
             var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
-            embedded.AssemblyMetadatas
-                .Should().ContainKey("SourceExpander.EmbeddedLanguageVersion")
-                .WhoseValue.Should().Be(languageVersion);
+            embedded.AssemblyMetadatas.ShouldContainKeyAndValue("SourceExpander.EmbeddedLanguageVersion", languageVersion);
         }
 
         [EmbeddingFact]
         public async Task EmbeddedSource()
         {
             var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
-            embedded.AssemblyMetadatas.Should().ContainKey("SourceExpander.EmbeddedSourceCode.GZipBase32768");
-            embedded.SourceFiles.Select(s => s.FileName)
-                .Should()
-                .HaveCountGreaterThan(2)
-                .And
-                .OnlyContain(name => name.StartsWith("ac-library-csharp>"));
-            embedded.SourceFiles.SelectMany(s => s.TypeNames)
-                .Should()
-                .Contain(
-                "AtCoder.Operators.IArithmeticOperator<T>",
-                "AtCoder.Segtree<TValue, TOp>");
+            embedded.AssemblyMetadatas.ShouldContainKey("SourceExpander.EmbeddedSourceCode.GZipBase32768");
+            embedded.SourceFiles.Select(s => s.FileName).ToArray().ShouldSatisfyAllConditions([
+                s => s.Length.ShouldBeGreaterThan(2),
+                s => s.ShouldAllBe(name => name.StartsWith("ac-library-csharp>")),
+            ]);
+            embedded.SourceFiles.SelectMany(s => s.TypeNames).ToArray()
+                .ShouldSatisfyAllConditions([
+                t => t.ShouldContain("AtCoder.Operators.IArithmeticOperator<T>"),
+                t => t.ShouldContain("AtCoder.Segtree<TValue, TOp>"),
+            ]);
         }
 
         [EmbeddingFact]
         public async Task EmbeddedNamespaces()
         {
             var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
-            embedded.AssemblyMetadatas.Should().ContainKey("SourceExpander.EmbeddedNamespaces");
-            embedded.EmbeddedNamespaces.Should()
-                .Equal(
+            embedded.AssemblyMetadatas.ShouldContainKey("SourceExpander.EmbeddedNamespaces");
+            embedded.EmbeddedNamespaces.ShouldBe([
                 "AtCoder",
                 "AtCoder.Extension",
                 "AtCoder.Internal",
-                "AtCoder.Operators");
+                "AtCoder.Operators",
+            ]);
         }
 
         [EmbeddingFact]
@@ -120,7 +117,7 @@ namespace AtCoder.Embedding
         {
             var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
             var code = string.Join(' ', embedded.SourceFiles.Select(s => s.CodeBody));
-            code.Should().NotContain("Contract.Assert");
+            code.ShouldNotContain("Contract.Assert");
         }
 
         [EmbeddingFact]
@@ -128,8 +125,8 @@ namespace AtCoder.Embedding
         {
             var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
             var code = string.Join(' ', embedded.SourceFiles.Select(s => s.CodeBody));
-            code.Should().Contain("CollectionDebugView");
-            code.Replace("CollectionDebugView", "CoDe").Should().NotContain("Debug");
+            code.ShouldContain("CollectionDebugView");
+            code.Replace("CollectionDebugView", "CoDe").ShouldNotContain("Debug");
         }
 
         [EmbeddingGenericMathFact]
@@ -137,10 +134,8 @@ namespace AtCoder.Embedding
         {
             var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
             var source = embedded.SourceFiles.Single(s => s.FileName.Split('\\', '/').Last() == "FenwickTree.GenericMath.cs");
-            source.CodeBody.Should()
-                .Contain("FenwickTree<T>")
-                .And
-                .NotContain("Debug");
+            source.CodeBody.ShouldContain("FenwickTree<T>");
+            source.CodeBody.ShouldNotContain("Debug");
         }
 
 #if DEBUG && EMBEDDING

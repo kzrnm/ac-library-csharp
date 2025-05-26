@@ -6,67 +6,19 @@ README languages: [English](README.md), [日本語](README.ja.md)
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**
 
-- [Packages](#packages)
-  - [ac-library-csharp](#ac-library-csharp)
-  - [AtCoderAnalyzer](#atcoderanalyzer)
-    - [利用例](#%E5%88%A9%E7%94%A8%E4%BE%8B)
+- [About](#about)
 - [Status](#status)
 - [Getting started](#getting-started)
   - [Installation](#installation)
-  - [Install analyzer(optional)](#install-analyzeroptional)
+    - [What is `-atcoder` verison?](#what-is--atcoder-verison)
   - [output combinded source code](#output-combinded-source-code)
 - [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## Packages
-
-### ac-library-csharp
+## About
 
 [AtCoder Library](https://github.com/atcoder/ac-library) の C# 移植です。 commit: [db0826383c5a6c909f8eac58e64a45aadd4867e2](https://github.com/atcoder/ac-library/tree/db0826383c5a6c909f8eac58e64a45aadd4867e2)
-
-### AtCoderAnalyzer
-
-`ac-library-csharp` 利用者向けのAnalyzer
-
-#### 利用例
-
-Operator 型を自動生成する機能などがあります。
-
-From
-
-```C#
-using AtCoder;
-class Program
-{
-    static void Main()
-    {
-        var seg = new Segtree<int, Op>(10);
-    }
-}
-```
-
-To
-
-```C#
-using AtCoder;
-using System.Runtime.CompilerServices;
-
-class Program
-{
-    static void Main()
-    {
-        var seg = new Segtree<int, Op>(10);
-    }
-}
-struct Op : ISegtreeOperator<int>
-{
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int Operate(int x, int y) => default;
-
-    public int Identity => default;
-}
-```
 
 ## Status
 
@@ -81,13 +33,10 @@ struct Op : ISegtreeOperator<int>
 Install-Package ac-library-csharp
 ```
 
-### Install analyzer(optional)
+#### What is `-atcoder` verison?
 
-```
-Install-Package AtCoderAnalyzer
-```
-
-[AtCoderAnalyzer](/document_ja/analyzers/index.md) をインストールするとコードフィックス機能が提供されます。
+NuGet 上に `-atcoder` サフィックスの付いたバージョンを登録しています。[example](https://www.nuget.org/packages/ac-library-csharp/3.0.0-atcoder8) このバージョンでは SourceExpander (後述) を使用していないのでソースコード埋め込み機能は使えませんが、DLL のサイズが数百キロバイト小さくなっています。
+AtCoder などの ac-library-csharp をサーバーに導入されている環境での使用を想定しています。
 
 ### output combinded source code
 

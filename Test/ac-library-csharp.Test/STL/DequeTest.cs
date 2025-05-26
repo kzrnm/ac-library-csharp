@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using AtCoder.Internal;
-using FluentAssertions;
 using MersenneTwister;
+using Shouldly;
 using Xunit;
 
 namespace AtCoder
@@ -26,10 +26,10 @@ namespace AtCoder
 
             static void Impl(Deque<int> deque)
             {
-                deque.GetEnumerator().MoveNext().Should().BeFalse();
-                deque.Count.Should().Be(0);
-                deque.Should().BeEmpty();
-                deque.Should().Equal([]);
+                deque.GetEnumerator().MoveNext().ShouldBeFalse();
+                deque.Count.ShouldBe(0);
+                deque.ShouldBeEmpty();
+                deque.ShouldBe([]);
             }
         }
 
@@ -42,8 +42,8 @@ namespace AtCoder
                 var deque = new Deque<int>();
                 foreach (var num in orig)
                     deque.AddLast(num);
-                deque.Count.Should().Be(size);
-                deque.Should().Equal(orig);
+                deque.Count.ShouldBe(size);
+                deque.ShouldBe(orig);
             }
         }
 
@@ -58,27 +58,27 @@ namespace AtCoder
             {
                 deque.AddFirst(num);
                 list.AddFirst(num);
-                deque.Should().Equal(list);
+                deque.ShouldBe(list);
             }
 
             void AddLast(int num)
             {
                 deque.AddLast(num);
                 list.AddLast(num);
-                deque.Should().Equal(list);
+                deque.ShouldBe(list);
             }
             void PopFirst()
             {
                 deque.PopFirst();
                 list.RemoveFirst();
-                deque.Should().Equal(list);
+                deque.ShouldBe(list);
             }
 
             void PopLast()
             {
                 deque.PopLast();
                 list.RemoveLast();
-                deque.Should().Equal(list);
+                deque.ShouldBe(list);
             }
 
 
@@ -115,50 +115,50 @@ namespace AtCoder
         {
             var deque = new Deque<int>();
 
-            deque.data.Should().HaveCount(2);
-            deque.Should().HaveCount(0);
+            deque.data.Length.ShouldBe(2);
+            deque.Count.ShouldBe(0);
 
-            deque.Invoking(deque => deque.PopLast()).Should().Throw<InvalidOperationException>();
-            deque.Invoking(deque => deque.PopFirst()).Should().Throw<InvalidOperationException>();
+            new Action(() => deque.PopLast()).ShouldThrow<InvalidOperationException>();
+            new Action(() => deque.PopFirst()).ShouldThrow<InvalidOperationException>();
 
             for (int i = 1; i < 8; i++)
             {
                 deque.AddLast(i);
-                deque.Last.Should().Be(i);
-                deque.data.Should().HaveCount(NativeSize(i));
-                deque.Should().HaveCount(i);
+                deque.Last.ShouldBe(i);
+                deque.data.Length.ShouldBe(NativeSize(i));
+                deque.Count.ShouldBe(i);
             }
             deque.Add(-1);
-            deque.data.Should().HaveCount(16);
-            deque.Should().HaveCount(8);
+            deque.data.Length.ShouldBe(16);
+            deque.Count.ShouldBe(8);
             for (int i = deque.Count + 1; i <= 10000; i++)
             {
                 deque.AddFirst(i);
-                deque.First.Should().Be(i);
-                deque.Last.Should().Be(-1);
-                deque.data.Should().HaveCount(NativeSize(i));
-                deque.Should().HaveCount(i);
+                deque.First.ShouldBe(i);
+                deque.Last.ShouldBe(-1);
+                deque.data.Length.ShouldBe(NativeSize(i));
+                deque.Count.ShouldBe(i);
             }
 
             var cap = 1 << InternalBit.CeilPow2(10000);
             for (int i = deque.Count - 1; i >= 8; i--)
             {
-                deque.PopFirst().Should().Be(i + 1);
-                deque.data.Should().HaveCount(cap);
-                deque.Should().HaveCount(i);
+                deque.PopFirst().ShouldBe(i + 1);
+                deque.data.Length.ShouldBe(cap);
+                deque.Count.ShouldBe(i);
             }
 
-            deque.PopLast().Should().Be(-1);
+            deque.PopLast().ShouldBe(-1);
 
             for (int i = deque.Count - 1; i >= 0; i--)
             {
-                deque.PopLast().Should().Be(i + 1);
-                deque.data.Should().HaveCount(cap);
-                deque.Should().HaveCount(i);
+                deque.PopLast().ShouldBe(i + 1);
+                deque.data.Length.ShouldBe(cap);
+                deque.Count.ShouldBe(i);
             }
 
-            deque.Invoking(deque => deque.PopLast()).Should().Throw<InvalidOperationException>();
-            deque.Invoking(deque => deque.PopFirst()).Should().Throw<InvalidOperationException>();
+            new Action(() => deque.PopLast()).ShouldThrow<InvalidOperationException>();
+            new Action(() => deque.PopFirst()).ShouldThrow<InvalidOperationException>();
         }
 
         static int NativeSize(int capacity)
@@ -175,31 +175,31 @@ namespace AtCoder
         public void Capacity(int size)
         {
             var deque = new Deque<int>(size);
-            deque.data.Should().HaveCount(NativeSize(size));
+            deque.data.Length.ShouldBe(NativeSize(size));
         }
 
         [Fact]
         public void Contains()
         {
             var deque = new Deque<int>();
-            ((ICollection<int>)deque).Contains(0).Should().BeFalse();
+            ((ICollection<int>)deque).Contains(0).ShouldBeFalse();
             deque.AddLast(1);
-            ((ICollection<int>)deque).Contains(1).Should().BeTrue();
+            ((ICollection<int>)deque).Contains(1).ShouldBeTrue();
             deque.AddLast(1);
-            ((ICollection<int>)deque).Contains(1).Should().BeTrue();
+            ((ICollection<int>)deque).Contains(1).ShouldBeTrue();
             deque.PopFirst();
-            ((ICollection<int>)deque).Contains(1).Should().BeTrue();
+            ((ICollection<int>)deque).Contains(1).ShouldBeTrue();
             deque.PopFirst();
-            ((ICollection<int>)deque).Contains(1).Should().BeFalse();
+            ((ICollection<int>)deque).Contains(1).ShouldBeFalse();
             deque.AddFirst(2);
-            ((ICollection<int>)deque).Contains(2).Should().BeTrue();
-            ((ICollection<int>)deque).Contains(1).Should().BeFalse();
+            ((ICollection<int>)deque).Contains(2).ShouldBeTrue();
+            ((ICollection<int>)deque).Contains(1).ShouldBeFalse();
 
             for (int i = 0; i < 4; i++)
                 deque.AddFirst(i + 4);
 
-            ((ICollection<int>)deque).Contains(2).Should().BeTrue();
-            ((ICollection<int>)deque).Contains(7).Should().BeTrue();
+            ((ICollection<int>)deque).Contains(2).ShouldBeTrue();
+            ((ICollection<int>)deque).Contains(7).ShouldBeTrue();
         }
 
         [Fact]
@@ -210,25 +210,25 @@ namespace AtCoder
             var deque = new Deque<int>();
 
             deque.CopyTo(dist, 0);
-            dist.Should().Equal([-1, -1, -1, -1, -1, -1, -1, -1]);
+            dist.ShouldBe([-1, -1, -1, -1, -1, -1, -1, -1]);
 
             deque.AddLast(1);
             deque.AddLast(2);
             deque.CopyTo(dist, 0);
-            dist.Should().Equal([1, 2, -1, -1, -1, -1, -1, -1]);
+            dist.ShouldBe([1, 2, -1, -1, -1, -1, -1, -1]);
 
             deque.AddFirst(3);
             deque.AddFirst(4);
             deque.CopyTo(dist, 0);
-            dist.Should().Equal([4, 3, 1, 2, -1, -1, -1, -1]);
+            dist.ShouldBe([4, 3, 1, 2, -1, -1, -1, -1]);
         }
 
         [Fact]
         public void Enumerate()
         {
             var deque = new Deque<int> { 1, 2, 3, 4, 5 };
-            deque.Should().Equal([1, 2, 3, 4, 5]);
-            deque.Reversed().Should().Equal([5, 4, 3, 2, 1]);
+            deque.ShouldBe([1, 2, 3, 4, 5]);
+            deque.Reversed().ShouldBe([5, 4, 3, 2, 1]);
         }
 
         [Fact]
@@ -236,59 +236,59 @@ namespace AtCoder
         {
             {
                 var deque = new Deque<int> { 1, };
-                deque.Should().Equal([1,]);
+                deque.ShouldBe([1,]);
                 deque.Grow(6);
-                deque.data.Should().HaveCount(8);
-                deque.Should().Equal([1,]);
+                deque.data.Length.ShouldBe(8);
+                deque.ShouldBe([1,]);
             }
             {
                 var deque = new Deque<int> { 1, 2, 3, };
-                deque.Should().Equal([1, 2, 3,]);
+                deque.ShouldBe([1, 2, 3,]);
                 deque.Grow(6);
-                deque.data.Should().HaveCount(8);
-                deque.Should().Equal([1, 2, 3,]);
+                deque.data.Length.ShouldBe(8);
+                deque.ShouldBe([1, 2, 3,]);
             }
             {
                 var deque = new Deque<int> { 1, 2, 3, };
-                deque.Should().Equal([1, 2, 3,]);
+                deque.ShouldBe([1, 2, 3,]);
                 deque.PopFirst();
                 deque.Grow(6);
-                deque.data.Should().HaveCount(8);
-                deque.Should().Equal([2, 3,]);
+                deque.data.Length.ShouldBe(8);
+                deque.ShouldBe([2, 3,]);
             }
             {
                 var deque = new Deque<int> { 1, 2, 3, };
-                deque.Should().Equal([1, 2, 3,]);
+                deque.ShouldBe([1, 2, 3,]);
                 deque.PopFirst();
                 deque.PopFirst();
                 deque.AddLast(-1);
                 deque.AddLast(-2);
                 deque.PopFirst();
                 deque.Grow(6);
-                deque.data.Should().HaveCount(8);
-                deque.Should().Equal([-1, -2,]);
+                deque.data.Length.ShouldBe(8);
+                deque.ShouldBe([-1, -2,]);
             }
             {
                 var deque = new Deque<int> { 1, 2, 3, };
-                deque.Should().Equal([1, 2, 3,]);
+                deque.ShouldBe([1, 2, 3,]);
                 deque.PopFirst();
                 deque.PopFirst();
                 deque.PopFirst();
-                deque.Should().BeEmpty();
+                deque.ShouldBeEmpty();
                 deque.Grow(6);
-                deque.data.Should().HaveCount(8);
-                deque.Should().BeEmpty();
+                deque.data.Length.ShouldBe(8);
+                deque.ShouldBeEmpty();
             }
             {
                 var deque = new Deque<int> { 1, 2, 3, };
-                deque.Should().Equal([1, 2, 3,]);
+                deque.ShouldBe([1, 2, 3,]);
                 deque.PopLast();
                 deque.PopFirst();
                 deque.PopFirst();
-                deque.Should().BeEmpty();
+                deque.ShouldBeEmpty();
                 deque.Grow(6);
-                deque.data.Should().HaveCount(8);
-                deque.Should().BeEmpty();
+                deque.data.Length.ShouldBe(8);
+                deque.ShouldBeEmpty();
             }
         }
     }

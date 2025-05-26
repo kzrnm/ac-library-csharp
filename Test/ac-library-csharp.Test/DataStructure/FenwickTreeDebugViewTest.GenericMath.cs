@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Numerics;
 using System.Reflection;
-using FluentAssertions;
+using Shouldly;
 using Xunit;
 
 namespace AtCoder
@@ -33,7 +33,7 @@ namespace AtCoder
         {
             var s = new FenwickTree<long>(0);
             var view = CreateWrapper(s);
-            view.GetItems().Should().BeEmpty();
+            view.GetItems().ShouldBeEmpty();
         }
 
         public static TheoryData Simple_Data => new TheoryData<int, FenwickTree<long>.DebugItem[]>
@@ -109,7 +109,7 @@ namespace AtCoder
 
             var view = CreateWrapper(fw);
             var items = view.GetItems();
-            items.Should().Equal(expected);
+            items.ShouldBe(expected);
         }
     }
 }

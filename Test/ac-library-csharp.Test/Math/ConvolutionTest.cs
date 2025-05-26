@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using FluentAssertions;
 using MersenneTwister;
+using Shouldly;
 using Xunit;
 
 namespace AtCoder
@@ -87,7 +87,7 @@ namespace AtCoder
         [MemberData(nameof(EmptyIntTestData))]
         public void EmptyInt(int[] a, int[] b, int[] expected)
         {
-            MathLib.Convolution(a, b).Should().Equal(expected);
+            MathLib.Convolution(a, b).ShouldBe(expected);
         }
         public static TheoryData EmptyLongTestData => new TheoryData<long[], long[], long[]>
         {
@@ -99,7 +99,7 @@ namespace AtCoder
         [MemberData(nameof(EmptyLongTestData))]
         public void EmptyLong(long[] a, long[] b, long[] expected)
         {
-            MathLib.Convolution(a, b).Should().Equal(expected);
+            MathLib.Convolution(a, b).ShouldBe(expected);
         }
         public static TheoryData EmptyModIntTestData => new TheoryData<StaticModInt<Mod998244353>[], StaticModInt<Mod998244353>[], StaticModInt<Mod998244353>[]>
         {
@@ -111,7 +111,7 @@ namespace AtCoder
         [MemberData(nameof(EmptyModIntTestData))]
         public void EmptyModInt(StaticModInt<Mod998244353>[] a, StaticModInt<Mod998244353>[] b, StaticModInt<Mod998244353>[] expected)
         {
-            MathLib.Convolution(a, b).Should().Equal(expected);
+            MathLib.Convolution(a, b).ShouldBe(expected);
         }
 
         [Fact]
@@ -129,7 +129,7 @@ namespace AtCoder
             {
                 b[i] = mt.NextUInt();
             }
-            MathLib.Convolution(a, b).Should().Equal(ConvNative(a, b));
+            MathLib.Convolution(a, b).ShouldBe(ConvNative(a, b));
         }
 
         #region Simple
@@ -152,7 +152,7 @@ namespace AtCoder
                     {
                         b[i] = mt.NextUInt();
                     }
-                    MathLib.Convolution(a, b).Should().Equal(ConvNative(a, b));
+                    MathLib.Convolution(a, b).ShouldBe(ConvNative(a, b));
                 }
             }
             for (int n = 1; n < 20; n++)
@@ -170,7 +170,7 @@ namespace AtCoder
                     {
                         b[i] = mt.NextUInt();
                     }
-                    MathLib.Convolution(a, b).Should().Equal(ConvNative(a, b));
+                    MathLib.Convolution(a, b).ShouldBe(ConvNative(a, b));
                 }
             }
         }
@@ -194,7 +194,7 @@ namespace AtCoder
                     {
                         b[i] = (int)(mt.NextUInt() % default(Mod998244353).Mod);
                     }
-                    MathLib.Convolution<Mod998244353>(a, b).Should().Equal(ConvNative<Mod998244353>(a, b));
+                    MathLib.Convolution<Mod998244353>(a, b).ShouldBe(ConvNative<Mod998244353>(a, b));
                 }
             }
             for (int n = 1; n < 20; n++)
@@ -212,7 +212,7 @@ namespace AtCoder
                     {
                         b[i] = (int)(mt.NextUInt() % default(Mod924844033).Mod);
                     }
-                    MathLib.Convolution<Mod924844033>(a, b).Should().Equal(ConvNative<Mod924844033>(a, b));
+                    MathLib.Convolution<Mod924844033>(a, b).ShouldBe(ConvNative<Mod924844033>(a, b));
                 }
             }
         }
@@ -235,7 +235,7 @@ namespace AtCoder
                     {
                         b[i] = mt.NextUInt() % default(Mod998244353).Mod;
                     }
-                    MathLib.Convolution<Mod998244353>(a, b).Should().Equal(ConvNative<Mod998244353>(a, b));
+                    MathLib.Convolution<Mod998244353>(a, b).ShouldBe(ConvNative<Mod998244353>(a, b));
                 }
             }
             for (int n = 1; n < 20; n++)
@@ -253,7 +253,7 @@ namespace AtCoder
                     {
                         b[i] = mt.NextUInt() % default(Mod924844033).Mod;
                     }
-                    MathLib.Convolution<Mod924844033>(a, b).Should().Equal(ConvNative<Mod924844033>(a, b));
+                    MathLib.Convolution<Mod924844033>(a, b).ShouldBe(ConvNative<Mod924844033>(a, b));
                 }
             }
         }
@@ -277,7 +277,7 @@ namespace AtCoder
                     {
                         b[i] = mt.NextUInt() % default(Mod998244353).Mod;
                     }
-                    MathLib.Convolution<Mod998244353>(a, b).Should().Equal(ConvNative<Mod998244353>(a, b));
+                    MathLib.Convolution<Mod998244353>(a, b).ShouldBe(ConvNative<Mod998244353>(a, b));
                 }
             }
             for (int n = 1; n < 20; n++)
@@ -295,7 +295,7 @@ namespace AtCoder
                     {
                         b[i] = mt.NextUInt() % default(Mod924844033).Mod;
                     }
-                    MathLib.Convolution<Mod924844033>(a, b).Should().Equal(ConvNative<Mod924844033>(a, b));
+                    MathLib.Convolution<Mod924844033>(a, b).ShouldBe(ConvNative<Mod924844033>(a, b));
                 }
             }
         }
@@ -320,7 +320,7 @@ namespace AtCoder
                     {
                         b[i] = mt.NextUInt() % default(Mod998244353).Mod;
                     }
-                    MathLib.Convolution<Mod998244353>(a, b).Should().Equal(ConvNative<Mod998244353>(a, b));
+                    MathLib.Convolution<Mod998244353>(a, b).ShouldBe(ConvNative<Mod998244353>(a, b));
                 }
             }
             for (int n = 1; n < 20; n++)
@@ -338,7 +338,7 @@ namespace AtCoder
                     {
                         b[i] = mt.NextUInt() % default(Mod924844033).Mod;
                     }
-                    MathLib.Convolution<Mod924844033>(a, b).Should().Equal(ConvNative<Mod924844033>(a, b));
+                    MathLib.Convolution<Mod924844033>(a, b).ShouldBe(ConvNative<Mod924844033>(a, b));
                 }
             }
         }
@@ -362,7 +362,7 @@ namespace AtCoder
                     {
                         b[i] = (long)(mt.NextUInt() % 1_000_000) - 500_000;
                     }
-                    MathLib.ConvolutionLong(a, b).Should().Equal(ConvLongNative(a, b));
+                    MathLib.ConvolutionLong(a, b).ShouldBe(ConvLongNative(a, b));
                 }
             }
         }
@@ -380,19 +380,19 @@ namespace AtCoder
             {
                 var a = new long[] { unchecked((long)(0UL - M1M2 - M1M3 - M2M3) + i) };
                 var b = new long[] { 1 };
-                MathLib.ConvolutionLong(a, b).Should().Equal(a);
+                MathLib.ConvolutionLong(a, b).ShouldBe(a);
             }
             for (int i = 0; i < 1000; i++)
             {
                 var a = new long[] { long.MinValue + i };
                 var b = new long[] { 1 };
-                MathLib.ConvolutionLong(a, b).Should().Equal(a);
+                MathLib.ConvolutionLong(a, b).ShouldBe(a);
             }
             for (int i = 0; i < 1000; i++)
             {
                 var a = new long[] { long.MaxValue - i };
                 var b = new long[] { 1 };
-                MathLib.ConvolutionLong(a, b).Should().Equal(a);
+                MathLib.ConvolutionLong(a, b).ShouldBe(a);
             }
         }
 
@@ -412,7 +412,7 @@ namespace AtCoder
                 b[i] = mt.Next(0, (int)default(Mod641).Mod);
             }
 
-            MathLib.Convolution<Mod641>(a, b).Should().Equal(ConvNative<Mod641>(a, b));
+            MathLib.Convolution<Mod641>(a, b).ShouldBe(ConvNative<Mod641>(a, b));
         }
         [Fact]
         public void Conv18433()
@@ -430,7 +430,7 @@ namespace AtCoder
                 b[i] = mt.Next(0, (int)default(Mod18433).Mod);
             }
 
-            MathLib.Convolution<Mod18433>(a, b).Should().Equal(ConvNative<Mod18433>(a, b));
+            MathLib.Convolution<Mod18433>(a, b).ShouldBe(ConvNative<Mod18433>(a, b));
         }
     }
 }

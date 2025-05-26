@@ -1,5 +1,5 @@
-﻿using FluentAssertions;
-using MersenneTwister;
+﻿using MersenneTwister;
+using Shouldly;
 using Xunit;
 
 namespace AtCoder
@@ -10,8 +10,8 @@ namespace AtCoder
         public void Empty()
         {
             var ts1 = new TwoSat(0);
-            ts1.Satisfiable().Should().BeTrue();
-            ts1.Answer().Should().Equal([]);
+            ts1.Satisfiable().ShouldBeTrue();
+            ts1.Answer().ShouldBe([]);
         }
         [Fact]
         public void One()
@@ -20,19 +20,19 @@ namespace AtCoder
                 var ts = new TwoSat(1);
                 ts.AddClause(0, true, 0, true);
                 ts.AddClause(0, false, 0, false);
-                ts.Satisfiable().Should().BeFalse();
+                ts.Satisfiable().ShouldBeFalse();
             }
             {
                 var ts = new TwoSat(1);
                 ts.AddClause(0, true, 0, true);
-                ts.Satisfiable().Should().BeTrue();
-                ts.Answer().Should().Equal(true);
+                ts.Satisfiable().ShouldBeTrue();
+                ts.Answer().ShouldBe([true]);
             }
             {
                 var ts = new TwoSat(1);
                 ts.AddClause(0, false, 0, false);
-                ts.Satisfiable().Should().BeTrue();
-                ts.Answer().Should().Equal(false);
+                ts.Satisfiable().ShouldBeTrue();
+                ts.Answer().ShouldBe([false]);
             }
         }
         [Fact]
@@ -75,22 +75,22 @@ namespace AtCoder
                         ts.AddClause(x, expect[x], y, !expect[y]);
                     }
                 }
-                ts.Satisfiable().Should().BeTrue();
+                ts.Satisfiable().ShouldBeTrue();
                 var actual = ts.Answer();
                 for (int i = 0; i < m; i++)
                 {
                     int x = xs[i], y = ys[i], type = types[i];
                     if (type == 0)
                     {
-                        (actual[x] == expect[x] || actual[y] == expect[y]).Should().BeTrue();
+                        (actual[x] == expect[x] || actual[y] == expect[y]).ShouldBeTrue();
                     }
                     else if (type == 1)
                     {
-                        (actual[x] != expect[x] || actual[y] == expect[y]).Should().BeTrue();
+                        (actual[x] != expect[x] || actual[y] == expect[y]).ShouldBeTrue();
                     }
                     else
                     {
-                        (actual[x] == expect[x] || actual[y] != expect[y]).Should().BeTrue();
+                        (actual[x] == expect[x] || actual[y] != expect[y]).ShouldBeTrue();
                     }
                 }
             }

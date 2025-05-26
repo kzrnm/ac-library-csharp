@@ -1,5 +1,5 @@
 ﻿using System;
-using FluentAssertions;
+using Shouldly;
 using Xunit;
 
 namespace AtCoder
@@ -169,10 +169,10 @@ namespace AtCoder
             var e = StlFunction.Permutations(input).GetEnumerator();
             for (int i = 0; i < expected.Length; i++)
             {
-                e.MoveNext().Should().BeTrue();
-                e.Current.Should().Equal(expected[i]);
+                e.MoveNext().ShouldBeTrue();
+                e.Current.ShouldBe(expected[i]);
             }
-            e.MoveNext().Should().BeFalse();
+            e.MoveNext().ShouldBeFalse();
         }
     }
 }

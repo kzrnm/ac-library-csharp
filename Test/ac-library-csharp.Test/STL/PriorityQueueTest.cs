@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FluentAssertions;
 using MersenneTwister;
+using Shouldly;
 using Xunit;
 
 namespace AtCoder
@@ -24,7 +24,7 @@ namespace AtCoder
                 Array.Sort(arr);
                 Array.Reverse(arr);
                 Array.Sort(cpp, ComparerUtil.ReverseComparerInt);
-                cpp.Should().Equal(cpp);
+                cpp.ShouldBe(cpp);
             }
             for (int n = 0; n < 200; n++)
             {
@@ -37,7 +37,7 @@ namespace AtCoder
                 Array.Sort(arr);
                 Array.Reverse(arr);
                 Array.Sort(cpp, ComparerUtil.ReverseComparerLong);
-                cpp.Should().Equal(cpp);
+                cpp.ShouldBe(cpp);
             }
         }
 
@@ -56,28 +56,29 @@ namespace AtCoder
                     var x = mt.Next();
                     pq.Enqueue(x);
                     list.Add(x);
-                    pq.Count.Should().Be(list.Count).And.Be(i + 1);
+                    pq.Count.ShouldBe(i + 1);
+                    list.Count.ShouldBe(i + 1);
                 }
-                pq.Unorderd().ToArray().Should().HaveCount(n);
+                pq.Unorderd().Length.ShouldBe(n);
                 list.Sort();
                 foreach (var lx in list)
                 {
-                    pq.Dequeue().Should().Be(lx);
+                    pq.Dequeue().ShouldBe(lx);
                 }
-                pq.Count.Should().Be(0);
+                pq.Count.ShouldBe(0);
 
                 list.Reverse();
                 foreach (var lx in list)
                     pq.Enqueue(-lx);
                 foreach (var lx in list)
                 {
-                    pq.TryPeek(out var res).Should().BeTrue();
-                    pq.TryDequeue(out res).Should().BeTrue();
-                    res.Should().Be(-lx);
+                    pq.TryPeek(out var res).ShouldBeTrue();
+                    pq.TryDequeue(out res).ShouldBeTrue();
+                    res.ShouldBe(-lx);
                 }
-                pq.TryPeek(out _).Should().BeFalse();
-                pq.TryDequeue(out _).Should().BeFalse();
-                pq.Count.Should().Be(0);
+                pq.TryPeek(out _).ShouldBeFalse();
+                pq.TryDequeue(out _).ShouldBeFalse();
+                pq.Count.ShouldBe(0);
             }
         }
         [Fact]
@@ -95,16 +96,17 @@ namespace AtCoder
                     var x = mt.Next(0, int.MaxValue);
                     pq.Enqueue(x, -x);
                     list.Add(x);
-                    pq.Count.Should().Be(list.Count).And.Be(i + 1);
+                    pq.Count.ShouldBe(i + 1);
+                    list.Count.ShouldBe(i + 1);
                 }
-                pq.UnorderdKeys().ToArray().Should().HaveCount(n);
-                pq.UnorderdValues().ToArray().Should().HaveCount(n);
+                pq.UnorderdKeys().Length.ShouldBe(n);
+                pq.UnorderdValues().Length.ShouldBe(n);
                 list.Sort();
                 foreach (var lx in list)
                 {
-                    pq.Dequeue().Should().Be(KeyValuePair.Create((long)lx, -lx));
+                    pq.Dequeue().ShouldBe(KeyValuePair.Create((long)lx, -lx));
                 }
-                pq.Count.Should().Be(0);
+                pq.Count.ShouldBe(0);
 
 
                 list.Reverse();
@@ -112,27 +114,27 @@ namespace AtCoder
                     pq.Enqueue(-lx, lx);
                 foreach (var lx in list)
                 {
-                    pq.TryPeek(out var res).Should().BeTrue();
-                    pq.TryDequeue(out res).Should().BeTrue();
-                    res.Should().Be(KeyValuePair.Create(-(long)lx, lx));
+                    pq.TryPeek(out var res).ShouldBeTrue();
+                    pq.TryDequeue(out res).ShouldBeTrue();
+                    res.ShouldBe(KeyValuePair.Create(-(long)lx, lx));
                 }
-                pq.TryDequeue(out _).Should().BeFalse();
-                pq.Count.Should().Be(0);
+                pq.TryDequeue(out _).ShouldBeFalse();
+                pq.Count.ShouldBe(0);
 
                 foreach (var lx in list)
                     pq.Enqueue(-lx, lx);
                 foreach (var lx in list)
                 {
-                    pq.TryPeek(out var key, out var val).Should().BeTrue();
-                    key.Should().Be(-lx);
-                    val.Should().Be(lx);
-                    pq.TryDequeue(out key, out val).Should().BeTrue();
-                    key.Should().Be(-lx);
-                    val.Should().Be(lx);
+                    pq.TryPeek(out var key, out var val).ShouldBeTrue();
+                    key.ShouldBe(-lx);
+                    val.ShouldBe(lx);
+                    pq.TryDequeue(out key, out val).ShouldBeTrue();
+                    key.ShouldBe(-lx);
+                    val.ShouldBe(lx);
                 }
-                pq.TryPeek(out _, out _).Should().BeFalse();
-                pq.TryDequeue(out _, out _).Should().BeFalse();
-                pq.Count.Should().Be(0);
+                pq.TryPeek(out _, out _).ShouldBeFalse();
+                pq.TryDequeue(out _, out _).ShouldBeFalse();
+                pq.Count.ShouldBe(0);
             }
         }
 
@@ -150,25 +152,26 @@ namespace AtCoder
                     var x = mt.Next();
                     pq.Enqueue(x);
                     list.Add(x);
-                    pq.Count.Should().Be(list.Count).And.Be(i + 1);
+                    pq.Count.ShouldBe(i + 1);
+                    list.Count.ShouldBe(i + 1);
                 }
                 list.Sort(ComparerUtil.ReverseComparerInt);
                 foreach (var lx in list)
                 {
-                    pq.Dequeue().Should().Be(lx);
+                    pq.Dequeue().ShouldBe(lx);
                 }
-                pq.Count.Should().Be(0);
+                pq.Count.ShouldBe(0);
 
                 list.Reverse();
                 foreach (var lx in list)
                     pq.Enqueue(-lx);
                 foreach (var lx in list)
                 {
-                    pq.TryDequeue(out var res).Should().BeTrue();
-                    res.Should().Be(-lx);
+                    pq.TryDequeue(out var res).ShouldBeTrue();
+                    res.ShouldBe(-lx);
                 }
-                pq.TryDequeue(out _).Should().BeFalse();
-                pq.Count.Should().Be(0);
+                pq.TryDequeue(out _).ShouldBeFalse();
+                pq.Count.ShouldBe(0);
             }
         }
         [Fact]
@@ -185,36 +188,37 @@ namespace AtCoder
                     var x = mt.Next(0, int.MaxValue);
                     pq.Enqueue(x, -x);
                     list.Add(x);
-                    pq.Count.Should().Be(list.Count).And.Be(i + 1);
+                    pq.Count.ShouldBe(i + 1);
+                    list.Count.ShouldBe(i + 1);
                 }
                 list.Sort(ComparerUtil.ReverseComparerInt);
                 foreach (var lx in list)
                 {
-                    pq.Dequeue().Should().Be(KeyValuePair.Create((long)lx, -lx));
+                    pq.Dequeue().ShouldBe(KeyValuePair.Create((long)lx, -lx));
                 }
-                pq.Count.Should().Be(0);
+                pq.Count.ShouldBe(0);
 
                 list.Reverse();
                 foreach (var lx in list)
                     pq.Enqueue(-lx, lx);
                 foreach (var lx in list)
                 {
-                    pq.TryDequeue(out var res).Should().BeTrue();
-                    res.Should().Be(KeyValuePair.Create(-(long)lx, lx));
+                    pq.TryDequeue(out var res).ShouldBeTrue();
+                    res.ShouldBe(KeyValuePair.Create(-(long)lx, lx));
                 }
-                pq.TryDequeue(out _).Should().BeFalse();
-                pq.Count.Should().Be(0);
+                pq.TryDequeue(out _).ShouldBeFalse();
+                pq.Count.ShouldBe(0);
 
                 foreach (var lx in list)
                     pq.Enqueue(-lx, lx);
                 foreach (var lx in list)
                 {
-                    pq.TryDequeue(out var key, out var val).Should().BeTrue();
-                    key.Should().Be(-lx);
-                    val.Should().Be(lx);
+                    pq.TryDequeue(out var key, out var val).ShouldBeTrue();
+                    key.ShouldBe(-lx);
+                    val.ShouldBe(lx);
                 }
-                pq.TryDequeue(out _, out _).Should().BeFalse();
-                pq.Count.Should().Be(0);
+                pq.TryDequeue(out _, out _).ShouldBeFalse();
+                pq.Count.ShouldBe(0);
             }
         }
 
@@ -224,7 +228,7 @@ namespace AtCoder
             var pq1 = new PriorityQueue<int>();
             var pq2 = new PriorityQueue<int>();
 
-            pq1.EnqueueDequeue(1).Should().Be(1);
+            pq1.EnqueueDequeue(1).ShouldBe(1);
 
             for (int i = 10; i > 0; i--)
             {
@@ -242,8 +246,8 @@ namespace AtCoder
             void EnqueueDequeue(int value)
             {
                 pq2.Enqueue(value);
-                pq1.EnqueueDequeue(value).Should().Be(pq2.Dequeue());
-                pq1.Unorderd().ToArray().Should().BeEquivalentTo(pq2.Unorderd().ToArray());
+                pq1.EnqueueDequeue(value).ShouldBe(pq2.Dequeue());
+                pq1.Unorderd().ToArray().ShouldBe(pq2.Unorderd().ToArray(), ignoreOrder: true);
             }
         }
 
@@ -253,7 +257,7 @@ namespace AtCoder
             var pq1 = new PriorityQueueDictionary<int, string>();
             var pq2 = new PriorityQueueDictionary<int, string>();
 
-            pq1.EnqueueDequeue(1, "ab").Should().Be(KeyValuePair.Create(1, "ab"));
+            pq1.EnqueueDequeue(1, "ab").ShouldBe(KeyValuePair.Create(1, "ab"));
 
             for (int i = 10; i > 0; i--)
             {
@@ -271,9 +275,9 @@ namespace AtCoder
             void EnqueueDequeue(int value)
             {
                 pq2.Enqueue(value, value.ToString());
-                pq1.EnqueueDequeue(value, value.ToString()).Should().Be(pq2.Dequeue());
-                pq1.UnorderdKeys().ToArray().Should().BeEquivalentTo(pq2.UnorderdKeys().ToArray());
-                pq1.UnorderdValues().ToArray().Should().BeEquivalentTo(pq2.UnorderdValues().ToArray());
+                pq1.EnqueueDequeue(value, value.ToString()).ShouldBe(pq2.Dequeue());
+                pq1.UnorderdKeys().ToArray().ShouldBe(pq2.UnorderdKeys().ToArray(), ignoreOrder: true);
+                pq1.UnorderdValues().ToArray().ShouldBe(pq2.UnorderdValues().ToArray(), ignoreOrder: true);
             }
         }
 
@@ -298,9 +302,9 @@ namespace AtCoder
             void DequeueEnqueue()
             {
                 var value = mt.Next();
-                pq1.DequeueEnqueue(value).Should().Be(pq2.Dequeue());
+                pq1.DequeueEnqueue(value).ShouldBe(pq2.Dequeue());
                 pq2.Enqueue(value);
-                pq1.Unorderd().ToArray().Should().BeEquivalentTo(pq2.Unorderd().ToArray());
+                pq1.Unorderd().ToArray().ShouldBe(pq2.Unorderd().ToArray(), ignoreOrder: true);
             }
         }
 
@@ -325,10 +329,10 @@ namespace AtCoder
             {
                 var key = mt.Next();
                 var value = mt.Next().ToString();
-                pq1.DequeueEnqueue(key, value).Should().Be(pq2.Dequeue());
+                pq1.DequeueEnqueue(key, value).ShouldBe(pq2.Dequeue());
                 pq2.Enqueue(key, value);
-                pq1.UnorderdKeys().ToArray().Should().BeEquivalentTo(pq2.UnorderdKeys().ToArray());
-                pq1.UnorderdValues().ToArray().Should().BeEquivalentTo(pq2.UnorderdValues().ToArray());
+                pq1.UnorderdKeys().ToArray().ShouldBe(pq2.UnorderdKeys().ToArray(), ignoreOrder: true);
+                pq1.UnorderdValues().ToArray().ShouldBe(pq2.UnorderdValues().ToArray(), ignoreOrder: true);
             }
         }
         [Fact]
@@ -353,7 +357,7 @@ namespace AtCoder
             {
                 pq2.Enqueue(func(pq2.Dequeue()));
                 pq1.DequeueEnqueue(func);
-                pq1.Unorderd().ToArray().Should().BeEquivalentTo(pq2.Unorderd().ToArray());
+                pq1.Unorderd().ToArray().ShouldBe(pq2.Unorderd().ToArray(), ignoreOrder: true);
             }
         }
 
@@ -381,8 +385,8 @@ namespace AtCoder
                 var (ek, ev) = func(k, v);
                 pq2.Enqueue(KeyValuePair.Create(ek, ev));
                 pq1.DequeueEnqueue((Func<int, string, (int, string)>)func);
-                pq1.UnorderdKeys().ToArray().Should().BeEquivalentTo(pq2.UnorderdKeys().ToArray());
-                pq1.UnorderdValues().ToArray().Should().BeEquivalentTo(pq2.UnorderdValues().ToArray());
+                pq1.UnorderdKeys().ToArray().ShouldBe(pq2.UnorderdKeys().ToArray(), ignoreOrder: true);
+                pq1.UnorderdValues().ToArray().ShouldBe(pq2.UnorderdValues().ToArray(), ignoreOrder: true);
             }
         }
     }

@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
-using FluentAssertions;
+using Shouldly;
 using Xunit;
 
 namespace AtCoder
@@ -11,19 +11,19 @@ namespace AtCoder
         public void Zero()
         {
             var uf = new Dsu(0);
-            uf.Groups().Should().Equal([]);
+            uf.Groups().ShouldBe([]);
         }
 
         [Fact]
         public void Simple()
         {
             var uf = new Dsu(2);
-            uf.Same(0, 1).Should().BeFalse();
+            uf.Same(0, 1).ShouldBeFalse();
             int x = uf.Merge(0, 1);
-            uf.Leader(0).Should().Be(x);
-            uf.Leader(1).Should().Be(x);
-            uf.Same(0, 1).Should().BeTrue();
-            uf.Size(0).Should().Be(2);
+            uf.Leader(0).ShouldBe(x);
+            uf.Leader(1).ShouldBe(x);
+            uf.Same(0, 1).ShouldBeTrue();
+            uf.Size(0).ShouldBe(2);
         }
 
         [Fact]
@@ -35,8 +35,8 @@ namespace AtCoder
             {
                 uf.Merge(i, i + 1);
             }
-            uf.Size(0).Should().Be(n);
-            uf.Groups().Should().HaveCount(1);
+            uf.Size(0).ShouldBe(n);
+            uf.Groups().Length.ShouldBe(1);
         }
 
         [Fact]
@@ -48,8 +48,8 @@ namespace AtCoder
             {
                 uf.Merge(i, i + 1);
             }
-            uf.Size(0).Should().Be(n);
-            uf.Groups().Should().HaveCount(1);
+            uf.Size(0).ShouldBe(n);
+            uf.Groups().Length.ShouldBe(1);
         }
 
         [Theory]
@@ -75,7 +75,7 @@ namespace AtCoder
 "
 )]
         public void Practice(string input, string expected)
-            => new SolverRunner(Solver).Solve(input).Should().EqualLines(expected);
+            => new SolverRunner(Solver).Solve(input).ShouldEqualLines(expected);
         static void Solver(TextReader reader, TextWriter writer)
         {
             int[] nq = reader.ReadLine().Split().Select(int.Parse).ToArray();

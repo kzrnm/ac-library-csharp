@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using FluentAssertions;
 using MersenneTwister;
+using Shouldly;
 using Xunit;
 
 namespace AtCoder
@@ -40,14 +40,14 @@ namespace AtCoder
             {
                 if (l == -1) return r;
                 if (r == -1) return l;
-                l.Should().BeGreaterThan(r);
+                l.ShouldBeGreaterThan(r);
                 return l;
             }
 
             public (int l, int r, int time) Mapping(int l, (int l, int r, int time) r)
             {
                 if (l == -1) return r;
-                r.time.Should().BeLessThan(l);
+                r.time.ShouldBeLessThan(l);
                 return (r.l, r.r, l);
             }
 
@@ -55,7 +55,7 @@ namespace AtCoder
             {
                 if (l.l == -1) return r;
                 if (r.l == -1) return l;
-                (l.r == r.l).Should().BeTrue();
+                (l.r == r.l).ShouldBeTrue();
                 return (l.l, r.r, Math.Max(l.time, r.time));
             }
         }
@@ -83,11 +83,11 @@ namespace AtCoder
                         var (l, r) = mt.NextPair(0, n + 1);
                         if (ty == 0)
                         {
-                            seg0.Prod(l, r).Should().Be((l, r, tm.Prod(l, r)));
+                            seg0.Prod(l, r).ShouldBe((l, r, tm.Prod(l, r)));
                         }
                         else if (ty == 1)
                         {
-                            seg0[l].Should().Be((l, l + 1, tm.Prod(l, l + 1)));
+                            seg0[l].ShouldBe((l, l + 1, tm.Prod(l, l + 1)));
                         }
                         else if (ty == 2)
                         {
@@ -134,10 +134,10 @@ namespace AtCoder
                             seg0.MaxRight(l, s =>
                             {
                                 if (s.l == -1) return true;
-                                (s.l == l).Should().BeTrue();
-                                (s.time == tm.Prod(l, s.r)).Should().BeTrue();
+                                (s.l == l).ShouldBeTrue();
+                                (s.time == tm.Prod(l, s.r)).ShouldBeTrue();
                                 return s.r <= r;
-                            }).Should().Be(r);
+                            }).ShouldBe(r);
                         }
                         else
                         {
@@ -171,10 +171,10 @@ namespace AtCoder
                         seg0.MinLeft(r, s =>
                         {
                             if (s.l == -1) return true;
-                            (s.r == r).Should().BeTrue();
-                            (s.time == tm.Prod(s.l, r)).Should().BeTrue();
+                            (s.r == r).ShouldBeTrue();
+                            (s.time == tm.Prod(s.l, r)).ShouldBeTrue();
                             return l <= s.l;
-                        }).Should().Be(l);
+                        }).ShouldBe(l);
                     }
                     else
                     {

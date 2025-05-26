@@ -66,7 +66,7 @@ jobs:
           FRAMEWORK: net9.0
 
       - name: cs-resolve
-        uses: competitive-verifier/actions/cs-resolve@v1
+        uses: competitive-verifier/actions/cs-resolve@v2
         with:
           solution: ${{ env.WORKFLOW_BUILD_SLN }}
           output-path: verify_files.json
@@ -76,7 +76,7 @@ jobs:
           problems: ${{runner.temp}}/problems-*.json
           msbuild-properties: Configuration=Release
       - name: Upload verify_files.json
-        uses: competitive-verifier/actions/upload-verify-artifact@v1
+        uses: competitive-verifier/actions/upload-verify-artifact@v2
         with:
           file: verify_files.json
       - name: Upload binaries
@@ -106,13 +106,13 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up competitive-verifier
-        uses: competitive-verifier/actions/setup@v1
+        uses: competitive-verifier/actions/setup@v2
         with:
           python-version: "3.9"
           cache-pip: true
 
       - name: Download verify_files.json
-        uses: competitive-verifier/actions/download-verify-artifact@v1
+        uses: competitive-verifier/actions/download-verify-artifact@v2
 
       - uses: actions/setup-dotnet@v4
         with:

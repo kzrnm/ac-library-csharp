@@ -6,67 +6,20 @@ README languages: [English](README.md), [日本語](README.ja.md)
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**
 
-- [Packages](#packages)
-  - [ac-library-csharp](#ac-library-csharp)
-  - [AtCoderAnalyzer](#atcoderanalyzer)
-    - [For example](#for-example)
+- [About](#about)
 - [Status](#status)
 - [Getting started](#getting-started)
   - [Installation](#installation)
-  - [Install analyzer(optional)](#install-analyzeroptional)
+    - [What is `-atcoder` verison?](#what-is--atcoder-verison)
   - [output combinded source code](#output-combinded-source-code)
 - [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## Packages
-
-### ac-library-csharp
+## About
 
 C# port of [AtCoder Library](https://github.com/atcoder/ac-library) commit: [db0826383c5a6c909f8eac58e64a45aadd4867e2](https://github.com/atcoder/ac-library/tree/db0826383c5a6c909f8eac58e64a45aadd4867e2)
 
-### AtCoderAnalyzer
-
-Analyzer for `ac-library-csharp` user.
-
-#### For example
-
-Create Operator type.
-
-From
-
-```C#
-using AtCoder;
-class Program
-{
-    static void Main()
-    {
-        var seg = new Segtree<int, Op>(10);
-    }
-}
-```
-
-To
-
-```C#
-using AtCoder;
-using System.Runtime.CompilerServices;
-
-class Program
-{
-    static void Main()
-    {
-        var seg = new Segtree<int, Op>(10);
-    }
-}
-struct Op : ISegtreeOperator<int>
-{
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int Operate(int x, int y) => default;
-
-    public int Identity => default;
-}
-```
 ## Status
 
 [![NuGet version (ac-library-csharp)](https://img.shields.io/nuget/v/ac-library-csharp.svg?style=flat-square)](https://www.nuget.org/packages/ac-library-csharp/)
@@ -80,13 +33,11 @@ struct Op : ISegtreeOperator<int>
 Install-Package ac-library-csharp
 ```
 
-### Install analyzer(optional)
+#### What is `-atcoder` verison?
 
-```
-Install-Package AtCoderAnalyzer
-```
-
-Installing [AtCoderAnalyzer](/document_en/analyzers/index.md) provide some code fix.
+There are versions with the -atcoder suffix on NuGet. [example](https://www.nuget.org/packages/ac-library-csharp/3.0.0-atcoder8).
+These versions don’t use SourceExpander (described below), so the source embedding feature isn’t available—but the DLL size is a few hundred kilobytes smaller.
+They are intended for use in judge systems like AtCoder, where the library is preinstalled on the server.
 
 ### output combinded source code
 
