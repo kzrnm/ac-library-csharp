@@ -67,7 +67,7 @@ dotnet_style_predefined_type_for_locals_parameters_members = true:suggestion
 #Style - Modifier preferences
 
 #when this rule is set to a list of modifiers, prefer the specified ordering.
-csharp_preferred_modifier_order = public,private,protected,internal,abstract,sealed,static,override,readonly:suggestion
+csharp_preferred_modifier_order = public,private,protected,internal,static,abstract,sealed,override,readonly:suggestion
 
 #Style - qualification options
 
