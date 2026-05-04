@@ -45,7 +45,7 @@ namespace AtCoder
     /// </example>
     [DebuggerDisplay("{Value,nq}")]
     public readonly struct DynamicModInt<T>
-     : IEquatable<DynamicModInt<T>>, IFormattable, IModInt<DynamicModInt<T>>
+     : IEquatable<DynamicModInt<T>>, IFormattable, IModIntNumberBase<DynamicModInt<T>>
      where T : struct
     {
         internal readonly uint _v;
