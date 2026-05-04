@@ -42,21 +42,13 @@ jobs:
         env:
           UNITTEST_CSPROJ: Test/ac-library-csharp.Test/ac-library-csharp.Test.csproj
 
-      - name: Resolve netcoreapp3.1
-        run: dotnet run --project $VERIFY_CSPROJ --framework $FRAMEWORK --no-launch-profile --no-build -c Release | tee "${{runner.temp}}/problems-$FRAMEWORK.json"
+      - name: Resolve checker
+        run: |
+          for FRAMEWORK in 'net9.0' 'net10.0'; do
+            dotnet run --project $VERIFY_CSPROJ --framework $FRAMEWORK --no-launch-profile --no-build -c Release | tee "${{runner.temp}}/problems-$FRAMEWORK.json"
+          done
         env:
           VERIFY_CSPROJ: Test/ac-library-csharp.LibraryChecker/ac-library-csharp.LibraryChecker.csproj
-          FRAMEWORK: netcoreapp3.1
-      - name: Resolve net7.0
-        run: dotnet run --project $VERIFY_CSPROJ --framework $FRAMEWORK --no-launch-profile --no-build -c Release | tee "${{runner.temp}}/problems-$FRAMEWORK.json"
-        env:
-          VERIFY_CSPROJ: Test/ac-library-csharp.LibraryChecker/ac-library-csharp.LibraryChecker.csproj
-          FRAMEWORK: net7.0
-      - name: Resolve net9.0
-        run: dotnet run --project $VERIFY_CSPROJ --framework $FRAMEWORK --no-launch-profile --no-build -c Release | tee "${{runner.temp}}/problems-$FRAMEWORK.json"
-        env:
-          VERIFY_CSPROJ: Test/ac-library-csharp.LibraryChecker/ac-library-csharp.LibraryChecker.csproj
-          FRAMEWORK: net9.0
 
       - name: cs-resolve
         uses: competitive-verifier/actions/cs-resolve@v2
