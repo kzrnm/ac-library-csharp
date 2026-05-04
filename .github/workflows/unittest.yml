@@ -23,7 +23,6 @@ jobs:
     with:
       target: ac-library-csharp.slnx
       test-logger: GitHubActions
-      use-openssl1: true
       dotnet-version: |
         9.0.x
         10.0.x

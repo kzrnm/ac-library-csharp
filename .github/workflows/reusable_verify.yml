@@ -31,11 +31,6 @@ jobs:
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/Directory.Build.props') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
-      - name: openssl 1.0
-        shell: bash
-        run: |
-          wget http://security.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu5_amd64.deb
-          sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu5_amd64.deb
       - name: Build
         shell: bash
         run: dotnet build $WORKFLOW_BUILD_SLN -c Release
@@ -117,11 +112,6 @@ jobs:
           dotnet-version: |
             9.0.x
             10.0.x
-      - name: openssl 1.0
-        shell: bash
-        run: |
-          wget http://security.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu5_amd64.deb
-          sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu5_amd64.deb
       - name: Download binaries
         uses: actions/download-artifact@v4
         with:
