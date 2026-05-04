@@ -4,8 +4,7 @@ using System.Numerics;
 
 namespace AtCoder
 {
-    public interface IModInt<T>
-     : INumberBase<T> where T : IModInt<T>, INumberBase<T>
+    public interface IModInt<T> : INumberBase<T> where T : INumberBase<T>
     {
         /// <summary>
         /// 自身を x として、 xy≡1 なる y を返します。
@@ -33,9 +32,12 @@ namespace AtCoder
         /// mod を返します。
         /// </summary>
         abstract static int Mod { get; }
-
         abstract static T Create(uint v);
-
+        abstract static T Parse(ReadOnlySpan<char> s);
+        abstract static bool TryParse(ReadOnlySpan<char> s, out T result);
+    }
+    public interface IModIntNumberBase<T> : IModInt<T> where T : IModInt<T>
+    {
         static int INumberBase<T>.Radix => 2;
         static T IAdditiveIdentity<T, T>.AdditiveIdentity => default;
         static T IMultiplicativeIdentity<T, T>.MultiplicativeIdentity => T.One;
@@ -63,8 +65,6 @@ namespace AtCoder
         static T INumberBase<T>.MinMagnitude(T x, T y) => T.Create((uint)int.Min(x.Value, y.Value));
         static T INumberBase<T>.MinMagnitudeNumber(T x, T y) => T.Create((uint)int.Min(x.Value, y.Value));
 
-        abstract static T Parse(ReadOnlySpan<char> s);
-        abstract static bool TryParse(ReadOnlySpan<char> s, out T result);
         static T INumberBase<T>.Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider provider) => T.Parse(s);
         static T INumberBase<T>.Parse(string s, NumberStyles style, IFormatProvider provider) => T.Parse(s);
         static T ISpanParsable<T>.Parse(ReadOnlySpan<char> s, IFormatProvider provider) => T.Parse(s);

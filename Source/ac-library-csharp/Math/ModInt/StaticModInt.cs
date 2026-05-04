@@ -22,7 +22,7 @@ namespace AtCoder
     /// </code>
     /// </example>
     [DebuggerDisplay("{Value,nq}")]
-    public readonly struct StaticModInt<T> : IEquatable<StaticModInt<T>>, IFormattable, IModInt<StaticModInt<T>>
+    public readonly struct StaticModInt<T> : IEquatable<StaticModInt<T>>, IFormattable, IModIntNumberBase<StaticModInt<T>>
         where T : struct, IStaticMod
     {
         internal readonly uint _v;
