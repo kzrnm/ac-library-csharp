@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using MersenneTwister;
 using Shouldly;
 using Xunit;
@@ -91,8 +90,8 @@ namespace AtCoder
         }
         public static TheoryData EmptyLongTestData => new TheoryData<long[], long[], long[]>
         {
-            { Array.Empty<long>(), Array.Empty<long>(), Array.Empty<long>() },
-            { Array.Empty<long>(), new long[]{ 1, 2 }, Array.Empty<long>() },
+            { [], [], [] },
+            { [], [1, 2], [] },
         };
         [Theory]
         [Trait("Category", "Empty")]
@@ -103,8 +102,8 @@ namespace AtCoder
         }
         public static TheoryData EmptyModIntTestData => new TheoryData<StaticModInt<Mod998244353>[], StaticModInt<Mod998244353>[], StaticModInt<Mod998244353>[]>
         {
-            { Array.Empty<StaticModInt<Mod998244353>>(), Array.Empty<StaticModInt<Mod998244353>>(), Array.Empty<StaticModInt<Mod998244353>>() },
-            { Array.Empty<StaticModInt<Mod998244353>>(), new StaticModInt<Mod998244353>[]{ 1, 2 }, Array.Empty<StaticModInt<Mod998244353>>() },
+            { [], [], [] },
+            { [], [1, 2], [] },
         };
         [Theory]
         [Trait("Category", "Empty")]

@@ -532,7 +532,6 @@ namespace AtCoder
             }
         }
 
-#if GENERIC_MATH
         [Fact]
         public void ConvertFrom()
         {
@@ -664,6 +663,5 @@ namespace AtCoder
             TOther ConvertTo<TModInt, TOther>(TModInt v) where TModInt : INumberBase<TModInt> where TOther : INumberBase<TOther>
                 => TOther.CreateChecked(v);
         }
-#endif
     }
 }

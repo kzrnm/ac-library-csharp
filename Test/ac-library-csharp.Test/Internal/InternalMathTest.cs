@@ -2,10 +2,6 @@
 using System.Numerics;
 using Shouldly;
 using Xunit;
-#if NET7_0_OR_GREATER
-using System;
-using System.Runtime.InteropServices;
-#endif
 
 namespace AtCoder.Internal
 {
@@ -177,45 +173,5 @@ namespace AtCoder.Internal
                 MathUtil.IsPrimitiveRoot(x, mods[x].PrimitiveRoot()).ShouldBeTrue();
             }
         }
-
-#if NET7_0_OR_GREATER
-        [Theory]
-        [InlineData(3ul, 5ul)]
-        [InlineData((1ul << 32) - 1, 5ul)]
-        [InlineData(0xF0000000F0000000, 0xF0000000F0000000)]
-        [InlineData(0xF000000000000000, 0xF0000000F0000000)]
-        [InlineData(0x00000000F0000000, 0xF0000000F0000000)]
-        [InlineData((ulong)int.MaxValue, ulong.MaxValue)]
-        [InlineData((ulong)uint.MaxValue, ulong.MaxValue)]
-        [InlineData((ulong)int.MaxValue, (ulong)int.MaxValue)]
-        [InlineData((ulong)uint.MaxValue, (ulong)uint.MaxValue)]
-        [InlineData(ulong.MaxValue, ulong.MaxValue)]
-        public void Mul128Bit(ulong a, ulong b)
-        {
-            for (int i = -10; i <= 10; i++)
-                for (int j = -10; j <= 10; j++)
-                {
-                    var x = a + (ulong)i;
-                    var y = b + (ulong)j;
-                    ulong expected = Math.BigMul(x, y, out _);
-                    InternalMath.Mul128Bit(x, y).ShouldBe(expected);
-                    Mul128.Mul128Bit(x, y).ShouldBe(expected);
-                }
-        }
-        [Fact]
-        public void Mul128BitRandom()
-        {
-            var rnd = new Random(227);
-            var arr = new ulong[2];
-            for (int i = 0; i < 50000; i++)
-            {
-                rnd.NextBytes(MemoryMarshal.Cast<ulong, byte>(arr));
-                var x = arr[0];
-                var y = arr[1];
-                ulong expected = Math.BigMul(x, y, out _);
-                Mul128.Mul128BitLogic(x, y).ShouldBe(expected);
-            }
-        }
-#endif
     }
 }

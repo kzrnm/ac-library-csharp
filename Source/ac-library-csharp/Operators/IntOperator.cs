@@ -3,9 +3,7 @@ using AtCoder.Operators;
 
 namespace AtCoder
 {
-#if GENERIC_MATH
     [System.Obsolete("Use generic math")]
-#endif
     public readonly struct IntOperator : INumOperator<int>, IShiftOperator<int>
     {
         public int MinValue => int.MinValue;

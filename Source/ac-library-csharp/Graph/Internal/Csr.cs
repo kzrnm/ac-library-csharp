@@ -28,56 +28,49 @@ namespace AtCoder.Internal
         /// </summary>
         public readonly TEdge[] EList;
 
-        public Csr(int n, ICollection<(int from, TEdge e)> edges)
+        public Csr(int n, ReadOnlySpan<(int from, TEdge e)> edges)
         {
             // 本家 C++ 版 ACL を参考に実装。通常の隣接リストと比較して高速か否かは未検証。
-            Start = new int[n + 1];
-            EList = new TEdge[edges.Count];
+            var counter = new int[n + 1];
+            EList = new TEdge[edges.Length];
 
             foreach (var (from, _) in edges)
             {
-                Start[from + 1]++;
+                counter[from + 1]++;
             }
 
             for (int i = 1; i <= n; i++)
             {
-                Start[i] += Start[i - 1];
+                counter[i] += counter[i - 1];
             }
 
-            var counter = (int[])Start.Clone();
+            Start = (int[])counter.Clone();
             foreach (var (from, e) in edges)
             {
                 EList[counter[from]++] = e;
             }
         }
-        public Enumerator GetEnumerator() => new Enumerator(this);
+        public Enumerator GetEnumerator() => new(this);
         IEnumerator<(int from, TEdge edge)> IEnumerable<(int from, TEdge edge)>.GetEnumerator() => GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-        public struct Enumerator : IEnumerator<(int from, TEdge edge)>
+        public struct Enumerator(Csr<TEdge> g) : IEnumerator<(int from, TEdge edge)>
         {
-            public Enumerator(Csr<TEdge> g)
-            {
-                _g = g;
-                index = -1;
-                start = 0;
-            }
-            private readonly Csr<TEdge> _g;
-            private int index;
-            private int start;
-            public (int from, TEdge edge) Current => (start, _g.EList[index]);
+            private int index = -1;
+            private int start = 0;
+            public (int from, TEdge edge) Current => (start, g.EList[index]);
             object IEnumerator.Current => Current;
 
             [MethodImpl(256)]
             public bool MoveNext()
             {
-                if (++index < _g.Start[start + 1])
+                if (++index < g.Start[start + 1])
                     return true;
                 return MoveNextStart();
             }
             private bool MoveNextStart()
             {
-                for (++start; start + 1 < _g.Start.Length; ++start)
-                    if (index < _g.Start[start + 1])
+                for (++start; start + 1 < g.Start.Length; ++start)
+                    if (index < g.Start[start + 1])
                         return true;
                 return false;
             }

@@ -60,7 +60,7 @@ namespace AtCoder
                 if (span[i].CompareTo(span[j]) < 0)
                     break;
             (span[i], span[j]) = (span[j], span[i]);
-            span.Slice(i + 1, span.Length - i - 1).Reverse();
+            span.Slice(i + 1).Reverse();
             return true;
         }
 
@@ -69,7 +69,7 @@ namespace AtCoder
         /// </summary>
         [MethodImpl(256)]
         public static NextPermutationEnumerator<T> Permutations<T>(IEnumerable<T> orig) where T : IComparable<T>
-            => new NextPermutationEnumerator<T>(orig);
+            => new(orig);
         #endregion NextPermutation
 
         #region BinarySerch

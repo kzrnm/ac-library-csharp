@@ -2,10 +2,6 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using AtCoder.Internal;
-#if GENERIC_MATH
-using System.Globalization;
-using System.Numerics;
-#endif
 
 namespace AtCoder
 {
@@ -76,7 +72,7 @@ namespace AtCoder
         }
 
         public static DynamicModInt<T> Zero => default;
-        public static DynamicModInt<T> One => new DynamicModInt<T>(1u);
+        public static DynamicModInt<T> One => new(1u);
 
         /// <summary>
         /// <paramref name="v"/> に対して mod を取らずに DynamicModInt&lt;<typeparamref name="T"/>&gt; 型のインスタンスを生成します。
@@ -93,7 +89,7 @@ namespace AtCoder
             Contract.Assert(bt != null, $"{nameof(DynamicModInt<T>)}<{nameof(T)}>.{nameof(Mod)} is undefined.");
             Contract.Assert(u < Mod, $"{nameof(u)} must be less than {nameof(Mod)}.");
 #endif
-            return new DynamicModInt<T>(u);
+            return new(u);
         }
 
         /// <summary>
@@ -128,7 +124,7 @@ namespace AtCoder
             {
                 x = 0;
             }
-            return new DynamicModInt<T>(x);
+            return new(x);
         }
 
         [MethodImpl(256)]
@@ -139,7 +135,7 @@ namespace AtCoder
             {
                 x = bt.Mod;
             }
-            return new DynamicModInt<T>(x - 1);
+            return new(x - 1);
         }
 
         [MethodImpl(256)]
@@ -150,7 +146,7 @@ namespace AtCoder
             {
                 v -= bt.Mod;
             }
-            return new DynamicModInt<T>(v);
+            return new(v);
         }
 
         [MethodImpl(256)]
@@ -163,7 +159,7 @@ namespace AtCoder
                 {
                     v += bt.Mod;
                 }
-                return new DynamicModInt<T>(v);
+                return new(v);
             }
         }
 
@@ -171,7 +167,7 @@ namespace AtCoder
         public static DynamicModInt<T> operator *(DynamicModInt<T> lhs, DynamicModInt<T> rhs)
         {
             uint z = bt.Mul(lhs._v, rhs._v);
-            return new DynamicModInt<T>(z);
+            return new(z);
         }
 
         /// <summary>
@@ -187,19 +183,19 @@ namespace AtCoder
         [MethodImpl(256)]
         public static DynamicModInt<T> operator +(DynamicModInt<T> v) => v;
         [MethodImpl(256)]
-        public static DynamicModInt<T> operator -(DynamicModInt<T> v) => new DynamicModInt<T>(v._v == 0 ? 0 : Mod - v.Value);
+        public static DynamicModInt<T> operator -(DynamicModInt<T> v) => new(v._v == 0 ? 0 : Mod - v.Value);
         [MethodImpl(256)]
         public static bool operator ==(DynamicModInt<T> lhs, DynamicModInt<T> rhs) => lhs._v == rhs._v;
         [MethodImpl(256)]
         public static bool operator !=(DynamicModInt<T> lhs, DynamicModInt<T> rhs) => lhs._v != rhs._v;
         [MethodImpl(256)]
-        public static implicit operator DynamicModInt<T>(int v) => new DynamicModInt<T>(v);
+        public static implicit operator DynamicModInt<T>(int v) => new(v);
         [MethodImpl(256)]
-        public static implicit operator DynamicModInt<T>(uint v) => new DynamicModInt<T>((ulong)v);
+        public static implicit operator DynamicModInt<T>(uint v) => new((ulong)v);
         [MethodImpl(256)]
-        public static implicit operator DynamicModInt<T>(long v) => new DynamicModInt<T>(v);
+        public static implicit operator DynamicModInt<T>(long v) => new(v);
         [MethodImpl(256)]
-        public static implicit operator DynamicModInt<T>(ulong v) => new DynamicModInt<T>(v);
+        public static implicit operator DynamicModInt<T>(ulong v) => new(v);
 
         /// <summary>
         /// 自身を x として、x^<paramref name="n"/> を返します。
@@ -209,7 +205,7 @@ namespace AtCoder
         /// <para>計算量: O(log(<paramref name="n"/>))</para>
         /// </remarks>
         [MethodImpl(256)]
-        public DynamicModInt<T> Pow(long n) => new DynamicModInt<T>(bt.Pow(Value, n));
+        public DynamicModInt<T> Pow(long n) => new(bt.Pow(Value, n));
 
         /// <summary>
         /// 自身を x として、x^<paramref name="n"/> を返します。
@@ -219,7 +215,7 @@ namespace AtCoder
         /// <para>計算量: O(log(<paramref name="n"/>))</para>
         /// </remarks>
         [MethodImpl(256)]
-        public DynamicModInt<T> Pow(ulong n) => new DynamicModInt<T>(bt.Pow(Value, n));
+        public DynamicModInt<T> Pow(ulong n) => new(bt.Pow(Value, n));
 
         /// <summary>
         /// 自身を x として、 xy≡1 なる y を返します。
@@ -232,7 +228,7 @@ namespace AtCoder
         {
             var (g, x) = ModCalc.InvGcd(_v, bt.Mod);
             Contract.Assert(g == 1, reason: $"gcd({nameof(x)}, {nameof(Mod)}) must be 1.");
-            return new DynamicModInt<T>(x);
+            return new(x);
         }
 
         public override string ToString() => _v.ToString();
@@ -270,109 +266,6 @@ namespace AtCoder
             void Throw() => throw new FormatException();
         }
 
-#if GENERIC_MATH
-        static int INumberBase<DynamicModInt<T>>.Radix => 2;
-        static DynamicModInt<T> IAdditiveIdentity<DynamicModInt<T>, DynamicModInt<T>>.AdditiveIdentity => default;
-        static DynamicModInt<T> IMultiplicativeIdentity<DynamicModInt<T>, DynamicModInt<T>>.MultiplicativeIdentity => new DynamicModInt<T>(1u);
-        static DynamicModInt<T> INumberBase<DynamicModInt<T>>.Abs(DynamicModInt<T> v) => v;
-        static bool INumberBase<DynamicModInt<T>>.IsCanonical(DynamicModInt<T> v) => true;
-        static bool INumberBase<DynamicModInt<T>>.IsComplexNumber(DynamicModInt<T> v) => false;
-        static bool INumberBase<DynamicModInt<T>>.IsRealNumber(DynamicModInt<T> v) => true;
-        static bool INumberBase<DynamicModInt<T>>.IsImaginaryNumber(DynamicModInt<T> v) => false;
-        static bool INumberBase<DynamicModInt<T>>.IsEvenInteger(DynamicModInt<T> v) => uint.IsEvenInteger(v._v);
-        static bool INumberBase<DynamicModInt<T>>.IsOddInteger(DynamicModInt<T> v) => uint.IsOddInteger(v._v);
-        static bool INumberBase<DynamicModInt<T>>.IsFinite(DynamicModInt<T> v) => true;
-        static bool INumberBase<DynamicModInt<T>>.IsInfinity(DynamicModInt<T> v) => false;
-        static bool INumberBase<DynamicModInt<T>>.IsInteger(DynamicModInt<T> v) => true;
-        static bool INumberBase<DynamicModInt<T>>.IsPositive(DynamicModInt<T> v) => true;
-        static bool INumberBase<DynamicModInt<T>>.IsNegative(DynamicModInt<T> v) => false;
-        static bool INumberBase<DynamicModInt<T>>.IsPositiveInfinity(DynamicModInt<T> v) => false;
-        static bool INumberBase<DynamicModInt<T>>.IsNegativeInfinity(DynamicModInt<T> v) => false;
-        static bool INumberBase<DynamicModInt<T>>.IsNormal(DynamicModInt<T> v) => v._v != 0;
-        static bool INumberBase<DynamicModInt<T>>.IsSubnormal(DynamicModInt<T> v) => false;
-        static bool INumberBase<DynamicModInt<T>>.IsZero(DynamicModInt<T> v) => v._v == 0;
-        static bool INumberBase<DynamicModInt<T>>.IsNaN(DynamicModInt<T> v) => false;
-        static DynamicModInt<T> INumberBase<DynamicModInt<T>>.MaxMagnitude(DynamicModInt<T> x, DynamicModInt<T> y) => new DynamicModInt<T>(uint.Max(x._v, y._v));
-        static DynamicModInt<T> INumberBase<DynamicModInt<T>>.MaxMagnitudeNumber(DynamicModInt<T> x, DynamicModInt<T> y) => new DynamicModInt<T>(uint.Max(x._v, y._v));
-        static DynamicModInt<T> INumberBase<DynamicModInt<T>>.MinMagnitude(DynamicModInt<T> x, DynamicModInt<T> y) => new DynamicModInt<T>(uint.Min(x._v, y._v));
-        static DynamicModInt<T> INumberBase<DynamicModInt<T>>.MinMagnitudeNumber(DynamicModInt<T> x, DynamicModInt<T> y) => new DynamicModInt<T>(uint.Min(x._v, y._v));
-
-        static DynamicModInt<T> INumberBase<DynamicModInt<T>>.Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider provider) => Parse(s);
-        static DynamicModInt<T> INumberBase<DynamicModInt<T>>.Parse(string s, NumberStyles style, IFormatProvider provider) => Parse(s);
-        static DynamicModInt<T> ISpanParsable<DynamicModInt<T>>.Parse(ReadOnlySpan<char> s, IFormatProvider provider) => Parse(s);
-        static DynamicModInt<T> IParsable<DynamicModInt<T>>.Parse(string s, IFormatProvider provider) => Parse(s);
-        static bool ISpanParsable<DynamicModInt<T>>.TryParse(ReadOnlySpan<char> s, IFormatProvider provider, out DynamicModInt<T> result) => TryParse(s, out result);
-        static bool IParsable<DynamicModInt<T>>.TryParse(string s, IFormatProvider provider, out DynamicModInt<T> result) => TryParse(s, out result);
-        static bool INumberBase<DynamicModInt<T>>.TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider provider, out DynamicModInt<T> result) => TryParse(s, out result);
-        static bool INumberBase<DynamicModInt<T>>.TryParse(string s, NumberStyles style, IFormatProvider provider, out DynamicModInt<T> result) => TryParse(s, out result);
-
-        bool ISpanFormattable.TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider provider) => _v.TryFormat(destination, out charsWritten, format, provider);
-
-
-        static bool INumberBase<DynamicModInt<T>>.TryConvertFromChecked<TOther>(TOther v, out DynamicModInt<T> r)
-        {
-            if (WrapChecked(v, out long l))
-            {
-                r = l;
-                return true;
-            }
-            if (WrapChecked(v, out ulong u))
-            {
-                r = u;
-                return true;
-            }
-            r = default;
-            return false;
-        }
-        static bool INumberBase<DynamicModInt<T>>.TryConvertFromSaturating<TOther>(TOther v, out DynamicModInt<T> r)
-        {
-            if (WrapSaturating(v, out long l))
-            {
-                r = l;
-                return true;
-            }
-            if (WrapSaturating(v, out ulong u))
-            {
-                r = u;
-                return true;
-            }
-            r = default;
-            return false;
-        }
-        static bool INumberBase<DynamicModInt<T>>.TryConvertFromTruncating<TOther>(TOther v, out DynamicModInt<T> r)
-        {
-            if (WrapTruncating(v, out long l))
-            {
-                r = l;
-                return true;
-            }
-            if (WrapTruncating(v, out ulong u))
-            {
-                r = u;
-                return true;
-            }
-            r = default;
-            return false;
-        }
-        static bool INumberBase<DynamicModInt<T>>.TryConvertToChecked<TOther>(DynamicModInt<T> v, out TOther r) where TOther : default => WrapChecked(v._v, out r);
-        static bool INumberBase<DynamicModInt<T>>.TryConvertToSaturating<TOther>(DynamicModInt<T> v, out TOther r) where TOther : default => WrapSaturating(v._v, out r);
-        static bool INumberBase<DynamicModInt<T>>.TryConvertToTruncating<TOther>(DynamicModInt<T> v, out TOther r) where TOther : default => WrapTruncating(v._v, out r);
-
-        [MethodImpl(256)]
-        static bool WrapChecked<TFrom, TTo>(TFrom v, out TTo r) where TFrom : INumberBase<TFrom> where TTo : INumberBase<TTo>
-            => typeof(TFrom) == typeof(TTo)
-            ? (r = (TTo)(object)v) is { }
-            : TTo.TryConvertFromChecked(v, out r) || TFrom.TryConvertToChecked(v, out r);
-        [MethodImpl(256)]
-        static bool WrapSaturating<TFrom, TTo>(TFrom v, out TTo r) where TFrom : INumberBase<TFrom> where TTo : INumberBase<TTo>
-            => typeof(TFrom) == typeof(TTo)
-            ? (r = (TTo)(object)v) is { }
-            : TTo.TryConvertFromSaturating(v, out r) || TFrom.TryConvertToSaturating(v, out r);
-        [MethodImpl(256)]
-        static bool WrapTruncating<TFrom, TTo>(TFrom v, out TTo r) where TFrom : INumberBase<TFrom> where TTo : INumberBase<TTo>
-            => typeof(TFrom) == typeof(TTo)
-            ? (r = (TTo)(object)v) is { }
-            : TTo.TryConvertFromTruncating(v, out r) || TFrom.TryConvertToTruncating(v, out r);
-#endif
+        static DynamicModInt<T> IModInt<DynamicModInt<T>>.Create(uint v) => new(v);
     }
 }

@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-#if NETCOREAPP3_1_OR_GREATER
 using System.Numerics;
-#endif
-#if NET7_0_OR_GREATER
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-#endif
 
 namespace AtCoder.Internal
 {
@@ -36,28 +32,14 @@ namespace AtCoder.Internal
                 case 998244353: return 3;
             }
 
-#if NETCOREAPP3_1_OR_GREATER
-            primitiveRootsCache ??= new Dictionary<uint, int>();
-#else
-            if (primitiveRootsCache == null)
-                primitiveRootsCache = new Dictionary<uint, int>();
-#endif
+            primitiveRootsCache ??= [];
 
-#if NET7_0_OR_GREATER
             ref var result = ref CollectionsMarshal.GetValueRefOrAddDefault(primitiveRootsCache, m, out var exists);
             if (!exists)
             {
                 result = PrimitiveRootCalculate<TMod>();
             }
             return result;
-#else
-            if (primitiveRootsCache.TryGetValue(m, out var p))
-            {
-                return p;
-            }
-
-            return primitiveRootsCache[m] = PrimitiveRootCalculate<TMod>();
-#endif
         }
         static int PrimitiveRootCalculate<TMod>() where TMod : struct, IStaticMod
         {
@@ -84,7 +66,7 @@ namespace AtCoder.Internal
             {
                 divs[cnt++] = x;
             }
-            divs = divs.Slice(0, cnt);
+            divs = divs[..cnt];
 
             for (int g = 2; ; g++)
             {

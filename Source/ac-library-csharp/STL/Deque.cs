@@ -3,12 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using AtCoder.Internal;
-
-#if !NETSTANDARD2_1
-using System.Numerics;
-#endif
 
 namespace AtCoder
 {
@@ -33,7 +30,7 @@ namespace AtCoder
         public Deque() : this(1) { }
         public Deque(int capacity)
         {
-            data = Array.Empty<T>();
+            data = [];
             Grow(capacity);
         }
 
@@ -89,12 +86,7 @@ namespace AtCoder
         [EditorBrowsable(Never)]
         public void Grow(int capacity)
         {
-            capacity =
-#if NET7_0_OR_GREATER
-                (int)BitOperations.RoundUpToPowerOf2((uint)capacity + 1u);
-#else
-                1 << (InternalBit.CeilPow2(capacity + 1));
-#endif
+            capacity = (int)BitOperations.RoundUpToPowerOf2((uint)capacity + 1u);
             Debug.Assert(BitOperations.PopCount((uint)capacity) == 1);
             if (capacity <= data.Length) return;
             var oldSize = Count;
@@ -152,8 +144,8 @@ namespace AtCoder
                 Array.Copy(data, 0, array, arrayIndex + hsize, tail);
             }
         }
-        [MethodImpl(256)] public Enumerator Reversed() => new Enumerator(this, true);
-        [MethodImpl(256)] public Enumerator GetEnumerator() => new Enumerator(this, false);
+        [MethodImpl(256)] public Enumerator Reversed() => new(this, true);
+        [MethodImpl(256)] public Enumerator GetEnumerator() => new(this, false);
 
         bool ICollection<T>.IsReadOnly => false;
         bool ICollection<T>.Remove(T item) { throw new NotSupportedException(); }

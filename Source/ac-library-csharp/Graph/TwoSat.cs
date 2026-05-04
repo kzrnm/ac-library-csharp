@@ -30,7 +30,7 @@ namespace AtCoder
         {
             _n = n;
             _answer = new bool[n];
-            scc = new SccGraph(2 * n);
+            scc = new(2 * n);
         }
 
         /// <summary>

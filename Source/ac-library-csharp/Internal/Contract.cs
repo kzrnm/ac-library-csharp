@@ -7,7 +7,6 @@ namespace AtCoder.Internal
 
     public static class Contract
     {
-#if NET6_0_OR_GREATER
         /// <summary>
         /// if <paramref name="condition"/> is false, throw exception.
         /// </summary>
@@ -18,7 +17,7 @@ namespace AtCoder.Internal
             if (!condition)
                 Throw(reason.ToStringAndClear());
         }
-#endif
+
         /// <summary>
         /// if <paramref name="condition"/> is false, throw exception.
         /// </summary>

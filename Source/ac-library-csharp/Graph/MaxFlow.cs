@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using AtCoder.Internal;
 using AtCoder.Operators;
 
@@ -21,9 +22,7 @@ namespace AtCoder
     /// また頂点 v について g(v, f) = (Σ_in(v) f_e) - (Σ_out(v) f_e) とします。
     /// </para>
     /// </remarks>
-#if GENERIC_MATH
     [Obsolete("Use generic math")]
-#endif
     public class MfGraph<T, TOp>
         where T : struct
         where TOp : struct, INumOperator<T>
@@ -32,9 +31,9 @@ namespace AtCoder
 
         public int Count => _g.Length;
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public readonly SimpleList<(int first, int second)> _pos;
+        public readonly List<(int first, int second)> _pos;
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public readonly SimpleList<EdgeInternal>[] _g;
+        public readonly List<EdgeInternal>[] _g;
 
         /// <summary>
         /// <paramref name="n"/> 頂点 0 辺のグラフを作ります。
@@ -45,13 +44,16 @@ namespace AtCoder
         /// </remarks>
         public MfGraph(int n)
         {
-            _g = new SimpleList<EdgeInternal>[n];
+            _g = new List<EdgeInternal>[n];
             for (int i = 0; i < _g.Length; i++)
             {
-                _g[i] = new SimpleList<EdgeInternal>();
+                _g[i] = [];
             }
-            _pos = new SimpleList<(int first, int second)>();
+            _pos = [];
         }
+
+        [MethodImpl(256)]
+        Span<EdgeInternal> ESpan(int i) => CollectionsMarshal.AsSpan(_g[i]);
 
         /// <summary>
         /// <paramref name="from"/> から <paramref name="to"/> へ
@@ -140,10 +142,11 @@ namespace AtCoder
             Contract.Assert((uint)i < (uint)_pos.Count, reason: $"IndexOutOfRange: 0 <= {nameof(i)} && {nameof(i)} < edgeCount");
             Contract.Assert(op.LessThanOrEqual(default, newFlow) && op.LessThanOrEqual(newFlow, newCap), reason: $"IndexOutOfRange: 0 <= {nameof(newFlow)} && {nameof(newFlow)} <= {nameof(newCap)}");
             var (first, second) = _pos[i];
-            var (to, rev, _) = _g[first][second];
+            var gf = ESpan(first);
+            var (to, rev, _) = gf[second];
             //var _re = _g[_e.To][_e.Rev];
-            _g[first][second].Cap = op.Subtract(newCap, newFlow);
-            _g[to][rev].Cap = newFlow;
+            gf[second].Cap = op.Subtract(newCap, newFlow);
+            ESpan(to)[rev].Cap = newFlow;
         }
 
         /// <summary>
@@ -255,7 +258,7 @@ namespace AtCoder
                 while (que.Count > 0)
                 {
                     int v = que.Dequeue();
-                    foreach (var (to, _, cap) in _g[v].AsSpan())
+                    foreach (var (to, _, cap) in ESpan(v))
                     {
                         if (EqualityComparer<T>.Default.Equals(cap, default) || level[to] >= 0) continue;
                         level[to] = level[v] + 1;
@@ -321,8 +324,8 @@ namespace AtCoder
                             var d = lastRes;
                             if (op.GreaterThan(d, default))
                             {
-                                _g[v][itrv].Cap = op.Add(cap, d);
-                                _g[to][rev].Cap = op.Subtract(_g[to][rev].Cap, d);
+                                ESpan(v)[itrv].Cap = op.Add(cap, d);
+                                ESpan(to)[rev].Cap = op.Subtract(_g[to][rev].Cap, d);
                                 res = op.Add(res, d);
 
                                 if (EqualityComparer<T>.Default.Equals(res, up))
@@ -400,23 +403,16 @@ namespace AtCoder
         /// フロー流すグラフの各辺に対応した情報を持ちます。
         /// </summary>
         [DebuggerDisplay("From={" + nameof(From) + "} To={" + nameof(To) + "} Cap={" + nameof(Cap) + "} Flow={" + nameof(Flow) + "}")]
-        public struct Edge : IEquatable<Edge>
+        public struct Edge(int from, int to, T cap, T flow) : IEquatable<Edge>
         {
             /// <summary>フローが流出する頂点。</summary>
-            public int From { get; set; }
+            public int From = from;
             /// <summary>フローが流入する頂点。</summary>
-            public int To { get; set; }
+            public int To = to;
             /// <summary>辺の容量。</summary>
-            public T Cap { get; set; }
+            public T Cap = cap;
             /// <summary>辺の流量。</summary>
-            public T Flow { get; set; }
-            public Edge(int from, int to, T cap, T flow)
-            {
-                From = from;
-                To = to;
-                Cap = cap;
-                Flow = flow;
-            }
+            public T Flow = flow;
 
             [MethodImpl(256)]
             public override bool Equals(object obj)
@@ -436,17 +432,11 @@ namespace AtCoder
 
         [DebuggerDisplay("To={" + nameof(To) + "} Rev={" + nameof(Rev) + "} Cap={" + nameof(Cap) + "}")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public struct EdgeInternal
+        public struct EdgeInternal(int to, int rev, T cap)
         {
-            public int To { get; }
-            public int Rev { get; }
-            public T Cap { get; set; }
-            public EdgeInternal(int to, int rev, T cap)
-            {
-                To = to;
-                Rev = rev;
-                Cap = cap;
-            }
+            public readonly int To = to, Rev = rev;
+            public T Cap = cap;
+
             [MethodImpl(256)]
             public void Deconstruct(out int to, out int rev, out T cap)
             {

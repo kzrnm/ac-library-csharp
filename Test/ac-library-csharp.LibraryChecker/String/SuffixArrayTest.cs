@@ -7,7 +7,7 @@ namespace AtCoder.Solvers.String
         public override string Url => "https://judge.yosupo.jp/problem/suffixarray";
         public override void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
-            string s = cr;
+            string s = cr.String();
             cw.WriteLineJoin(StringLib.SuffixArray(s));
         }
     }

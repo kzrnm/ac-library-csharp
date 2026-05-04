@@ -27,12 +27,9 @@ namespace AtCoder.Internal
             var h = InternalBit.CeilPow2(n);
 
             var regLength = Vector<uint>.Count;
-#if !NETCOREAPP3_0_OR_GREATER
-            var copyTmp = new uint[regLength];
-#endif
 
             // 全要素がmodのVector<uint>を作成（比較および加減算用）
-            var modV = new Vector<uint>(default(T).Mod);
+            Vector<uint> modV = new(default(T).Mod);
 
             for (int ph = 1; ph <= h; ph++)
             {
@@ -77,8 +74,8 @@ namespace AtCoder.Internal
                         {
                             var luSliced = lu.Slice(i);
                             var ruSliced = ru.Slice(i);
-                            var u = new Vector<uint>(luSliced);
-                            var v = new Vector<uint>(ruSliced);
+                            Vector<uint> u = new(luSliced);
+                            Vector<uint> v = new(ruSliced);
                             var add = u + v;
                             var sub = u - v;
 
@@ -88,15 +85,8 @@ namespace AtCoder.Internal
                             ge = Vector.GreaterThanOrEqual(sub, modV);
                             sub = Vector.ConditionalSelect(ge, sub + modV, sub);
 
-#if !NETCOREAPP3_0_OR_GREATER
-                            add.CopyTo(copyTmp);
-                            copyTmp.CopyTo(luSliced);
-                            sub.CopyTo(copyTmp);
-                            copyTmp.CopyTo(ruSliced);
-#else
                             add.CopyTo(luSliced);
                             sub.CopyTo(ruSliced);
-#endif
                         }
                     }
 
@@ -112,12 +102,9 @@ namespace AtCoder.Internal
             var h = InternalBit.CeilPow2(n);
 
             var regLength = Vector<uint>.Count;
-#if !NETCOREAPP3_0_OR_GREATER
-            var copyTmp = new uint[regLength];
-#endif
 
             // 全要素がmodのVector<uint>を作成（比較および加減算用）
-            var modV = new Vector<uint>(default(T).Mod);
+            Vector<uint> modV = new(default(T).Mod);
 
             for (int ph = h; ph >= 1; ph--)
             {
@@ -158,8 +145,8 @@ namespace AtCoder.Internal
                         {
                             var luSliced = lu.Slice(i);
                             var ruSliced = ru.Slice(i);
-                            var u = new Vector<uint>(luSliced);
-                            var v = new Vector<uint>(ruSliced);
+                            Vector<uint> u = new(luSliced);
+                            Vector<uint> v = new(ruSliced);
                             var add = u + v;
                             var sub = u - v;
 
@@ -169,15 +156,8 @@ namespace AtCoder.Internal
                             // こちらは後で余りを取るのでマスク不要
                             sub += modV;
 
-#if !NETCOREAPP3_0_OR_GREATER
-                            add.CopyTo(copyTmp);
-                            copyTmp.CopyTo(luSliced);
-                            sub.CopyTo(copyTmp);
-                            copyTmp.CopyTo(ruSliced);
-#else
                             add.CopyTo(luSliced);
                             sub.CopyTo(ruSliced);
-#endif
                         }
 
                         foreach (ref var r in rs)
@@ -201,20 +181,8 @@ namespace AtCoder.Internal
             var sumE = new StaticModInt<T>[30];
 
             // es[i]^(2^(2+i)) == 1
-            Span<StaticModInt<T>> es =
-#if !NETCOREAPP3_0_OR_GREATER
-                new
-#else
-                stackalloc
-#endif
-                StaticModInt<T>[cnt2 - 1];
-            Span<StaticModInt<T>> ies =
-#if !NETCOREAPP3_0_OR_GREATER
-                new
-#else
-                stackalloc
-#endif
-                StaticModInt<T>[cnt2 - 1];
+            Span<StaticModInt<T>> es = stackalloc StaticModInt<T>[cnt2 - 1];
+            Span<StaticModInt<T>> ies = stackalloc StaticModInt<T>[cnt2 - 1];
 
             for (int i = es.Length - 1; i >= 0; i--)
             {
@@ -246,20 +214,8 @@ namespace AtCoder.Internal
             var sumIE = new StaticModInt<T>[30];
 
             // es[i]^(2^(2+i)) == 1
-            Span<StaticModInt<T>> es =
-#if !NETCOREAPP3_0_OR_GREATER
-                new
-#else
-                stackalloc
-#endif
-                StaticModInt<T>[cnt2 - 1];
-            Span<StaticModInt<T>> ies =
-#if !NETCOREAPP3_0_OR_GREATER
-                new
-#else
-                stackalloc
-#endif
-                StaticModInt<T>[cnt2 - 1];
+            Span<StaticModInt<T>> es = stackalloc StaticModInt<T>[cnt2 - 1];
+            Span<StaticModInt<T>> ies = stackalloc StaticModInt<T>[cnt2 - 1];
 
             for (int i = es.Length - 1; i >= 0; i--)
             {

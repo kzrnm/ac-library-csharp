@@ -8,9 +8,7 @@ using Xunit;
 
 namespace AtCoder
 {
-#if GENERIC_MATH
     [System.Obsolete("Use generic math")]
-#endif
     public class MaxFlowTest
     {
         [Fact]
