@@ -64,26 +64,6 @@ namespace AtCoder
         /// <para>計算量: O(<paramref name="n"/>)</para>
         /// </remarks>
         /// <param name="v">初期配列</param>
-        public LazySegtree(TValue[] v) : this((ReadOnlySpan<TValue>)v) { }
-
-        /// <summary>
-        /// 長さ n=<paramref name="v"/>.Length の数列 a　を持つ <see cref="LazySegtree{TValue, F, TOp}"/> クラスの新しいインスタンスを作ります。初期値は <paramref name="v"/> です。
-        /// </summary>
-        /// <remarks>
-        /// <para>制約: 0≤<paramref name="n"/>≤10^8</para>
-        /// <para>計算量: O(<paramref name="n"/>)</para>
-        /// </remarks>
-        /// <param name="v">初期配列</param>
-        public LazySegtree(Span<TValue> v) : this((ReadOnlySpan<TValue>)v) { }
-
-        /// <summary>
-        /// 長さ n=<paramref name="v"/>.Length の数列 a　を持つ <see cref="LazySegtree{TValue, F, TOp}"/> クラスの新しいインスタンスを作ります。初期値は <paramref name="v"/> です。
-        /// </summary>
-        /// <remarks>
-        /// <para>制約: 0≤<paramref name="n"/>≤10^8</para>
-        /// <para>計算量: O(<paramref name="n"/>)</para>
-        /// </remarks>
-        /// <param name="v">初期配列</param>
         public LazySegtree(ReadOnlySpan<TValue> v) : this(v.Length)
         {
             v.CopyTo(d.AsSpan(size));
@@ -341,7 +321,7 @@ namespace AtCoder
         public int MinLeft(int r, Predicate<TValue> g)
         {
             Contract.Assert((uint)r <= (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(r)} && {nameof(r)} <= Length");
-            Contract.Assert(g(op.Identity), reason: $"{nameof(g)}({nameof(TOp)}.{nameof(ILazySegtreeOperator<TValue, F>.Identity)}) must be true.");
+            Contract.Assert(g(op.Identity), reason: $"{nameof(g)}({nameof(TOp)}.{nameof(op.Identity)}) must be true.");
             if (r == 0) return 0;
             r += size;
             for (int i = log; i >= 1; i--) Push((r - 1) >> i);

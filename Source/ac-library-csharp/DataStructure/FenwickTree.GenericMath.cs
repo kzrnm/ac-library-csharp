@@ -93,16 +93,7 @@ namespace AtCoder
         [SourceExpander.NotEmbeddingSource]
 #endif
         [DebuggerDisplay("Value = {" + nameof(Value) + "}, Sum = {" + nameof(Sum) + "}")]
-        internal readonly struct DebugItem
-        {
-            public DebugItem(T value, T sum)
-            {
-                Value = value;
-                Sum = sum;
-            }
-            public T Value { get; }
-            public T Sum { get; }
-        }
+        internal readonly record struct DebugItem(T Value, T Sum);
 #if EMBEDDING
         [SourceExpander.NotEmbeddingSource]
 #endif
@@ -115,7 +106,7 @@ namespace AtCoder
                 {
                     var data = fw.data;
                     var items = new DebugItem[data.Length - 1];
-                    if (items.Length == 0) return System.Array.Empty<DebugItem>();
+                    if (items.Length == 0) return [];
 
                     items[0] = new DebugItem(data[1], data[1]);
                     for (int i = 2; i < data.Length; i++)

@@ -61,24 +61,6 @@ namespace AtCoder
         /// <para>計算量: O(<paramref name="n"/>)</para>
         /// </remarks>
         /// <param name="v">初期配列</param>
-        public Segtree(TValue[] v) : this((ReadOnlySpan<TValue>)v) { }
-        /// <summary>
-        /// 長さ n=<paramref name="v"/>.Length の数列 a　を持つ <see cref="Segtree{TValue, TOp}"/> クラスの新しいインスタンスを作ります。初期値は <paramref name="v"/> です。
-        /// </summary>
-        /// <remarks>
-        /// <para>制約: 0≤<paramref name="n"/>≤10^8</para>
-        /// <para>計算量: O(<paramref name="n"/>)</para>
-        /// </remarks>
-        /// <param name="v">初期配列</param>
-        public Segtree(Span<TValue> v) : this((ReadOnlySpan<TValue>)v) { }
-        /// <summary>
-        /// 長さ n=<paramref name="v"/>.Length の数列 a　を持つ <see cref="Segtree{TValue, TOp}"/> クラスの新しいインスタンスを作ります。初期値は <paramref name="v"/> です。
-        /// </summary>
-        /// <remarks>
-        /// <para>制約: 0≤<paramref name="n"/>≤10^8</para>
-        /// <para>計算量: O(<paramref name="n"/>)</para>
-        /// </remarks>
-        /// <param name="v">初期配列</param>
         public Segtree(ReadOnlySpan<TValue> v) : this(v.Length)
         {
             v.CopyTo(d.AsSpan(size));
@@ -187,7 +169,7 @@ namespace AtCoder
         public int MaxRight(int l, Predicate<TValue> f)
         {
             Contract.Assert((uint)l <= (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(l)} && {nameof(l)} <= Length");
-            Contract.Assert(f(op.Identity), reason: $"{nameof(f)}({nameof(TOp)}.{nameof(ISegtreeOperator<TValue>.Identity)}) must be true.");
+            Contract.Assert(f(op.Identity), reason: $"{nameof(f)}({nameof(TOp)}.{nameof(op.Identity)}) must be true.");
             if (l == Length) return Length;
             l += size;
             var sm = op.Identity;

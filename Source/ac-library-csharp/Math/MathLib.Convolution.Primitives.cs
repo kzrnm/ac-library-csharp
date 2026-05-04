@@ -60,11 +60,11 @@ namespace AtCoder
             var b2 = new StaticModInt<TMod>[m];
             for (int i = 0; i < a2.Length; i++)
             {
-                a2[i] = new StaticModInt<TMod>(a[i]);
+                a2[i] = new(a[i]);
             }
             for (int i = 0; i < b2.Length; i++)
             {
-                b2[i] = new StaticModInt<TMod>(b[i]);
+                b2[i] = new(b[i]);
             }
 
             var c2 = Convolution(a2, b2);
@@ -127,11 +127,11 @@ namespace AtCoder
             var b2 = new StaticModInt<TMod>[m];
             for (int i = 0; i < a2.Length; i++)
             {
-                a2[i] = new StaticModInt<TMod>(a[i]);
+                a2[i] = new(a[i]);
             }
             for (int i = 0; i < b2.Length; i++)
             {
-                b2[i] = new StaticModInt<TMod>(b[i]);
+                b2[i] = new(b[i]);
             }
 
             var c2 = Convolution(a2, b2);
@@ -194,11 +194,11 @@ namespace AtCoder
             var b2 = new StaticModInt<TMod>[m];
             for (int i = 0; i < a2.Length; i++)
             {
-                a2[i] = new StaticModInt<TMod>(a[i]);
+                a2[i] = new(a[i]);
             }
             for (int i = 0; i < b2.Length; i++)
             {
-                b2[i] = new StaticModInt<TMod>(b[i]);
+                b2[i] = new(b[i]);
             }
 
             var c2 = Convolution(a2, b2);
@@ -261,11 +261,11 @@ namespace AtCoder
             var b2 = new StaticModInt<TMod>[m];
             for (int i = 0; i < a2.Length; i++)
             {
-                a2[i] = new StaticModInt<TMod>(a[i]);
+                a2[i] = new(a[i]);
             }
             for (int i = 0; i < b2.Length; i++)
             {
-                b2[i] = new StaticModInt<TMod>(b[i]);
+                b2[i] = new(b[i]);
             }
 
             var c2 = Convolution(a2, b2);

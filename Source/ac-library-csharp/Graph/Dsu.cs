@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using AtCoder.Internal;
@@ -109,7 +110,7 @@ namespace AtCoder
             int n = _ps.Length;
             int[] leaderBuf = new int[n];
             int[] id = new int[n];
-            var resultList = new SimpleList<int[]>(n);
+            List<int[]> resultList = new(n);
             for (int i = 0; i < leaderBuf.Length; i++)
             {
                 leaderBuf[i] = Leader(i);

@@ -47,17 +47,9 @@ namespace AtCoder.Extension
         public static int UpperBound<T, TCv>(this IList<T> a, TCv v) where TCv : IComparable<T>
             => BinarySearch<T, TCv, U>(a, v);
 
-        private readonly struct CmpWrapper<T, TCmp> : IComparable<T>
+        private readonly struct CmpWrapper<T, TCmp>(T v, TCmp cmp) : IComparable<T>
             where TCmp : IComparer<T>
         {
-            readonly T v;
-            readonly TCmp cmp;
-            public CmpWrapper(T v, TCmp cmp)
-            {
-                this.v = v;
-                this.cmp = cmp;
-            }
-
             [MethodImpl(256)]
             public int CompareTo(T other) => cmp.Compare(v, other);
         }

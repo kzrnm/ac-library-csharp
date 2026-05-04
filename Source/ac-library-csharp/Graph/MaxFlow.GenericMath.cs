@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using AtCoder.Internal;
 
 namespace AtCoder
@@ -27,9 +28,9 @@ namespace AtCoder
     {
         public int Count => _g.Length;
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public readonly SimpleList<(int first, int second)> _pos;
+        public readonly List<(int first, int second)> _pos;
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public readonly SimpleList<EdgeInternal>[] _g;
+        public readonly List<EdgeInternal>[] _g;
 
         /// <summary>
         /// <paramref name="n"/> 頂点 0 辺のグラフを作ります。
@@ -40,13 +41,16 @@ namespace AtCoder
         /// </remarks>
         public MfGraph(int n)
         {
-            _g = new SimpleList<EdgeInternal>[n];
+            _g = new List<EdgeInternal>[n];
             for (int i = 0; i < _g.Length; i++)
             {
-                _g[i] = new SimpleList<EdgeInternal>();
+                _g[i] = [];
             }
-            _pos = new SimpleList<(int first, int second)>();
+            _pos = [];
         }
+
+        [MethodImpl(256)]
+        Span<EdgeInternal> ESpan(int i) => CollectionsMarshal.AsSpan(_g[i]);
 
         /// <summary>
         /// <paramref name="from"/> から <paramref name="to"/> へ
@@ -77,8 +81,8 @@ namespace AtCoder
 
             if (from == to) toId++;
 
-            _g[from].Add(new EdgeInternal(to, toId, cap));
-            _g[to].Add(new EdgeInternal(from, fromId, default));
+            _g[from].Add(new(to, toId, cap));
+            _g[to].Add(new(from, fromId, default));
             return m;
         }
 
@@ -97,7 +101,7 @@ namespace AtCoder
             var (first, second) = _pos[i];
             var (to, rev, cap) = _g[first][second];
             var _reCap = _g[to][rev].Cap;
-            return new Edge(first, to, cap + _reCap, _reCap);
+            return new(first, to, cap + _reCap, _reCap);
         }
 
         /// <summary>
@@ -135,10 +139,11 @@ namespace AtCoder
             Contract.Assert((uint)i < (uint)_pos.Count, reason: $"IndexOutOfRange: 0 <= {nameof(i)} && {nameof(i)} < edgeCount");
             Contract.Assert(T.IsPositive(newFlow) && newFlow <= newCap, reason: $"IndexOutOfRange: 0 <= {nameof(newFlow)} && {nameof(newFlow)} <= {nameof(newCap)}");
             var (first, second) = _pos[i];
-            var (to, rev, _) = _g[first][second];
+            var gf = ESpan(first);
+            var (to, rev, _) = gf[second];
             //var _re = _g[_e.To][_e.Rev];
-            _g[first][second].Cap = newCap - newFlow;
-            _g[to][rev].Cap = newFlow;
+            gf[second].Cap = newCap - newFlow;
+            ESpan(to)[rev].Cap = newFlow;
         }
 
         /// <summary>
@@ -239,7 +244,7 @@ namespace AtCoder
 
             var level = new int[Count];
             int[] iter;
-            var que = new Queue<int>();
+            Queue<int> que = new();
 
             void Bfs()
             {
@@ -250,9 +255,9 @@ namespace AtCoder
                 while (que.Count > 0)
                 {
                     int v = que.Dequeue();
-                    foreach (var (to, _, cap) in _g[v].AsSpan())
+                    foreach (var (to, _, cap) in ESpan(v))
                     {
-                        if (EqualityComparer<T>.Default.Equals(cap, default) || level[to] >= 0) continue;
+                        if (T.IsZero(cap) || level[to] >= 0) continue;
                         level[to] = level[v] + 1;
                         if (to == t) return;
                         que.Enqueue(to);
@@ -260,31 +265,10 @@ namespace AtCoder
                 }
             }
 
-            //TValue Dfs(int v, TValue up)
-            //{
-            //    if (v == s) return up;
-            //    var res = default(TValue);
-            //    for (; iter[v] < _g[v].Count; iter[v]++)
-            //    {
-            //        EdgeInternal e = _g[v][iter[v]];
-            //        if (level[v] <= level[e.To] || EqualityComparer<TValue>.Default.Equals(_g[e.To][e.Rev].Cap, default)) continue;
-            //        var up1 = op.Subtract(up, res);
-            //        var up2 = _g[e.To][e.Rev].Cap;
-            //        var d = Dfs(e.To, op.LessThan(up1, up2) ? up1 : up2);
-            //        if (op.LessThanOrEqual(d, default)) continue;
-            //        _g[v][iter[v]].Cap = op.Add(_g[v][iter[v]].Cap, d);
-            //        _g[e.To][e.Rev].Cap = op.Subtract(_g[e.To][e.Rev].Cap, d);
-            //        res = op.Add(res, d);
-            //        if (EqualityComparer<TValue>.Default.Equals(res, up)) return res;
-            //    }
-            //    level[v] = Count;
-            //    return res;
-            //}
-
             T Dfs(int v, T up)
             {
                 var lastRes = default(T);
-                var stack = new Stack<(int v, T up, T res, bool childOk)>();
+                Stack<(int v, T up, T res, bool childOk)> stack = new();
                 stack.Push((v, up, default, true));
 
             DFS: while (stack.Count > 0)
@@ -302,7 +286,7 @@ namespace AtCoder
                         var (to, rev, cap) = _g[v][itrv];
                         if (childOk)
                         {
-                            if (level[v] <= level[to] || EqualityComparer<T>.Default.Equals(_g[to][rev].Cap, default))
+                            if (level[v] <= level[to] || T.IsZero(_g[to][rev].Cap))
                                 continue;
 
                             stack.Push((v, up, res, false));
@@ -314,11 +298,11 @@ namespace AtCoder
                             var d = lastRes;
                             if (T.AdditiveIdentity < d)
                             {
-                                _g[v][itrv].Cap = cap + d;
-                                _g[to][rev].Cap -= d;
+                                ESpan(v)[itrv].Cap = cap + d;
+                                ESpan(to)[rev].Cap -= d;
                                 res += d;
 
-                                if (EqualityComparer<T>.Default.Equals(res, up))
+                                if (res == up)
                                 {
                                     lastRes = res;
                                     goto DFS;
@@ -340,7 +324,7 @@ namespace AtCoder
                 if (level[t] == -1) break;
                 iter = new int[Count];
                 var f = Dfs(t, flowLimit - flow);
-                if (EqualityComparer<T>.Default.Equals(f, default)) break;
+                if (T.IsZero(f)) break;
                 flow += f;
             }
             return flow;
@@ -370,7 +354,7 @@ namespace AtCoder
         public bool[] MinCut(int s)
         {
             var visited = new bool[Count];
-            var que = new Queue<int>();
+            Queue<int> que = new();
             que.Enqueue(s);
             while (que.Count > 0)
             {
@@ -378,7 +362,7 @@ namespace AtCoder
                 visited[p] = true;
                 foreach (var (to, _, cap) in _g[p])
                 {
-                    if (!EqualityComparer<T>.Default.Equals(cap, default) && !visited[to])
+                    if (!T.IsZero(cap) && !visited[to])
                     {
                         visited[to] = true;
                         que.Enqueue(to);
@@ -393,23 +377,16 @@ namespace AtCoder
         /// フロー流すグラフの各辺に対応した情報を持ちます。
         /// </summary>
         [DebuggerDisplay("From={" + nameof(From) + "} To={" + nameof(To) + "} Cap={" + nameof(Cap) + "} Flow={" + nameof(Flow) + "}")]
-        public struct Edge : IEquatable<Edge>
+        public struct Edge(int from, int to, T cap, T flow) : IEquatable<Edge>
         {
             /// <summary>フローが流出する頂点。</summary>
-            public int From { get; set; }
+            public int From = from;
             /// <summary>フローが流入する頂点。</summary>
-            public int To { get; set; }
+            public int To = to;
             /// <summary>辺の容量。</summary>
-            public T Cap { get; set; }
+            public T Cap = cap;
             /// <summary>辺の流量。</summary>
-            public T Flow { get; set; }
-            public Edge(int from, int to, T cap, T flow)
-            {
-                From = from;
-                To = to;
-                Cap = cap;
-                Flow = flow;
-            }
+            public T Flow = flow;
 
             [MethodImpl(256)]
             public override bool Equals(object obj)
@@ -419,8 +396,8 @@ namespace AtCoder
             public bool Equals(Edge other)
                 => From == other.From &&
                        To == other.To &&
-                       EqualityComparer<T>.Default.Equals(Cap, other.Cap) &&
-                       EqualityComparer<T>.Default.Equals(Flow, other.Flow);
+                       Cap == other.Cap &&
+                       Flow == other.Flow;
             public override int GetHashCode()
                 => HashCode.Combine(From, To, Cap, Flow);
             [MethodImpl(256)] public static bool operator ==(Edge left, Edge right) => left.Equals(right);
@@ -429,17 +406,11 @@ namespace AtCoder
 
         [DebuggerDisplay("To={" + nameof(To) + "} Rev={" + nameof(Rev) + "} Cap={" + nameof(Cap) + "}")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public struct EdgeInternal
+        public struct EdgeInternal(int to, int rev, T cap)
         {
-            public int To { get; }
-            public int Rev { get; }
-            public T Cap { get; set; }
-            public EdgeInternal(int to, int rev, T cap)
-            {
-                To = to;
-                Rev = rev;
-                Cap = cap;
-            }
+            public readonly int To = to, Rev = rev;
+            public T Cap = cap;
+
             [MethodImpl(256)]
             public void Deconstruct(out int to, out int rev, out T cap)
             {

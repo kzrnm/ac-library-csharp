@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using AtCoder.Internal;
 using AtCoder.Operators;
 
@@ -30,7 +31,7 @@ namespace AtCoder
 
         private readonly int _n;
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public readonly SimpleList<Edge> _edges = new SimpleList<Edge>();
+        public readonly List<Edge> _edges = [];
 
         static readonly TCapOp capOp = default;
         static readonly TCostOp costOp = default;
@@ -100,7 +101,7 @@ namespace AtCoder
         /// <para>辺の順番はadd_edgeで追加された順番と同一。</para>
         /// <para>計算量: m を追加された辺数として O(m)</para>
         /// </remarks>
-        [MethodImpl(256)] public Span<Edge> Edges() => _edges.AsSpan();
+        [MethodImpl(256)] public Span<Edge> Edges() => CollectionsMarshal.AsSpan(_edges);
 
         /// <summary>
         /// 頂点 <paramref name="s"/> から <paramref name="t"/> へ流せる限り流し、
@@ -174,7 +175,7 @@ namespace AtCoder
         public (TCap cap, TCost cost) Flow(int s, int t, TCap flowLimit)
         {
             var slope = SlopeImpl(s, t, flowLimit, false);
-            return slope[slope.Count - 1];
+            return slope[^1];
         }
 
         /// <summary>
@@ -471,7 +472,7 @@ namespace AtCoder
             {
                 var degree = new int[_n];
                 var redgeIdx = new int[m];
-                var elist = new SimpleList<(int from, EdgeInternal edge)>(2 * m);
+                List<(int from, EdgeInternal edge)> elist = new(2 * m);
 
                 for (int i = 0; i < m; i++)
                 {
@@ -481,7 +482,7 @@ namespace AtCoder
                     elist.Add((e.From, new EdgeInternal(e.To, -1, capOp.Subtract(e.Cap, e.Flow), e.Cost)));
                     elist.Add((e.To, new EdgeInternal(e.From, -1, e.Flow, costOp.Minus(e.Cost))));
                 }
-                g = new Csr<EdgeInternal>(_n, elist);
+                g = new Csr<EdgeInternal>(_n, CollectionsMarshal.AsSpan(elist));
                 for (int i = 0; i < m; i++)
                 {
                     var e = _edges[i];
@@ -497,7 +498,7 @@ namespace AtCoder
             for (int i = 0; i < m; i++)
             {
                 var e = g.EList[edgeIdx[i]];
-                _edges[i].Flow = capOp.Subtract(_edges[i].Cap, e.Cap);
+                Edges()[i].Flow = capOp.Subtract(_edges[i].Cap, e.Cap);
             }
 
             return result;
@@ -571,26 +572,18 @@ namespace AtCoder
         /// フローを流すグラフの各辺に対応した情報を持ちます。
         /// </summary>
         [DebuggerDisplay("From={" + nameof(From) + "} To={" + nameof(To) + "} Cap={" + nameof(Cap) + "} Flow={" + nameof(Flow) + "} Cost={" + nameof(Cost) + "}")]
-        public struct Edge : IEquatable<Edge>
+        public struct Edge(int from, int to, TCap cap, TCap flow, TCost cost) : IEquatable<Edge>
         {
             /// <summary>フローが流出する頂点。</summary>
-            public int From { get; set; }
+            public int From = from;
             /// <summary>フローが流入する頂点。</summary>
-            public int To { get; set; }
+            public int To = to;
             /// <summary>辺の容量。</summary>
-            public TCap Cap { get; set; }
+            public TCap Cap = cap;
             /// <summary>辺の流量。</summary>
-            public TCap Flow { get; set; }
+            public TCap Flow = flow;
             /// <summary>辺の費用</summary>
-            public TCost Cost { get; set; }
-            public Edge(int from, int to, TCap cap, TCap flow, TCost cost)
-            {
-                From = from;
-                To = to;
-                Cap = cap;
-                Flow = flow;
-                Cost = cost;
-            }
+            public TCost Cost = cost;
 
             public override bool Equals(object obj) => obj is Edge edge && Equals(edge);
             [MethodImpl(256)]
@@ -605,19 +598,12 @@ namespace AtCoder
         }
 
         [DebuggerDisplay("To={" + nameof(To) + "} Rev={" + nameof(Rev) + "} Cap={" + nameof(Cap) + "} Cost={" + nameof(Cost) + "}")]
-        private struct EdgeInternal
+        private struct EdgeInternal(int to, int rev, TCap cap, TCost cost)
         {
-            public int To;
-            public int Rev;
-            public TCap Cap;
-            public TCost Cost;
-            public EdgeInternal(int to, int rev, TCap cap, TCost cost)
-            {
-                To = to;
-                Rev = rev;
-                Cap = cap;
-                Cost = cost;
-            }
+            public int To = to;
+            public int Rev = rev;
+            public TCap Cap = cap;
+            public TCost Cost = cost;
         }
     }
 }

@@ -13,7 +13,7 @@ env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_NOLOGO: true
   NUGET_XMLDOC_MODE: skip
-  WORKFLOW_BUILD_SLN: ac-library-csharp.sln
+  WORKFLOW_BUILD_SLN: ac-library-csharp.slnx
 
 jobs:
   get-version:
@@ -24,23 +24,19 @@ jobs:
   format:
     uses: kzrnm/dotnet-actions/.github/workflows/format.yml@v2
     with:
-      target: ac-library-csharp.sln
+      target: ac-library-csharp.slnx
       dotnet-version: |
-        3.0.x
-        3.1.x
-        7.0.x
         9.0.x
+        10.0.x
   test:
     uses: kzrnm/dotnet-actions/.github/workflows/unittest.yml@v2
     with:
-      target: ac-library-csharp.sln
+      target: ac-library-csharp.slnx
       test-logger: GitHubActions
       use-openssl1: true
       dotnet-version: |
-        3.0.x
-        3.1.x
-        7.0.x
         9.0.x
+        10.0.x
 
   build-verify:
     needs: get-version

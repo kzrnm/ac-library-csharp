@@ -25,10 +25,6 @@ namespace AtCoder.Internal
         public static uint PowMod(long x, long n, int m)
             => ModCalc.PowMod(x, n, m);
 
-        /// <inheritdoc cref="Mul128.Mul128Bit(ulong, ulong)" />
-        [MethodImpl(256)]
-        public static ulong Mul128Bit(ulong a, ulong b) => Mul128.Mul128Bit(a, b);
-
         /// <summary>
         /// <paramref name="n"/> が素数かを返します。
         /// </summary>
@@ -40,7 +36,7 @@ namespace AtCoder.Internal
             if (n % 2 == 0) return false;
             long d = n - 1;
             while (d % 2 == 0) d /= 2;
-            ReadOnlySpan<byte> bases = stackalloc byte[3] { 2, 7, 61 };
+            ReadOnlySpan<byte> bases = [2, 7, 61];
             foreach (long a in bases)
             {
                 long t = d;

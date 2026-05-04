@@ -20,7 +20,7 @@ namespace AtCoder.Internal
         public readonly TKOp _comparer;
         internal const int DefaultCapacity = 16;
         public PriorityQueueOp() : this(default(TKOp)) { }
-        public PriorityQueueOp(int capacity) : this(capacity, default(TKOp)) { }
+        public PriorityQueueOp(int capacity) : this(capacity, default) { }
         public PriorityQueueOp(TKOp comparer) : this(DefaultCapacity, comparer) { }
         public PriorityQueueOp(int capacity, TKOp comparer)
         {
@@ -191,13 +191,8 @@ namespace AtCoder.Internal
 #if EMBEDDING
         [SourceExpander.NotEmbeddingSource]
 #endif
-        private class DebugView
+        private class DebugView(PriorityQueueOp<TKey, TValue, TKOp> pq)
         {
-            private readonly PriorityQueueOp<TKey, TValue, TKOp> pq;
-            public DebugView(PriorityQueueOp<TKey, TValue, TKOp> pq)
-            {
-                this.pq = pq;
-            }
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
             public KeyValuePair<TKey, TValue>[] Items
             {
