@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using AtCoder.Internal;
 
 namespace AtCoder
@@ -35,7 +36,7 @@ namespace AtCoder
     {
         private readonly int _n;
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public readonly SimpleList<Edge> _edges = new SimpleList<Edge>();
+        public readonly List<Edge> _edges = [];
 
         /// <summary>
         /// <paramref name="n"/> 頂点 0 辺のグラフを作ります。
@@ -75,7 +76,7 @@ namespace AtCoder
             Contract.Assert(TCost.IsPositive(cost), reason: $"IndexOutOfRange: 0 <= {nameof(cost)}");
 
             int m = _edges.Count;
-            _edges.Add(new Edge(from, to, cap, default, cost));
+            _edges.Add(new(from, to, cap, default, cost));
             return m;
         }
 
@@ -101,7 +102,7 @@ namespace AtCoder
         /// <para>辺の順番はadd_edgeで追加された順番と同一。</para>
         /// <para>計算量: m を追加された辺数として O(m)</para>
         /// </remarks>
-        [MethodImpl(256)] public Span<Edge> Edges() => _edges.AsSpan();
+        [MethodImpl(256)] public Span<Edge> Edges() => CollectionsMarshal.AsSpan(_edges);
 
         /// <summary>
         /// 頂点 <paramref name="s"/> から <paramref name="t"/> へ流せる限り流し、
@@ -175,7 +176,7 @@ namespace AtCoder
         public (TCap cap, TCost cost) Flow(int s, int t, TCap flowLimit)
         {
             var slope = SlopeImpl(s, t, flowLimit, false);
-            return slope[slope.Count - 1];
+            return slope[^1];
         }
 
         /// <summary>
@@ -397,8 +398,8 @@ namespace AtCoder
                 dist.AsSpan().Fill(TCost.MaxValue);
                 var vis = new bool[_n];
 
-                var queMin = new Stack<int>();
-                var que = new PriorityQueueDictionary<TCost, int>();
+                Stack<int> queMin = new();
+                PriorityQueueDictionary<TCost, int> que = new();
 
                 dist[s] = default;
                 queMin.Push(s);
@@ -423,7 +424,7 @@ namespace AtCoder
                     for (int i = gStartCur; i < gStartNext; i++)
                     {
                         var e = g.EList[i];
-                        if (EqualityComparer<TCap>.Default.Equals(e.Cap, default)) continue;
+                        if (TCap.IsZero(e.Cap)) continue;
                         // |-dual[e.To] + dual[v]| <= (n-1)C
                         // cost <= C - -(n-1)C + 0 = nC
                         var cost = e.Cost - dual[e.To] + dualV;
@@ -432,7 +433,7 @@ namespace AtCoder
                             var distTo = distV + cost;
                             dist[e.To] = distTo;
                             prevE[e.To] = e.Rev;
-                            if (EqualityComparer<TCost>.Default.Equals(distTo, distV))
+                            if (distTo == distV)
                                 queMin.Push(e.To);
                             else
                                 que.Enqueue(distTo, e.To);
@@ -452,7 +453,7 @@ namespace AtCoder
                     //         (shortest(s, v) + dual[s] - dual[v]) = - shortest(s,
                     //         t) + dual[t] + shortest(s, v) = shortest(s, v) -
                     //         shortest(s, t) >= 0 - (n-1)C
-                    dual[v] -= (dist[t] - dist[v]);
+                    dual[v] -= dist[t] - dist[v];
                 }
                 return true;
             }
@@ -472,17 +473,17 @@ namespace AtCoder
             {
                 var degree = new int[_n];
                 var redgeIdx = new int[m];
-                var elist = new SimpleList<(int from, EdgeInternal edge)>(2 * m);
+                List<(int from, EdgeInternal edge)> elist = new(2 * m);
 
                 for (int i = 0; i < m; i++)
                 {
                     var e = _edges[i];
                     edgeIdx[i] = degree[e.From]++;
                     redgeIdx[i] = degree[e.To]++;
-                    elist.Add((e.From, new EdgeInternal(e.To, -1, e.Cap - e.Flow, e.Cost)));
-                    elist.Add((e.To, new EdgeInternal(e.From, -1, e.Flow, -e.Cost)));
+                    elist.Add((e.From, new(e.To, -1, e.Cap - e.Flow, e.Cost)));
+                    elist.Add((e.To, new(e.From, -1, e.Flow, -e.Cost)));
                 }
-                g = new Csr<EdgeInternal>(_n, elist);
+                g = new(_n, CollectionsMarshal.AsSpan(elist));
                 for (int i = 0; i < m; i++)
                 {
                     var e = _edges[i];
@@ -498,7 +499,7 @@ namespace AtCoder
             for (int i = 0; i < m; i++)
             {
                 var e = g.EList[edgeIdx[i]];
-                _edges[i].Flow = _edges[i].Cap - e.Cap;
+                Edges()[i].Flow = _edges[i].Cap - e.Cap;
             }
 
             return result;
@@ -536,7 +537,7 @@ namespace AtCoder
             TCap flow = default;
             TCost cost = default;
             TCost prevCostPerFlow = TCost.NegativeOne;
-            var result = new List<(TCap cap, TCost cost)> { (flow, cost) };
+            List<(TCap cap, TCost cost)> result = [(flow, cost)];
             while (flow < flowLimit)
             {
                 if (!slopeDR.DualRef()) break;
@@ -568,53 +569,38 @@ namespace AtCoder
         /// フローを流すグラフの各辺に対応した情報を持ちます。
         /// </summary>
         [DebuggerDisplay("From={" + nameof(From) + "} To={" + nameof(To) + "} Cap={" + nameof(Cap) + "} Flow={" + nameof(Flow) + "} Cost={" + nameof(Cost) + "}")]
-        public struct Edge : IEquatable<Edge>
+        public struct Edge(int from, int to, TCap cap, TCap flow, TCost cost) : IEquatable<Edge>
         {
             /// <summary>フローが流出する頂点。</summary>
-            public int From { get; set; }
+            public int From = from;
             /// <summary>フローが流入する頂点。</summary>
-            public int To { get; set; }
+            public int To = to;
             /// <summary>辺の容量。</summary>
-            public TCap Cap { get; set; }
+            public TCap Cap = cap;
             /// <summary>辺の流量。</summary>
-            public TCap Flow { get; set; }
+            public TCap Flow = flow;
             /// <summary>辺の費用</summary>
-            public TCost Cost { get; set; }
-            public Edge(int from, int to, TCap cap, TCap flow, TCost cost)
-            {
-                From = from;
-                To = to;
-                Cap = cap;
-                Flow = flow;
-                Cost = cost;
-            }
+            public TCost Cost = cost;
 
             public override bool Equals(object obj) => obj is Edge edge && Equals(edge);
             [MethodImpl(256)]
             public bool Equals(Edge other) => From == other.From &&
                        To == other.To &&
-                       EqualityComparer<TCap>.Default.Equals(Cap, other.Cap) &&
-                       EqualityComparer<TCap>.Default.Equals(Flow, other.Flow) &&
-                       EqualityComparer<TCost>.Default.Equals(Cost, other.Cost);
+                       Cap == other.Cap &&
+                       Flow == other.Flow &&
+                       Cost == other.Cost;
             public override int GetHashCode() => HashCode.Combine(From, To, Cap, Flow, Cost);
             public static bool operator ==(Edge left, Edge right) => left.Equals(right);
             public static bool operator !=(Edge left, Edge right) => !left.Equals(right);
         }
 
         [DebuggerDisplay("To={" + nameof(To) + "} Rev={" + nameof(Rev) + "} Cap={" + nameof(Cap) + "} Cost={" + nameof(Cost) + "}")]
-        private struct EdgeInternal
+        private struct EdgeInternal(int to, int rev, TCap cap, TCost cost)
         {
-            public int To;
-            public int Rev;
-            public TCap Cap;
-            public TCost Cost;
-            public EdgeInternal(int to, int rev, TCap cap, TCost cost)
-            {
-                To = to;
-                Rev = rev;
-                Cap = cap;
-                Cost = cost;
-            }
+            public int To = to;
+            public int Rev = rev;
+            public TCap Cap = cap;
+            public TCost Cost = cost;
         }
     }
 }

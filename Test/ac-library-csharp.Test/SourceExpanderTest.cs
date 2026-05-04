@@ -16,31 +16,11 @@ namespace AtCoder.Embedding
             public override string Skip => "SourceExpander.Embedder is disabled.";
 #endif
         }
-        class EmbeddingGenericMathFact : EmbeddingFact
-        {
-#if EMBEDDING
-            public override string Skip => genericMath ? null : "GenericMath is disabled.";
-#else
-            public override string Skip => "SourceExpander.Embedder is disabled.";
-#endif
-        }
 
-#if NETCOREAPP3_0
-        const bool useIntrinsics = false;
-        const bool genericMath = false;
-        const string languageVersion = "7.3";
-#elif NETCOREAPP3_1
-        const bool useIntrinsics = true;
-        const bool genericMath = false;
-        const string languageVersion = "8.0";
-#elif NET7_0
-        const bool useIntrinsics = true;
-        const bool genericMath = true;
-        const string languageVersion = "11.0";
-#elif NET9_0
-        const bool useIntrinsics = true;
-        const bool genericMath = true;
+#if NET9_0
         const string languageVersion = "13.0";
+#elif NET10_0
+        const string languageVersion = "14.0";
 #endif
 
         [Fact]
@@ -48,9 +28,7 @@ namespace AtCoder.Embedding
         {
             var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
 #if EMBEDDING
-#pragma warning disable SYSLIB1045 // 'GeneratedRegexAttribute' に変換します。
             embedded.AssemblyMetadatas.Keys.ShouldContain(k => Regex.IsMatch(k, "SourceExpander.*"));
-#pragma warning restore SYSLIB1045 // 'GeneratedRegexAttribute' に変換します。
 #else
             embedded.AssemblyMetadatas.Keys.ShouldNotContain(k => Regex.IsMatch(k, "SourceExpander.*"));
 #endif
@@ -73,7 +51,7 @@ namespace AtCoder.Embedding
             ]);
             embedded.SourceFiles.SelectMany(s => s.Usings)
                 .Contains("using System.Runtime.Intrinsics.X86;")
-                .ShouldBe(useIntrinsics);
+                .ShouldBe(true);
         }
 
         [EmbeddingFact]
@@ -129,7 +107,7 @@ namespace AtCoder.Embedding
             code.Replace("CollectionDebugView", "CoDe").ShouldNotContain("Debug");
         }
 
-        [EmbeddingGenericMathFact]
+        [EmbeddingFact]
         public async Task FenwickTreeGenericMath()
         {
             var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));

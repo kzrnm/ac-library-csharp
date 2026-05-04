@@ -8,13 +8,10 @@ namespace AtCoder.Internal
 {
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class CollectionDebugView<T>
+    public class CollectionDebugView<T>(IEnumerable<T> collection)
     {
-        private readonly IEnumerable<T> collection;
-        public CollectionDebugView(IEnumerable<T> collection)
-        {
-            this.collection = collection ?? throw new ArgumentNullException(nameof(collection));
-        }
+        private readonly IEnumerable<T> collection = collection ?? throw new ArgumentNullException(nameof(collection));
+
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public T[] Items => collection.ToArray();
     }

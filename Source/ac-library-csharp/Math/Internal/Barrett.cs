@@ -6,15 +6,10 @@ namespace AtCoder.Internal
     /// Fast moduler by barrett reduction
     /// <seealso href="https://en.wikipedia.org/wiki/Barrett_reduction"/>
     /// </summary>
-    public class Barrett
+    public class Barrett(uint m)
     {
-        public readonly uint Mod;
-        public readonly ulong IM;
-        public Barrett(uint m)
-        {
-            Mod = m;
-            IM = unchecked((ulong)-1) / m + 1;
-        }
+        public readonly uint Mod = m;
+        public readonly ulong IM = ulong.MaxValue / m + 1;
 
         /// <summary>
         /// <paramref name="a"/> * <paramref name="b"/> mod m
@@ -25,7 +20,7 @@ namespace AtCoder.Internal
         [MethodImpl(256)]
         public uint Reduce(ulong z)
         {
-            var x = Mul128.Mul128Bit(z, IM);
+            var x = System.Math.BigMul(IM, z, out _);
             var y = x * Mod;
             if (z < y) return (uint)(z - y + Mod);
             return (uint)(z - y);

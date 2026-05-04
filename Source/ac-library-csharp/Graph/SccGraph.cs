@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using AtCoder.Internal;
 
 namespace AtCoder
@@ -17,7 +18,7 @@ namespace AtCoder
         internal readonly int _n;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public readonly SimpleList<(int from, int to)> edges;
+        public readonly List<(int from, int to)> edges;
 
         /// <summary>
         /// <see cref="SccGraph"/> クラスの新しいインスタンスを、<paramref name="n"/> 頂点 0 辺の有向グラフとして初期化します。
@@ -29,7 +30,7 @@ namespace AtCoder
         public SccGraph(int n)
         {
             _n = n;
-            edges = new SimpleList<(int from, int to)>();
+            edges = [];
         }
 
         /// <summary>
@@ -60,7 +61,7 @@ namespace AtCoder
         public (int groupNum, int[] ids) SccIDs()
         {
             // R. Tarjan のアルゴリズム
-            var g = new Csr<int>(_n, edges);
+            var g = new Csr<int>(_n, CollectionsMarshal.AsSpan(edges));
             int nowOrd = 0;
             int groupNum = 0;
             var visited = new Stack<int>(_n);

@@ -138,17 +138,9 @@ namespace AtCoder.Extension
         public static int UpperBound<T, TOp>(this ReadOnlySpan<T> a, T v, TOp cmp) where TOp : IComparer<T>
             => UpperBound(a, new CmpWrapper<T, TOp>(v, cmp));
 
-        private readonly struct CmpWrapper<T, TCmp> : IComparable<T>
+        private readonly struct CmpWrapper<T, TCmp>(T v, TCmp cmp) : IComparable<T>
             where TCmp : IComparer<T>
         {
-            readonly T v;
-            readonly TCmp cmp;
-            public CmpWrapper(T v, TCmp cmp)
-            {
-                this.v = v;
-                this.cmp = cmp;
-            }
-
             [MethodImpl(256)]
             public int CompareTo(T other) => cmp.Compare(v, other);
         }

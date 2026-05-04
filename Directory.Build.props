@@ -6,7 +6,7 @@
     <PackageProjectUrl>https://github.com/kzrnm/ac-library-csharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/kzrnm/ac-library-csharp</RepositoryUrl>
     <PackageReleaseNotes>https://github.com/kzrnm/ac-library-csharp/blob/main/CHANGELOG.md</PackageReleaseNotes>
-    <NoWarn>$(NoWarn);IDE0305</NoWarn>
+    <NoWarn>$(NoWarn);IDE0305;IDE0130</NoWarn>
 
     <VersionPrefix>3.9.2</VersionPrefix>
     <AssemblyVersion>$(VersionPrefix).101</AssemblyVersion>
@@ -22,7 +22,7 @@
     <EmbeddingSource>true</EmbeddingSource>
     <DefineConstants Condition="'$(EmbeddingSource)'=='true'">$(DefineConstants);EMBEDDING</DefineConstants>
 
-    <SourceExpanderVersion>7.0.0</SourceExpanderVersion>
+    <SourceExpanderVersion>8.2.0</SourceExpanderVersion>
 
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols>true</IncludeSymbols>

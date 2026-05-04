@@ -6,15 +6,11 @@ using System.Runtime.CompilerServices;
 namespace AtCoder.Internal
 {
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public struct ComparableComparer
-        <T> : IComparer<T>, IEquatable<ComparableComparer<T>>
+    public readonly struct ComparableComparer<T>(IComparer<T> comparer) : IComparer<T>, IEquatable<ComparableComparer<T>>
         where T : IComparable<T>
     {
-        private IComparer<T> Comparer { get; }
-        public ComparableComparer(IComparer<T> comparer)
-        {
-            Comparer = comparer;
-        }
+        private IComparer<T> Comparer { get; } = comparer;
+
         [MethodImpl(256)]
         public int Compare(T x, T y) => Comparer?.Compare(x, y) ?? x.CompareTo(y);
 

@@ -170,7 +170,7 @@ namespace AtCoder
         public static int[] ZAlgorithm<T>(ReadOnlySpan<T> s)
         {
             int n = s.Length;
-            if (n == 0) return Array.Empty<int>();
+            if (n == 0) return [];
             int[] z = new int[n];
             z[0] = 0;
             for (int i = 1, j = 0; i < n; i++)
@@ -306,21 +306,21 @@ namespace AtCoder
 
                 if (n == 0)
                 {
-                    return Array.Empty<int>();
+                    return [];
                 }
                 else if (n == 1)
                 {
-                    return new int[] { 0 };
+                    return [0];
                 }
                 else if (n == 2)
                 {
                     if (s[0] < s[1])
                     {
-                        return new int[] { 0, 1 };
+                        return [0, 1];
                     }
                     else
                     {
-                        return new int[] { 1, 0 };
+                        return [1, 0];
                     }
                 }
                 else if (n < thresholdNaive)
@@ -377,7 +377,7 @@ namespace AtCoder
                     }
                 }
 
-                var lms = new SimpleList<int>(m);
+                var lms = new List<int>(m);
                 for (int i = 1; i < ls.Length; i++)
                 {
                     if (!ls[i - 1] && ls[i])
@@ -392,7 +392,7 @@ namespace AtCoder
                 // m の値は再帰ごとに半分以下になるので再帰の回数も log(n) に抑えられる
                 if (m > 0)
                 {
-                    var sortedLms = new SimpleList<int>(m);
+                    var sortedLms = new List<int>(m);
                     foreach (var v in sa)
                     {
                         if (lmsMap[v] != -1)
@@ -457,7 +457,7 @@ namespace AtCoder
                 return sa;
             }
             [MethodImpl(256)]
-            public static void Induce(SimpleList<int> lms, ReadOnlySpan<int> s, int[] sa, bool[] ls, int[] sumS, int[] sumL)
+            public static void Induce(List<int> lms, ReadOnlySpan<int> s, int[] sa, bool[] ls, int[] sumS, int[] sumL)
             {
                 var n = s.Length;
                 sa.AsSpan().Fill(-1);

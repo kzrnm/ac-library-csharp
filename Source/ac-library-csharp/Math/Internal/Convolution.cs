@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-#if NETCOREAPP3_1_OR_GREATER
 using System.Runtime.InteropServices;
-#endif
 
 namespace AtCoder.Internal
 {
@@ -27,7 +25,7 @@ namespace AtCoder.Internal
             var n = a.Length;
             var m = b.Length;
             if (n == 0 || m == 0)
-                return Array.Empty<StaticModInt<TMod>>();
+                return [];
             if (Math.Min(n, m) <= 60)
                 return ConvolutionNaive(a, b);
             return ConvolutionFFT(a, b);
@@ -106,7 +104,7 @@ namespace AtCoder.Internal
 
                 if (n == 0 || m == 0)
                 {
-                    return Array.Empty<long>();
+                    return [];
                 }
 
                 const ulong Mod1 = 754974721;  // 2^24
@@ -177,17 +175,12 @@ namespace AtCoder.Internal
         }
         static StaticModInt<T>[] ToModInt<T>(ReadOnlySpan<long> a) where T : struct, IStaticMod
         {
-            if (a.IsEmpty) return Array.Empty<StaticModInt<T>>();
+            if (a.IsEmpty) return [];
 
             var c = new StaticModInt<T>[a.Length];
-#if NETCOREAPP3_1_OR_GREATER
             ref var ap = ref MemoryMarshal.GetReference(a);
             for (int i = 0; i < c.Length; i++)
                 c[i] = Unsafe.Add(ref ap, i);
-#else
-            for (int i = 0; i < c.Length; i++)
-                c[i] = a[i];
-#endif
             return c;
         }
 

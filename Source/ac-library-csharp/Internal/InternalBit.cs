@@ -1,8 +1,6 @@
-﻿using System.Runtime.CompilerServices;
-#if NETCOREAPP3_0_OR_GREATER
-using System.Numerics;
+﻿using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics.X86;
-#endif
 
 namespace AtCoder.Internal
 {
@@ -18,12 +16,10 @@ namespace AtCoder.Internal
         [MethodImpl(256)]
         public static uint ExtractLowestSetBit(int n)
         {
-#if NETCOREAPP3_0_OR_GREATER
             if (Bmi1.IsSupported)
             {
                 return Bmi1.ExtractLowestSetBit((uint)n);
             }
-#endif
             return (uint)(n & -n);
         }
 

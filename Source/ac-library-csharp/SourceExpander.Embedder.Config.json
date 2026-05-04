@@ -3,14 +3,12 @@
   "enabled": true,
   "embedding-type": "gzipBase32768",
   "minify-level": "full",
-  "embedding-source-class": {
-    "enabled": false
-  },
+  "embedding-source-class-name": null,
   "remove-conditional": [
     "DEBUG",
     "ATCODER_CONTRACT"
   ],
-  "expanding-symbol": "DEBUG",
+  "expand-in-library": false,
   "exclude-attributes": [
     "System.Diagnostics.DebuggerBrowsableAttribute",
     "System.Diagnostics.DebuggerDisplayAttribute",

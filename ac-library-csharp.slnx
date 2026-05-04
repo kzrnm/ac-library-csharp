@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="CHANGELOG.md" />
+    <File Path="Directory.Build.props" />
+    <File Path="README.ja.md" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/Test/">
+    <Project Path="Test/ac-library-csharp.LibraryChecker/ac-library-csharp.LibraryChecker.csproj" />
+    <Project Path="Test/ac-library-csharp.Test/ac-library-csharp.Test.csproj" />
+    <Project Path="Test/Expand.Test/Expand.Test.csproj" />
+  </Folder>
+  <Project Path="Source/ac-library-csharp/ac-library-csharp.csproj" />
+</Solution>

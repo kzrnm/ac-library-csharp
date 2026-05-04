@@ -7,9 +7,7 @@ using Xunit;
 
 namespace AtCoder
 {
-#if GENERIC_MATH
     [System.Obsolete("Use generic math")]
-#endif
     public class FenwickTreeTest
     {
         private readonly struct ModID0 : IDynamicModIntId { }
