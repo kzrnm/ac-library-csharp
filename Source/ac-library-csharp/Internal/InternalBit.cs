@@ -18,12 +18,10 @@ namespace AtCoder.Internal
         [MethodImpl(256)]
         public static uint ExtractLowestSetBit(int n)
         {
-#if NETCOREAPP3_0_OR_GREATER
             if (Bmi1.IsSupported)
             {
                 return Bmi1.ExtractLowestSetBit((uint)n);
             }
-#endif
             return (uint)(n & -n);
         }
 

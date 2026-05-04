@@ -21,9 +21,7 @@ namespace AtCoder
     /// <typeparam name="T">配列要素の型</typeparam>
     /// <typeparam name="TOp">配列要素の操作を表す型</typeparam>
     [DebuggerTypeProxy(typeof(FenwickTree<,>.DebugView))]
-#if GENERIC_MATH
     [System.Obsolete("Use generic math")]
-#endif
     public class FenwickTree<T, TOp>
         where TOp : struct, IAdditionOperator<T>, ISubtractOperator<T>
     {

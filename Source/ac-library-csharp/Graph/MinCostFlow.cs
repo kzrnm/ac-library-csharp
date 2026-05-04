@@ -21,9 +21,7 @@ namespace AtCoder
     /// <remarks>
     /// <para>制約: <typeparamref name="TCap"/>, <typeparamref name="TCost"/> は int, long。</para>
     /// </remarks>
-#if GENERIC_MATH
     [Obsolete("Use generic math")]
-#endif
     public class McfGraph<TCap, TCapOp, TCost, TCostOp, TCast>
             where TCapOp : struct, INumOperator<TCap>
             where TCostOp : struct, INumOperator<TCost>

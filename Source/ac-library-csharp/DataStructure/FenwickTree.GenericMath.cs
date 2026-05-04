@@ -106,13 +106,8 @@ namespace AtCoder
 #if EMBEDDING
         [SourceExpander.NotEmbeddingSource]
 #endif
-        private class DebugView
+        private class DebugView(FenwickTree<T> fw)
         {
-            private readonly FenwickTree<T> fw;
-            public DebugView(FenwickTree<T> fenwickTree)
-            {
-                fw = fenwickTree;
-            }
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
             public DebugItem[] Items
             {

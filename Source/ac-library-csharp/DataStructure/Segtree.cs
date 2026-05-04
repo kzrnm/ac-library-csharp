@@ -244,7 +244,7 @@ namespace AtCoder
         public int MinLeft(int r, Predicate<TValue> f)
         {
             Contract.Assert((uint)r <= (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(r)} && {nameof(r)} <= Length");
-            Contract.Assert(f(op.Identity), reason: $"{nameof(f)}({nameof(TOp)}.{nameof(ISegtreeOperator<TValue>.Identity)}) must be true.");
+            Contract.Assert(f(op.Identity), reason: $"{nameof(f)}({nameof(TOp)}.{nameof(op.Identity)}) must be true.");
             if (r == 0) return 0;
             r += size;
             var sm = op.Identity;
@@ -274,32 +274,16 @@ namespace AtCoder
         [SourceExpander.NotEmbeddingSource]
 #endif
         [DebuggerDisplay("{" + nameof(Value) + "}", Name = "{" + nameof(Key) + ",nq}")]
-        internal readonly struct DebugItem
+        internal readonly record struct DebugItem([property: DebuggerBrowsable(0)] int L, [property: DebuggerBrowsable(0)] int R, TValue Value)
         {
-            public DebugItem(int l, int r, TValue value)
-            {
-                L = l;
-                R = r;
-                Value = value;
-            }
-            [DebuggerBrowsable(0)]
-            public int L { get; }
-            [DebuggerBrowsable(0)]
-            public int R { get; }
             [DebuggerBrowsable(0)]
             public string Key => R - L == 1 ? $"[{L}]" : $"[{L}-{R})";
-            public TValue Value { get; }
         }
 #if EMBEDDING
         [SourceExpander.NotEmbeddingSource]
 #endif
-        private class DebugView
+        private class DebugView(Segtree<TValue, TOp> s)
         {
-            private readonly Segtree<TValue, TOp> s;
-            public DebugView(Segtree<TValue, TOp> segtree)
-            {
-                s = segtree;
-            }
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
             public DebugItem[] Items
             {

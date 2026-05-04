@@ -22,7 +22,7 @@
     <EmbeddingSource>true</EmbeddingSource>
     <DefineConstants Condition="'$(EmbeddingSource)'=='true'">$(DefineConstants);EMBEDDING</DefineConstants>
 
-    <SourceExpanderVersion>7.0.0</SourceExpanderVersion>
+    <SourceExpanderVersion>8.2.0</SourceExpanderVersion>
 
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols>true</IncludeSymbols>

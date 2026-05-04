@@ -2,10 +2,8 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using AtCoder.Internal;
-#if GENERIC_MATH
 using System.Globalization;
 using System.Numerics;
-#endif
 
 namespace AtCoder
 {
@@ -270,7 +268,6 @@ namespace AtCoder
             void Throw() => throw new FormatException();
         }
 
-#if GENERIC_MATH
         static int INumberBase<DynamicModInt<T>>.Radix => 2;
         static DynamicModInt<T> IAdditiveIdentity<DynamicModInt<T>, DynamicModInt<T>>.AdditiveIdentity => default;
         static DynamicModInt<T> IMultiplicativeIdentity<DynamicModInt<T>, DynamicModInt<T>>.MultiplicativeIdentity => new DynamicModInt<T>(1u);
@@ -373,6 +370,5 @@ namespace AtCoder
             => typeof(TFrom) == typeof(TTo)
             ? (r = (TTo)(object)v) is { }
             : TTo.TryConvertFromTruncating(v, out r) || TFrom.TryConvertToTruncating(v, out r);
-#endif
     }
 }

@@ -1,13 +1,9 @@
-﻿#if GENERIC_MATH
-using System.Numerics;
-#endif
+﻿using System.Numerics;
 
 namespace AtCoder
 {
     public interface IModInt<T>
-#if GENERIC_MATH
      : INumberBase<T> where T : INumberBase<T>
-#endif
     {
         /// <summary>
         /// 自身を x として、 xy≡1 なる y を返します。
@@ -31,12 +27,10 @@ namespace AtCoder
         /// </summary>
         int Value { get; }
 
-#if GENERIC_MATH
         /// <summary>
         /// mod を返します。
         /// </summary>
         abstract static int Mod { get; }
-#endif
     }
 
     /// <summary>

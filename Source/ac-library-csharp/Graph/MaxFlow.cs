@@ -21,9 +21,7 @@ namespace AtCoder
     /// また頂点 v について g(v, f) = (Σ_in(v) f_e) - (Σ_out(v) f_e) とします。
     /// </para>
     /// </remarks>
-#if GENERIC_MATH
     [Obsolete("Use generic math")]
-#endif
     public class MfGraph<T, TOp>
         where T : struct
         where TOp : struct, INumOperator<T>

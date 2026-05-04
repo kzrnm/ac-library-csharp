@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net9.0;net7.0;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net10.0;net9.0</TargetFrameworks>
     <IsPackable>false</IsPackable>
     <RootNamespace>AtCoder</RootNamespace>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
@@ -9,19 +9,12 @@
 
     <LangVersion>latest</LangVersion>
 
-    <GenericMath Condition="'$(TargetFramework)'!='netcoreapp3.0' And '$(TargetFramework)'!='netcoreapp3.1'">true</GenericMath>
-    <DefineConstants Condition="'$(GenericMath)'=='true'">$(DefineConstants);GENERIC_MATH</DefineConstants>
     <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(CI)' == 'true'">
     <DefineConstants>$(DefineConstants);CI</DefineConstants>
   </PropertyGroup>
-
-  <ItemGroup Condition="'$(GenericMath)'!='true'">
-    <Compile Remove="**/*GenericMath.cs" />
-    <Compile Remove="**/*GenericMath/**/*.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Update="Internal\InternalMathTest.StaticMod.tt">
@@ -37,19 +30,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GitHubActionsTestLogger" Version="2.4.1">
+    <PackageReference Include="GitHubActionsTestLogger" Version="3.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="CompetitiveVerifierResolverTestLogger" Version="2.0.0">
+    <PackageReference Include="CompetitiveVerifierResolverTestLogger" Version="2.3.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Shouldly" Version="4.3.0" />
-    <PackageReference Include="SourceExpander.Core" Version="8.1.0" />
+    <PackageReference Include="SourceExpander.Core" Version="$(SourceExpanderVersion)" />
     <PackageReference Include="MersenneTwister" Version="1.0.6" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
-    <PackageReference Include="SourceExpander.Embedder.Testing" Version="8.1.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.5.1" />
+    <PackageReference Include="SourceExpander.Embedder.Testing" Version="$(SourceExpanderVersion)" />
     <PackageReference Include="xunit" Version="2.9.3" />
     <PackageReference Include="xunit.runner.visualstudio" Version="3.0.2">
       <PrivateAssets>all</PrivateAssets>
