@@ -265,7 +265,5 @@ namespace AtCoder
             return r;
             void Throw() => throw new FormatException();
         }
-
-        static DynamicModInt<T> IModInt<DynamicModInt<T>>.Create(uint v) => new(v);
     }
 }

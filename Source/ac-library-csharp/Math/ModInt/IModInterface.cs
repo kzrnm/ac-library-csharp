@@ -32,7 +32,15 @@ namespace AtCoder
         /// mod を返します。
         /// </summary>
         static abstract int Mod { get; }
-        static abstract T Create(uint v);
+
+        /// <summary>
+        /// <paramref name="v"/> に対して mod を取らずに StaticModInt&lt;<typeparamref name="T"/>&gt; 型のインスタンスを生成します。
+        /// </summary>
+        /// <remarks>
+        /// <para>定数倍高速化のための関数です。 <paramref name="v"/> に 0 未満または mod 以上の値を入れた場合の挙動は未定義です。</para>
+        /// <para>制約: 0≤|<paramref name="v"/>|&lt;mod</para>
+        /// </remarks>
+        static abstract T Raw(int v);
     }
     public interface IModIntNumberBase<T> : IModInt<T>, IIntBase<T> where T : IModInt<T>, IIntBase<T>
     {
@@ -42,10 +50,10 @@ namespace AtCoder
         static bool INumberBase<T>.IsEvenInteger(T v) => int.IsEvenInteger(v.Value);
         static bool INumberBase<T>.IsOddInteger(T v) => int.IsOddInteger(v.Value);
 
-        static T INumberBase<T>.MaxMagnitude(T x, T y) => T.Create((uint)int.Max(x.Value, y.Value));
-        static T INumberBase<T>.MaxMagnitudeNumber(T x, T y) => T.Create((uint)int.Max(x.Value, y.Value));
-        static T INumberBase<T>.MinMagnitude(T x, T y) => T.Create((uint)int.Min(x.Value, y.Value));
-        static T INumberBase<T>.MinMagnitudeNumber(T x, T y) => T.Create((uint)int.Min(x.Value, y.Value));
+        static T INumberBase<T>.MaxMagnitude(T x, T y) => T.Raw(int.Max(x.Value, y.Value));
+        static T INumberBase<T>.MaxMagnitudeNumber(T x, T y) => T.Raw(int.Max(x.Value, y.Value));
+        static T INumberBase<T>.MinMagnitude(T x, T y) => T.Raw(int.Min(x.Value, y.Value));
+        static T INumberBase<T>.MinMagnitudeNumber(T x, T y) => T.Raw(int.Min(x.Value, y.Value));
 
         bool ISpanFormattable.TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider provider) => Value.TryFormat(destination, out charsWritten, format, provider);
 
@@ -66,7 +74,7 @@ namespace AtCoder
             }
             var m = (int)(b % T.Mod);
             if (m < 0) m += T.Mod;
-            r = T.Create((uint)m);
+            r = T.Raw(m);
             return true;
             [MethodImpl(256)] static bool Cft<B>(TF v, out B r) where B : INumberBase<B> => B.TryConvertFromTruncating(v, out r);
         }

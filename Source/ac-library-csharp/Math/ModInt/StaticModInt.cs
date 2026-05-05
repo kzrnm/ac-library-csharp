@@ -248,7 +248,5 @@ namespace AtCoder
             return r;
             void Throw() => throw new FormatException();
         }
-
-        static StaticModInt<T> IModInt<StaticModInt<T>>.Create(uint v) => new(v);
     }
 }
