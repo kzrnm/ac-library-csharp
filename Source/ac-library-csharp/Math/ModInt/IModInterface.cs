@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Globalization;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 
 namespace AtCoder
 {
@@ -53,25 +53,33 @@ namespace AtCoder
             => typeof(TF) == typeof(TT)
             ? (r = (TT)(object)v) is { }
             : TT.TryConvertFromChecked(v, out r) || TF.TryConvertToChecked(v, out r);
-        static bool ConvF<TOther>(TOther v, out T r) where TOther : INumberBase<TOther>
+        [MethodImpl(256)]
+        static bool ConvF<TF>(TF v, out T r) where TF : INumberBase<TF>
         {
-            var d = TOther.CreateTruncating((uint)T.Mod);
-            var q = v / d;
-            v -= q * d;
-            var rt = Cnv<TOther, uint>(v, out var u);
-            r = T.Create(u);
-            return rt;
+            BigInteger b;
+            if (typeof(TF) == typeof(BigInteger))
+                b = (BigInteger)(object)v;
+            else if (!Cft(v, out b) && !TF.TryConvertToTruncating(v, out b))
+            {
+                r = default;
+                return false;
+            }
+            var m = (int)(b % T.Mod);
+            if (m < 0) m += T.Mod;
+            r = T.Create((uint)m);
+            return true;
+            [MethodImpl(256)] static bool Cft<B>(TF v, out B r) where B : INumberBase<B> => B.TryConvertFromTruncating(v, out r);
         }
-        static bool INumberBase<T>.TryConvertFromChecked<TOther>(TOther v, out T r)
+        static bool INumberBase<T>.TryConvertFromChecked<TF>(TF v, out T r)
             => ConvF(v, out r);
-        static bool INumberBase<T>.TryConvertFromSaturating<TOther>(TOther v, out T r)
+        static bool INumberBase<T>.TryConvertFromSaturating<TF>(TF v, out T r)
             => ConvF(v, out r);
-        static bool INumberBase<T>.TryConvertFromTruncating<TOther>(TOther v, out T r)
+        static bool INumberBase<T>.TryConvertFromTruncating<TF>(TF v, out T r)
             => ConvF(v, out r);
 
-        static bool INumberBase<T>.TryConvertToChecked<TOther>(T v, out TOther r) => Cnv(v.Value, out r);
-        static bool INumberBase<T>.TryConvertToSaturating<TOther>(T v, out TOther r) => Cnv(v.Value, out r);
-        static bool INumberBase<T>.TryConvertToTruncating<TOther>(T v, out TOther r) => Cnv(v.Value, out r);
+        static bool INumberBase<T>.TryConvertToChecked<TT>(T v, out TT r) => Cnv(v.Value, out r);
+        static bool INumberBase<T>.TryConvertToSaturating<TT>(T v, out TT r) => Cnv(v.Value, out r);
+        static bool INumberBase<T>.TryConvertToTruncating<TT>(T v, out TT r) => Cnv(v.Value, out r);
     }
 
     /// <summary>

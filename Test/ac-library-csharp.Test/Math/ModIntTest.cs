@@ -555,17 +555,17 @@ namespace AtCoder
                 var max = System.Math.Min(size, mod);
                 for (int i = 0; i < max; i++)
                 {
-                    int x = ConvertFrom<StaticModInt<T>, int>(i).Value;
-                    x.ShouldBe(i % mod);
+                    ConvertFrom<StaticModInt<T>, int>(i).Value.ShouldBe(i % mod);
+                    if (i > 0) ConvertFrom<StaticModInt<T>, int>(-i).Value.ShouldBe(mod - i % mod);
 
-                    x = ConvertFrom<StaticModInt<T>, long>(i).Value;
-                    x.ShouldBe(i % mod);
+                    ConvertFrom<StaticModInt<T>, long>(i).Value.ShouldBe(i % mod);
+                    if (i > 0) ConvertFrom<StaticModInt<T>, long>(-i).Value.ShouldBe(mod - i % mod);
 
-                    x = ConvertFrom<StaticModInt<T>, uint>((uint)i).Value;
-                    x.ShouldBe(i % mod);
+                    ConvertFrom<StaticModInt<T>, uint>((uint)i).Value.ShouldBe(i % mod);
+                    if (i > 0) ConvertFrom<StaticModInt<T>, uint>(uint.MaxValue - (uint)i).Value.ShouldBe((int)((uint.MaxValue - (uint)i) % (uint)mod));
 
-                    x = ConvertFrom<StaticModInt<T>, ulong>((ulong)i).Value;
-                    x.ShouldBe(i % mod);
+                    ConvertFrom<StaticModInt<T>, ulong>((ulong)i).Value.ShouldBe(i % mod);
+                    if (i > 0) ConvertFrom<StaticModInt<T>, ulong>(ulong.MaxValue - (ulong)i).Value.ShouldBe((int)((ulong.MaxValue - (ulong)i) % (uint)mod));
                 }
             }
 
@@ -575,17 +575,17 @@ namespace AtCoder
                 var max = System.Math.Min(size, mod);
                 for (int i = 0; i < max; i++)
                 {
-                    int x = ConvertFrom<DynamicModInt<T>, int>(i).Value;
-                    x.ShouldBe(i % mod);
+                    ConvertFrom<DynamicModInt<T>, int>(i).Value.ShouldBe(i % mod);
+                    if (i > 0) ConvertFrom<DynamicModInt<T>, int>(-i).Value.ShouldBe(mod - i % mod);
 
-                    x = ConvertFrom<DynamicModInt<T>, long>(i).Value;
-                    x.ShouldBe(i % mod);
+                    ConvertFrom<DynamicModInt<T>, long>(i).Value.ShouldBe(i % mod);
+                    if (i > 0) ConvertFrom<DynamicModInt<T>, long>(-i).Value.ShouldBe(mod - i % mod);
 
-                    x = ConvertFrom<DynamicModInt<T>, uint>((uint)i).Value;
-                    x.ShouldBe(i % mod);
+                    ConvertFrom<DynamicModInt<T>, uint>((uint)i).Value.ShouldBe(i % mod);
+                    if (i > 0) ConvertFrom<DynamicModInt<T>, uint>(uint.MaxValue - (uint)i).Value.ShouldBe((int)((uint.MaxValue - (uint)i) % (uint)mod));
 
-                    x = ConvertFrom<DynamicModInt<T>, ulong>((ulong)i).Value;
-                    x.ShouldBe(i % mod);
+                    ConvertFrom<DynamicModInt<T>, ulong>((ulong)i).Value.ShouldBe(i % mod);
+                    if (i > 0) ConvertFrom<DynamicModInt<T>, ulong>(ulong.MaxValue - (ulong)i).Value.ShouldBe((int)((ulong.MaxValue - (ulong)i) % (uint)mod));
                 }
             }
 
@@ -616,22 +616,17 @@ namespace AtCoder
                 var max = System.Math.Min(size, mod);
                 for (int i = 0; i < max; i++)
                 {
-                    {
-                        var x = ConvertTo<StaticModInt<T>, int>(i);
-                        x.ShouldBe((int)(i % mod));
-                    }
-                    {
-                        var x = ConvertTo<StaticModInt<T>, long>(i);
-                        x.ShouldBe((long)(i % mod));
-                    }
-                    {
-                        var x = ConvertTo<StaticModInt<T>, uint>(i);
-                        x.ShouldBe((uint)(i % mod));
-                    }
-                    {
-                        var x = ConvertTo<StaticModInt<T>, ulong>(i);
-                        x.ShouldBe((ulong)(i % mod));
-                    }
+                    ConvertTo<StaticModInt<T>, int>(i).ShouldBe((int)(i % mod));
+                    if (i > 0) ConvertTo<StaticModInt<T>, int>(-i).ShouldBe((int)(mod - i % mod));
+
+                    ConvertTo<StaticModInt<T>, long>(i).ShouldBe((long)(i % mod));
+                    if (i > 0) ConvertTo<StaticModInt<T>, long>(-i).ShouldBe((long)(mod - i % mod));
+
+                    ConvertTo<StaticModInt<T>, uint>(i).ShouldBe((uint)(i % mod));
+                    if (i > 0) ConvertTo<StaticModInt<T>, uint>(-i).ShouldBe((uint)(mod - i % mod));
+
+                    ConvertTo<StaticModInt<T>, ulong>(i).ShouldBe((ulong)(i % mod));
+                    if (i > 0) ConvertTo<StaticModInt<T>, ulong>(-i).ShouldBe((ulong)(mod - i % mod));
                 }
             }
 
@@ -641,22 +636,17 @@ namespace AtCoder
                 var max = System.Math.Min(size, mod);
                 for (int i = 0; i < max; i++)
                 {
-                    {
-                        var x = ConvertTo<DynamicModInt<T>, int>(i);
-                        x.ShouldBe((int)(i % mod));
-                    }
-                    {
-                        var x = ConvertTo<DynamicModInt<T>, long>(i);
-                        x.ShouldBe((long)(i % mod));
-                    }
-                    {
-                        var x = ConvertTo<DynamicModInt<T>, uint>(i);
-                        x.ShouldBe((uint)(i % mod));
-                    }
-                    {
-                        var x = ConvertTo<DynamicModInt<T>, ulong>(i);
-                        x.ShouldBe((ulong)(i % mod));
-                    }
+                    ConvertTo<DynamicModInt<T>, int>(i).ShouldBe((int)(i % mod));
+                    if (i > 0) ConvertTo<DynamicModInt<T>, int>(-i).ShouldBe((int)(mod - i % mod));
+
+                    ConvertTo<DynamicModInt<T>, long>(i).ShouldBe((long)(i % mod));
+                    if (i > 0) ConvertTo<DynamicModInt<T>, long>(-i).ShouldBe((long)(mod - i % mod));
+
+                    ConvertTo<DynamicModInt<T>, uint>(i).ShouldBe((uint)(i % mod));
+                    if (i > 0) ConvertTo<DynamicModInt<T>, uint>(-i).ShouldBe((uint)(mod - i % mod));
+
+                    ConvertTo<DynamicModInt<T>, ulong>(i).ShouldBe((ulong)(i % mod));
+                    if (i > 0) ConvertTo<DynamicModInt<T>, ulong>(-i).ShouldBe((ulong)(mod - i % mod));
                 }
             }
 
