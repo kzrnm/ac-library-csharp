@@ -21,6 +21,8 @@
     <PackageLicenseExpression></PackageLicenseExpression>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
 
+    <IsAotCompatible>true</IsAotCompatible>
+
     <DefineConstants>$(DefineConstants);ATCODER_CONTRACT</DefineConstants>
     <SourceExpander_Embedder_ExpandInLibrary Condition="'$(Configuration)'=='DEBUG'">true</SourceExpander_Embedder_ExpandInLibrary>
   </PropertyGroup>
