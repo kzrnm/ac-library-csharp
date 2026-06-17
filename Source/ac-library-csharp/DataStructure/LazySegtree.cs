@@ -123,6 +123,7 @@ namespace AtCoder
         }
 
         [MethodImpl(256)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public TValue Slice(int l, int len) => Prod(l, l + len);
 
         /// <summary>

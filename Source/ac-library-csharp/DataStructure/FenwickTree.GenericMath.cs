@@ -87,6 +87,7 @@ namespace AtCoder
         }
 
         [MethodImpl(256)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public T Slice(int l, int len) => Sum(l, l + len);
 
 #if EMBEDDING
