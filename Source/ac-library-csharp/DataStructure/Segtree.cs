@@ -253,7 +253,7 @@ namespace AtCoder
             return 0;
         }
 
-#if EMBEDDING
+#if SOURCE_EMBEDDING
         [SourceExpander.NotEmbeddingSource]
 #endif
         [DebuggerDisplay("{" + nameof(Value) + "}", Name = "{" + nameof(Key) + ",nq}")]
@@ -262,7 +262,7 @@ namespace AtCoder
             [DebuggerBrowsable(0)]
             public string Key => R - L == 1 ? $"[{L}]" : $"[{L}-{R})";
         }
-#if EMBEDDING
+#if SOURCE_EMBEDDING
         [SourceExpander.NotEmbeddingSource]
 #endif
         private class DebugView(Segtree<TValue, TOp> s)

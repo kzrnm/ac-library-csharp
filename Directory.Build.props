@@ -20,8 +20,7 @@
 
     <PackageOutputPath>$(MSBuildThisFileDirectory)bin\Packages\$(Configuration)\</PackageOutputPath>
 
-    <EmbeddingSource>true</EmbeddingSource>
-    <DefineConstants Condition="'$(EmbeddingSource)'=='true'">$(DefineConstants);EMBEDDING</DefineConstants>
+		<SourceExpander_PackJson_Enabled Condition="'$(Configuration)' != 'Release'">false</SourceExpander_PackJson_Enabled>
 
     <SourceExpanderVersion>9.0.2-beta3</SourceExpanderVersion>
 

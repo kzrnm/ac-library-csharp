@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SourceExpander.Embedder.PackJson" Version="$(SourceExpanderVersion)" Condition="'$(EmbeddingSource)'=='true'">
+    <PackageReference Include="SourceExpander.Embedder.PackJson" Version="$(SourceExpanderVersion)" >
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

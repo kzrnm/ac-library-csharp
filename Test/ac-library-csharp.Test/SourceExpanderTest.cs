@@ -13,7 +13,7 @@ public partial class SourceExpanderTest
 {
     class EmbeddingFact : FactAttribute
     {
-#if !EMBEDDING
+#if !SOURCE_EMBEDDING
         public override string Skip => "SourceExpander.Embedder is disabled.";
 #endif
     }
@@ -28,7 +28,7 @@ public partial class SourceExpanderTest
     public async Task Embedding()
     {
         var embedded = await EmbeddedData.LoadFromAssembly(typeof(Segtree<,>));
-#if EMBEDDING
+#if SOURCE_EMBEDDING
         embedded.AssemblyMetadatas.Keys.ShouldContain(k => Regex.IsMatch(k, "SourceExpander.*"));
 #else
         embedded.AssemblyMetadatas.Keys.ShouldNotContain(k => Regex.IsMatch(k, "SourceExpander.*"));
@@ -117,7 +117,7 @@ public partial class SourceExpanderTest
         source.CodeBody.ShouldNotContain("Debug");
     }
 
-#if EMBEDDING
+#if SOURCE_EMBEDDING
     [Fact]
     public void DebugExpanded()
     {
