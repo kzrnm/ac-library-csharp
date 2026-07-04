@@ -44,12 +44,23 @@ jobs:
       upload-artifact: ${{ fromJson(needs.get-version.outputs.is-new) }}
 
   publish:
+    runs-on: ubuntu-latest
     needs: [get-version, test, format, build-verify]
     if: ${{ needs.get-version.outputs.is-new == 'true' }}
-    uses: kzrnm/dotnet-actions/.github/workflows/publish.yml@v2
-    with:
-      artifact-name: dist
-      version: ${{ needs.get-version.outputs.version }}
-      is-prerelease: ${{ fromJson(needs.get-version.outputs.is-prerelease) }}
-    secrets:
-      NUGET_KEY: ${{ secrets.NUGET_KEY }}
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - name: NuGet login
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: naminodarie
+      - name: Publish NuGet & Release
+        uses: kzrnm/dotnet-actions/actions/publish@v2
+        id: get-version
+        with:
+          artifact-name: dist
+          version: ${{ needs.get-version.outputs.version }}
+          is-prerelease: ${{ needs.get-version.outputs.is-prerelease == 'true' }}
+          NUGET_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
