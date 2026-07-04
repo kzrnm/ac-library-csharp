@@ -8,12 +8,10 @@
     <PackageReleaseNotes>https://github.com/kzrnm/ac-library-csharp/blob/main/CHANGELOG.md</PackageReleaseNotes>
     <NoWarn>$(NoWarn);IDE0305;IDE0130</NoWarn>
 
-    <VersionPrefix>4.1.0</VersionPrefix>
+    <VersionPrefix>4.1.1</VersionPrefix>
     <VersionSuffix>alpha1</VersionSuffix>
     <AssemblyVersion>$(VersionPrefix).1</AssemblyVersion>
     <RepositoryCommit Condition="'$(GIT_COMMIT)' != ''">$(GIT_COMMIT)</RepositoryCommit>
-
-    <VersionSuffix></VersionSuffix>
 
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)key.snk</AssemblyOriginatorKeyFile>
