@@ -8,8 +8,9 @@
     <PackageReleaseNotes>https://github.com/kzrnm/ac-library-csharp/blob/main/CHANGELOG.md</PackageReleaseNotes>
     <NoWarn>$(NoWarn);IDE0305;IDE0130</NoWarn>
 
-    <VersionPrefix>4.0.5</VersionPrefix>
-    <AssemblyVersion>$(VersionPrefix).101</AssemblyVersion>
+    <VersionPrefix>4.1.0</VersionPrefix>
+    <VersionSuffix>alpha1</VersionSuffix>
+    <AssemblyVersion>$(VersionPrefix).1</AssemblyVersion>
     <RepositoryCommit Condition="'$(GIT_COMMIT)' != ''">$(GIT_COMMIT)</RepositoryCommit>
 
     <VersionSuffix></VersionSuffix>
@@ -19,10 +20,9 @@
 
     <PackageOutputPath>$(MSBuildThisFileDirectory)bin\Packages\$(Configuration)\</PackageOutputPath>
 
-    <EmbeddingSource>true</EmbeddingSource>
-    <DefineConstants Condition="'$(EmbeddingSource)'=='true'">$(DefineConstants);EMBEDDING</DefineConstants>
+		<SourceExpander_PackJson_Enabled Condition="'$(Configuration)' != 'Release'">false</SourceExpander_PackJson_Enabled>
 
-    <SourceExpanderVersion>8.2.0</SourceExpanderVersion>
+    <SourceExpanderVersion>9.0.2-beta3</SourceExpanderVersion>
 
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols>true</IncludeSymbols>
