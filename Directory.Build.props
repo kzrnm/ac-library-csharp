@@ -9,8 +9,8 @@
     <NoWarn>$(NoWarn);IDE0305;IDE0130</NoWarn>
 
     <VersionPrefix>4.1.1</VersionPrefix>
-    <VersionSuffix>alpha2</VersionSuffix>
-    <AssemblyVersion>$(VersionPrefix).2</AssemblyVersion>
+    <VersionSuffix>alpha3</VersionSuffix>
+    <AssemblyVersion>$(VersionPrefix).3</AssemblyVersion>
     <RepositoryCommit Condition="'$(GIT_COMMIT)' != ''">$(GIT_COMMIT)</RepositoryCommit>
 
     <SignAssembly>True</SignAssembly>
