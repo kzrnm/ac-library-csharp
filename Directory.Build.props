@@ -9,15 +9,15 @@
     <NoWarn>$(NoWarn);IDE0305;IDE0130</NoWarn>
 
     <VersionPrefix>4.1.1</VersionPrefix>
-    <VersionSuffix>alpha6</VersionSuffix>
-    <AssemblyVersion>$(VersionPrefix).6</AssemblyVersion>
+    <VersionSuffix>alpha7</VersionSuffix>
+    <AssemblyVersion>$(VersionPrefix).7</AssemblyVersion>
     <RepositoryCommit Condition="'$(GIT_COMMIT)' != ''">$(GIT_COMMIT)</RepositoryCommit>
 
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)key.snk</AssemblyOriginatorKeyFile>
 
     <PackageOutputPath>$(MSBuildThisFileDirectory)bin\Packages\$(Configuration)\</PackageOutputPath>
-    <SourceExpanderVersion>9.1.0-alpha2</SourceExpanderVersion>
+    <SourceExpanderVersion>9.1.0-alpha3</SourceExpanderVersion>
 
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols>true</IncludeSymbols>

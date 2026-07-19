@@ -15,8 +15,6 @@
     <Description>C# port of ac-library</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <SourceExpander_Embedder_PackJson Condition="'$(BuildJson)' == 'true'">true</SourceExpander_Embedder_PackJson>
-    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);PackSourceJson</TargetsForTfmSpecificContentInPackage>
-
     <NoWarn>$(NoWarn);CS1574;CA1034;CS1591;CS1734;IDE0039;IDE0251</NoWarn>
 
     <PackageLicenseExpression></PackageLicenseExpression>
@@ -67,10 +65,4 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-
-  <Target Name="PackSourceJson">
-    <ItemGroup>
-      <TfmSpecificPackageFile Include="$(TargetDir)/SourceExpander.build/*.*" PackagePath="buildTransitive/$(TargetFramework)" />
-    </ItemGroup>
-  </Target>
 </Project>
