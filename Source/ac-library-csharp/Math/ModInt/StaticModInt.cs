@@ -51,7 +51,7 @@ namespace AtCoder
         public static StaticModInt<T> Raw(int v)
         {
             var u = unchecked((uint)v);
-#if EMBEDDING
+#if SOURCE_EMBEDDING
             Contract.Assert(u < Mod, $"{nameof(u)} must be less than {nameof(Mod)}.");
 #endif
             return new(u);

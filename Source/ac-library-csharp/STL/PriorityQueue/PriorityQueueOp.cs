@@ -145,7 +145,7 @@ namespace AtCoder.Internal
         [EditorBrowsable(Never)]
         public ReadOnlySpan<T> Unorderd() => data.AsSpan(0, Count);
 
-#if EMBEDDING
+#if SOURCE_EMBEDDING
         [SourceExpander.NotEmbeddingSource]
 #endif
         private class DebugView(PriorityQueueOp<T, TOp> pq)

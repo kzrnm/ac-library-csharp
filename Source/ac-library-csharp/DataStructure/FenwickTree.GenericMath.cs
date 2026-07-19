@@ -87,14 +87,15 @@ namespace AtCoder
         }
 
         [MethodImpl(256)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public T Slice(int l, int len) => Sum(l, l + len);
 
-#if EMBEDDING
+#if SOURCE_EMBEDDING
         [SourceExpander.NotEmbeddingSource]
 #endif
         [DebuggerDisplay("Value = {" + nameof(Value) + "}, Sum = {" + nameof(Sum) + "}")]
         internal readonly record struct DebugItem(T Value, T Sum);
-#if EMBEDDING
+#if SOURCE_EMBEDDING
         [SourceExpander.NotEmbeddingSource]
 #endif
         private class DebugView(FenwickTree<T> fw)
