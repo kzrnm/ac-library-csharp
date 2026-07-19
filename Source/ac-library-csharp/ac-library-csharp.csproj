@@ -70,7 +70,7 @@
 
   <Target Name="PackSourceJson">
     <ItemGroup>
-      <TfmSpecificPackageFile Include="$(TargetDir)/SourceExpander.build/*.*" PackagePath="buildTransive/$(TargetFramework)" />
+      <TfmSpecificPackageFile Include="$(TargetDir)/SourceExpander.build/*.*" PackagePath="buildTransitive/$(TargetFramework)" />
     </ItemGroup>
   </Target>
 </Project>
