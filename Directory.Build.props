@@ -9,8 +9,8 @@
     <NoWarn>$(NoWarn);IDE0305;IDE0130</NoWarn>
 
     <VersionPrefix>4.1.1</VersionPrefix>
-    <VersionSuffix>alpha1</VersionSuffix>
-    <AssemblyVersion>$(VersionPrefix).1</AssemblyVersion>
+    <VersionSuffix>alpha2</VersionSuffix>
+    <AssemblyVersion>$(VersionPrefix).2</AssemblyVersion>
     <RepositoryCommit Condition="'$(GIT_COMMIT)' != ''">$(GIT_COMMIT)</RepositoryCommit>
 
     <SignAssembly>True</SignAssembly>
@@ -20,7 +20,7 @@
 
 		<SourceExpander_PackJson_Enabled Condition="'$(Configuration)' != 'Release'">false</SourceExpander_PackJson_Enabled>
 
-    <SourceExpanderVersion>9.0.2-beta3</SourceExpanderVersion>
+    <SourceExpanderVersion>9.0.2-beta8</SourceExpanderVersion>
 
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols>true</IncludeSymbols>

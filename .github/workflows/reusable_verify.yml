@@ -33,7 +33,9 @@ jobs:
             ${{ runner.os }}-nuget-
       - name: Build
         shell: bash
-        run: dotnet build $WORKFLOW_BUILD_SLN -c Release
+        run: |
+          dotnet build $WORKFLOW_BUILD_SLN -c Release -p:PackJson=true
+          dotnet build $WORKFLOW_BUILD_SLN -c Release -p:BuildJson=true
       - name: setup CompetitiveVerifierCsResolver
         shell: bash
         run: dotnet tool install -g CompetitiveVerifierCsResolver
