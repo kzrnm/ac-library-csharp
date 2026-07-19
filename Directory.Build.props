@@ -17,9 +17,6 @@
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)key.snk</AssemblyOriginatorKeyFile>
 
     <PackageOutputPath>$(MSBuildThisFileDirectory)bin\Packages\$(Configuration)\</PackageOutputPath>
-
-		<SourceExpander_PackJson_Enabled Condition="'$(Configuration)' != 'Release'">false</SourceExpander_PackJson_Enabled>
-
     <SourceExpanderVersion>9.0.2-beta8</SourceExpanderVersion>
 
     <EmbedUntrackedSources>true</EmbedUntrackedSources>

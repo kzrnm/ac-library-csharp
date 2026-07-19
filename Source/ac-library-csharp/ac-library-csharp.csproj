@@ -25,10 +25,9 @@
     <IsAotCompatible>true</IsAotCompatible>
 
     <DefineConstants>$(DefineConstants);ATCODER_CONTRACT</DefineConstants>
-    <SourceExpander_PackJson_Enabled Condition="'$(Configuration)' != 'Release'">false</SourceExpander_PackJson_Enabled>
     <SourceExpander_Embedder_ExpandInLibrary Condition="'$(Configuration)' != 'Release'">true</SourceExpander_Embedder_ExpandInLibrary>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' == 'Release' And '$(PackJson)' == 'true'">
+  <PropertyGroup Condition="'$(Configuration)' == 'Release' And '$(BuildJson)' != 'true'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <SourceExpander_Embedder_VersionOnly>true</SourceExpander_Embedder_VersionOnly>
   </PropertyGroup>
