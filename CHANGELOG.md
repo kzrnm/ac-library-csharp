@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.2] - 2026-07-20
+### Added
+- Embed the source code as a build artifact
+
 ## [4.0.5] - 2026-06-18
 ### Changed
 - Add `[EditorBrowsable(EditorBrowsableState.Never)]` to  `Slice()`.
