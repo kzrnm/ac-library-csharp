@@ -1,4 +1,5 @@
-﻿using AtCoder.Operators;
+﻿using System.ComponentModel;
+using AtCoder.Operators;
 
 namespace AtCoder
 {
@@ -6,6 +7,7 @@ namespace AtCoder
     /// <summary>
     /// Minimum-cost flow problem を扱うライブラリ(int版)です。
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     [System.Obsolete("Use generic math")]
     public class McfGraphInt
         : McfGraph<int, IntOperator, int, IntOperator, SameTypeCastOperator<int>>
@@ -16,6 +18,7 @@ namespace AtCoder
     /// <summary>
     /// Minimum-cost flow problem を扱うライブラリ(long版)です。
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     [System.Obsolete("Use generic math")]
     public class McfGraphLong
        : McfGraph<long, LongOperator, long, LongOperator, SameTypeCastOperator<long>>

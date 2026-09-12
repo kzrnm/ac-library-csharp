@@ -1,9 +1,11 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using AtCoder.Operators;
 
 namespace AtCoder
 {
+    [EditorBrowsable(EditorBrowsableState.Never)]
     [Obsolete("Use generic math")]
     public readonly struct DynamicModIntOperator<T> : IArithmeticOperator<DynamicModInt<T>> where T : struct
     {

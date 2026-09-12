@@ -1,4 +1,6 @@
-﻿namespace AtCoder
+﻿using System.ComponentModel;
+
+namespace AtCoder
 {
     /// <summary>
     /// 長さ N の配列に対し、
@@ -12,6 +14,7 @@
     /// </list>
     /// <para>を O(log⁡N) で求めることが出来るデータ構造です。</para>
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     [System.Obsolete("Use generic math")]
     public class IntFenwickTree : FenwickTree<int, IntOperator> { public IntFenwickTree(int n) : base(n) { } }
 }
