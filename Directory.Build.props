@@ -8,7 +8,7 @@
     <PackageReleaseNotes>https://github.com/kzrnm/ac-library-csharp/blob/main/CHANGELOG.md</PackageReleaseNotes>
     <NoWarn>$(NoWarn);IDE0305;IDE0130</NoWarn>
 
-    <VersionPrefix>4.1.3</VersionPrefix>
+    <VersionPrefix>4.1.4</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <AssemblyVersion>$(VersionPrefix).100</AssemblyVersion>
     <RepositoryCommit Condition="'$(GIT_COMMIT)' != ''">$(GIT_COMMIT)</RepositoryCommit>
