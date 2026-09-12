@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace AtCoder.Operators
 {
@@ -6,6 +7,7 @@ namespace AtCoder.Operators
     /// <typeparamref name="T"/> についての加法演算を定義します。
     /// </summary>
     [IsOperator]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     [System.Obsolete("Use generic math")]
     public interface IAdditionOperator<T>
     {
@@ -20,6 +22,7 @@ namespace AtCoder.Operators
     /// <typeparamref name="T"/> についての減法演算を定義します。
     /// </summary>
     [IsOperator]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     [System.Obsolete("Use generic math")]
     public interface ISubtractOperator<T>
     {
@@ -34,6 +37,7 @@ namespace AtCoder.Operators
     /// <typeparamref name="T"/> についての乗法演算を定義します。
     /// </summary>
     [IsOperator]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     [System.Obsolete("Use generic math")]
     public interface IMultiplicationOperator<T>
     {
@@ -52,6 +56,7 @@ namespace AtCoder.Operators
     /// <typeparamref name="T"/> についての除法演算を定義します。
     /// </summary>
     [IsOperator]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     [System.Obsolete("Use generic math")]
     public interface IDivisionOperator<T> : IMultiplicationOperator<T>
     {
@@ -71,6 +76,7 @@ namespace AtCoder.Operators
     /// <typeparamref name="T"/> についての加法演算を定義します。
     /// </summary>
     [IsOperator]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     [System.Obsolete("Use generic math")]
     public interface IUnaryNumOperator<T>
     {
@@ -95,10 +101,12 @@ namespace AtCoder.Operators
     /// <typeparamref name="T"/> についての四則演算を定義します。
     /// </summary>
     [IsOperator]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     [System.Obsolete("Use generic math")]
     public interface IArithmeticOperator<T> : IAdditionOperator<T>, ISubtractOperator<T>, IMultiplicationOperator<T>, IDivisionOperator<T>, IUnaryNumOperator<T> { }
 
     [IsOperator]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     [System.Obsolete("Use generic math")]
     public interface ICompareOperator<T> : IComparer<T>
     {
@@ -125,6 +133,7 @@ namespace AtCoder.Operators
     }
 
     [IsOperator]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     [System.Obsolete("Use generic math")]
     public interface IMinMaxValueOperator<T>
     {
@@ -139,6 +148,7 @@ namespace AtCoder.Operators
     }
 
     [IsOperator]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     [System.Obsolete("Use generic math")]
     public interface INumOperator<T> : IArithmeticOperator<T>, ICompareOperator<T>, IMinMaxValueOperator<T>
     {
@@ -148,6 +158,7 @@ namespace AtCoder.Operators
     /// <typeparamref name="T"/> についてのシフト演算を定義します。
     /// </summary>
     [IsOperator]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     [System.Obsolete("Use generic math")]
     public interface IShiftOperator<T>
     {

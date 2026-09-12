@@ -22,6 +22,7 @@ namespace AtCoder
     /// <remarks>
     /// <para>制約: <typeparamref name="TCap"/>, <typeparamref name="TCost"/> は int, long。</para>
     /// </remarks>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     [Obsolete("Use generic math")]
     public class McfGraph<TCap, TCapOp, TCost, TCostOp, TCast>
             where TCapOp : struct, INumOperator<TCap>

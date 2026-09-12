@@ -1,8 +1,10 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using AtCoder.Operators;
 
 namespace AtCoder
 {
+    [EditorBrowsable(EditorBrowsableState.Never)]
     [System.Obsolete("Use generic math")]
     public readonly struct DoubleOperator : INumOperator<double>
     {
