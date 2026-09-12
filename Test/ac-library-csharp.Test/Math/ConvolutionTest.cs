@@ -73,7 +73,7 @@ namespace AtCoder
              => ConvNative<T>(a.Select(n => (long)n).ToArray(), b.Select(n => (long)n).ToArray()).Select(n => (ulong)n).ToArray();
         #endregion Native
 
-        public static TheoryData EmptyIntTestData => new TheoryData<int[], int[], int[]>
+        public static TheoryData<int[], int[], int[]> EmptyIntTestData => new()
         {
             { [], [], [] },
             { [], [1,2], [] },
@@ -88,7 +88,7 @@ namespace AtCoder
         {
             MathLib.Convolution(a, b).ShouldBe(expected);
         }
-        public static TheoryData EmptyLongTestData => new TheoryData<long[], long[], long[]>
+        public static TheoryData<long[], long[], long[]> EmptyLongTestData => new()
         {
             { [], [], [] },
             { [], [1, 2], [] },
@@ -100,7 +100,7 @@ namespace AtCoder
         {
             MathLib.Convolution(a, b).ShouldBe(expected);
         }
-        public static TheoryData EmptyModIntTestData => new TheoryData<StaticModInt<Mod998244353>[], StaticModInt<Mod998244353>[], StaticModInt<Mod998244353>[]>
+        public static TheoryData<StaticModInt<Mod998244353>[], StaticModInt<Mod998244353>[], StaticModInt<Mod998244353>[]> EmptyModIntTestData => new()
         {
             { [], [], [] },
             { [], [1, 2], [] },

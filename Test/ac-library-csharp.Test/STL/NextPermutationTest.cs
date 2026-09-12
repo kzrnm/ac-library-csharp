@@ -6,7 +6,7 @@ namespace AtCoder
 {
     public class NextPermutationTest
     {
-        public static TheoryData IntTestData => new TheoryData<int[], int[][]>
+        public static TheoryData<int[], int[][]> IntTestData => new()
         {
             {
                 [1,2,3,4],
@@ -81,7 +81,7 @@ namespace AtCoder
         [MemberData(nameof(IntTestData))]
         public void Int(int[] input, int[][] expected) => Generic(input, expected);
 
-        public static TheoryData LongTestData => new TheoryData<long[], long[][]>
+        public static TheoryData<long[], long[][]> LongTestData => new()
         {
             {
                 new long[]{ 1,2,3,4 },
@@ -137,7 +137,7 @@ namespace AtCoder
         [MemberData(nameof(LongTestData))]
         public void Long(long[] input, long[][] expected) => Generic(input, expected);
 
-        public static TheoryData CharTestData => new TheoryData<string[], string[][]>
+        public static TheoryData<string[], string[][]> CharTestData => new()
         {
             {
                 ["ax","b","ca"],

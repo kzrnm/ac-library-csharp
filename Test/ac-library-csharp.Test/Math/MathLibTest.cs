@@ -41,7 +41,7 @@ namespace AtCoder
             }
         }
 
-        public static TheoryData InvBoundHandTestData => new TheoryData<long, long, long>
+        public static TheoryData<long, long, long> InvBoundHandTestData => new()
         {
             { long.MinValue, long.MaxValue, MathLib.InvMod(-1, long.MaxValue) },
             { long.MaxValue, long.MaxValue-1, 1 },
