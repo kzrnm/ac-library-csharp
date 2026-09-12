@@ -9,12 +9,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Competitive.IO" Version="3.0.0" />
-    <PackageReference Include="CompetitiveVerifierProblem" Version="2.3.0" />
+    <PackageReference Include="Competitive.IO" Version="3.2.0" />
+    <PackageReference Include="CompetitiveVerifierProblem" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Source\ac-library-csharp\ac-library-csharp.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="10.0.401">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

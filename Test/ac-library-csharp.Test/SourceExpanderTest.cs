@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Shouldly;
@@ -13,7 +14,11 @@ public partial class SourceExpanderTest
 {
     class EmbeddingFact : FactAttribute
     {
-        public override string Skip => "SourceExpander.Embedder is disabled.";
+        public EmbeddingFact([CallerFilePath] string sourceFilePath = null, [CallerLineNumber] int sourceLineNumber = -1)
+            : base(sourceFilePath, sourceLineNumber)
+        {
+            Skip = "SourceExpander.Embedder is disabled.";
+        }
     }
 
 #if NET9_0

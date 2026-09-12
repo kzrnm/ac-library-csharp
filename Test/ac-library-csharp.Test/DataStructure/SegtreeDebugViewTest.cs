@@ -3,6 +3,7 @@ using System.Reflection;
 using AtCoder.DataStructure.Native;
 using Shouldly;
 using Xunit;
+using Xunit.Sdk;
 
 namespace AtCoder
 {
@@ -25,7 +26,28 @@ namespace AtCoder
             }
         }
         static WrapperView<T, TOp> CreateWrapper<T, TOp>(Segtree<T, TOp> s) where TOp : struct, ISegtreeOperator<T> => new(s);
-        static Segtree<string, MonoidOperator>.DebugItem CreateDebugItem(int l, int r, string s) => new(l, r, s);
+
+        public class DebugItem : IXunitSerializable
+        {
+            public int L;
+            public int R;
+            public string Value;
+
+            public void Deserialize(IXunitSerializationInfo info)
+            {
+                L = info.GetValue<int>(nameof(L));
+                R = info.GetValue<int>(nameof(R));
+                Value = info.GetValue<string>(nameof(Value));
+            }
+            public void Serialize(IXunitSerializationInfo info)
+            {
+                info.AddValue(nameof(L), L);
+                info.AddValue(nameof(R), R);
+                info.AddValue(nameof(Value), Value);
+            }
+        }
+
+        static DebugItem CreateDebugItem(int l, int r, string s) => new() { L = l, R = r, Value = s };
 
         [Fact]
         public void Empty()
@@ -35,7 +57,7 @@ namespace AtCoder
             view.GetItems().ShouldBeEmpty();
         }
 
-        public static TheoryData Simple_Data => new TheoryData<int, Segtree<string, MonoidOperator>.DebugItem[]>
+        public static TheoryData<int, DebugItem[]> Simple_Data => new()
         {
             {
                 1,
@@ -117,9 +139,9 @@ namespace AtCoder
 
         [Theory]
         [MemberData(nameof(Simple_Data))]
-        public void Simple(int size, object expectedObj)
+        public void Simple(int size, DebugItem[] expectedObj)
         {
-            var expected = (Segtree<string, MonoidOperator>.DebugItem[])expectedObj;
+            var expected = expectedObj.Select(t => new Segtree<string, MonoidOperator>.DebugItem(t.L, t.R, t.Value)).ToArray();
             var array = Enumerable.Range(0, size).Select(i => $"{(char)('a' + i)}").ToArray();
             var s = new Segtree<string, MonoidOperator>(array);
 

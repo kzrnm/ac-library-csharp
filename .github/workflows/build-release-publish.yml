@@ -29,10 +29,9 @@ jobs:
         9.0.x
         10.0.x
   test:
-    uses: kzrnm/dotnet-actions/.github/workflows/unittest.yml@v2
+    uses: kzrnm/dotnet-actions/.github/workflows/unittest-mtp.yml@v2
     with:
-      target: ac-library-csharp.slnx
-      test-logger: GitHubActions
+      solution: ac-library-csharp.slnx
       dotnet-version: |
         9.0.x
         10.0.x

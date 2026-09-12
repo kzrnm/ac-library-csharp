@@ -2,6 +2,7 @@
 using System.Reflection;
 using Shouldly;
 using Xunit;
+using Xunit.Sdk;
 
 namespace AtCoder
 {
@@ -24,8 +25,33 @@ namespace AtCoder
             }
         }
         static WrapperView<T, F, TOp> CreateWrapper<T, F, TOp>(LazySegtree<T, F, TOp> s) where TOp : struct, ILazySegtreeOperator<T, F> => new(s);
-        static LazySegtree<int, int, MaxOp>.DebugItem CreateDebugItem(int l, int r, int value, int lazy = 0)
-            => new(l, r, value, lazy);
+
+
+        public class DebugItem : IXunitSerializable
+        {
+            public int L;
+            public int R;
+            public int Value;
+            public int Lazy;
+
+            public void Deserialize(IXunitSerializationInfo info)
+            {
+                L = info.GetValue<int>(nameof(L));
+                R = info.GetValue<int>(nameof(R));
+                Value = info.GetValue<int>(nameof(Value));
+                Lazy = info.GetValue<int>(nameof(Lazy));
+            }
+            public void Serialize(IXunitSerializationInfo info)
+            {
+                info.AddValue(nameof(L), L);
+                info.AddValue(nameof(R), R);
+                info.AddValue(nameof(Value), Value);
+                info.AddValue(nameof(Lazy), Lazy);
+            }
+        }
+        static DebugItem CreateDebugItem(int l, int r, int value, int lazy = 0) => new() { L = l, R = r, Value = value, Lazy = lazy };
+
+
         readonly struct MaxOp : ILazySegtreeOperator<int, int>
         {
             public int Identity => int.MinValue;
@@ -44,7 +70,7 @@ namespace AtCoder
             view.GetItems().ShouldBeEmpty();
         }
 
-        public static TheoryData Simple_Data() => new TheoryData<int, LazySegtree<int, int, MaxOp>.DebugItem[]>
+        public static TheoryData<int, DebugItem[]> Simple_Data() => new()
         {
             {
                 1,
@@ -126,9 +152,9 @@ namespace AtCoder
 
         [Theory]
         [MemberData(nameof(Simple_Data))]
-        public void Simple(int size, object expectedObj)
+        public void Simple(int size, DebugItem[] expectedObj)
         {
-            var expected = (LazySegtree<int, int, MaxOp>.DebugItem[])expectedObj;
+            var expected = expectedObj.Select(t => new LazySegtree<int, int, MaxOp>.DebugItem(t.L, t.R, t.Value, t.Lazy)).ToArray();
             var array = Enumerable.Range(0, size).ToArray();
             var s = new LazySegtree<int, int, MaxOp>(array);
 
@@ -142,6 +168,8 @@ namespace AtCoder
         [Fact]
         public void Lazy()
         {
+            static LazySegtree<int, int, MaxOp>.DebugItem CreateDebugItem(int l, int r, int val, int lazy = 0)
+                => new(l, r, val, lazy);
             var array = Enumerable.Range(0, 5).ToArray();
             var s = new LazySegtree<int, int, MaxOp>(array);
             var view = CreateWrapper(s);

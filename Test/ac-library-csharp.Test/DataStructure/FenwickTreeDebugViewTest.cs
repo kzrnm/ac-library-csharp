@@ -1,42 +1,60 @@
 ﻿using System.Linq;
+using System.Numerics;
 using System.Reflection;
 using AtCoder.Operators;
 using Shouldly;
 using Xunit;
+using Xunit.Sdk;
 
 namespace AtCoder
 {
     public class FenwickTreeDebugViewTest
     {
-#pragma warning disable CS0618
-        class WrapperView<T, TOp> where TOp : struct, IAdditionOperator<T>, ISubtractOperator<T>
+        class WrapperView<T> where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>, IAdditiveIdentity<T, T>
         {
             readonly object debugView;
             readonly PropertyInfo itemsProperty;
-            public WrapperView(FenwickTree<T, TOp> fw)
+            public WrapperView(FenwickTree<T> fw)
             {
-                var type = typeof(FenwickTree<T, TOp>).GetNestedType("DebugView", BindingFlags.NonPublic)
-                    .MakeGenericType(typeof(T), typeof(TOp));
+                var type = typeof(FenwickTree<T>).GetNestedType("DebugView", BindingFlags.NonPublic)
+                    .MakeGenericType(typeof(T));
                 debugView = type.GetConstructor([fw.GetType()]).Invoke([fw]);
                 itemsProperty = debugView.GetType().GetProperty("Items");
             }
-            public FenwickTree<T, TOp>.DebugItem[] GetItems()
+            public FenwickTree<T>.DebugItem[] GetItems()
             {
-                return (FenwickTree<T, TOp>.DebugItem[])itemsProperty.GetValue(debugView);
+                return (FenwickTree<T>.DebugItem[])itemsProperty.GetValue(debugView);
             }
         }
-        static WrapperView<T, TOp> CreateWrapper<T, TOp>(FenwickTree<T, TOp> f) where TOp : struct, IAdditionOperator<T>, ISubtractOperator<T> => new(f);
-        static LongFenwickTree.DebugItem CreateDebugItem(long val, long sum) => new(val, sum);
+        static WrapperView<T> CreateWrapper<T>(FenwickTree<T> f) where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>, IAdditiveIdentity<T, T> => new(f);
+
+        public class DebugItem : IXunitSerializable
+        {
+            public long Value;
+            public long Sum;
+
+            public void Deserialize(IXunitSerializationInfo info)
+            {
+                Value = info.GetValue<long>(nameof(Value));
+                Sum = info.GetValue<long>(nameof(Sum));
+            }
+            public void Serialize(IXunitSerializationInfo info)
+            {
+                info.AddValue(nameof(Value), Value);
+                info.AddValue(nameof(Sum), Sum);
+            }
+        }
+        static DebugItem CreateDebugItem(long val, long sum) => new() { Value = val, Sum = sum };
 
         [Fact]
         public void Empty()
         {
-            var s = new LongFenwickTree(0);
+            var s = new FenwickTree<long>(0);
             var view = CreateWrapper(s);
             view.GetItems().ShouldBeEmpty();
         }
 
-        public static TheoryData Simple_Data => new TheoryData<int, LongFenwickTree.DebugItem[]>
+        public static TheoryData<int, DebugItem[]> Simple_Data => new()
         {
             {
                 1,
@@ -99,11 +117,11 @@ namespace AtCoder
 
         [Theory]
         [MemberData(nameof(Simple_Data))]
-        public void Simple(int size, object expectedObj)
+        public void Simple(int size, DebugItem[] expectedObj)
         {
-            var expected = (LongFenwickTree.DebugItem[])expectedObj;
+            var expected = expectedObj.Select(t => new FenwickTree<long>.DebugItem(t.Value, t.Sum)).ToArray();
             var array = Enumerable.Range(0, size).Select(i => $"{(char)('a' + i)}").ToArray();
-            var fw = new LongFenwickTree(size);
+            var fw = new FenwickTree<long>(size);
             for (int i = 0; i < size; i++)
                 fw.Add(i, 1L << i);
 

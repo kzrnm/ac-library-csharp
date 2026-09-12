@@ -40,7 +40,7 @@ jobs:
         shell: bash
         run: dotnet tool install -g CompetitiveVerifierCsResolver
       - name: Unit test
-        run: dotnet test $UNITTEST_CSPROJ --logger "CompetitiveVerifier;OutDirectory=${{runner.temp}}/VerifierCsUnitTestResult" --no-build  -c Release
+        run: dotnet test --project $UNITTEST_CSPROJ --report-competitive-verifier="${{runner.temp}}/VerifierCsUnitTestResult" --no-build  -c Release
         env:
           UNITTEST_CSPROJ: Test/ac-library-csharp.Test/ac-library-csharp.Test.csproj
 

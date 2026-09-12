@@ -86,3 +86,5 @@ csharp_prefer_static_local_function = true:silent
 
 # IDE0034: default' ®‚ğ’Pƒ‰»‚·‚é
 csharp_prefer_simple_default_expression = true:silent
+
+csharp_style_namespace_declarations = block_scoped:suggestion
